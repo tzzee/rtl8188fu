@@ -27,7 +27,7 @@
 //		It toggle off LED and schedule corresponding timer if necessary.
 //
 void
-SwLedBlink(
+rtl8188fu_SwLedBlink(
 	PLED_USB			pLed
 	)
 {
@@ -144,7 +144,7 @@ SwLedBlink(
 }
 
 void
-SwLedBlink1(
+rtl8188fu_SwLedBlink1(
 	PLED_USB			pLed
 	)
 {
@@ -376,7 +376,7 @@ SwLedBlink1(
 }
 
 void
-SwLedBlink2(
+rtl8188fu_SwLedBlink2(
 	PLED_USB			pLed
 	)
 {
@@ -498,7 +498,7 @@ SwLedBlink2(
 }
 
 void
-SwLedBlink3(
+rtl8188fu_SwLedBlink3(
 	PLED_USB			pLed
 	)
 {
@@ -669,7 +669,7 @@ SwLedBlink3(
 
 
 void
-SwLedBlink4(
+rtl8188fu_SwLedBlink4(
 	PLED_USB			pLed
 	)
 {
@@ -907,13 +907,13 @@ SwLedBlink4(
 			break;
 	}
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink4 CurrLedState %d\n", pLed->CurrLedState));
+	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("rtl8188fu_SwLedBlink4 CurrLedState %d\n", pLed->CurrLedState));
 
 
 }
 
 void
-SwLedBlink5(
+rtl8188fu_SwLedBlink5(
 	PLED_USB			pLed
 	)
 {
@@ -1025,13 +1025,13 @@ SwLedBlink5(
 			break;
 	}
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink5 CurrLedState %d\n", pLed->CurrLedState));
+	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("rtl8188fu_SwLedBlink5 CurrLedState %d\n", pLed->CurrLedState));
 
 
 }
 
 void
-SwLedBlink6(
+rtl8188fu_SwLedBlink6(
 	PLED_USB			pLed
 	)
 {
@@ -1055,7 +1055,7 @@ SwLedBlink6(
 }
 
 void
-SwLedBlink7(
+rtl8188fu_SwLedBlink7(
 	PLED_USB			pLed
 	)
 {
@@ -1175,7 +1175,7 @@ SwLedBlink7(
 }
 
 void
-SwLedBlink8(
+rtl8188fu_SwLedBlink8(
 	PLED_USB			pLed
 	)
 {
@@ -1199,7 +1199,7 @@ SwLedBlink8(
 
 //page added for Belkin AC950. 20120813
 void
-SwLedBlink9(
+rtl8188fu_SwLedBlink9(
 	PLED_USB			pLed
 	)
 {
@@ -1509,12 +1509,12 @@ SwLedBlink9(
 			break;
 	}
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink9 CurrLedState %d\n", pLed->CurrLedState));					
+	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("rtl8188fu_SwLedBlink9 CurrLedState %d\n", pLed->CurrLedState));					
 }
 
 //page added for Netgear A6200V2. 20120827
 void
-SwLedBlink10(
+rtl8188fu_rtl8188fu_SwLedBlink10(
 	PLED_USB			pLed
 	)
 {
@@ -1777,12 +1777,12 @@ SwLedBlink10(
 			break;
 	}
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink10 CurrLedState %d\n", pLed->CurrLedState));
+	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("rtl8188fu_rtl8188fu_SwLedBlink10 CurrLedState %d\n", pLed->CurrLedState));
 
 }
 
 void
-SwLedBlink11(
+rtl8188fu_rtl8188fu_SwLedBlink11(
 	PLED_USB			pLed
 	)
 {
@@ -1870,11 +1870,11 @@ SwLedBlink11(
 			break;
 	}
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink5 CurrLedState %d\n", pLed->CurrLedState));
+	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("rtl8188fu_SwLedBlink5 CurrLedState %d\n", pLed->CurrLedState));
 }
 
 void
-SwLedBlink12(
+rtl8188fu_rtl8188fu_SwLedBlink12(
 	PLED_USB			pLed
 	)
 {
@@ -1954,13 +1954,13 @@ SwLedBlink12(
 			break;
 	}
 
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("SwLedBlink8 CurrLedState %d\n", pLed->CurrLedState));
+	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("rtl8188fu_SwLedBlink8 CurrLedState %d\n", pLed->CurrLedState));
 
 
 }
 
 VOID
-SwLedBlink13(
+rtl8188fu_rtl8188fu_SwLedBlink13(
 	IN PLED_USB			pLed
 	)
 {
@@ -1981,7 +1981,7 @@ SwLedBlink13(
 			SwLedOff(Adapter, pLed);
 		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn off\n", pLed->BlinkTimes));
 	}	
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("!!! SwLedBlink13 CurrLedState %d, bLedWPSBlinkInProgress %d, bLedBlinkInProgress %d\n", pLed->CurrLedState,pLed->bLedWPSBlinkInProgress,pLed->bLedBlinkInProgress));
+	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("!!! rtl8188fu_rtl8188fu_SwLedBlink13 CurrLedState %d, bLedWPSBlinkInProgress %d, bLedBlinkInProgress %d\n", pLed->CurrLedState,pLed->bLedWPSBlinkInProgress,pLed->bLedBlinkInProgress));
 	switch(pLed->CurrLedState)
 	{			
 		case LED_BLINK_LINK_IN_PROCESS:
@@ -2036,7 +2036,7 @@ SwLedBlink13(
 }
 
 VOID
-SwLedBlink14(
+rtl8188fu_rtl8188fu_SwLedBlink14(
 	IN PLED_USB			pLed
 	)
 {
@@ -2057,7 +2057,7 @@ SwLedBlink14(
 			SwLedOff(Adapter, pLed);
 		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn off\n", pLed->BlinkTimes));
 	}	
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("!!! SwLedBlink14 CurrLedState %d, bLedWPSBlinkInProgress %d, bLedBlinkInProgress %d\n", pLed->CurrLedState,pLed->bLedWPSBlinkInProgress,pLed->bLedBlinkInProgress));
+	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("!!! rtl8188fu_rtl8188fu_SwLedBlink14 CurrLedState %d, bLedWPSBlinkInProgress %d, bLedBlinkInProgress %d\n", pLed->CurrLedState,pLed->bLedWPSBlinkInProgress,pLed->bLedBlinkInProgress));
 	switch(pLed->CurrLedState)
 	{			
 		case LED_BLINK_TXRX:
@@ -2116,7 +2116,7 @@ SwLedBlink14(
 }
 
 VOID
-SwLedBlink15(
+rtl8188fu_rtl8188fu_SwLedBlink15(
 	IN PLED_USB			pLed
 	)
 {
@@ -2137,7 +2137,7 @@ SwLedBlink15(
 			SwLedOff(Adapter, pLed);
 		RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("Blinktimes (%d): turn off\n", pLed->BlinkTimes));
 	}	
-	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("!!! SwLedBlink15 CurrLedState %d, bLedWPSBlinkInProgress %d, bLedBlinkInProgress %d\n", pLed->CurrLedState,pLed->bLedWPSBlinkInProgress,pLed->bLedBlinkInProgress));
+	RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("!!! rtl8188fu_rtl8188fu_SwLedBlink15 CurrLedState %d, bLedWPSBlinkInProgress %d, bLedBlinkInProgress %d\n", pLed->CurrLedState,pLed->bLedWPSBlinkInProgress,pLed->bLedBlinkInProgress));
 	switch(pLed->CurrLedState)
 	{
 		case LED_BLINK_WPS:
@@ -2293,7 +2293,7 @@ SwLedBlink15(
 //		Handler function of LED Blinking.
 //		We dispatch acture LED blink action according to LedStrategy.
 //
-void BlinkHandler(PLED_USB pLed)
+void rtl8188fu_BlinkHandler(PLED_USB pLed)
 {
 	_adapter		*padapter = pLed->padapter;
 	struct led_priv	*ledpriv = &(padapter->ledpriv);
@@ -2311,72 +2311,72 @@ void BlinkHandler(PLED_USB pLed)
 	switch(ledpriv->LedStrategy)
 	{
 		case SW_LED_MODE0:
-			SwLedBlink(pLed);
+			rtl8188fu_SwLedBlink(pLed);
 			break;
 		
 		case SW_LED_MODE1:
-			SwLedBlink1(pLed);
+			rtl8188fu_SwLedBlink1(pLed);
 			break;
 		
 		case SW_LED_MODE2:
-			SwLedBlink2(pLed);
+			rtl8188fu_SwLedBlink2(pLed);
 			break;
 			
 		case SW_LED_MODE3:
-			SwLedBlink3(pLed);
+			rtl8188fu_SwLedBlink3(pLed);
 			break;
 
 		case SW_LED_MODE4:
-			SwLedBlink4(pLed);
+			rtl8188fu_SwLedBlink4(pLed);
 			break;			
 
 		case SW_LED_MODE5:
-			SwLedBlink5(pLed);
+			rtl8188fu_SwLedBlink5(pLed);
 			break;
 
 		case SW_LED_MODE6:
-			SwLedBlink6(pLed);
+			rtl8188fu_SwLedBlink6(pLed);
 			break;
 
 		case SW_LED_MODE7:
-			SwLedBlink7(pLed);
+			rtl8188fu_SwLedBlink7(pLed);
 			break;
 
 		case SW_LED_MODE8:
-			SwLedBlink8(pLed);
+			rtl8188fu_SwLedBlink8(pLed);
 			break;
 
 		case SW_LED_MODE9:
-			SwLedBlink9(pLed);
+			rtl8188fu_SwLedBlink9(pLed);
 			break;
 
 		case SW_LED_MODE10:
-			SwLedBlink10(pLed);
+			rtl8188fu_rtl8188fu_SwLedBlink10(pLed);
 			break;
 
 		case SW_LED_MODE11:
-			SwLedBlink11(pLed);
+			rtl8188fu_rtl8188fu_SwLedBlink11(pLed);
 			break;
 
 		case SW_LED_MODE12:
-			SwLedBlink12(pLed);
+			rtl8188fu_rtl8188fu_SwLedBlink12(pLed);
 			break;
 
 		case SW_LED_MODE13:
-			SwLedBlink13(pLed);
+			rtl8188fu_rtl8188fu_SwLedBlink13(pLed);
 			break;
 
 		case SW_LED_MODE14:
-			SwLedBlink14(pLed);
+			rtl8188fu_rtl8188fu_SwLedBlink14(pLed);
 			break;
 
 		case SW_LED_MODE15:
-			SwLedBlink15(pLed);
+			rtl8188fu_rtl8188fu_SwLedBlink15(pLed);
 			break;
 
 		default:
-			RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("BlinkWorkItemCallback 0x%x \n", ledpriv->LedStrategy));
-			//SwLedBlink(pLed);
+			RT_TRACE(_module_rtl8712_led_c_,_drv_info_,("rtl8188fu_BlinkWorkItemCallback 0x%x \n", ledpriv->LedStrategy));
+			//rtl8188fu_SwLedBlink(pLed);
 			break;
 	}
 }
@@ -2384,9 +2384,9 @@ void BlinkHandler(PLED_USB pLed)
 //
 //	Description:
 //		Callback function of LED BlinkTimer, 
-//		it just schedules to corresponding BlinkWorkItem/led_blink_hdl
+//		it just schedules to corresponding BlinkWorkItem/rtl8188fu_led_blink_hdl
 //
-void BlinkTimerCallback(void *data)
+void rtl8188fu_BlinkTimerCallback(void *data)
 {
 	PLED_USB	 pLed = (PLED_USB)data;
 	_adapter		*padapter = pLed->padapter;
@@ -2402,7 +2402,7 @@ void BlinkTimerCallback(void *data)
 	}
 
 	#ifdef CONFIG_LED_HANDLED_BY_CMD_THREAD
-	rtw_led_blink_cmd(padapter, (PVOID)pLed);
+	rtl8188fu_rtw_led_blink_cmd(padapter, (PVOID)pLed);
 	#else
 	_set_workitem(&(pLed->BlinkWorkItem));
 	#endif
@@ -2413,10 +2413,10 @@ void BlinkTimerCallback(void *data)
 //		Callback function of LED BlinkWorkItem.
 //		We dispatch acture LED blink action according to LedStrategy.
 //
-void BlinkWorkItemCallback(_workitem *work)
+void rtl8188fu_BlinkWorkItemCallback(_workitem *work)
 {
 	PLED_USB	 pLed = container_of(work, LED_USB, BlinkWorkItem);
-	BlinkHandler(pLed);
+	rtl8188fu_BlinkHandler(pLed);
 }
 
 static void
@@ -3625,7 +3625,7 @@ SwLedControlMode6(
 
 //Netgear, added by sinda, 2011/11/11
  void
- SwLedControlMode7(
+ rtl8188fu_SwLedControlMode7(
 	 PADAPTER			 Adapter,
 	 LED_CTL_MODE		 LedAction
  )
@@ -3785,7 +3785,7 @@ SwLedControlMode6(
 }
 
 void
-SwLedControlMode8(
+rtl8188fu_SwLedControlMode8(
 	PADAPTER			Adapter,
 	LED_CTL_MODE		LedAction
 	)
@@ -3824,7 +3824,7 @@ SwLedControlMode8(
 
 //page added for Belkin AC950, 20120813
 void
-SwLedControlMode9(
+rtl8188fu_SwLedControlMode9(
 	IN	PADAPTER			Adapter,
 	IN	LED_CTL_MODE		LedAction
 )
@@ -4171,7 +4171,7 @@ SwLedControlMode9(
 
 //page added for Netgear A6200V2, 20120827
 void
-SwLedControlMode10(
+rtl8188fu_SwLedControlMode10(
 	PADAPTER			Adapter,
 	LED_CTL_MODE		LedAction
 )
@@ -4390,7 +4390,7 @@ SwLedControlMode10(
 
  //Edimax-ASUS, added by Page, 20121221
 void
-SwLedControlMode11(
+rtl8188fu_SwLedControlMode11(
 	PADAPTER			Adapter,
 	LED_CTL_MODE		LedAction
 )
@@ -4499,7 +4499,7 @@ SwLedControlMode11(
 // page added for NEC
 
 VOID
-SwLedControlMode12(
+rtl8188fu_SwLedControlMode12(
 	PADAPTER			Adapter,
 	LED_CTL_MODE		LedAction
 )
@@ -4589,7 +4589,7 @@ SwLedControlMode12(
 // Maddest add for NETGEAR R6100
 
 VOID
-SwLedControlMode13(
+rtl8188fu_SwLedControlMode13(
 	IN	PADAPTER			Adapter,
 	IN	LED_CTL_MODE		LedAction
 )
@@ -4761,7 +4761,7 @@ SwLedControlMode13(
 // Maddest add for DNI Buffalo
 
 VOID
-SwLedControlMode14(
+rtl8188fu_SwLedControlMode14(
 	IN	PADAPTER			Adapter,
 	IN	LED_CTL_MODE		LedAction
 )
@@ -4829,7 +4829,7 @@ SwLedControlMode14(
 // Maddest add for Dlink
 
 VOID
-SwLedControlMode15(
+rtl8188fu_SwLedControlMode15(
 	IN	PADAPTER			Adapter,
 	IN	LED_CTL_MODE		LedAction
 )
@@ -5005,7 +5005,7 @@ SwLedControlMode15(
 }
 
 void
-LedControlUSB(
+rtl8188fu_LedControlUSB(
 	_adapter				*padapter,
 	LED_CTL_MODE		LedAction
 	)
@@ -5074,39 +5074,39 @@ LedControlUSB(
 			break;
 
 		case SW_LED_MODE7:
-			SwLedControlMode7(padapter, LedAction);
+			rtl8188fu_SwLedControlMode7(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE8:
-			SwLedControlMode8(padapter, LedAction);
+			rtl8188fu_SwLedControlMode8(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE9:
-			SwLedControlMode9(padapter, LedAction);
+			rtl8188fu_SwLedControlMode9(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE10:
-			SwLedControlMode10(padapter, LedAction);
+			rtl8188fu_SwLedControlMode10(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE11:
-			SwLedControlMode11(padapter, LedAction);
+			rtl8188fu_SwLedControlMode11(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE12:
-			SwLedControlMode12(padapter, LedAction);
+			rtl8188fu_SwLedControlMode12(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE13:
-			SwLedControlMode13(padapter, LedAction);
+			rtl8188fu_SwLedControlMode13(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE14:
-			SwLedControlMode14(padapter, LedAction);
+			rtl8188fu_SwLedControlMode14(padapter, LedAction);
 			break;
 
 		case SW_LED_MODE15:
-			SwLedControlMode15(padapter, LedAction);
+			rtl8188fu_SwLedControlMode15(padapter, LedAction);
 			break;
 
 		default:
@@ -5120,7 +5120,7 @@ LedControlUSB(
 //	Description:
 //		Reset status of LED_871x object.
 //
-void ResetLedStatus(PLED_USB pLed) {
+void rtl8188fu_ResetLedStatus(PLED_USB pLed) {
 
 	pLed->CurrLedState = RTW_LED_OFF; // Current LED state.
 	pLed->bLedOn = _FALSE; // true if LED is ON, false if LED is OFF.
@@ -5143,7 +5143,7 @@ void ResetLedStatus(PLED_USB pLed) {
 //		Initialize an LED_871x object.
 //
 void
-InitLed(
+rtl8188fu_InitLed(
 	_adapter			*padapter,
 	PLED_USB		pLed,
 	LED_PIN			LedPin
@@ -5152,9 +5152,9 @@ InitLed(
 	pLed->padapter = padapter;
 	pLed->LedPin = LedPin;
 
-	ResetLedStatus(pLed);
-	_init_timer(&(pLed->BlinkTimer), padapter->pnetdev, BlinkTimerCallback, pLed);
-	_init_workitem(&(pLed->BlinkWorkItem), BlinkWorkItemCallback, pLed);
+	rtl8188fu_ResetLedStatus(pLed);
+	_init_timer(&(pLed->BlinkTimer), padapter->pnetdev, rtl8188fu_BlinkTimerCallback, pLed);
+	_init_workitem(&(pLed->BlinkWorkItem), rtl8188fu_BlinkWorkItemCallback, pLed);
 }
 
 
@@ -5163,13 +5163,13 @@ InitLed(
 //		DeInitialize an LED_871x object.
 //
 void
-DeInitLed(
+Dertl8188fu_InitLed(
 	PLED_USB		pLed
 	)
 {
 	_cancel_workitem_sync(&(pLed->BlinkWorkItem));
 	_cancel_timer_ex(&(pLed->BlinkTimer));
-	ResetLedStatus(pLed);
+	rtl8188fu_ResetLedStatus(pLed);
 }
 
 

@@ -88,7 +88,7 @@ ODM_SingleDualAntennaDetection_PSD(
 #endif
 
 VOID
-odm_SwAntDetectInit(
+rtl8188fu_odm_SwAntDetectInit(
 	IN		PVOID		pDM_VOID
 	);
 

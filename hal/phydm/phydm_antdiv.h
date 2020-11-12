@@ -326,19 +326,19 @@ typedef enum _ANT_DIV_TYPE
 
 
 VOID
-ODM_StopAntennaSwitchDm(
+rtl8188fu_ODM_StopAntennaSwitchDm(
 	IN	PVOID	pDM_VOID
 	);
 VOID
-ODM_SetAntConfig(
+rtl8188fu_ODM_SetAntConfig(
 	IN	PVOID	pDM_VOID,
 	IN	u1Byte		antSetting	// 0=A, 1=B, 2=C, ....
 	);
 
 
-#define SwAntDivRestAfterLink	ODM_SwAntDivRestAfterLink
+#define SwAntDivRestAfterLink	rtl8188fu_ODM_SwAntDivRestAfterLink
 
-VOID ODM_SwAntDivRestAfterLink(	
+VOID rtl8188fu_ODM_SwAntDivRestAfterLink(	
 	IN	PVOID	pDM_VOID
 	);
 
@@ -549,17 +549,17 @@ ODM_AntDivTimers(
 #endif /*#if (defined(CONFIG_PHYDM_ANTENNA_DIVERSITY))*/
 
 VOID
-ODM_AntDivReset(
+rtl8188fu_ODM_AntDivReset(
 	IN		PVOID		pDM_VOID
 );
 
 VOID
-odm_AntennaDiversityInit(
+rtl8188fu_odm_AntennaDiversityInit(
 	IN		PVOID		pDM_VOID
 );
 
 VOID
-odm_AntennaDiversity(
+rtl8188fu_odm_AntennaDiversity(
 	IN		PVOID		pDM_VOID
 );
 

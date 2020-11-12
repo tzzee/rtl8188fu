@@ -20,10 +20,10 @@
 #ifndef __USB_HAL_H__
 #define __USB_HAL_H__
 
-int usb_init_recv_priv(_adapter *padapter, u16 ini_in_buf_sz);
-void usb_free_recv_priv (_adapter *padapter, u16 ini_in_buf_sz);
+int rtl8188fu_usb_init_recv_priv(_adapter *padapter, u16 ini_in_buf_sz);
+void rtl8188fu_usb_free_recv_priv (_adapter *padapter, u16 ini_in_buf_sz);
 
-u8 rtw_set_hal_ops(_adapter *padapter);
+u8 rtl8188fu_rtw_set_hal_ops(_adapter *padapter);
 
 #ifdef CONFIG_RTL8188E
 void rtl8188eu_set_hal_ops(_adapter * padapter);

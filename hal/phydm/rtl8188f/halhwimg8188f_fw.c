@@ -2671,7 +2671,7 @@ ODM_ReadFirmware_MP_8188F_FW_NIC(
 #if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
 	*((SIZE_PTR *)pFirmware) = (SIZE_PTR)Array_MP_8188F_FW_NIC;
 #else
-	ODM_MoveMemory(pDM_Odm, pFirmware, Array_MP_8188F_FW_NIC, ArrayLength_MP_8188F_FW_NIC);
+	rtl8188fu_ODM_MoveMemory(pDM_Odm, pFirmware, Array_MP_8188F_FW_NIC, ArrayLength_MP_8188F_FW_NIC);
 #endif
 	*pFirmwareSize = ArrayLength_MP_8188F_FW_NIC;
 }

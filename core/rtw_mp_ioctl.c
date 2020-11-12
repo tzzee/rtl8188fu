@@ -82,7 +82,7 @@ _func_enter_;
 		  offset, value));
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	write_bbreg(Adapter, offset, 0xFFFFFFFF, value);
+	rtl8188fu_write_bbreg(Adapter, offset, 0xFFFFFFFF, value);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -117,7 +117,7 @@ _func_enter_;
 	if (offset < BB_REG_BASE_ADDR) offset |= BB_REG_BASE_ADDR;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	value = read_bbreg(Adapter, offset, 0xFFFFFFFF);
+	value = rtl8188fu_read_bbreg(Adapter, offset, 0xFFFFFFFF);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	pbbreg->value = value;
@@ -171,7 +171,7 @@ _func_enter_;
 		  path, offset, value));
 
 	_irqlevel_changed_(&oldirql, LOWER);
- 	write_rfreg(Adapter, path, offset, value);
+ 	rtl8188furtl8188fu__write_rfreg(Adapter, path, offset, value);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -212,7 +212,7 @@ _func_enter_;
 	offset = (u8)pbbreg->offset;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	value = read_rfreg(Adapter, path, offset);
+	value = rtl8188fu_read_rfreg(Adapter, path, offset);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	pbbreg->value = value;
@@ -261,7 +261,7 @@ _func_enter_;
 	Adapter->mppriv.rateidx = ratevalue;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetDataRate(Adapter);
+	rtl8188fu_SetDataRate(Adapter);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -365,7 +365,7 @@ _func_enter_;
 	Adapter->mppriv.channel = Channel;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetChannel(Adapter);
+	rtl8188fu_SetChannel(Adapter);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -403,7 +403,7 @@ _func_enter_;
 	padapter->mppriv.prime_channel_offset = (u8)channel_offset;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetBandwidth(padapter);
+	rtl8188fu_SetBandwidth(padapter);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	RT_TRACE(_module_mp_, _drv_notice_,
@@ -442,7 +442,7 @@ _func_enter_;
 			  Adapter->mppriv.antenna_tx, Adapter->mppriv.antenna_rx));
 
 		_irqlevel_changed_(&oldirql, LOWER);
-		SetAntenna(Adapter);
+		rtl8188fu_SetAntenna(Adapter);
 		_irqlevel_changed_(&oldirql, RAISE);
 	} else {
 		antenna = (Adapter->mppriv.antenna_tx << 16)|Adapter->mppriv.antenna_rx;
@@ -484,7 +484,7 @@ _func_enter_;
 		  Adapter->mppriv.txpoweridx));
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetTxPower(Adapter);
+	rtl8188fu_SetTxPower(Adapter);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -631,7 +631,7 @@ _func_enter_;
 	}
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	ResetPhyRxPktCount(Adapter);
+	rtl8188fu_ResetPhyRxPktCount(Adapter);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -658,7 +658,7 @@ _func_enter_;
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	*(ULONG*)poid_par_priv->information_buf = GetPhyRxPktReceived(Adapter);
+	*(ULONG*)poid_par_priv->information_buf = rtl8188fu_GetPhyRxPktReceived(Adapter);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
@@ -690,7 +690,7 @@ _func_enter_;
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	*(ULONG*)poid_par_priv->information_buf = GetPhyRxPktCRC32Error(Adapter);
+	*(ULONG*)poid_par_priv->information_buf = rtl8188fu_GetPhyRxPktCRC32Error(Adapter);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
@@ -721,17 +721,17 @@ _func_enter_;
 	bStartTest = *((u32*)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetContinuousTx(Adapter,(u8)bStartTest);
+	rtl8188fu_SetContinuousTx(Adapter,(u8)bStartTest);
 	if (bStartTest) {
 		struct mp_priv *pmp_priv = &Adapter->mppriv;
 		if (pmp_priv->tx.stop == 0) {
 			pmp_priv->tx.stop = 1;
 			DBG_871X("%s: pkt tx is running...\n", __func__);
-			rtw_msleep_os(5);
+			rtl8188fu_rtw_msleep_os(5);
 		}
 		pmp_priv->tx.stop = 0;
 		pmp_priv->tx.count = 1;
-		SetPacketTx(Adapter);
+		rtl8188fu_SetPacketTx(Adapter);
 	}
 	_irqlevel_changed_(&oldirql, RAISE);
 
@@ -759,17 +759,17 @@ _func_enter_;
 	bStartTest = *((u32*)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetSingleCarrierTx(Adapter, (u8)bStartTest);
+	rtl8188fu_SetSingleCarrierTx(Adapter, (u8)bStartTest);
 	if (bStartTest) {
 		struct mp_priv *pmp_priv = &Adapter->mppriv;
 		if (pmp_priv->tx.stop == 0) {
 			pmp_priv->tx.stop = 1;
 			DBG_871X("%s: pkt tx is running...\n", __func__);
-			rtw_msleep_os(5);
+			rtl8188fu_rtw_msleep_os(5);
 		}
 		pmp_priv->tx.stop = 0;
 		pmp_priv->tx.count = 1;
-		SetPacketTx(Adapter);
+		rtl8188fu_SetPacketTx(Adapter);
 	}
 	_irqlevel_changed_(&oldirql, RAISE);
 
@@ -797,17 +797,17 @@ _func_enter_;
 	bStartTest = *((u32*)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetCarrierSuppressionTx(Adapter, (u8)bStartTest);
+	rtl8188fu_SetCarrierSuppressionTx(Adapter, (u8)bStartTest);
 	if (bStartTest) {
 		struct mp_priv *pmp_priv = &Adapter->mppriv;
 		if (pmp_priv->tx.stop == 0) {
 			pmp_priv->tx.stop = 1;
 			DBG_871X("%s: pkt tx is running...\n", __func__);
-			rtw_msleep_os(5);
+			rtl8188fu_rtw_msleep_os(5);
 		}
 		pmp_priv->tx.stop = 0;
 		pmp_priv->tx.count = 1;
-		SetPacketTx(Adapter);
+		rtl8188fu_SetPacketTx(Adapter);
 	}
 	_irqlevel_changed_(&oldirql, RAISE);
 
@@ -835,7 +835,7 @@ _func_enter_;
 	bStartTest = *((u32*)poid_par_priv->information_buf);
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetSingleToneTx(Adapter,(u8)bStartTest);
+	rtl8188fu_SetSingleToneTx(Adapter,(u8)bStartTest);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -862,7 +862,7 @@ _func_enter_;
 		return NDIS_STATUS_NOT_ACCEPTED;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	rtw_hal_set_hwreg(Adapter, HW_VAR_TRIGGER_GPIO_0, 0);
+	rtl8188fu_rtw_hal_set_hwreg(Adapter, HW_VAR_TRIGGER_GPIO_0, 0);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -1235,7 +1235,7 @@ _func_enter_;
 
 	pwi_param = (struct mp_wiparam *)poid_par_priv->information_buf;
 
-	_rtw_memcpy(pwi_param, &Adapter->mppriv.workparam, sizeof(struct mp_wiparam));
+	rtl8188fu__rtw_memcpy(pwi_param, &Adapter->mppriv.workparam, sizeof(struct mp_wiparam));
 	Adapter->mppriv.act_in_progress = _FALSE;
 //	RT_TRACE(_module_mp_, _drv_info_, ("rf:%x\n", pwiparam->IoValue));
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
@@ -1408,7 +1408,7 @@ _func_enter_;
 	if (poid_par_priv->type_of_oid != QUERY_OID)
 		return NDIS_STATUS_NOT_ACCEPTED;
 
-	_rtw_memcpy(poid_par_priv->information_buf, (unsigned char*)&Adapter->mppriv.rxstat, sizeof(struct recv_stat));
+	rtl8188fu__rtw_memcpy(poid_par_priv->information_buf, (unsigned char*)&Adapter->mppriv.rxstat, sizeof(struct recv_stat));
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 
 _func_exit_;
@@ -1485,7 +1485,7 @@ _func_enter_;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 
-	if (rtw_setdatarate_cmd(Adapter, poid_par_priv->information_buf) !=_SUCCESS)
+	if (rtl8188fu_rtw_setdatarate_cmd(Adapter, poid_par_priv->information_buf) !=_SUCCESS)
 		status = NDIS_STATUS_NOT_ACCEPTED;
 
 	_irqlevel_changed_(&oldirql, RAISE);
@@ -1515,7 +1515,7 @@ _func_enter_;
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	GetThermalMeter(Adapter, &thermal);
+	rtl8188fu_GetThermalMeter(Adapter, &thermal);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	*(u32*)poid_par_priv->information_buf = (u32)thermal;
@@ -1596,9 +1596,9 @@ _func_enter_;
 		RT_TRACE(_module_mp_, _drv_notice_,
 			 ("+oid_rt_pro_set_power_tracking_hdl: enable=%d\n", enable));
 
-		SetPowerTracking(Adapter, enable);
+		rtl8188fu_SetPowerTracking(Adapter, enable);
 	} else {
-		GetPowerTracking(Adapter, (u8*)poid_par_priv->information_buf);
+		rtl8188fu_GetPowerTracking(Adapter, (u8*)poid_par_priv->information_buf);
 	}
 	_irqlevel_changed_(&oldirql, RAISE);
 
@@ -1638,7 +1638,7 @@ _func_enter_;
 
 	_irqlevel_changed_(&oldirql, LOWER);
 
-	if (rtw_setbasicrate_cmd(padapter, datarates) != _SUCCESS)
+	if (rtl8188fu_rtw_setbasicrate_cmd(padapter, datarates) != _SUCCESS)
 		status = NDIS_STATUS_NOT_ACCEPTED;
 
 	_irqlevel_changed_(&oldirql, RAISE);
@@ -1670,7 +1670,7 @@ _func_enter_;
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	*poid_par_priv->bytes_rw = 8;
-	_rtw_memcpy(poid_par_priv->information_buf, &(adapter_to_pwrctl(Adapter)->pwr_mode), 8);
+	rtl8188fu__rtw_memcpy(poid_par_priv->information_buf, &(adapter_to_pwrctl(Adapter)->pwr_mode), 8);
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 
 	RT_TRACE(_module_mp_, _drv_notice_,
@@ -1745,7 +1745,7 @@ _func_enter_;
 	prate_table = (struct setratable_parm*)poid_par_priv->information_buf;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	res = rtw_setrttbl_cmd(Adapter, prate_table);
+	res = rtl8188fu_rtw_setrttbl_cmd(Adapter, prate_table);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 	if (res == _FAIL)
@@ -1789,7 +1789,7 @@ _func_enter_;
 				pmp_wi_cntx->param.bytes_cnt=sizeof(struct getratable_rsp);
 				pmp_wi_cntx->param.io_value=0xffffffff;
 
-				res=rtw_getrttbl_cmd(Adapter,(struct getratable_rsp *)pmp_wi_cntx->param.data);
+				res=rtl8188fu_rtw_getrttbl_cmd(Adapter,(struct getratable_rsp *)pmp_wi_cntx->param.data);
 				*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 				if(res != _SUCCESS)
 				{
@@ -1939,10 +1939,10 @@ NDIS_STATUS oid_rt_pro_add_sta_info_hdl(struct oid_par_priv *poid_par_priv)
 
 	_irqlevel_changed_(&oldirql, LOWER);
 
-	psta = rtw_get_stainfo(&Adapter->stapriv, macaddr);
+	psta = rtl8188fu_rtw_get_stainfo(&Adapter->stapriv, macaddr);
 
 	if (psta == NULL) { // the sta have been in sta_info_queue => do nothing
-		psta = rtw_alloc_stainfo(&Adapter->stapriv, macaddr);
+		psta = rtl8188fu_rtw_alloc_stainfo(&Adapter->stapriv, macaddr);
 
 		if (psta == NULL) {
 			RT_TRACE(_module_rtl871x_ioctl_c_,_drv_err_,("Can't alloc sta_info when OID_RT_PRO_ADD_STA_INFO\n"));
@@ -1986,10 +1986,10 @@ NDIS_STATUS oid_rt_pro_dele_sta_info_hdl(struct oid_par_priv *poid_par_priv)
 	RT_TRACE(_module_rtl871x_ioctl_c_,_drv_notice_,
 		 ("+OID_RT_PRO_ADD_STA_INFO: addr="MAC_FMT"\n", MAC_ARG(macaddr) ));
 
-	psta = rtw_get_stainfo(&Adapter->stapriv, macaddr);
+	psta = rtl8188fu_rtw_get_stainfo(&Adapter->stapriv, macaddr);
 	if (psta != NULL) {
 		//_enter_critical(&(Adapter->stapriv.sta_hash_lock), &irqL);
-		rtw_free_stainfo(Adapter, psta);
+		rtl8188fu_rtw_free_stainfo(Adapter, psta);
 		//_exit_critical(&(Adapter->stapriv.sta_hash_lock), &irqL);
 	}
 
@@ -2286,7 +2286,7 @@ _func_enter_;
 		("+oid_rt_pro_read_efuse_hd: buf_len=%d addr=%d cnts=%d\n",
 		 poid_par_priv->information_buf_len, addr, cnts));
 
-	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
+	rtl8188fu_EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
 
 	if ((addr + cnts) > max_available_size) {
 		RT_TRACE(_module_mp_, _drv_err_, ("!oid_rt_pro_read_efuse_hdl: parameter error!\n"));
@@ -2294,8 +2294,8 @@ _func_enter_;
 	}
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	if (rtw_efuse_access(Adapter, _FALSE, addr, cnts, data) == _FAIL) {
-		RT_TRACE(_module_mp_, _drv_err_, ("!oid_rt_pro_read_efuse_hdl: rtw_efuse_access FAIL!\n"));
+	if (rtl8188fu_rtw_efuse_access(Adapter, _FALSE, addr, cnts, data) == _FAIL) {
+		RT_TRACE(_module_mp_, _drv_err_, ("!oid_rt_pro_read_efuse_hdl: rtl8188fu_rtw_efuse_access FAIL!\n"));
 		status = NDIS_STATUS_FAILURE;
 	} else
 		*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
@@ -2332,7 +2332,7 @@ _func_enter_;
 		 ("+oid_rt_pro_write_efuse_hdl: buf_len=%d addr=0x%04x cnts=%d\n",
 		  poid_par_priv->information_buf_len, addr, cnts));
 
-	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
+	rtl8188fu_EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI, TYPE_AVAILABLE_EFUSE_BYTES_TOTAL, (PVOID)&max_available_size, _FALSE);
 
 	if ((addr + cnts) > max_available_size) {
 		RT_TRACE(_module_mp_, _drv_err_, ("!oid_rt_pro_write_efuse_hdl: parameter error"));
@@ -2340,7 +2340,7 @@ _func_enter_;
 	}
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	if (rtw_efuse_access(Adapter, _TRUE, addr, cnts, data) == _FAIL)
+	if (rtl8188fu_rtw_efuse_access(Adapter, _TRUE, addr, cnts, data) == _FAIL)
 		status = NDIS_STATUS_FAILURE;
 	_irqlevel_changed_(&oldirql, RAISE);
 
@@ -2377,23 +2377,23 @@ _func_enter_;
 			("oid_rt_pro_rw_efuse_pgpkt_hdl: Read offset=0x%x\n",\
 			ppgpkt->offset));
 
-		Efuse_PowerSwitch(Adapter, _FALSE, _TRUE);
-		if (Efuse_PgPacketRead(Adapter, ppgpkt->offset, ppgpkt->data, _FALSE) == _TRUE)
+		rtl8188fu_Efuse_PowerSwitch(Adapter, _FALSE, _TRUE);
+		if (rtl8188fu_Efuse_PgPacketRead(Adapter, ppgpkt->offset, ppgpkt->data, _FALSE) == _TRUE)
 			*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 		else
 			status = NDIS_STATUS_FAILURE;
-		Efuse_PowerSwitch(Adapter, _FALSE, _FALSE);
+		rtl8188fu_Efuse_PowerSwitch(Adapter, _FALSE, _FALSE);
 	} else {
 		RT_TRACE(_module_mp_, _drv_notice_,
 			("oid_rt_pro_rw_efuse_pgpkt_hdl: Write offset=0x%x word_en=0x%x\n",\
 			ppgpkt->offset, ppgpkt->word_en));
 
-		Efuse_PowerSwitch(Adapter, _TRUE, _TRUE);
-		if (Efuse_PgPacketWrite(Adapter, ppgpkt->offset, ppgpkt->word_en, ppgpkt->data, _FALSE) == _TRUE)
+		rtl8188fu_Efuse_PowerSwitch(Adapter, _TRUE, _TRUE);
+		if (rtl8188fu_Efuse_PgPacketWrite(Adapter, ppgpkt->offset, ppgpkt->word_en, ppgpkt->data, _FALSE) == _TRUE)
 			*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 		else
 			status = NDIS_STATUS_FAILURE;
-		Efuse_PowerSwitch(Adapter, _TRUE, _FALSE);
+		rtl8188fu_Efuse_PowerSwitch(Adapter, _TRUE, _FALSE);
 	}
 
 	_irqlevel_changed_(&oldirql, RAISE);
@@ -2425,7 +2425,7 @@ _func_enter_;
 		return NDIS_STATUS_INVALID_LENGTH;
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	ret = efuse_GetCurrentSize(Adapter, &size);
+	ret = rtl8188fu_efuse_GetCurrentSize(Adapter, &size);
 	_irqlevel_changed_(&oldirql, RAISE);
 	if (ret == _SUCCESS) {
 		*(u32*)poid_par_priv->information_buf = size;
@@ -2451,7 +2451,7 @@ _func_enter_;
 	if (poid_par_priv->information_buf_len < sizeof(u32))
 		return NDIS_STATUS_INVALID_LENGTH;
 
-	*(u32*)poid_par_priv->information_buf = efuse_GetMaxSize(Adapter);
+	*(u32*)poid_par_priv->information_buf = rtl8188fu_efuse_GetMaxSize(Adapter);
 	*poid_par_priv->bytes_rw = poid_par_priv->information_buf_len;
 
 	RT_TRACE(_module_mp_, _drv_info_,
@@ -2497,7 +2497,7 @@ _func_enter_;
 
 	RT_TRACE(_module_mp_, _drv_notice_, ("+oid_rt_pro_efuse_map_hdl\n"));
 
-	EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen, _FALSE);
+	rtl8188fu_EFUSE_GetEfuseDefinition(Adapter, EFUSE_WIFI, TYPE_EFUSE_MAP_LEN, (PVOID)&mapLen, _FALSE);
 
 	*poid_par_priv->bytes_rw = 0;
 
@@ -2513,7 +2513,7 @@ _func_enter_;
 		RT_TRACE(_module_mp_, _drv_info_,
 			("oid_rt_pro_efuse_map_hdl: READ\n"));
 
-		if (rtw_efuse_map_read(Adapter, 0, mapLen, data) == _SUCCESS)
+		if (rtl8188fu_rtw_efuse_map_read(Adapter, 0, mapLen, data) == _SUCCESS)
 			*poid_par_priv->bytes_rw = mapLen;
 		else {
 			RT_TRACE(_module_mp_, _drv_err_,
@@ -2525,7 +2525,7 @@ _func_enter_;
 		RT_TRACE(_module_mp_, _drv_info_,
 			("oid_rt_pro_efuse_map_hdl: WRITE\n"));
 
-		if (rtw_efuse_map_write(Adapter, 0, mapLen, data) == _SUCCESS)
+		if (rtl8188fu_rtw_efuse_map_write(Adapter, 0, mapLen, data) == _SUCCESS)
 			*poid_par_priv->bytes_rw = mapLen;
 		else {
 			RT_TRACE(_module_mp_, _drv_err_,
@@ -2698,7 +2698,7 @@ _func_enter_;
 		 ("oid_rt_pro_set_tx_agc_offset_hdl: 0x%08x\n", txagc));
 
 	_irqlevel_changed_(&oldirql, LOWER);
-	SetTxAGCOffset(Adapter, txagc);
+	rtl8188fu_SetTxAGCOffset(Adapter, txagc);
 	_irqlevel_changed_(&oldirql, RAISE);
 
 _func_exit_;
@@ -2774,8 +2774,8 @@ unsigned int mp_ioctl_xmit_packet_hdl(struct oid_par_priv *poid_par_priv)
 			pmp_priv->tx.payload = pparm->payload_type;
 			pattrib = &pmp_priv->tx.attrib;
 			pattrib->pktlen = pparm->length;
-			_rtw_memcpy(pattrib->dst, pparm->da, ETH_ALEN);
-			SetPacketTx(padapter);
+			rtl8188fu__rtw_memcpy(pattrib->dst, pparm->da, ETH_ALEN);
+			rtl8188fu_SetPacketTx(padapter);
 		} else
 			return NDIS_STATUS_FAILURE;
 	}
@@ -2842,18 +2842,18 @@ unsigned int mp_ioctl_xmit_packet_hdl(struct oid_par_priv *poid_par_priv)
 	*(fctrl) = 0;
 	SetFrameSubType(pframe, WIFI_DATA);
 
-	_rtw_memcpy(pwlanhdr->addr1, pethhdr->h_dest, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, pethhdr->h_source, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr1, pethhdr->h_dest, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr2, pethhdr->h_source, ETH_ALEN);
 
-	_rtw_memcpy(pwlanhdr->addr3, addr3, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr3, addr3, ETH_ALEN);
 
 	pwlanhdr->seq_ctl = 0;
 	pframe += pattrib->hdrlen;
 
-	llc_sz= rtw_put_snap(pframe, pattrib->ether_type);
+	llc_sz= rtl8188fu_rtw_put_snap(pframe, pattrib->ether_type);
 	pframe += llc_sz;
 
-	_rtw_memcpy(pframe, (void*)(pmp_pkt+14),  payload_len);
+	rtl8188fu__rtw_memcpy(pframe, (void*)(pmp_pkt+14),  payload_len);
 
 	pattrib->last_txcmdsz = pattrib->hdrlen + llc_sz + payload_len;
 

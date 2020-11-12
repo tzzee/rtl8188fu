@@ -46,7 +46,7 @@ phydm_dtp_fix_tx_path(
 		pDM_PathDiv->pre_tx_path=path;
 	}
 
-	ODM_SetBBReg( pDM_Odm, 0x93c, BIT18|BIT19, 3);
+	rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT18|BIT19, 3);
 
 	for(i=0; i<4; i++)
 	{
@@ -57,168 +57,168 @@ phydm_dtp_fix_tx_path(
 
 	if(num_enable_path == 1)
 	{
-		ODM_SetBBReg( pDM_Odm, 0x93c, 0xf00000, path);
+		rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, 0xf00000, path);
 	
 		if(path==PHYDM_A)//1-1
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( A ))\n"));
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
 		}
 		else 	if(path==PHYDM_B)//1-2
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( B ))\n"));
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 0);
 		}
 		else 	if(path==PHYDM_C)//1-3
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( C ))\n"));
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 0);
 
 		}
 		else 	if(path==PHYDM_D)//1-4
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( D ))\n"));
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 0);
 		}
 
 	}
 	else 	if(num_enable_path == 2)
 	{
-		ODM_SetBBReg( pDM_Odm, 0x93c, 0xf00000, path);
-		ODM_SetBBReg( pDM_Odm, 0x940, 0xf0, path);
+		rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, 0xf00000, path);
+		rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, 0xf0, path);
 	
 		if(path==PHYDM_AB)//2-1
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( A B ))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 1);
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 1);			
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 1);			
 		}
 		else 	if(path==PHYDM_AC)//2-2
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( A C ))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 1);
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 1);	
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 1);	
 		}
 		else 	if(path==PHYDM_AD)//2-3
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( A D ))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 1);
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 1);	
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 1);	
 		}
 		else 	if(path==PHYDM_BC)//2-4
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( B C ))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 1);
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 1);	
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 1);	
 		}
 		else 	if(path==PHYDM_BD)//2-5
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( B D ))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 1);
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 1);	
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 1);	
 		}
 		else 	if(path==PHYDM_CD)//2-6
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( C D ))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 1);
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 1);	
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 1);	
 		}
 
 	}
 	else 	if(num_enable_path == 3)
 	{
-		ODM_SetBBReg( pDM_Odm, 0x93c, 0xf00000, path);
-		ODM_SetBBReg( pDM_Odm, 0x940, 0xf0, path);
-		ODM_SetBBReg( pDM_Odm, 0x940, 0xf0000, path);
+		rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, 0xf00000, path);
+		rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, 0xf0, path);
+		rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, 0xf0000, path);
 	
 		if(path==PHYDM_ABC)//3-1
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( A B C))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 1);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 2);			
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 2);			
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 1);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 2);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 2);
 			//set for 3ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT21|BIT20, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT23|BIT22, 1);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT25|BIT24, 2);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT21|BIT20, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT23|BIT22, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT25|BIT24, 2);
 		}
 		else 	if(path==PHYDM_ABD)//3-2
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( A B D ))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 1);		
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 2);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 1);		
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 2);
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 1);		
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 2);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 1);		
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 2);
 			//set for 3ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT21|BIT20, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT23|BIT22, 1);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT27|BIT26, 2);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT21|BIT20, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT23|BIT22, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT27|BIT26, 2);
 
 		}
 		else 	if(path==PHYDM_ACD)//3-3
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( A C D ))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 1);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 2);			
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT25|BIT24, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 2);			
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 1);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 2);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT9|BIT8, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 2);
 			//set for 3ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT21|BIT20, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT25|BIT24, 1);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT27|BIT26, 2);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT21|BIT20, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT25|BIT24, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT27|BIT26, 2);
 		}
 		else 	if(path==PHYDM_BCD)//3-4
 		{
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, (" Trun on path (( B C D))\n"));
 			//set for 1ss
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 0);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 1);
-			ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 2);			
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT27|BIT26, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT29|BIT28, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x93c, BIT31|BIT30, 2);			
 			//set for 2ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 1);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 2);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT11|BIT10, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT13|BIT12, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT15|BIT14, 2);
 			//set for 3ss
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT23|BIT22, 0);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT25|BIT24, 1);
-			ODM_SetBBReg( pDM_Odm, 0x940, BIT27|BIT26, 2);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT23|BIT22, 0);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT25|BIT24, 1);
+			rtl8188fu_ODM_SetBBReg( pDM_Odm, 0x940, BIT27|BIT26, 2);
 		}
 	}
 	else 	if(num_enable_path == 4)
@@ -519,7 +519,7 @@ phydm_dynamic_tx_path(
 		H2C_Parameter[3] =  pDM_PathDiv->ant_candidate_2; 
 		H2C_Parameter[4] =  pDM_PathDiv->ant_candidate_3; 
 
-		ODM_FillH2CCmd(pDM_Odm, PHYDM_H2C_DYNAMIC_TX_PATH, 6, H2C_Parameter);
+		rtl8188fu_ODM_FillH2CCmd(pDM_Odm, PHYDM_H2C_DYNAMIC_TX_PATH, 6, H2C_Parameter);
 	}
 
 }
@@ -660,7 +660,7 @@ odm_pathdiv_debug(
 #endif // #if(defined(CONFIG_PATH_DIVERSITY))
 
 VOID
-phydm_c2h_dtp_handler(
+rtl8188fu_phydm_c2h_dtp_handler(
  IN	PVOID	pDM_VOID,
  IN 	pu1Byte   CmdBuf,
  IN 	u1Byte	CmdLen
@@ -695,7 +695,7 @@ phydm_c2h_dtp_handler(
 }
 
 VOID
-odm_PathDiversity(
+rtl8188fu_odm_PathDiversity(
 	IN	PVOID	pDM_VOID
 )
 {
@@ -724,7 +724,7 @@ odm_PathDiversity(
 }
 
 VOID
-odm_PathDiversityInit(
+rtl8188fu_odm_PathDiversityInit(
 	IN	PVOID	pDM_VOID
 )
 {
@@ -995,7 +995,7 @@ ODM_PathDiversityBeforeLink92C(
 
 
 VOID
-odm_PathDiversityAfterLink_92C(
+rtl8188fu_odm_PathDiversityAfterLink_92C(
 	IN	PADAPTER	Adapter
 )
 {
@@ -1042,7 +1042,7 @@ odm_PathDiversityAfterLink_92C(
 
 			PHY_SetBBReg(Adapter, rCCK0_AFESetting  , 0x0F000000, 0x00); // RX path = PathA
 			pDM_PDTable->TrainingState = 1;
-			ODM_SetTimer( pDM_Odm, &pDM_Odm->CCKPathDiversityTimer, pDM_PDTable->Timer); //ms
+			rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->CCKPathDiversityTimer, pDM_PDTable->Timer); //ms
 		}
 		else
 		{
@@ -1059,7 +1059,7 @@ odm_PathDiversityAfterLink_92C(
 		//RT_TRACE(	COMP_INIT, DBG_LOUD, ("odm_CCKTXPathDiversity_92C: TrainingState=1\n"));
 		PHY_SetBBReg(Adapter, rCCK0_AFESetting  , 0x0F000000, 0x05); // RX path = PathB
 		pDM_PDTable->TrainingState = 2;
-		ODM_SetTimer( pDM_Odm, &pDM_Odm->CCKPathDiversityTimer, pDM_PDTable->Timer); //ms
+		rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->CCKPathDiversityTimer, pDM_PDTable->Timer); //ms
 	}
 	else
 	{
@@ -1403,7 +1403,7 @@ odm_CCKTXPathDiversityCallback(
 #if USE_WORKITEM
 	PlatformScheduleWorkItem(&pDM_Odm->CCKPathDiversityWorkitem);
 #else
-	odm_PathDiversityAfterLink_92C(Adapter);
+	rtl8188fu_odm_PathDiversityAfterLink_92C(Adapter);
 #endif
 #else
 	PlatformScheduleWorkItem(&pDM_Odm->CCKPathDiversityWorkitem);
@@ -1497,7 +1497,7 @@ odm_PathDivChkAntSwitch(
        static u1Byte        pathdiv_para=0x0;     
        static u1Byte        switchfirsttime=0x00;
 	// u1Byte                 regB33 = (u1Byte) PHY_QueryBBReg(Adapter, 0xB30,BIT27);
-	u1Byte			regB33 = (u1Byte)ODM_GetBBReg(pDM_Odm, PATHDIV_REG, BIT27);
+	u1Byte			regB33 = (u1Byte)rtl8188fu_ODM_GetBBReg(pDM_Odm, PATHDIV_REG, BIT27);
 
 
        //u1Byte                 reg637 =0x0;   
@@ -1507,7 +1507,7 @@ odm_PathDivChkAntSwitch(
         // Path Diversity   //Neil Chen--2011--06--22
 
 	//u1Byte                 PathDiv_Trigger = (u1Byte) PHY_QueryBBReg(Adapter, 0xBA0,BIT31);
-	u1Byte                 PathDiv_Trigger = (u1Byte) ODM_GetBBReg(pDM_Odm, PATHDIV_TRI,BIT31);
+	u1Byte                 PathDiv_Trigger = (u1Byte) rtl8188fu_ODM_GetBBReg(pDM_Odm, PATHDIV_TRI,BIT31);
 	u1Byte                 PathDiv_Enable = pHalData->bPathDiv_Enable;
 
 
@@ -1530,14 +1530,14 @@ odm_PathDivChkAntSwitch(
 	// Condition that does not need to use antenna diversity.
 	if(pDM_Odm->SupportICType != ODM_RTL8192D)
 	{
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("odm_PathDiversityMechanims(): No PathDiv Mechanism.\n"));
+		ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("rtl8188fu_odm_PathDiversityMechanims(): No PathDiv Mechanism.\n"));
 		return;
 	}
 
 	// Radio off: Status reset to default and return.
 	if(pHalData->eRFPowerState==eRfOff)
 	{
-		//ODM_SwAntDivRestAfterLink(Adapter);
+		//rtl8188fu_ODM_SwAntDivRestAfterLink(Adapter);
 		return;
 	}
 
@@ -1546,7 +1546,7 @@ odm_PathDivChkAntSwitch(
 	// Peak step is not finished at last time. Recover the variable and check again.
 	if(	Step != pDM_SWAT_Table->try_flag	)
 	{
-		ODM_SwAntDivRestAfterLink(Adapter);
+		rtl8188fu_ODM_SwAntDivRestAfterLink(Adapter);
 	} */
 	
 	if(pDM_SWAT_Table->try_flag == 0xff)
@@ -1831,9 +1831,9 @@ odm_PathDivChkAntSwitch(
 		    pathdiv_para = 0x02;   //02 to switchback to RF path A
 		    fw_value = 0x03;
 #if DEV_BUS_TYPE==RT_PCI_INTERFACE
-                 odm_PathDiversity_8192D(pDM_Odm, pathdiv_para);
+                 rtl8188fu_odm_PathDiversity_8192D(pDM_Odm, pathdiv_para);
 #else
-                 ODM_FillH2CCmd(pDM_Odm, ODM_H2C_PathDiv,1,(pu1Byte)(&fw_value));	
+                 rtl8188fu_ODM_FillH2CCmd(pDM_Odm, ODM_H2C_PathDiv,1,(pu1Byte)(&fw_value));	
 #endif
 		}	
 	       else if(nextAntenna==AUX_ANT)
@@ -1846,17 +1846,17 @@ odm_PathDivChkAntSwitch(
 			  fw_value=0x00;    // to backup RF Path A Releated Registers		  
 					  
 #if DEV_BUS_TYPE==RT_PCI_INTERFACE
-                     odm_PathDiversity_8192D(pDM_Odm, pathdiv_para);
+                     rtl8188fu_odm_PathDiversity_8192D(pDM_Odm, pathdiv_para);
 #else
-                     ODM_FillH2CCmd(pDM_Odm, ODM_H2C_PathDiv,1,(pu1Byte)(&fw_value));	
+                     rtl8188fu_ODM_FillH2CCmd(pDM_Odm, ODM_H2C_PathDiv,1,(pu1Byte)(&fw_value));	
                      //for(u1Byte n=0; n<80,n++)
                      //{
                      //delay_us(500);
-			  ODM_delay_ms(500);
-                     odm_PathDiversity_8192D(pDM_Odm, pathdiv_para);
+			  rtl8188fu_ODM_delay_ms(500);
+                     rtl8188fu_odm_PathDiversity_8192D(pDM_Odm, pathdiv_para);
 			 		 
 			 fw_value=0x01;   	// to backup RF Path A Releated Registers		 
-                     ODM_FillH2CCmd(pDM_Odm, ODM_H2C_PathDiv,1,(pu1Byte)(&fw_value));	
+                     rtl8188fu_ODM_FillH2CCmd(pDM_Odm, ODM_H2C_PathDiv,1,(pu1Byte)(&fw_value));	
 #endif	
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("=PATH=: FIRST TIME To DO PATH SWITCH!\n "));	
 	           }		   
@@ -1865,13 +1865,13 @@ odm_PathDivChkAntSwitch(
 		        pathdiv_para = 0x01;
 			 fw_value = 0x02;	
 #if DEV_BUS_TYPE==RT_PCI_INTERFACE
-                     odm_PathDiversity_8192D(pDM_Odm, pathdiv_para);
+                     rtl8188fu_odm_PathDiversity_8192D(pDM_Odm, pathdiv_para);
 #else
-                     ODM_FillH2CCmd(pDM_Odm, ODM_H2C_PathDiv,1,(pu1Byte)(&fw_value));	
+                     rtl8188fu_ODM_FillH2CCmd(pDM_Odm, ODM_H2C_PathDiv,1,(pu1Byte)(&fw_value));	
 #endif	
 		    }		
 	       }
-           //   odm_PathDiversity_8192D(Adapter, pathdiv_para);
+           //   rtl8188fu_odm_PathDiversity_8192D(Adapter, pathdiv_para);
 	}
 
 	//1 5.Reset Statistics
@@ -1891,22 +1891,22 @@ odm_PathDivChkAntSwitch(
 			if(TrafficLoad == TRAFFIC_HIGH)
 			{
 #if DEV_BUS_TYPE==RT_PCI_INTERFACE
-				ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 10 ); //ms
+				rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 10 ); //ms
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("=PATH=: Test another antenna for 10 ms\n"));
 #else
-				ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 20 ); //ms
+				rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 20 ); //ms
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("=PATH=: Test another antenna for 20 ms\n"));
 #endif				
 			}
 			else if(TrafficLoad == TRAFFIC_LOW)
 			{
-				ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 50 ); //ms
+				rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 50 ); //ms
 				ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("=PATH=: Test another antenna for 50 ms\n"));
 			}
 		}
 		else   // TestMode == RSSI_MODE
 		{
-			ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 500 ); //ms
+			rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 500 ); //ms
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("=PATH=: Test another antenna for 500 ms\n"));
 		}
 	}
@@ -1917,16 +1917,16 @@ odm_PathDivChkAntSwitch(
 			if(TrafficLoad == TRAFFIC_HIGH)
 				
 #if DEV_BUS_TYPE==RT_PCI_INTERFACE
-				ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 90 ); //ms
+				rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 90 ); //ms
 				//ODM_RT_TRACE(pDM_Odm,ODM_COMP_PATH_DIV, ODM_DBG_LOUD, ("=PATH=: Test another antenna for 90 ms\n"));
 #else		
-				ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 180); //ms
+				rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 180); //ms
 #endif				
 			else if(TrafficLoad == TRAFFIC_LOW)
-				ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 100 ); //ms
+				rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 100 ); //ms
 		}
 		else
-			ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 500 ); //ms
+			rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 500 ); //ms
 	}
 }
 

@@ -42,7 +42,7 @@ static u8 _is_fw_read_cmd_down(_adapter *padapter, u8 msgbox_num)
 		if (0 == valid)
 			read_down = _TRUE;
 		else
-			rtw_msleep_os(1);
+			rtl8188fu_rtw_msleep_os(1);
 	} while ((!read_down) && (retry_cnts--));
 
 	return read_down;
@@ -75,7 +75,7 @@ s32 FillH2CCmd8188F(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 	pHalData = GET_HAL_DATA(padapter);
 #ifdef DBG_CHECK_FW_PS_STATE
 #ifdef DBG_CHECK_FW_PS_STATE_H2C
-	if (rtw_fw_ps_state(padapter) == _FAIL) {
+	if (rtl8188fu_rtw_fw_ps_state(padapter) == _FAIL) {
 		DBG_871X("%s: h2c doesn't leave 32k ElementID=%02x\n", __func__, ElementID);
 		pdbgpriv->dbg_h2c_leave32k_fail_cnt++;
 	}
@@ -108,10 +108,10 @@ s32 FillH2CCmd8188F(PADAPTER padapter, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
 		}
 
 		if (CmdLen <= 3)
-			_rtw_memcpy((u8 *)(&h2c_cmd) + 1, pCmdBuffer, CmdLen);
+			rtl8188fu__rtw_memcpy((u8 *)(&h2c_cmd) + 1, pCmdBuffer, CmdLen);
 		else {
-			_rtw_memcpy((u8 *)(&h2c_cmd) + 1, pCmdBuffer, 3);
-			_rtw_memcpy((u8 *)(&h2c_cmd_ex), pCmdBuffer + 3, CmdLen - 3);
+			rtl8188fu__rtw_memcpy((u8 *)(&h2c_cmd) + 1, pCmdBuffer, 3);
+			rtl8188fu__rtw_memcpy((u8 *)(&h2c_cmd_ex), pCmdBuffer + 3, CmdLen - 3);
 			/**(u8*)(&h2c_cmd) |= BIT(7); */
 		}
 
@@ -162,9 +162,9 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	fctrl = &(pwlanhdr->frame_ctl);
 	*(fctrl) = 0;
 
-	_rtw_memcpy(pwlanhdr->addr1, bc_addr, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, adapter_mac_addr(padapter), ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr3, get_my_bssid(cur_network), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr1, bc_addr, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr2, adapter_mac_addr(padapter), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr3, rtl8188fu_get_my_bssid(cur_network), ETH_ALEN);
 
 	SetSeqNum(pwlanhdr, 0/*pmlmeext->mgnt_seq*/);
 	/*pmlmeext->mgnt_seq++; */
@@ -178,13 +178,13 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	pktlen += 8;
 
 	/* beacon interval: 2 bytes */
-	_rtw_memcpy(pframe, (unsigned char *)(rtw_get_beacon_interval_from_ie(cur_network->IEs)), 2);
+	rtl8188fu__rtw_memcpy(pframe, (unsigned char *)(rtw_rtl8188fu_get_beacon_interval_from_ie(cur_network->IEs)), 2);
 
 	pframe += 2;
 	pktlen += 2;
 
 	/* capability info: 2 bytes */
-	_rtw_memcpy(pframe, (unsigned char *)(rtw_get_capability_from_ie(cur_network->IEs)), 2);
+	rtl8188fu__rtw_memcpy(pframe, (unsigned char *)(rtl8188fu_rtw_get_capability_from_ie(cur_network->IEs)), 2);
 
 	pframe += 2;
 	pktlen += 2;
@@ -192,7 +192,7 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	if ((pmlmeinfo->state & 0x03) == WIFI_FW_AP_STATE) {
 		/*DBG_871X("ie len=%d\n", cur_network->IELength); */
 		pktlen += cur_network->IELength - sizeof(NDIS_802_11_FIXED_IEs);
-		_rtw_memcpy(pframe, cur_network->IEs + sizeof(NDIS_802_11_FIXED_IEs), pktlen);
+		rtl8188fu__rtw_memcpy(pframe, cur_network->IEs + sizeof(NDIS_802_11_FIXED_IEs), pktlen);
 
 		goto _ConstructBeacon;
 	}
@@ -200,21 +200,21 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 	/*below for ad-hoc mode */
 
 	/* SSID */
-	pframe = rtw_set_ie(pframe, _SSID_IE_, cur_network->Ssid.SsidLength, cur_network->Ssid.Ssid, &pktlen);
+	pframe = rtl8188fu_rtw_set_ie(pframe, _SSID_IE_, cur_network->Ssid.SsidLength, cur_network->Ssid.Ssid, &pktlen);
 
 	/* supported rates... */
-	rate_len = rtw_get_rateset_len(cur_network->SupportedRates);
-	pframe = rtw_set_ie(pframe, _SUPPORTEDRATES_IE_, ((rate_len > 8) ? 8 : rate_len), cur_network->SupportedRates, &pktlen);
+	rate_len = rtl8188fu_rtw_get_rateset_len(cur_network->SupportedRates);
+	pframe = rtl8188fu_rtw_set_ie(pframe, _SUPPORTEDRATES_IE_, ((rate_len > 8) ? 8 : rate_len), cur_network->SupportedRates, &pktlen);
 
 	/* DS parameter set */
-	pframe = rtw_set_ie(pframe, _DSSET_IE_, 1, (unsigned char *) &(cur_network->Configuration.DSConfig), &pktlen);
+	pframe = rtl8188fu_rtw_set_ie(pframe, _DSSET_IE_, 1, (unsigned char *) &(cur_network->Configuration.DSConfig), &pktlen);
 
 	if ((pmlmeinfo->state & 0x03) == WIFI_FW_ADHOC_STATE) {
 		u32 ATIMWindow;
 		/* IBSS Parameter Set... */
 		/*ATIMWindow = cur->Configuration.ATIMWindow; */
 		ATIMWindow = 0;
-		pframe = rtw_set_ie(pframe, _IBSS_PARA_IE_, 2, (unsigned char *)(&ATIMWindow), &pktlen);
+		pframe = rtl8188fu_rtw_set_ie(pframe, _IBSS_PARA_IE_, 2, (unsigned char *)(&ATIMWindow), &pktlen);
 	}
 
 
@@ -223,7 +223,7 @@ static void ConstructBeacon(_adapter *padapter, u8 *pframe, u32 *pLength)
 
 	/* EXTERNDED SUPPORTED RATE */
 	if (rate_len > 8)
-		pframe = rtw_set_ie(pframe, _EXT_SUPPORTEDRATES_IE_, (rate_len - 8), (cur_network->SupportedRates + 8), &pktlen);
+		pframe = rtl8188fu_rtw_set_ie(pframe, _EXT_SUPPORTEDRATES_IE_, (rate_len - 8), (cur_network->SupportedRates + 8), &pktlen);
 
 
 	/*todo:HT for adhoc */
@@ -263,10 +263,10 @@ static void ConstructPSPoll(_adapter *padapter, u8 *pframe, u32 *pLength)
 	SetDuration(pframe, (pmlmeinfo->aid | 0xc000));
 
 	/* BSSID. */
-	_rtw_memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr1, rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	/* TA. */
-	_rtw_memcpy(pwlanhdr->addr2, adapter_mac_addr(padapter), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr2, adapter_mac_addr(padapter), ETH_ALEN);
 
 	*pLength = 16;
 }
@@ -302,21 +302,21 @@ static void ConstructNullFunctionData(
 	switch (cur_network->network.InfrastructureMode) {
 	case Ndis802_11Infrastructure:
 		SetToDs(fctrl);
-		_rtw_memcpy(pwlanhdr->addr1, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-		_rtw_memcpy(pwlanhdr->addr2, adapter_mac_addr(padapter), ETH_ALEN);
-		_rtw_memcpy(pwlanhdr->addr3, StaAddr, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(pwlanhdr->addr1, rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(pwlanhdr->addr2, adapter_mac_addr(padapter), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(pwlanhdr->addr3, StaAddr, ETH_ALEN);
 		break;
 	case Ndis802_11APMode:
 		SetFrDs(fctrl);
-		_rtw_memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
-		_rtw_memcpy(pwlanhdr->addr2, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
-		_rtw_memcpy(pwlanhdr->addr3, adapter_mac_addr(padapter), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(pwlanhdr->addr2, rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(pwlanhdr->addr3, adapter_mac_addr(padapter), ETH_ALEN);
 		break;
 	case Ndis802_11IBSS:
 	default:
-		_rtw_memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
-		_rtw_memcpy(pwlanhdr->addr2, adapter_mac_addr(padapter), ETH_ALEN);
-		_rtw_memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(pwlanhdr->addr1, StaAddr, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(pwlanhdr->addr2, adapter_mac_addr(padapter), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(pwlanhdr->addr3, rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 		break;
 	}
 
@@ -344,7 +344,7 @@ static void ConstructNullFunctionData(
 /* To check if reserved page content is destroyed by beacon because beacon is too large. */
 /* 2010.06.23. Added by tynli. */
 VOID
-CheckFwRsvdPageContent(
+rtl8188fu_CheckFwRsvdPageContent(
 	IN	PADAPTER		Adapter
 )
 {
@@ -354,7 +354,7 @@ CheckFwRsvdPageContent(
 	if (pHalData->FwRsvdPageStartOffset != 0) {
 		/*MaxBcnPageNum = PageNum_128(pMgntInfo->MaxBeaconSize);
 		RT_ASSERT((MaxBcnPageNum <= pHalData->FwRsvdPageStartOffset),
-			("CheckFwRsvdPageContent(): The reserved page content has been"\
+			("rtl8188fu_CheckFwRsvdPageContent(): The reserved page content has been"\
 			"destroyed by beacon!!! MaxBcnPageNum(%d) FwRsvdPageStartOffset(%d)\n!",
 			MaxBcnPageNum, pHalData->FwRsvdPageStartOffset));*/
 	}
@@ -372,7 +372,7 @@ u8 GetTxBufferRsvdPageNum8188F(_adapter *padapter, bool wowlan)
 	/* default reseved 1 page for the IC type which is undefined. */
 	u8	TxPageBndy = LAST_ENTRY_OF_TX_PKT_BUFFER_8188F;
 
-	rtw_hal_get_def_var(padapter, HAL_DEF_TX_PAGE_BOUNDARY, (u8 *)&TxPageBndy);
+	rtl8188fu_rtw_hal_get_def_var(padapter, HAL_DEF_TX_PAGE_BOUNDARY, (u8 *)&TxPageBndy);
 
 	RsvdPageNum = LAST_ENTRY_OF_TX_PKT_BUFFER_8188F - TxPageBndy + 1;
 
@@ -597,7 +597,7 @@ void rtl8188f_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 		if (pmlmeext->adaptive_tsf_done == _FALSE && pmlmeext->bcn_cnt > 0) {
 			u8 ratio_20_delay, ratio_80_delay;
 
-			/*byte 6 for adaptive_early_32k */
+			/*byte 6 for rtl8188fu_adaptive_early_32k */
 			/*[0:3] = DrvBcnEarly  (ms) , [4:7] = DrvBcnTimeOut  (ms) */
 			/* 20% for DrvBcnEarly, 80% for DrvBcnTimeOut */
 			ratio_20_delay = 0;
@@ -626,7 +626,7 @@ void rtl8188f_set_FwPwrMode_cmd(PADAPTER padapter, u8 psmode)
 					/*DBG_871X("%s(): DrvBcnTimeOut = %d\n", __func__, pmlmeext->DrvBcnTimeOut); */
 				}
 
-				/*reset adaptive_early_32k cnt */
+				/*reset rtl8188fu_adaptive_early_32k cnt */
 				pmlmeext->bcn_delay_cnt[i] = 0;
 				pmlmeext->bcn_delay_ratio[i] = 0;
 
@@ -788,20 +788,20 @@ void rtl8188f_download_rsvd_page(PADAPTER padapter, u8 mstatus)
 		pHalData->RegFwHwTxQCtrl &= ~BIT(6);
 
 		/* Clear beacon valid check bit. */
-		rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
-		rtw_hal_set_hwreg(padapter, HW_VAR_DL_BCN_SEL, NULL);
+		rtl8188fu_rtw_hal_set_hwreg(padapter, HW_VAR_BCN_VALID, NULL);
+		rtl8188fu_rtw_hal_set_hwreg(padapter, HW_VAR_DL_BCN_SEL, NULL);
 
 		DLBcnCount = 0;
 		poll = 0;
 		do {
-			rtw_hal_set_fw_rsvd_page(padapter, 0);
+			rtl8188fu_rtw_hal_set_fw_rsvd_page(padapter, 0);
 
 			DLBcnCount++;
 			do {
-				rtw_yield_os();
-				/*rtw_mdelay_os(10); */
+				rtl8188fu_rtw_yield_os();
+				/*rtl8188fu_rtw_mdelay_os(10); */
 				/* check rsvd page download OK. */
-				rtw_hal_get_hwreg(padapter, HW_VAR_BCN_VALID, (u8 *)(&bcn_valid));
+				rtl8188fu_rtw_hal_get_hwreg(padapter, HW_VAR_BCN_VALID, (u8 *)(&bcn_valid));
 				poll++;
 			} while (!bcn_valid && (poll%10) != 0 && !RTW_CANNOT_RUN(padapter));
 					
@@ -886,7 +886,7 @@ void rtl8188f_Add_RateATid(PADAPTER pAdapter, u64 rate_bitmap, u8 *arg, u8 rssi_
 	bw = psta->bw_mode;
 
 	if (rssi_level != DM_RATR_STA_INIT)
-		mask = ODM_Get_Rate_Bitmap(&pHalData->odmpriv, mac_id, mask, rssi_level);
+		mask = rtl8188fu_ODM_Get_Rate_Bitmap(&pHalData->odmpriv, mac_id, mask, rssi_level);
 
 	DBG_871X("%s(): mac_id=%d raid=0x%x bw=%d mask=0x%x\n", __func__, mac_id, raid, bw, mask);
 	rtl8188f_set_FwMacIdConfig_cmd(pAdapter, mac_id, raid, bw, shortGI, mask);
@@ -914,7 +914,7 @@ void rtl8188f_set_p2p_ps_offload_cmd(_adapter *padapter, u8 p2p_ps_state)
 	switch (p2p_ps_state) {
 	case P2P_PS_DISABLE:
 		DBG_8192C("P2P_PS_DISABLE\n");
-		_rtw_memset(p2p_ps_offload, 0 , 1);
+		rtl8188fu__rtw_memset(p2p_ps_offload, 0 , 1);
 		break;
 	case P2P_PS_ENABLE:
 		DBG_8192C("P2P_PS_ENABLE\n");

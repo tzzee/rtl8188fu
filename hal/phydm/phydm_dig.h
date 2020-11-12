@@ -237,20 +237,20 @@ typedef enum tag_PHYDM_Pause_Level {
 #define 		RSSI_OFFSET_DIG				0x05
 
 VOID
-ODM_ChangeDynamicInitGainThresh(
+rtl8188fu_ODM_ChangeDynamicInitGainThresh(
 	IN		PVOID					pDM_VOID,
 	IN		u4Byte  					DM_Type,
 	IN		u4Byte 					DM_Value
 	);
 
 VOID
-ODM_Write_DIG(
+rtl8188fu_ODM_Write_DIG(
 	IN		PVOID					pDM_VOID, 	
 	IN		u1Byte					CurrentIGI
 	);
 
 VOID
-odm_PauseDIG(
+rtl8188fu_odm_PauseDIG(
 	IN		PVOID					pDM_VOID,
 	IN		PHYDM_PAUSE_TYPE		PauseType,
 	IN		PHYDM_PAUSE_LEVEL		pause_level,
@@ -258,27 +258,27 @@ odm_PauseDIG(
 	);
 
 VOID
-odm_DIGInit(
+rtl8188fu_odm_DIGInit(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID	
-odm_DIG(
+rtl8188fu_odm_DIG(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID
-odm_DIGbyRSSI_LPS(
+rtl8188fu_odm_DIGbyRSSI_LPS(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID 
-odm_FalseAlarmCounterStatistics(
+rtl8188fu_odm_FalseAlarmCounterStatistics(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID
-odm_PauseCCKPacketDetection(
+rtl8188fu_odm_PauseCCKPacketDetection(
 	IN		PVOID					pDM_VOID,
 	IN		PHYDM_PAUSE_TYPE		PauseType,
 	IN		PHYDM_PAUSE_LEVEL		pause_level,
@@ -286,12 +286,12 @@ odm_PauseCCKPacketDetection(
 	);
 
 VOID 
-odm_CCKPacketDetectionThresh(
+rtl8188fu_odm_CCKPacketDetectionThresh(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID 
-ODM_Write_CCK_CCA_Thres(
+rtl8188fu_ODM_Write_CCK_CCA_Thres(
 	IN		PVOID					pDM_VOID, 
 	IN		u1Byte					CurCCK_CCAThres
 	);

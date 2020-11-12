@@ -368,91 +368,91 @@ extern void rtl871x_cedbg(const char *fmt, ...);
 #define DBG_COUNTER(counter) 
 #endif
 
-void dump_drv_version(void *sel);
-void dump_log_level(void *sel);
-void dump_drv_cfg(void *sel);
+void rtl8188fu_dump_drv_version(void *sel);
+void rtl8188fu_dump_log_level(void *sel);
+void rtl8188fu_dump_drv_cfg(void *sel);
 
 #ifdef CONFIG_SDIO_HCI
 void sd_f0_reg_dump(void *sel, _adapter *adapter);
 void sdio_local_reg_dump(void *sel, _adapter *adapter);
 #endif /* CONFIG_SDIO_HCI */
 
-void mac_reg_dump(void *sel, _adapter *adapter);
-void bb_reg_dump(void *sel, _adapter *adapter);
-void rf_reg_dump(void *sel, _adapter *adapter);
+void rtl8188fu_mac_reg_dump(void *sel, _adapter *adapter);
+void rtl8188fu_bb_reg_dump(void *sel, _adapter *adapter);
+void rtl8188fu_rf_reg_dump(void *sel, _adapter *adapter);
 
-bool rtw_fwdl_test_trigger_chksum_fail(void);
-bool rtw_fwdl_test_trigger_wintint_rdy_fail(void);
-bool rtw_del_rx_ampdu_test_trigger_no_tx_fail(void);
+bool rtl8188fu_rtw_fwdl_test_trigger_chksum_fail(void);
+bool rtl8188fu_rtw_fwdl_test_trigger_wintint_rdy_fail(void);
+bool rtl8188fu_rtw_del_rx_ampdu_test_trigger_no_tx_fail(void);
 
-u32 rtw_get_wait_hiq_empty_ms(void);
-void rtw_sink_rtp_seq_dbg( _adapter *adapter,_pkt *pkt);
+u32 rtl8188fu_rtw_get_wait_hiq_empty_ms(void);
+void rtl8188fu_rtw_sink_rtp_seq_dbg( _adapter *adapter,_pkt *pkt);
 
 struct sta_info;
-void sta_rx_reorder_ctl_dump(void *sel, struct sta_info *sta);
+void rtl8188fu_sta_rx_reorder_ctl_dump(void *sel, struct sta_info *sta);
 
 struct dvobj_priv;
-void dump_adapters_status(void *sel, struct dvobj_priv *dvobj);
+void rtl8188fu_dump_adapters_status(void *sel, struct dvobj_priv *dvobj);
 
 struct sec_cam_ent;
-void dump_sec_cam_ent(void *sel, struct sec_cam_ent *ent, int id);
-void dump_sec_cam_ent_title(void *sel, u8 has_id);
-void dump_sec_cam(void *sel, _adapter *adapter);
+void rtl8188fu_dump_sec_cam_ent(void *sel, struct sec_cam_ent *ent, int id);
+void rtl8188fu_rtl8188fu_dump_sec_cam_ent_title(void *sel, u8 has_id);
+void rtl8188fu_dump_sec_cam(void *sel, _adapter *adapter);
 
 #ifdef CONFIG_PROC_DEBUG
-ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-int proc_get_read_reg(struct seq_file *m, void *v);
-ssize_t proc_set_read_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+ssize_t rtl8188fu_proc_set_write_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_read_reg(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_read_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-int proc_get_fwstate(struct seq_file *m, void *v);
-int proc_get_sec_info(struct seq_file *m, void *v);
-int proc_get_mlmext_state(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_fwstate(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_sec_info(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_mlmext_state(struct seq_file *m, void *v);
 #ifdef CONFIG_LAYER2_ROAMING
-int proc_get_roam_flags(struct seq_file *m, void *v);
-ssize_t proc_set_roam_flags(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-int proc_get_roam_param(struct seq_file *m, void *v);
-ssize_t proc_set_roam_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-ssize_t proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_roam_flags(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_roam_flags(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_roam_param(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_roam_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+ssize_t rtl8188fu_proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 #endif /* CONFIG_LAYER2_ROAMING */
-int proc_get_qos_option(struct seq_file *m, void *v);
-int proc_get_ht_option(struct seq_file *m, void *v);
-int proc_get_rf_info(struct seq_file *m, void *v);
-int proc_get_scan_param(struct seq_file *m, void *v);
-ssize_t proc_set_scan_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-int proc_get_scan_abort(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_qos_option(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_ht_option(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_rf_info(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_scan_param(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_scan_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_scan_abort(struct seq_file *m, void *v);
 #ifdef CONFIG_SCAN_BACKOP
 int proc_get_backop_flags_sta(struct seq_file *m, void *v);
 ssize_t proc_set_backop_flags_sta(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 int proc_get_backop_flags_ap(struct seq_file *m, void *v);
 ssize_t proc_set_backop_flags_ap(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 #endif /* CONFIG_SCAN_BACKOP */
-int proc_get_survey_info(struct seq_file *m, void *v);
-ssize_t proc_set_survey_info(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-int proc_get_ap_info(struct seq_file *m, void *v);
-ssize_t proc_reset_trx_info(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-int proc_get_trx_info(struct seq_file *m, void *v);
-int proc_get_rate_ctl(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_survey_info(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_survey_info(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_ap_info(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_reset_trx_info(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_trx_info(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_rate_ctl(struct seq_file *m, void *v);
 int proc_get_wifi_spec(struct seq_file *m, void *v);
-ssize_t proc_set_rate_ctl(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+ssize_t rtl8188fu_proc_set_rate_ctl(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 #ifdef DBG_RX_COUNTER_DUMP
 int proc_get_rx_cnt_dump(struct seq_file *m, void *v);
 ssize_t proc_set_rx_cnt_dump(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);	
 #endif
-int proc_get_dis_pwt(struct seq_file *m, void *v);
-ssize_t proc_set_dis_pwt(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);	
+int rtl8188fu_proc_get_dis_pwt(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_dis_pwt(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);	
 
-int proc_get_suspend_resume_info(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_suspend_resume_info(struct seq_file *m, void *v);
 
-ssize_t proc_set_fwdl_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-ssize_t proc_set_del_rx_ampdu_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+ssize_t rtl8188fu_proc_set_fwdl_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+ssize_t rtl8188fu_proc_set_del_rx_ampdu_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 #ifdef CONFIG_DFS_MASTER
 int proc_get_dfs_master_test_case(struct seq_file *m, void *v);
 ssize_t proc_set_dfs_master_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 #endif /* CONFIG_DFS_MASTER */
-ssize_t proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+ssize_t rtl8188fu_proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
 #ifdef CONFIG_AP_MODE
-int proc_get_all_sta_info(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_all_sta_info(struct seq_file *m, void *v);
 #endif /* CONFIG_AP_MODE */
 
 #ifdef DBG_MEMORY_LEAK
@@ -464,43 +464,43 @@ int proc_get_best_channel(struct seq_file *m, void *v);
 ssize_t proc_set_best_channel(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 #endif /* CONFIG_FIND_BEST_CHANNEL */
 
-int proc_get_trx_info_debug(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_trx_info_debug(struct seq_file *m, void *v);
 
-int proc_get_rx_signal(struct seq_file *m, void *v);
-ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
-int proc_get_hw_status(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_rx_signal(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_rx_signal(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_hw_status(struct seq_file *m, void *v);
 
 #ifdef CONFIG_80211N_HT
-int proc_get_ht_enable(struct seq_file *m, void *v);
-ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_ht_enable(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_ht_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-int proc_get_bw_mode(struct seq_file *m, void *v);
-ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_bw_mode(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_bw_mode(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-int proc_get_ampdu_enable(struct seq_file *m, void *v);
-ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_ampdu_enable(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_ampdu_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-int proc_get_mac_rptbuf(struct seq_file *m, void *v);
+int rtl8188fu_proc_get_mac_rptbuf(struct seq_file *m, void *v);
 
-int proc_get_rx_ampdu(struct seq_file *m, void *v);
-ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_rx_ampdu(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-int proc_get_rx_stbc(struct seq_file *m, void *v);
-ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_rx_stbc(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
 
-int proc_get_rx_ampdu_factor(struct seq_file *m, void *v);
-ssize_t proc_set_rx_ampdu_factor(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_rx_ampdu_factor(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_rx_ampdu_factor(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-int proc_get_rx_ampdu_density(struct seq_file *m, void *v);
-ssize_t proc_set_rx_ampdu_density(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_rx_ampdu_density(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_rx_ampdu_density(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
-int proc_get_tx_ampdu_density(struct seq_file *m, void *v);
-ssize_t proc_set_tx_ampdu_density(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_tx_ampdu_density(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_tx_ampdu_density(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 #endif /* CONFIG_80211N_HT */
 
-int proc_get_en_fwps(struct seq_file *m, void *v);
-ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_en_fwps(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_en_fwps(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
 //int proc_get_two_path_rssi(struct seq_file *m, void *v);
 //int proc_get_rssi_disp(struct seq_file *m, void *v);
@@ -540,8 +540,8 @@ ssize_t proc_set_wowlan_gpio_info(struct file *file, const char __user *buffer,
 int proc_get_p2p_wowlan_info(struct seq_file *m, void *v);
 #endif /* CONFIG_P2P_WOWLAN */
 
-int proc_get_new_bcn_max(struct seq_file *m, void *v);
-ssize_t proc_set_new_bcn_max(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_rtl8188fu_new_bcn_max(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_rtl8188fu_new_bcn_max(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
 #ifdef CONFIG_POWER_SAVING
 int proc_get_ps_info(struct seq_file *m, void *v);
@@ -551,8 +551,8 @@ int proc_get_ps_info(struct seq_file *m, void *v);
 int proc_get_tdls_info(struct seq_file *m, void *v);
 #endif
 
-int proc_get_monitor(struct seq_file *m, void *v);
-ssize_t proc_set_monitor(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_monitor(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_monitor(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
 
 #ifdef CONFIG_PREALLOC_RX_SKB_BUFFER
@@ -570,8 +570,8 @@ int proc_get_tx_auth(struct seq_file *m, void *v);
 
 #endif /* CONFIG_PROC_DEBUG */
 
-int proc_get_efuse_map(struct seq_file *m, void *v);
-ssize_t proc_set_efuse_map(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
+int rtl8188fu_proc_get_efuse_map(struct seq_file *m, void *v);
+ssize_t rtl8188fu_proc_set_efuse_map(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data);
 
 #endif	//__RTW_DEBUG_H__
 

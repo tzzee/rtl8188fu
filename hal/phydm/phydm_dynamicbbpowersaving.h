@@ -38,15 +38,15 @@ typedef struct _Dynamic_Power_Saving_
 	
 }PS_T,*pPS_T;
 
-#define dm_RF_Saving	ODM_RF_Saving
+#define dm_RF_Saving	rtl8188fu_ODM_RF_Saving
 
-void ODM_RF_Saving(
+void rtl8188fu_ODM_RF_Saving(
 	IN		PVOID					pDM_VOID,
 	IN	u1Byte		bForceInNormal
 );
 
 VOID 
-odm_DynamicBBPowerSavingInit(
+rtl8188fu_odm_DynamicBBPowerSavingInit(
 	IN		PVOID					pDM_VOID
 	);
 

@@ -131,7 +131,7 @@ typedef enum _WIRELESS_MODE {
 
 typedef enum _SwChnlCmdID{
 	CmdID_End,
-	CmdID_SetTxPowerLevel,
+	CmdID_rtl8188fu_SetTxPowerLevel,
 	CmdID_BBRegWrite10,
 	CmdID_WritePortUlong,
 	CmdID_WritePortUshort,
@@ -180,67 +180,67 @@ typedef struct RF_Shadow_Compare_Map {
 /*--------------------------Exported Function prototype---------------------*/
 
 u32
-PHY_CalculateBitShift(
+rtl8188fu_PHY_CalculateBitShift(
 	u32 BitMask
 	);
 
 u32
-PHY_RFShadowRead(
+rtl8188fu_PHY_RFShadowRead(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset);
 
 VOID
-PHY_RFShadowWrite(
+rtl8188fu_PHY_RFShadowWrite(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset,
 	IN	u32				Data);
 
 BOOLEAN
-PHY_RFShadowCompare(
+rtl8188fu_PHY_RFShadowCompare(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset);
 
 VOID
-PHY_RFShadowRecorver(
+rtl8188fu_PHY_RFShadowRecorver(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset);
 
 VOID
-PHY_RFShadowCompareAll(
+rtl8188fu_PHY_RFShadowCompareAll(
 	IN	PADAPTER		Adapter);
 
 VOID
-PHY_RFShadowRecorverAll(
+rtl8188fu_PHY_RFShadowRecorverAll(
 	IN	PADAPTER		Adapter);
 
 VOID
-PHY_RFShadowCompareFlagSet(
+rtl8188fu_PHY_RFShadowCompareFlagSet(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset,
 	IN	u8				Type);
 
 VOID
-PHY_RFShadowRecorverFlagSet(
+rtl8188fu_PHY_RFShadowRecorverFlagSet(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset,
 	IN	u8				Type);
 
 VOID
-PHY_RFShadowCompareFlagSetAll(
+rtl8188fu_rtl8188fu_PHY_RFShadowCompareFlagSetAll(
 	IN	PADAPTER		Adapter);
 
 VOID
-PHY_RFShadowRecorverFlagSetAll(
+rtl8188fu_rtl8188fu_PHY_RFShadowRecorverFlagSetAll(
 	IN	PADAPTER		Adapter);
 
 VOID
-PHY_RFShadowRefresh(
+rtl8188fu_PHY_RFShadowRefresh(
 	IN	PADAPTER		Adapter);
 
 #endif //__HAL_COMMON_H__

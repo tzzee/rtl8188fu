@@ -25,7 +25,7 @@
 #include "phydm_precomp.h"
 
 VOID 
-odm_DynamicTxPowerInit(
+rtl8188fu_odm_DynamicTxPowerInit(
 	IN		PVOID					pDM_VOID	
 	)
 {
@@ -38,7 +38,7 @@ odm_DynamicTxPowerInit(
 	#if DEV_BUS_TYPE==RT_USB_INTERFACE					
 	if(RT_GetInterfaceSelection(Adapter) == INTF_SEL1_USB_High_Power)
 	{
-		odm_DynamicTxPowerSavePowerIndex(pDM_Odm);
+		rtl8188fu_odm_DynamicTxPowerSavePowerIndex(pDM_Odm);
 		pMgntInfo->bDynamicTxPowerEnable = TRUE;
 	}		
 	else	
@@ -60,7 +60,7 @@ odm_DynamicTxPowerInit(
 }
 
 VOID
-odm_DynamicTxPowerSavePowerIndex(
+rtl8188fu_odm_DynamicTxPowerSavePowerIndex(
 	IN		PVOID					pDM_VOID	
 	)
 {	
@@ -81,7 +81,7 @@ odm_DynamicTxPowerSavePowerIndex(
 }
 
 VOID
-odm_DynamicTxPowerRestorePowerIndex(
+rtl8188fu_odm_DynamicTxPowerRestorePowerIndex(
 	IN		PVOID					pDM_VOID
 	)
 {
@@ -101,7 +101,7 @@ odm_DynamicTxPowerRestorePowerIndex(
 }
 
 VOID
-odm_DynamicTxPowerWritePowerIndex(
+rtl8188fu_odm_DynamicTxPowerWritePowerIndex(
 	IN		PVOID					pDM_VOID, 
 	IN 	u1Byte		Value)
 {
@@ -111,13 +111,13 @@ odm_DynamicTxPowerWritePowerIndex(
 	
 	for(index = 0; index< 6; index++)
 		//PlatformEFIOWrite1Byte(Adapter, Power_Index_REG[index], Value);
-		ODM_Write1Byte(pDM_Odm, Power_Index_REG[index], Value);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, Power_Index_REG[index], Value);
 
 }
 
 
 VOID 
-odm_DynamicTxPower(
+rtl8188fu_odm_DynamicTxPower(
 	IN		PVOID					pDM_VOID
 	)
 {
@@ -139,14 +139,14 @@ odm_DynamicTxPower(
 	{
 		case	ODM_WIN:
 		case	ODM_CE:
-			odm_DynamicTxPowerNIC(pDM_Odm);
+			rtl8188fu_odm_DynamicTxPowerNIC(pDM_Odm);
 			break;	
 		case	ODM_AP:
-			odm_DynamicTxPowerAP(pDM_Odm);
+			rtl8188fu_odm_DynamicTxPowerAP(pDM_Odm);
 			break;		
 
 		case	ODM_ADSL:
-			//odm_DIGAP(pDM_Odm);
+			//rtl8188fu_odm_DIGAP(pDM_Odm);
 			break;	
 	}
 
@@ -155,7 +155,7 @@ odm_DynamicTxPower(
 
 
 VOID 
-odm_DynamicTxPowerNIC(
+rtl8188fu_odm_DynamicTxPowerNIC(
 	IN		PVOID					pDM_VOID
 	)
 {	
@@ -168,11 +168,11 @@ odm_DynamicTxPowerNIC(
 
 	if(pDM_Odm->SupportICType == ODM_RTL8192C)	
 	{
-		odm_DynamicTxPower_92C(pDM_Odm);
+		rtl8188fu_odm_DynamicTxPower_92C(pDM_Odm);
 	}
 	else if(pDM_Odm->SupportICType == ODM_RTL8192D)
 	{
-		odm_DynamicTxPower_92D(pDM_Odm);
+		rtl8188fu_odm_DynamicTxPower_92D(pDM_Odm);
 	}
 	else if (pDM_Odm->SupportICType == ODM_RTL8821)
 	{
@@ -184,12 +184,12 @@ odm_DynamicTxPowerNIC(
 		{
 			if(pDM_Odm->RSSI_Min > 60)
 			{
-				ODM_SetMACReg(pDM_Odm, ODM_REG_RESP_TX_11AC, BIT20|BIT19|BIT18, 1); // Resp TXAGC offset = -3dB
+				rtl8188fu_ODM_SetMACReg(pDM_Odm, ODM_REG_RESP_TX_11AC, BIT20|BIT19|BIT18, 1); // Resp TXAGC offset = -3dB
 
 			}
 			else if(pDM_Odm->RSSI_Min < 55)
 			{
-				ODM_SetMACReg(pDM_Odm, ODM_REG_RESP_TX_11AC, BIT20|BIT19|BIT18, 0); // Resp TXAGC offset = 0dB
+				rtl8188fu_ODM_SetMACReg(pDM_Odm, ODM_REG_RESP_TX_11AC, BIT20|BIT19|BIT18, 0); // Resp TXAGC offset = 0dB
 			}
 		}
 #endif
@@ -198,7 +198,7 @@ odm_DynamicTxPowerNIC(
 }
 
 VOID 
-odm_DynamicTxPowerAP(
+rtl8188fu_odm_DynamicTxPowerAP(
 	IN		PVOID					pDM_VOID
 
 	)
@@ -283,7 +283,7 @@ odm_DynamicTxPowerAP(
 
 
 VOID 
-odm_DynamicTxPower_92C(
+rtl8188fu_odm_DynamicTxPower_92C(
 	IN		PVOID					pDM_VOID
 	)
 {
@@ -392,15 +392,15 @@ odm_DynamicTxPower_92C(
 	}
 	if( pHalData->DynamicTxHighPowerLvl != pHalData->LastDTPLvl )
 	{
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_DYNAMIC_TXPWR, DBG_LOUD, ("PHY_SetTxPowerLevel8192C() Channel = %d \n" , pHalData->CurrentChannel));
-		PHY_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
+		ODM_RT_TRACE(pDM_Odm,ODM_COMP_DYNAMIC_TXPWR, DBG_LOUD, ("PHY_rtl8188fu_SetTxPowerLevel8192C() Channel = %d \n" , pHalData->CurrentChannel));
+		PHY_rtl8188fu_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
 		if(	(pHalData->DynamicTxHighPowerLvl == TxHighPwrLevel_Normal) &&
 			(pHalData->LastDTPLvl == TxHighPwrLevel_Level1 || pHalData->LastDTPLvl == TxHighPwrLevel_Level2)) //TxHighPwrLevel_Normal
-			odm_DynamicTxPowerRestorePowerIndex(pDM_Odm);
+			rtl8188fu_odm_DynamicTxPowerRestorePowerIndex(pDM_Odm);
 		else if(pHalData->DynamicTxHighPowerLvl == TxHighPwrLevel_Level1)
-			odm_DynamicTxPowerWritePowerIndex(pDM_Odm, 0x14);
+			rtl8188fu_odm_DynamicTxPowerWritePowerIndex(pDM_Odm, 0x14);
 		else if(pHalData->DynamicTxHighPowerLvl == TxHighPwrLevel_Level2)
-			odm_DynamicTxPowerWritePowerIndex(pDM_Odm, 0x10);
+			rtl8188fu_odm_DynamicTxPowerWritePowerIndex(pDM_Odm, 0x10);
 	}
 	pHalData->LastDTPLvl = pHalData->DynamicTxHighPowerLvl;
 
@@ -413,7 +413,7 @@ odm_DynamicTxPower_92C(
 
 
 VOID 
-odm_DynamicTxPower_92D(
+rtl8188fu_odm_DynamicTxPower_92D(
 	IN		PVOID					pDM_VOID
 	)
 {
@@ -524,7 +524,7 @@ odm_DynamicTxPower_92D(
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_DYNAMIC_TXPWR,DBG_LOUD,("dm_DynamicTxPower() change value \n"));
 			HighPowerLvlBackForMac0 = pHalData->DynamicTxHighPowerLvl;
 			pHalData->DynamicTxHighPowerLvl = Adapter->DualMacDMSPControl.CurTxHighLvlForAnotherMacOfDMSP;
-			PHY_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
+			PHY_rtl8188fu_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
 			pHalData->DynamicTxHighPowerLvl = HighPowerLvlBackForMac0;
 			Adapter->DualMacDMSPControl.bChangeTxHighPowerLvlForAnotherMacOfDMSP = FALSE;
 		}						
@@ -532,7 +532,7 @@ odm_DynamicTxPower_92D(
 
 	if( (pHalData->DynamicTxHighPowerLvl != pHalData->LastDTPLvl) )
 	{
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_DYNAMIC_TXPWR, DBG_LOUD, ("PHY_SetTxPowerLevel8192S() Channel = %d \n" , pHalData->CurrentChannel));
+			ODM_RT_TRACE(pDM_Odm,ODM_COMP_DYNAMIC_TXPWR, DBG_LOUD, ("PHY_rtl8188fu_SetTxPowerLevel8192S() Channel = %d \n" , pHalData->CurrentChannel));
 			if(Adapter->DualMacSmartConcurrent == TRUE)
 			{
 				if(BuddyAdapter == NULL)
@@ -540,7 +540,7 @@ odm_DynamicTxPower_92D(
 					ODM_RT_TRACE(pDM_Odm,ODM_COMP_DYNAMIC_TXPWR,DBG_LOUD,("dm_DynamicTxPower() BuddyAdapter == NULL case \n"));
 					if(!Adapter->bSlaveOfDMSP)
 					{
-						PHY_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
+						PHY_rtl8188fu_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
 					}
 				}
 				else
@@ -560,20 +560,20 @@ odm_DynamicTxPower_92D(
 							if(!bGetValueFromBuddyAdapter)
 							{
 								ODM_RT_TRACE(pDM_Odm,ODM_COMP_DYNAMIC_TXPWR,DBG_LOUD,("dm_DynamicTxPower() mac 0 for mac 0 \n"));
-								PHY_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
+								PHY_rtl8188fu_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
 							}
 						}
 					}
 					else
 					{
 						ODM_RT_TRACE(pDM_Odm,ODM_COMP_DYNAMIC_TXPWR,DBG_LOUD,("dm_DynamicTxPower() BuddyAdapter DMDP\n"));
-						PHY_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
+						PHY_rtl8188fu_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
 					}
 				}
 			}
 			else
 			{
-				PHY_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
+				PHY_rtl8188fu_SetTxPowerLevel8192C(Adapter, pHalData->CurrentChannel);
 			}
 
 		}
@@ -585,7 +585,7 @@ odm_DynamicTxPower_92D(
 }
 
 VOID 
-odm_DynamicTxPower_8821(
+rtl8188fu_odm_DynamicTxPower_8821(
 	IN		PVOID			pDM_VOID,	
 	IN		pu1Byte			pDesc,
 	IN		u1Byte			macId	
@@ -601,7 +601,7 @@ odm_DynamicTxPower_8821(
 	
 	pEntry = pDM_Odm->pODM_StaInfo[macId];	
 
-	reg0xc56_byte = ODM_Read1Byte(pDM_Odm, 0xc56);
+	reg0xc56_byte = rtl8188fu_ODM_Read1Byte(pDM_Odm, 0xc56);
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_DYNAMIC_TXPWR, DBG_LOUD, ("reg0xc56_byte=%d\n", reg0xc56_byte));
 
@@ -620,11 +620,11 @@ odm_DynamicTxPower_8821(
 			txpwr_offset = 3;
 		
 		SET_TX_DESC_TX_POWER_OFFSET_8812(pDesc, txpwr_offset);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DYNAMIC_TXPWR, DBG_LOUD, ("odm_DynamicTxPower_8821: RSSI=%d, txpwr_offset=%d\n", pEntry[macId].rssi_stat.UndecoratedSmoothedPWDB, txpwr_offset));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DYNAMIC_TXPWR, DBG_LOUD, ("rtl8188fu_odm_DynamicTxPower_8821: RSSI=%d, txpwr_offset=%d\n", pEntry[macId].rssi_stat.UndecoratedSmoothedPWDB, txpwr_offset));
 
 	} else{
 		SET_TX_DESC_TX_POWER_OFFSET_8812(pDesc, txpwr_offset);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DYNAMIC_TXPWR, DBG_LOUD, ("odm_DynamicTxPower_8821: RSSI=%d, txpwr_offset=%d\n", pEntry[macId].rssi_stat.UndecoratedSmoothedPWDB, txpwr_offset));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_DYNAMIC_TXPWR, DBG_LOUD, ("rtl8188fu_odm_DynamicTxPower_8821: RSSI=%d, txpwr_offset=%d\n", pEntry[macId].rssi_stat.UndecoratedSmoothedPWDB, txpwr_offset));
 
 	}
 #endif	/*#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)*/

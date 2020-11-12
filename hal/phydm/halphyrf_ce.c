@@ -37,7 +37,7 @@
 							_offset = _size-1;\
 					} while(0)
 
-void ConfigureTxpowerTrack(
+void rtl8188fu_ConfigureTxpowerTrack(
 	IN		PVOID					pDM_VOID,
 	OUT	PTXPWRTRACK_CFG	pConfig
 	)
@@ -46,39 +46,39 @@ void ConfigureTxpowerTrack(
 
 #if RTL8192E_SUPPORT
 	if(pDM_Odm->SupportICType==ODM_RTL8192E)
-		ConfigureTxpowerTrack_8192E(pConfig);
+		rtl8188fu_ConfigureTxpowerTrack_8192E(pConfig);
 #endif	
 #if RTL8821A_SUPPORT
 	if(pDM_Odm->SupportICType==ODM_RTL8821)
-		ConfigureTxpowerTrack_8821A(pConfig);
+		rtl8188fu_ConfigureTxpowerTrack_8821A(pConfig);
 #endif
 #if RTL8812A_SUPPORT
 	if(pDM_Odm->SupportICType==ODM_RTL8812)
-		ConfigureTxpowerTrack_8812A(pConfig);
+		rtl8188fu_ConfigureTxpowerTrack_8812A(pConfig);
 #endif
 #if RTL8188E_SUPPORT
 	if(pDM_Odm->SupportICType==ODM_RTL8188E)
-		ConfigureTxpowerTrack_8188E(pConfig);
+		rtl8188fu_ConfigureTxpowerTrack_8188E(pConfig);
 #endif 
 
 #if RTL8723B_SUPPORT
 	if(pDM_Odm->SupportICType==ODM_RTL8723B)
-		ConfigureTxpowerTrack_8723B(pConfig);
+		rtl8188fu_ConfigureTxpowerTrack_8723B(pConfig);
 #endif
 
 #if RTL8814A_SUPPORT
 	if (pDM_Odm->SupportICType == ODM_RTL8814A)
-		ConfigureTxpowerTrack_8814A(pConfig);
+		rtl8188fu_ConfigureTxpowerTrack_8814A(pConfig);
 #endif
 
 #if RTL8703B_SUPPORT
 	if(pDM_Odm->SupportICType==ODM_RTL8703B)
-		ConfigureTxpowerTrack_8703B(pConfig);
+		rtl8188fu_ConfigureTxpowerTrack_8703B(pConfig);
 #endif
 
 #if RTL8188F_SUPPORT
 	if (pDM_Odm->SupportICType == ODM_RTL8188F)
-		ConfigureTxpowerTrack_8188F(pConfig);
+		rtl8188fu_ConfigureTxpowerTrack_8188F(pConfig);
 #endif 
 }
 
@@ -91,7 +91,7 @@ void ConfigureTxpowerTrack(
 //       need to call this function.
 //======================================================================
 VOID
-ODM_ClearTxPowerTrackingState(
+rtl8188fu_ODM_ClearTxPowerTrackingState(
 	IN		PVOID					pDM_VOID
 	)
 {
@@ -132,7 +132,7 @@ ODM_ClearTxPowerTrackingState(
 }
 
 VOID
-ODM_TXPowerTrackingCallback_ThermalMeter(
+rtl8188fu_ODM_TXPowerTrackingCallback_ThermalMeter(
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 	IN PDM_ODM_T		pDM_Odm
 #else
@@ -175,7 +175,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	
 	//4 2. Initilization ( 7 steps in total )
 
-	ConfigureTxpowerTrack(pDM_Odm, &c);
+	rtl8188fu_ConfigureTxpowerTrack(pDM_Odm, &c);
 
 	(*c.GetDeltaSwingTable)(pDM_Odm, (pu1Byte*)&deltaSwingTableIdx_TUP_A, (pu1Byte*)&deltaSwingTableIdx_TDOWN_A,
 									  (pu1Byte*)&deltaSwingTableIdx_TUP_B, (pu1Byte*)&deltaSwingTableIdx_TDOWN_B);	
@@ -189,12 +189,12 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	pDM_Odm->RFCalibrateInfo.bTXPowerTrackingInit = TRUE;
     
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, 
-		("===>ODM_TXPowerTrackingCallback_ThermalMeter Start\n pRFCalibrateInfo->BbSwingIdxCckBase: %d, pRFCalibrateInfo->BbSwingIdxOfdmBase[A]: %d, pRFCalibrateInfo->DefaultOfdmIndex: %d\n", 
+		("===>rtl8188fu_ODM_TXPowerTrackingCallback_ThermalMeter Start\n pRFCalibrateInfo->BbSwingIdxCckBase: %d, pRFCalibrateInfo->BbSwingIdxOfdmBase[A]: %d, pRFCalibrateInfo->DefaultOfdmIndex: %d\n", 
 		pRFCalibrateInfo->BbSwingIdxCckBase, pRFCalibrateInfo->BbSwingIdxOfdmBase[ODM_RF_PATH_A], pRFCalibrateInfo->DefaultOfdmIndex));
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, 
 		("pDM_Odm->RFCalibrateInfo.TxPowerTrackControl %d,  pHalData->EEPROMThermalMeter %d\n", pDM_Odm->RFCalibrateInfo.TxPowerTrackControl,  pHalData->EEPROMThermalMeter));
-	ThermalValue = (u1Byte)ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, c.ThermalRegAddr, 0xfc00);	//0x42: RF Reg[15:10] 88E
+	ThermalValue = (u1Byte)rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, c.ThermalRegAddr, 0xfc00);	//0x42: RF Reg[15:10] 88E
 	if( ! pDM_Odm->RFCalibrateInfo.TxPowerTrackControl || pHalData->EEPROMThermalMeter == 0 || 
 		pHalData->EEPROMThermalMeter == 0xFF)
 		return;
@@ -545,43 +545,43 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 	if (!(pDM_Odm->SupportICType & ODM_RTL8814A)) {
 		if (pDM_Odm->RFCalibrateInfo.DpkThermal[ODM_RF_PATH_A] != 0) {
 			if (diff_DPK[ODM_RF_PATH_A] >= c.Threshold_DPK) { 
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
-				ODM_SetBBReg(pDM_Odm, 0xcc4, BIT14|BIT13|BIT12|BIT11|BIT10, (diff_DPK[ODM_RF_PATH_A] / c.Threshold_DPK));
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xcc4, BIT14|BIT13|BIT12|BIT11|BIT10, (diff_DPK[ODM_RF_PATH_A] / c.Threshold_DPK));
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);
 			} else if ((diff_DPK[ODM_RF_PATH_A] <= -1 * c.Threshold_DPK)) {
 				s4Byte value = 0x20 + (diff_DPK[ODM_RF_PATH_A] / c.Threshold_DPK);
 
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
-				ODM_SetBBReg(pDM_Odm, 0xcc4, BIT14|BIT13|BIT12|BIT11|BIT10, value);
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xcc4, BIT14|BIT13|BIT12|BIT11|BIT10, value);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);
 			} else {
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
-				ODM_SetBBReg(pDM_Odm, 0xcc4, BIT14|BIT13|BIT12|BIT11|BIT10, 0);
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);	
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xcc4, BIT14|BIT13|BIT12|BIT11|BIT10, 0);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);	
 			}
 		}
 		if (pDM_Odm->RFCalibrateInfo.DpkThermal[ODM_RF_PATH_B] != 0) {
 			if (diff_DPK[ODM_RF_PATH_B] >= c.Threshold_DPK) { 
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
-				ODM_SetBBReg(pDM_Odm, 0xec4, BIT14|BIT13|BIT12|BIT11|BIT10, (diff_DPK[ODM_RF_PATH_B] / c.Threshold_DPK));
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xec4, BIT14|BIT13|BIT12|BIT11|BIT10, (diff_DPK[ODM_RF_PATH_B] / c.Threshold_DPK));
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);
 			} else if ((diff_DPK[ODM_RF_PATH_B] <= -1 * c.Threshold_DPK)) {
 				s4Byte value = 0x20 + (diff_DPK[ODM_RF_PATH_B] / c.Threshold_DPK);	
 				
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
-				ODM_SetBBReg(pDM_Odm, 0xec4, BIT14|BIT13|BIT12|BIT11|BIT10, value);
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xec4, BIT14|BIT13|BIT12|BIT11|BIT10, value);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);
 			} else {
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
-				ODM_SetBBReg(pDM_Odm, 0xec4, BIT14|BIT13|BIT12|BIT11|BIT10, 0);
-				ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);	
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x1);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xec4, BIT14|BIT13|BIT12|BIT11|BIT10, 0);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c, BIT(31), 0x0);	
 			}
 		}
 	}
 
 #endif		
 			
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("<===ODM_TXPowerTrackingCallback_ThermalMeter End\n"));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD, ("<===rtl8188fu_ODM_TXPowerTrackingCallback_ThermalMeter End\n"));
 	
 	pDM_Odm->RFCalibrateInfo.TXPowercount = 0;
 }
@@ -592,7 +592,7 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 //3============================================================
 
 VOID
-ODM_ResetIQKResult(
+rtl8188fu_ODM_ResetIQKResult(
 	IN		PVOID					pDM_VOID
 )
 {
@@ -600,7 +600,7 @@ ODM_ResetIQKResult(
 
 }
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
+u1Byte rtl8188fu_ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
 {
 	u1Byte	channel_all[ODM_TARGET_CHNL_NUM_2G_5G] = 
 	{1,2,3,4,5,6,7,8,9,10,11,12,13,14,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,100,102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,149,151,153,155,157,159,161,163,165};
@@ -623,7 +623,7 @@ u1Byte ODM_GetRightChnlPlaceforIQK(u1Byte chnl)
 #endif
 
 VOID
-odm_IQCalibrate(
+rtl8188fu_odm_IQCalibrate(
 		IN	PDM_ODM_T	pDM_Odm 
 		)
 {
@@ -670,13 +670,13 @@ odm_IQCalibrate(
 #endif
 }
 
-void phydm_rf_init(IN	PVOID		pDM_VOID)
+void rtl8188fu_phydm_rf_init(IN	PVOID		pDM_VOID)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	odm_TXPowerTrackingInit(pDM_Odm);
+	rtl8188fu_odm_TXPowerTrackingInit(pDM_Odm);
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
-	ODM_ClearTxPowerTrackingState(pDM_Odm);	
+	rtl8188fu_ODM_ClearTxPowerTrackingState(pDM_Odm);	
 #endif
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_AP))
@@ -688,12 +688,12 @@ void phydm_rf_init(IN	PVOID		pDM_VOID)
 
 }
 
-void phydm_rf_watchdog(IN	PVOID		pDM_VOID)
+void rtl8188fu_phydm_rf_watchdog(IN	PVOID		pDM_VOID)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
-	ODM_TXPowerTrackingCheck(pDM_Odm);
+	rtl8188fu_ODM_TXPowerTrackingCheck(pDM_Odm);
 	if (pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-		odm_IQCalibrate(pDM_Odm);
+		rtl8188fu_odm_IQCalibrate(pDM_Odm);
 #endif
 }

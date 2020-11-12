@@ -177,46 +177,46 @@ typedef struct _RT_WORK_ITEM
 
 
 u1Byte
-ODM_Read1Byte(
+rtl8188fu_ODM_Read1Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr
 	);
 
 u2Byte
-ODM_Read2Byte(
+rtl8188fu_ODM_Read2Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr
 	);
 
 u4Byte
-ODM_Read4Byte(
+rtl8188fu_ODM_Read4Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr
 	);
 
 VOID
-ODM_Write1Byte(
+rtl8188fu_ODM_Write1Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr,
 	IN	u1Byte			Data
 	);
 
 VOID
-ODM_Write2Byte(
+rtl8188fu_ODM_Write2Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr,
 	IN	u2Byte			Data
 	);
 
 VOID
-ODM_Write4Byte(
+rtl8188fu_ODM_Write4Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			Data
 	);
 
 VOID
-ODM_SetMACReg(	
+rtl8188fu_ODM_SetMACReg(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		RegAddr,
 	IN	u4Byte		BitMask,
@@ -224,14 +224,14 @@ ODM_SetMACReg(
 	);
 
 u4Byte 
-ODM_GetMACReg(	
+rtl8188fu_ODM_GetMACReg(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		RegAddr,
 	IN	u4Byte		BitMask
 	);
 
 VOID
-ODM_SetBBReg(	
+rtl8188fu_ODM_SetBBReg(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		RegAddr,
 	IN	u4Byte		BitMask,
@@ -239,14 +239,14 @@ ODM_SetBBReg(
 	);
 
 u4Byte 
-ODM_GetBBReg(	
+rtl8188fu_ODM_GetBBReg(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		RegAddr,
 	IN	u4Byte		BitMask
 	);
 
 VOID
-ODM_SetRFReg(	
+rtl8188fu_ODM_SetRFReg(	
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	ODM_RF_RADIO_PATH_E	eRFPath,
 	IN	u4Byte				RegAddr,
@@ -255,7 +255,7 @@ ODM_SetRFReg(
 	);
 
 u4Byte 
-ODM_GetRFReg(	
+rtl8188fu_ODM_GetRFReg(	
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	ODM_RF_RADIO_PATH_E	eRFPath,
 	IN	u4Byte				RegAddr,
@@ -267,34 +267,34 @@ ODM_GetRFReg(
 // Memory Relative Function.
 //
 VOID
-ODM_AllocateMemory(	
+rtl8188fu_ODM_AllocateMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	OUT	PVOID		*pPtr,
 	IN	u4Byte		length
 	);
 VOID
-ODM_FreeMemory(	
+rtl8188fu_ODM_FreeMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	OUT	PVOID		pPtr,
 	IN	u4Byte		length
 	);
 
 VOID
-ODM_MoveMemory(	
+rtl8188fu_ODM_MoveMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	OUT PVOID		pDest,
 	IN  PVOID		pSrc,
 	IN  u4Byte		Length
 	);
 
-s4Byte ODM_CompareMemory(
+s4Byte rtl8188fu_ODM_CompareMemory(
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	PVOID           pBuf1,
       IN	PVOID           pBuf2,
       IN	u4Byte          length
        );
 
-void ODM_Memory_Set
+void rtl8188fu_ODM_Memory_Set
 	(IN 	PDM_ODM_T	pDM_Odm,
 		IN  PVOID	pbuf,
 		IN  s1Byte	value,
@@ -304,13 +304,13 @@ void ODM_Memory_Set
 // ODM MISC-spin lock relative API.
 //
 VOID
-ODM_AcquireSpinLock(	
+rtl8188fu_ODM_AcquireSpinLock(	
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	RT_SPINLOCK_TYPE	type
 	);
 
 VOID
-ODM_ReleaseSpinLock(	
+rtl8188fu_ODM_ReleaseSpinLock(	
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	RT_SPINLOCK_TYPE	type
 	);
@@ -320,7 +320,7 @@ ODM_ReleaseSpinLock(
 // ODM MISC-workitem relative API.
 //
 VOID
-ODM_InitializeWorkItem(	
+rtl8188fu_ODM_InitializeWorkItem(	
 	IN 	PDM_ODM_T					pDM_Odm,
 	IN	PRT_WORK_ITEM				pRtWorkItem,
 	IN	RT_WORKITEM_CALL_BACK		RtWorkItemCallback,
@@ -329,27 +329,27 @@ ODM_InitializeWorkItem(
 	);
 
 VOID
-ODM_StartWorkItem(	
+rtl8188fu_ODM_StartWorkItem(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	);
 
 VOID
-ODM_StopWorkItem(	
+rtl8188fu_ODM_StopWorkItem(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	);
 
 VOID
-ODM_FreeWorkItem(	
+rtl8188fu_ODM_FreeWorkItem(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	);
 
 VOID
-ODM_ScheduleWorkItem(	
+rtl8188fu_ODM_ScheduleWorkItem(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	);
 
 VOID
-ODM_IsWorkItemScheduled(	
+rtl8188fu_ODM_IsWorkItemScheduled(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	);
 
@@ -357,33 +357,33 @@ ODM_IsWorkItemScheduled(
 // ODM Timer relative API.
 //
 VOID
-ODM_StallExecution(	
+rtl8188fu_ODM_StallExecution(	
 	IN	u4Byte	usDelay
 	);
 
 VOID
-ODM_delay_ms(IN u4Byte	ms);
+rtl8188fu_ODM_delay_ms(IN u4Byte	ms);
 
 
 
 VOID
-ODM_delay_us(IN u4Byte	us);
+rtl8188fu_ODM_delay_us(IN u4Byte	us);
 
 VOID
-ODM_sleep_ms(IN u4Byte	ms);
+rtl8188fu_ODM_sleep_ms(IN u4Byte	ms);
 
 VOID
-ODM_sleep_us(IN u4Byte	us);
+rtl8188fu_ODM_sleep_us(IN u4Byte	us);
 
 VOID
-ODM_SetTimer(	
+rtl8188fu_ODM_SetTimer(	
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PRT_TIMER 		pTimer, 
 	IN	u4Byte 			msDelay
 	);
 
 VOID
-ODM_InitializeTimer(
+rtl8188fu_ODM_InitializeTimer(
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	PRT_TIMER 			pTimer, 
 	IN	RT_TIMER_CALL_BACK	CallBackFunc, 
@@ -392,19 +392,19 @@ ODM_InitializeTimer(
 	);
 
 VOID
-ODM_CancelTimer(
+rtl8188fu_ODM_CancelTimer(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PRT_TIMER		pTimer
 	);
 
 VOID
-ODM_ReleaseTimer(
+rtl8188fu_ODM_ReleaseTimer(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PRT_TIMER		pTimer
 	);
 
 BOOLEAN
-phydm_actingDetermine(
+rtl8188fu_phydm_actingDetermine(
 	IN	PDM_ODM_T		pDM_Odm,
 	IN	PHYDM_ACTING_TYPE	type
 	);
@@ -413,7 +413,7 @@ phydm_actingDetermine(
 // ODM FW relative API.
 //
 VOID
-ODM_FillH2CCmd(
+rtl8188fu_ODM_FillH2CCmd(
 	IN	PDM_ODM_T		pDM_Odm,
 	IN	u1Byte 			ElementID,
 	IN	u4Byte 			CmdLen,
@@ -421,7 +421,7 @@ ODM_FillH2CCmd(
 );
 
 u1Byte
-phydm_c2H_content_parsing(
+rtl8188fu_phydm_c2H_content_parsing(
 	IN	PVOID			pDM_VOID,
 	IN	u1Byte			c2hCmdId,
 	IN	u1Byte			c2hCmdLen,
@@ -429,11 +429,11 @@ phydm_c2H_content_parsing(
 );
 
 u8Byte
-ODM_GetCurrentTime(	
+rtl8188fu_ODM_GetCurrentTime(	
 	IN 	PDM_ODM_T		pDM_Odm
 	);
 u8Byte
-ODM_GetProgressingTime(	
+rtl8188fu_ODM_GetProgressingTime(	
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u8Byte			Start_Time
 	);

@@ -45,7 +45,7 @@ Major Change History:
 //
 //	2011.07.07, added by Roger.
 //
-u8 HalPwrSeqCmdParsing(
+u8 rtl8188fu_HalPwrSeqCmdParsing(
 	PADAPTER		padapter,
 	u8				CutVersion,
 	u8				FabVersion,
@@ -64,7 +64,7 @@ u8 HalPwrSeqCmdParsing(
 		PwrCfgCmd = PwrSeqCmd[AryIdx];
 
 		RT_TRACE(_module_hal_init_c_ , _drv_info_,
-				 ("HalPwrSeqCmdParsing: offset(%#x) cut_msk(%#x) fab_msk(%#x) interface_msk(%#x) base(%#x) cmd(%#x) msk(%#x) value(%#x)\n",
+				 ("rtl8188fu_HalPwrSeqCmdParsing: offset(%#x) cut_msk(%#x) fab_msk(%#x) interface_msk(%#x) base(%#x) cmd(%#x) msk(%#x) value(%#x)\n",
 					GET_PWR_CFG_OFFSET(PwrCfgCmd),
 					GET_PWR_CFG_CUT_MASK(PwrCfgCmd),
 					GET_PWR_CFG_FAB_MASK(PwrCfgCmd),
@@ -82,11 +82,11 @@ u8 HalPwrSeqCmdParsing(
 			switch (GET_PWR_CFG_CMD(PwrCfgCmd))
 			{
 				case PWR_CMD_READ:
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_READ\n"));
+					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("rtl8188fu_HalPwrSeqCmdParsing: PWR_CMD_READ\n"));
 					break;
 
 				case PWR_CMD_WRITE:
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_WRITE\n"));
+					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("rtl8188fu_HalPwrSeqCmdParsing: PWR_CMD_WRITE\n"));
 					offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
 
 #ifdef CONFIG_SDIO_HCI
@@ -124,7 +124,7 @@ u8 HalPwrSeqCmdParsing(
 					break;
 
 				case PWR_CMD_POLLING:
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_POLLING\n"));
+					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("rtl8188fu_HalPwrSeqCmdParsing: PWR_CMD_POLLING\n"));
 
 					bPollingBit = _FALSE;
 					offset = GET_PWR_CFG_OFFSET(PwrCfgCmd);
@@ -144,10 +144,10 @@ u8 HalPwrSeqCmdParsing(
 						if (value == (GET_PWR_CFG_VALUE(PwrCfgCmd) & GET_PWR_CFG_MASK(PwrCfgCmd)))
 							bPollingBit = _TRUE;
 						else
-							rtw_udelay_os(10);
+							rtl8188fu_rtw_udelay_os(10);
 
 						if (pollingCount++ > maxPollingCnt) {
-							DBG_871X_LEVEL(_drv_err_, "HalPwrSeqCmdParsing: Fail to polling Offset[%#x]=%02x\n", offset, value);
+							DBG_871X_LEVEL(_drv_err_, "rtl8188fu_HalPwrSeqCmdParsing: Fail to polling Offset[%#x]=%02x\n", offset, value);
 							return _FALSE;
 						}
 					} while (!bPollingBit);
@@ -155,21 +155,21 @@ u8 HalPwrSeqCmdParsing(
 					break;
 
 				case PWR_CMD_DELAY:
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_DELAY\n"));
+					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("rtl8188fu_HalPwrSeqCmdParsing: PWR_CMD_DELAY\n"));
 					if (GET_PWR_CFG_VALUE(PwrCfgCmd) == PWRSEQ_DELAY_US)
-						rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd));
+						rtl8188fu_rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd));
 					else
-						rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd)*1000);
+						rtl8188fu_rtw_udelay_os(GET_PWR_CFG_OFFSET(PwrCfgCmd)*1000);
 					break;
 
 				case PWR_CMD_END:
 					// When this command is parsed, end the process
-					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("HalPwrSeqCmdParsing: PWR_CMD_END\n"));
+					RT_TRACE(_module_hal_init_c_ , _drv_info_, ("rtl8188fu_HalPwrSeqCmdParsing: PWR_CMD_END\n"));
 					return _TRUE;
 					break;
 
 				default:
-					RT_TRACE(_module_hal_init_c_ , _drv_err_, ("HalPwrSeqCmdParsing: Unknown CMD!!\n"));
+					RT_TRACE(_module_hal_init_c_ , _drv_err_, ("rtl8188fu_HalPwrSeqCmdParsing: Unknown CMD!!\n"));
 					break;
 			}
 		}

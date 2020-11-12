@@ -28,7 +28,7 @@
 static RF_SHADOW_T RF_Shadow[RF6052_MAX_PATH][RF6052_MAX_REG];
 
 /**
-* Function:	PHY_CalculateBitShift
+* Function:	rtl8188fu_PHY_CalculateBitShift
 *
 * OverView:	Get shifted position of the BitMask
 *
@@ -39,7 +39,7 @@ static RF_SHADOW_T RF_Shadow[RF6052_MAX_PATH][RF6052_MAX_REG];
 * Return:		u4Byte		Return the shift bit bit position of the mask
 */
 u32
-PHY_CalculateBitShift(
+rtl8188fu_PHY_CalculateBitShift(
 	u32 BitMask
 	)
 {
@@ -59,14 +59,14 @@ PHY_CalculateBitShift(
 // ==> RF shadow Operation API Code Section!!!
 //
 /*-----------------------------------------------------------------------------
- * Function:	PHY_RFShadowRead
- *				PHY_RFShadowWrite
- *				PHY_RFShadowCompare
- *				PHY_RFShadowRecorver
- *				PHY_RFShadowCompareAll
- *				PHY_RFShadowRecorverAll
- *				PHY_RFShadowCompareFlagSet
- *				PHY_RFShadowRecorverFlagSet
+ * Function:	rtl8188fu_PHY_RFShadowRead
+ *				rtl8188fu_PHY_RFShadowWrite
+ *				rtl8188fu_PHY_RFShadowCompare
+ *				rtl8188fu_PHY_RFShadowRecorver
+ *				rtl8188fu_PHY_RFShadowCompareAll
+ *				rtl8188fu_PHY_RFShadowRecorverAll
+ *				rtl8188fu_PHY_RFShadowCompareFlagSet
+ *				rtl8188fu_PHY_RFShadowRecorverFlagSet
  *
  * Overview:	When we set RF register, we must write shadow at first.
  *			When we are running, we must compare shadow abd locate error addr.
@@ -84,18 +84,18 @@ PHY_CalculateBitShift(
  *
  *---------------------------------------------------------------------------*/
 u32
-PHY_RFShadowRead(
+rtl8188fu_PHY_RFShadowRead(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset)
 {
 	return	RF_Shadow[eRFPath][Offset].Value;
 
-}	/* PHY_RFShadowRead */
+}	/* rtl8188fu_PHY_RFShadowRead */
 
 
 VOID
-PHY_RFShadowWrite(
+rtl8188fu_PHY_RFShadowWrite(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset,
@@ -104,11 +104,11 @@ PHY_RFShadowWrite(
 	RF_Shadow[eRFPath][Offset].Value = (Data & bRFRegOffsetMask);
 	RF_Shadow[eRFPath][Offset].Driver_Write = _TRUE;
 
-}	/* PHY_RFShadowWrite */
+}	/* rtl8188fu_PHY_RFShadowWrite */
 
 
 BOOLEAN
-PHY_RFShadowCompare(
+rtl8188fu_PHY_RFShadowCompare(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset)
@@ -117,24 +117,24 @@ PHY_RFShadowCompare(
 	// Check if we need to check the register
 	if (RF_Shadow[eRFPath][Offset].Compare == _TRUE)
 	{
-		reg = rtw_hal_read_rfreg(Adapter, eRFPath, Offset, bRFRegOffsetMask);
+		reg = rtl8188fu_rtw_halrtl8188fu__rtl8188fu_read_rfreg(Adapter, eRFPath, Offset, bRFRegOffsetMask);
 		// Compare shadow and real rf register for 20bits!!
 		if (RF_Shadow[eRFPath][Offset].Value != reg)
 		{
 			// Locate error position.
 			RF_Shadow[eRFPath][Offset].ErrorOrNot = _TRUE;
 			//RT_TRACE(COMP_INIT, DBG_LOUD,
-			//("PHY_RFShadowCompare RF-%d Addr%02lx Err = %05lx\n",
+			//("rtl8188fu_PHY_RFShadowCompare RF-%d Addr%02lx Err = %05lx\n",
 			//eRFPath, Offset, reg));
 		}
 		return RF_Shadow[eRFPath][Offset].ErrorOrNot ;
 	}
 	return _FALSE;
-}	/* PHY_RFShadowCompare */
+}	/* rtl8188fu_PHY_RFShadowCompare */
 
 
 VOID
-PHY_RFShadowRecorver(
+rtl8188fu_PHY_RFShadowRecorver(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset)
@@ -145,19 +145,19 @@ PHY_RFShadowRecorver(
 		// Check if we need to recorver the register.
 		if (RF_Shadow[eRFPath][Offset].Recorver == _TRUE)
 		{
-			rtw_hal_write_rfreg(Adapter, eRFPath, Offset, bRFRegOffsetMask,
+			rtl8188fu_rtw_hal_rtl8188furtl8188fu__write_rfreg(Adapter, eRFPath, Offset, bRFRegOffsetMask,
 							RF_Shadow[eRFPath][Offset].Value);
 			//RT_TRACE(COMP_INIT, DBG_LOUD,
-			//("PHY_RFShadowRecorver RF-%d Addr%02lx=%05lx",
+			//("rtl8188fu_PHY_RFShadowRecorver RF-%d Addr%02lx=%05lx",
 			//eRFPath, Offset, RF_Shadow[eRFPath][Offset].Value));
 		}
 	}
 
-}	/* PHY_RFShadowRecorver */
+}	/* rtl8188fu_PHY_RFShadowRecorver */
 
 
 VOID
-PHY_RFShadowCompareAll(
+rtl8188fu_PHY_RFShadowCompareAll(
 	IN	PADAPTER			Adapter)
 {
 	u8		eRFPath = 0 ;
@@ -167,15 +167,15 @@ PHY_RFShadowCompareAll(
 	{
 		for (Offset = 0; Offset < maxReg; Offset++)
 		{
-			PHY_RFShadowCompare(Adapter, eRFPath, Offset);
+			rtl8188fu_PHY_RFShadowCompare(Adapter, eRFPath, Offset);
 		}
 	}
 
-}	/* PHY_RFShadowCompareAll */
+}	/* rtl8188fu_PHY_RFShadowCompareAll */
 
 
 VOID
-PHY_RFShadowRecorverAll(
+rtl8188fu_PHY_RFShadowRecorverAll(
 	IN	PADAPTER			Adapter)
 {
 	u8		eRFPath =0;
@@ -185,15 +185,15 @@ PHY_RFShadowRecorverAll(
 	{
 		for (Offset = 0; Offset < maxReg; Offset++)
 		{
-			PHY_RFShadowRecorver(Adapter, eRFPath, Offset);
+			rtl8188fu_PHY_RFShadowRecorver(Adapter, eRFPath, Offset);
 		}
 	}
 
-}	/* PHY_RFShadowRecorverAll */
+}	/* rtl8188fu_PHY_RFShadowRecorverAll */
 
 
 VOID
-PHY_RFShadowCompareFlagSet(
+rtl8188fu_PHY_RFShadowCompareFlagSet(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset,
@@ -202,11 +202,11 @@ PHY_RFShadowCompareFlagSet(
 	// Set True or False!!!
 	RF_Shadow[eRFPath][Offset].Compare = Type;
 
-}	/* PHY_RFShadowCompareFlagSet */
+}	/* rtl8188fu_PHY_RFShadowCompareFlagSet */
 
 
 VOID
-PHY_RFShadowRecorverFlagSet(
+rtl8188fu_PHY_RFShadowRecorverFlagSet(
 	IN	PADAPTER		Adapter,
 	IN	u8				eRFPath,
 	IN	u32				Offset,
@@ -215,11 +215,11 @@ PHY_RFShadowRecorverFlagSet(
 	// Set True or False!!!
 	RF_Shadow[eRFPath][Offset].Recorver= Type;
 
-}	/* PHY_RFShadowRecorverFlagSet */
+}	/* rtl8188fu_PHY_RFShadowRecorverFlagSet */
 
 
 VOID
-PHY_RFShadowCompareFlagSetAll(
+rtl8188fu_rtl8188fu_PHY_RFShadowCompareFlagSetAll(
 	IN	PADAPTER			Adapter)
 {
 	u8		eRFPath = 0;
@@ -231,17 +231,17 @@ PHY_RFShadowCompareFlagSetAll(
 		{
 			// 2008/11/20 MH For S3S4 test, we only check reg 26/27 now!!!!
 			if (Offset != 0x26 && Offset != 0x27)
-				PHY_RFShadowCompareFlagSet(Adapter, eRFPath, Offset, _FALSE);
+				rtl8188fu_PHY_RFShadowCompareFlagSet(Adapter, eRFPath, Offset, _FALSE);
 			else
-				PHY_RFShadowCompareFlagSet(Adapter, eRFPath, Offset, _TRUE);
+				rtl8188fu_PHY_RFShadowCompareFlagSet(Adapter, eRFPath, Offset, _TRUE);
 		}
 	}
 
-}	/* PHY_RFShadowCompareFlagSetAll */
+}	/* rtl8188fu_rtl8188fu_PHY_RFShadowCompareFlagSetAll */
 
 
 VOID
-PHY_RFShadowRecorverFlagSetAll(
+rtl8188fu_rtl8188fu_PHY_RFShadowRecorverFlagSetAll(
 	IN	PADAPTER			Adapter)
 {
 	u8		eRFPath = 0;
@@ -253,16 +253,16 @@ PHY_RFShadowRecorverFlagSetAll(
 		{
 			// 2008/11/20 MH For S3S4 test, we only check reg 26/27 now!!!!
 			if (Offset != 0x26 && Offset != 0x27)
-				PHY_RFShadowRecorverFlagSet(Adapter, eRFPath, Offset, _FALSE);
+				rtl8188fu_PHY_RFShadowRecorverFlagSet(Adapter, eRFPath, Offset, _FALSE);
 			else
-				PHY_RFShadowRecorverFlagSet(Adapter, eRFPath, Offset, _TRUE);
+				rtl8188fu_PHY_RFShadowRecorverFlagSet(Adapter, eRFPath, Offset, _TRUE);
 		}
 	}
 
-}	/* PHY_RFShadowCompareFlagSetAll */
+}	/* rtl8188fu_rtl8188fu_PHY_RFShadowCompareFlagSetAll */
 
 VOID
-PHY_RFShadowRefresh(
+rtl8188fu_PHY_RFShadowRefresh(
 	IN	PADAPTER			Adapter)
 {
 	u8		eRFPath = 0;
@@ -280,6 +280,6 @@ PHY_RFShadowRefresh(
 		}
 	}
 
-}	/* PHY_RFShadowRead */
+}	/* rtl8188fu_PHY_RFShadowRead */
 
 

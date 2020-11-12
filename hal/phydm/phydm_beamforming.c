@@ -25,7 +25,7 @@ phydm_staInfoInit(
 	PRT_HIGH_THROUGHPUT		pHTInfo = GET_HT_INFO(pMgntInfo);
 	PRT_VERY_HIGH_THROUGHPUT	pVHTInfo = GET_VHT_INFO(pMgntInfo);
 
-	ODM_MoveMemory(pDM_Odm, pEntry->MyMacAddr, Adapter->CurrentAddress, 6);
+	rtl8188fu_ODM_MoveMemory(pDM_Odm, pEntry->MyMacAddr, Adapter->CurrentAddress, 6);
 	
 	pEntry->HtBeamformCap = pHTInfo->HtBeamformCap;
 	pEntry->VhtBeamformCap = pVHTInfo->VhtBeamformCap;
@@ -63,7 +63,7 @@ phydm_staInfoInit(
 		return pEntry;
 	}
 	
-	ODM_MoveMemory(pDM_Odm, pEntry->MyMacAddr, adapter_mac_addr(pSTA->padapter), 6);
+	rtl8188fu_ODM_MoveMemory(pDM_Odm, pEntry->MyMacAddr, adapter_mac_addr(pSTA->padapter), 6);
 	pEntry->HtBeamformCap = pSTA->htpriv.beamform_cap;
 
 	pEntry->AID = pSTA->aid;
@@ -360,16 +360,16 @@ Beamforming_AddBFeeEntry(
 		pEntry->AID = pSTA->AID;
 		pEntry->MacId = pSTA->MacID;
 		pEntry->SoundBW = pSTA->BW;
-		ODM_MoveMemory(pDM_Odm, pEntry->MyMacAddr, pSTA->MyMacAddr, 6);
+		rtl8188fu_ODM_MoveMemory(pDM_Odm, pEntry->MyMacAddr, pSTA->MyMacAddr, 6);
 		
-		if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP)) {
+		if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP)) {
 			/*BSSID[44:47] xor BSSID[40:43]*/
 			u2Byte BSSID = ((pSTA->MyMacAddr[5] & 0xf0) >> 4) ^ (pSTA->MyMacAddr[5] & 0xf);
 			/*(dec(A) + dec(B)*32) mod 512*/
 			pEntry->P_AID = (pSTA->AID + BSSID * 32) & 0x1ff;
 			pEntry->G_ID = 63;
 			ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("%s: BFee P_AID addressed to STA=%d\n", __func__, pEntry->P_AID));
-		} else if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS)) {
+		} else if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS)) {
 			/*ad hoc mode*/
 			pEntry->P_AID = 0;
 			pEntry->G_ID = 63;
@@ -430,15 +430,15 @@ Beamforming_AddBFerEntry(
 
 	if (pEntry != NULL) {
 		pEntry->bUsed = TRUE;
-		ODM_MoveMemory(pDM_Odm, pEntry->MyMacAddr, pSTA->MyMacAddr, 6);
-		if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP)) {
+		rtl8188fu_ODM_MoveMemory(pDM_Odm, pEntry->MyMacAddr, pSTA->MyMacAddr, 6);
+		if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP)) {
 			/*BSSID[44:47] xor BSSID[40:43]*/
 			u2Byte BSSID = ((pSTA->MyMacAddr[5] & 0xf0) >> 4) ^ (pSTA->MyMacAddr[5] & 0xf);
 			
 			pEntry->P_AID = (pSTA->AID + BSSID * 32) & 0x1ff;
 			pEntry->G_ID = 63;
 			/*(dec(A) + dec(B)*32) mod 512*/
-		} else if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS)) {
+		} else if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS)) {
 			pEntry->P_AID = 0;
 			pEntry->G_ID = 63;
 		} else {
@@ -908,22 +908,22 @@ phydm_beamforming_StartPeriod(
 	phydm_Beamforming_SelectBeamEntry(pDM_Odm, pBeamInfo);		// Modified
 
 	if (pSoundInfo->SoundMode == SOUNDING_SW_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_SW_HT_TIMER)
-		ODM_SetTimer(pDM_Odm, &pBeamInfo->BeamformingTimer, pSoundInfo->SoundPeriod);
+		rtl8188fu_ODM_SetTimer(pDM_Odm, &pBeamInfo->BeamformingTimer, pSoundInfo->SoundPeriod);
 	else if (pSoundInfo->SoundMode == SOUNDING_HW_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_HW_HT_TIMER ||
 			pSoundInfo->SoundMode == SOUNDING_AUTO_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_AUTO_HT_TIMER) {
 		HAL_HW_TIMER_TYPE TimerType = HAL_TIMER_TXBF;
 		u4Byte	val = (pSoundInfo->SoundPeriod | (TimerType<<16));
 
 		//HW timer stop: All IC has the same setting
-		Adapter->HalFunc.SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_STOP,  (pu1Byte)(&TimerType));
-		//ODM_Write1Byte(pDM_Odm, 0x15F, 0);
+		Adapter->HalFunc.rtl8188fu_SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_STOP,  (pu1Byte)(&TimerType));
+		//rtl8188fu_ODM_Write1Byte(pDM_Odm, 0x15F, 0);
 		//HW timer init: All IC has the same setting, but 92E & 8812A only write 2 bytes
-		Adapter->HalFunc.SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_INIT,  (pu1Byte)(&val));
-		//ODM_Write1Byte(pDM_Odm, 0x164, 1);
-		//ODM_Write4Byte(pDM_Odm, 0x15C, val);
+		Adapter->HalFunc.rtl8188fu_SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_INIT,  (pu1Byte)(&val));
+		//rtl8188fu_ODM_Write1Byte(pDM_Odm, 0x164, 1);
+		//rtl8188fu_ODM_Write4Byte(pDM_Odm, 0x15C, val);
 		//HW timer start: All IC has the same setting
-		Adapter->HalFunc.SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_START,  (pu1Byte)(&TimerType));
-		//ODM_Write1Byte(pDM_Odm, 0x15F, 0x5);
+		Adapter->HalFunc.rtl8188fu_SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_START,  (pu1Byte)(&TimerType));
+		//rtl8188fu_ODM_Write1Byte(pDM_Odm, 0x15F, 0x5);
 	} else if (pSoundInfo->SoundMode == SOUNDING_FW_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_FW_HT_TIMER)
 		Ret = BeamformingStart_FW(pDM_Odm, pSoundInfo->SoundIdx);
 	else
@@ -954,12 +954,12 @@ phydm_beamforming_EndPeriod_SW(
 	ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("%s Start!\n", __func__));
 
 	if (pSoundInfo->SoundMode == SOUNDING_SW_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_SW_HT_TIMER)
-		ODM_CancelTimer(pDM_Odm, &pBeamInfo->BeamformingTimer);
+		rtl8188fu_ODM_CancelTimer(pDM_Odm, &pBeamInfo->BeamformingTimer);
 	else if (pSoundInfo->SoundMode == SOUNDING_HW_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_HW_HT_TIMER ||
 				pSoundInfo->SoundMode == SOUNDING_AUTO_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_AUTO_HT_TIMER)
 		/*HW timer stop: All IC has the same setting*/
-		Adapter->HalFunc.SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_STOP,  (pu1Byte)(&TimerType));
-		/*ODM_Write1Byte(pDM_Odm, 0x15F, 0);*/
+		Adapter->HalFunc.rtl8188fu_SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_STOP,  (pu1Byte)(&TimerType));
+		/*rtl8188fu_ODM_Write1Byte(pDM_Odm, 0x15F, 0);*/
 }
 
 VOID
@@ -1138,8 +1138,8 @@ phydm_Beamforming_Notify(
 		ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("%s: BEAMFORMEE_NOTIFY_ADD_MU\n", __func__));
 		if (pBeamInfo->beamformee_mu_cnt == 2) {
 			/*if (pSoundInfo->SoundMode == SOUNDING_SW_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_SW_HT_TIMER)
-				ODM_SetTimer(pDM_Odm, &pBeamInfo->BeamformingTimer, pSoundInfo->SoundPeriod);*/
-			ODM_SetTimer(pDM_Odm, &pBeamInfo->BeamformingTimer, 1000); /*Do MU sounding every 1sec*/
+				rtl8188fu_ODM_SetTimer(pDM_Odm, &pBeamInfo->BeamformingTimer, pSoundInfo->SoundPeriod);*/
+			rtl8188fu_ODM_SetTimer(pDM_Odm, &pBeamInfo->BeamformingTimer, 1000); /*Do MU sounding every 1sec*/
 		} else
 			ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("%s: Less or larger than 2 MU STAs, not to set timer\n", __func__));
 	break;
@@ -1148,7 +1148,7 @@ phydm_Beamforming_Notify(
 		ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("%s: BEAMFORMEE_NOTIFY_DELETE_MU\n", __func__));
 		if (pBeamInfo->beamformee_mu_cnt == 1) {
 			/*if (pSoundInfo->SoundMode == SOUNDING_SW_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_SW_HT_TIMER)*/{
-				ODM_CancelTimer(pDM_Odm, &pBeamInfo->BeamformingTimer);
+				rtl8188fu_ODM_CancelTimer(pDM_Odm, &pBeamInfo->BeamformingTimer);
 				ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("%s: Less than 2 MU STAs, stop sounding\n", __func__));
 			}
 		}
@@ -1232,7 +1232,7 @@ Beamforming_InitEntry(
 				NumofSoundingDim = (pSTA->CurBeamformVHT & BEAMFORMING_VHT_BEAMFORMEE_SOUND_DIM)>>12;
 			}
 			/* We are Beamformer because the STA is MU Beamformee*/
-			if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP)) { /* Only AP mode supports to act an MU beamformer */
+			if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP)) { /* Only AP mode supports to act an MU beamformer */
 				if (TEST_FLAG(pSTA->CurBeamformVHT, BEAMFORMING_VHT_MU_MIMO_STA_ENABLE) ||
 					TEST_FLAG(pSTA->VhtBeamformCap, BEAMFORMING_VHT_BEAMFORMER_TEST)) {
 					BeamformCap = (BEAMFORMING_CAP)(BeamformCap | BEAMFORMER_CAP_VHT_MU);
@@ -1682,10 +1682,10 @@ Beamforming_TimerCallback(
 
 	if ((pBeamInfo->beamformee_su_cnt != 0) || (pBeamInfo->beamformee_mu_cnt > 1)) {
 		if (pSoundInfo->SoundMode == SOUNDING_SW_VHT_TIMER || pSoundInfo->SoundMode == SOUNDING_SW_HT_TIMER)
-			ODM_SetTimer(pDM_Odm, &pBeamInfo->BeamformingTimer, pSoundInfo->SoundPeriod);
+			rtl8188fu_ODM_SetTimer(pDM_Odm, &pBeamInfo->BeamformingTimer, pSoundInfo->SoundPeriod);
 		else {
 			u4Byte	val = (pSoundInfo->SoundPeriod << 16) | HAL_TIMER_TXBF;
-			Adapter->HalFunc.SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_RESTART, (pu1Byte)(&val));
+			Adapter->HalFunc.rtl8188fu_SetHwRegHandler(Adapter, HW_VAR_HW_REG_TIMER_RESTART, (pu1Byte)(&val));
 		}
 	}
 }
@@ -1713,7 +1713,7 @@ Beamforming_SWTimerCallback(
 
 	if (Adapter->net_closed == TRUE)
 		return;
-	rtw_run_in_thread_cmd(Adapter, Beamforming_TimerCallback, Adapter);
+	rtl8188fu_rtw_run_in_thread_cmd(Adapter, Beamforming_TimerCallback, Adapter);
 #endif
 	
 }

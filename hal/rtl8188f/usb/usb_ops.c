@@ -42,7 +42,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 		/*secondary_myid = myid(&secondary_padapter->eeprompriv); */
 		secondary_myid = adapter_mac_addr(secondary_padapter);
 
-		if (_rtw_memcmp(paddr1, secondary_myid, ETH_ALEN)) {
+		if (rtl8188fu__rtw_memcmp(paddr1, secondary_myid, ETH_ALEN)) {
 			/*change to secondary interface */
 			precvframe->u.hdr.adapter = secondary_padapter;
 		}
@@ -54,13 +54,13 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 		_pkt	 *pkt_copy = NULL;
 		struct rx_pkt_attrib *pattrib = NULL;
 
-		precvframe_if2 = rtw_alloc_recvframe(pfree_recv_queue);
+		precvframe_if2 = rtl8188furtl8188fu__rtw_alloc_recvframe(pfree_recv_queue);
 
 		if (!precvframe_if2)
 			return _FAIL;
 
 		precvframe_if2->u.hdr.adapter = secondary_padapter;
-		_rtw_memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
+		rtl8188fu__rtw_memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
 		pattrib = &precvframe_if2->u.hdr.attrib;
 
 		/*driver need to set skb len for skb_copy(). */
@@ -71,14 +71,14 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 		if (pkt_copy == NULL) {
 			if ((pattrib->mfrag == 1) && (pattrib->frag_num == 0)) {
 				DBG_8192C("pre_recv_entry(): rtw_skb_copy fail , drop frag frame\n");
-				rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
+				rtl8188fu_rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 				return ret;
 			}
 
 			pkt_copy = rtw_skb_clone(precvframe->u.hdr.pkt);
 			if (pkt_copy == NULL) {
 				DBG_8192C("pre_recv_entry(): rtw_skb_clone fail , drop frame\n");
-				rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
+				rtl8188fu_rtw_free_recvframe(precvframe, &precvpriv->free_recv_queue);
 				return ret;
 			}
 		}
@@ -98,18 +98,18 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 			recvframe_pull_tail(precvframe_if2, IEEE80211_FCS_LEN);
 
 		if (pattrib->physt)
-			rx_query_phy_status(precvframe_if2, pphy_status);
+			rtl8188fu_rx_query_phy_status(precvframe_if2, pphy_status);
 
-		if (rtw_recv_entry(precvframe_if2) != _SUCCESS) {
+		if (rtl8188fu_rtw_recv_entry(precvframe_if2) != _SUCCESS) {
 			RT_TRACE(_module_rtl871x_recv_c_, _drv_err_,
-					 ("recvbuf2recvframe: rtw_recv_entry(precvframe) != _SUCCESS\n"));
+					 ("rtl8188fu_recvbuf2recvframe: rtl8188fu_rtw_recv_entry(precvframe) != _SUCCESS\n"));
 		}
 	}
 
 	/*if (precvframe->u.hdr.attrib.physt) */
-	/*	rx_query_phy_status(precvframe, pphy_status); */
+	/*	rtl8188fu_rx_query_phy_status(precvframe, pphy_status); */
 
-	/*ret = rtw_recv_entry(precvframe); */
+	/*ret = rtl8188fu_rtw_recv_entry(precvframe); */
 #endif
 
 	return ret;
@@ -138,7 +138,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 		/*primary_myid = myid(&primary_padapter->eeprompriv); */
 		secondary_myid = myid(&secondary_padapter->eeprompriv);
 
-		if (_rtw_memcmp(paddr1, secondary_myid, ETH_ALEN)) {
+		if (rtl8188fu__rtw_memcmp(paddr1, secondary_myid, ETH_ALEN)) {
 			/*change to secondary interface */
 			precvframe->u.hdr.adapter = secondary_padapter;
 		}
@@ -160,14 +160,14 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 				paddr3 = GetAddr3Ptr(precvframe->u.hdr.rx_data);
 
 				if (check_fwstate(&secondary_padapter->mlmepriv, _FW_LINKED) &&
-					_rtw_memcmp(paddr3, get_bssid(&secondary_padapter->mlmepriv), ETH_ALEN)) {
+					rtl8188fu__rtw_memcmp(paddr3, get_bssid(&secondary_padapter->mlmepriv), ETH_ALEN)) {
 					/*change to secondary interface */
 					precvframe->u.hdr.adapter = secondary_padapter;
 					clone = _FALSE;
 				}
 
 				if (check_fwstate(&primary_padapter->mlmepriv, _FW_LINKED) &&
-					_rtw_memcmp(paddr3, get_bssid(&primary_padapter->mlmepriv), ETH_ALEN)) {
+					rtl8188fu__rtw_memcmp(paddr3, get_bssid(&primary_padapter->mlmepriv), ETH_ALEN)) {
 					if (clone == _FALSE)
 						clone = _TRUE;
 					else
@@ -197,7 +197,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 
 			paddr2 = GetAddr2Ptr(precvframe->u.hdr.rx_data);
 
-			if (_rtw_memcmp(paddr2, get_bssid(&secondary_padapter->mlmepriv), ETH_ALEN)) {
+			if (rtl8188fu__rtw_memcmp(paddr2, get_bssid(&secondary_padapter->mlmepriv), ETH_ALEN)) {
 				/*change to secondary interface */
 				precvframe->u.hdr.adapter = secondary_padapter;
 				clone = _FALSE;
@@ -214,28 +214,28 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 			/*clone/copy to if2 */
 			struct rx_pkt_attrib *pattrib = NULL;
 
-			precvframe_if2 = rtw_alloc_recvframe(pfree_recv_queue);
+			precvframe_if2 = rtl8188furtl8188fu__rtw_alloc_recvframe(pfree_recv_queue);
 			if (precvframe_if2) {
 				precvframe_if2->u.hdr.adapter = secondary_padapter;
 
-				_rtw_init_listhead(&precvframe_if2->u.hdr.list);
+				rtl8188fu__rtw_init_listhead(&precvframe_if2->u.hdr.list);
 				precvframe_if2->u.hdr.precvbuf = NULL;	/*can't access the precvbuf for new arch. */
 				precvframe_if2->u.hdr.len = 0;
 
-				_rtw_memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
+				rtl8188fu__rtw_memcpy(&precvframe_if2->u.hdr.attrib, &precvframe->u.hdr.attrib, sizeof(struct rx_pkt_attrib));
 
 				pattrib = &precvframe_if2->u.hdr.attrib;
 
-				if (rtw_os_alloc_recvframe(secondary_padapter, precvframe_if2, pbuf, NULL) == _SUCCESS) {
+				if (rtl8188fu_rtw_os_alloc_recvframe(secondary_padapter, precvframe_if2, pbuf, NULL) == _SUCCESS) {
 					recvframe_put(precvframe_if2, pattrib->pkt_len);
 					/*recvframe_pull(precvframe_if2, drvinfo_sz + RXDESC_SIZE); */
 
 					if (pattrib->physt && pphy_status)
-						rx_query_phy_status(precvframe_if2, pphy_status);
+						rtl8188fu_rx_query_phy_status(precvframe_if2, pphy_status);
 
-					ret = rtw_recv_entry(precvframe_if2);
+					ret = rtl8188fu_rtw_recv_entry(precvframe_if2);
 				} else {
-					rtw_free_recvframe(precvframe_if2, pfree_recv_queue);
+					rtl8188fu_rtw_free_recvframe(precvframe_if2, pfree_recv_queue);
 					DBG_8192C("%s()-%d: alloc_skb() failed!\n", __func__, __LINE__);
 				}
 
@@ -245,9 +245,9 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 
 	}
 	/*if (precvframe->u.hdr.attrib.physt) */
-	/*	rx_query_phy_status(precvframe, pphy_status); */
+	/*	rtl8188fu_rx_query_phy_status(precvframe, pphy_status); */
 
-	/*ret = rtw_recv_entry(precvframe); */
+	/*ret = rtl8188fu_rtw_recv_entry(precvframe); */
 
 #endif
 
@@ -256,7 +256,7 @@ static s32 pre_recv_entry(union recv_frame *precvframe, u8 *pphy_status)
 }
 #endif
 
-int recvbuf2recvframe(PADAPTER padapter, void *ptr)
+int rtl8188fu_recvbuf2recvframe(PADAPTER padapter, void *ptr)
 {
 	u8 *pbuf;
 	u8 pkt_cnt = 0;
@@ -290,14 +290,14 @@ int recvbuf2recvframe(PADAPTER padapter, void *ptr)
 #endif
 
 	do {
-		precvframe = rtw_alloc_recvframe(pfree_recv_queue);
+		precvframe = rtl8188furtl8188fu__rtw_alloc_recvframe(pfree_recv_queue);
 		if (precvframe == NULL) {
-			DBG_8192C("%s: rtw_alloc_recvframe() failed! RX Drop!\n", __func__);
-			goto _exit_recvbuf2recvframe;
+			DBG_8192C("%s: rtl8188furtl8188fu__rtw_alloc_recvframe() failed! RX Drop!\n", __func__);
+			goto _exit_rtl8188fu_recvbuf2recvframe;
 		}
 
 		if (transfer_len > 1500)
-			_rtw_init_listhead(&precvframe->u.hdr.list);
+			rtl8188fu__rtw_init_listhead(&precvframe->u.hdr.list);
 		precvframe->u.hdr.precvbuf = NULL;	/*can't access the precvbuf for new arch. */
 		precvframe->u.hdr.len = 0;
 
@@ -309,8 +309,8 @@ int recvbuf2recvframe(PADAPTER padapter, void *ptr)
 			DBG_8192C("%s: RX Warning! crc_err=%d icv_err=%d, skip!\n",
 					  __func__, pattrib->crc_err, pattrib->icv_err);
 
-			rtw_free_recvframe(precvframe, pfree_recv_queue);
-			goto _exit_recvbuf2recvframe;
+			rtl8188fu_rtw_free_recvframe(precvframe, pfree_recv_queue);
+			goto _exit_rtl8188fu_recvbuf2recvframe;
 		}
 
 		pkt_offset = RXDESC_SIZE + pattrib->drvinfo_sz + pattrib->shift_sz + pattrib->pkt_len;
@@ -318,16 +318,16 @@ int recvbuf2recvframe(PADAPTER padapter, void *ptr)
 			DBG_8192C("%s: RX Error! pkt_len=%d pkt_offset=%d transfer_len=%d\n",
 					  __func__, pattrib->pkt_len, pkt_offset, transfer_len);
 
-			rtw_free_recvframe(precvframe, pfree_recv_queue);
-			goto _exit_recvbuf2recvframe;
+			rtl8188fu_rtw_free_recvframe(precvframe, pfree_recv_queue);
+			goto _exit_rtl8188fu_recvbuf2recvframe;
 		}
 
 		pdata = pbuf + RXDESC_SIZE + pattrib->drvinfo_sz + pattrib->shift_sz;
-		if (rtw_os_alloc_recvframe(padapter, precvframe, pdata, pskb) == _FAIL) {
-			DBG_8192C("%s: RX Error! rtw_os_alloc_recvframe FAIL!\n", __func__);
+		if (rtl8188fu_rtw_os_alloc_recvframe(padapter, precvframe, pdata, pskb) == _FAIL) {
+			DBG_8192C("%s: RX Error! rtl8188fu_rtw_os_alloc_recvframe FAIL!\n", __func__);
 
-			rtw_free_recvframe(precvframe, pfree_recv_queue);
-			goto _exit_recvbuf2recvframe;
+			rtl8188fu_rtw_free_recvframe(precvframe, pfree_recv_queue);
+			goto _exit_rtl8188fu_recvbuf2recvframe;
 		}
 
 		recvframe_put(precvframe, pattrib->pkt_len);
@@ -348,11 +348,11 @@ int recvbuf2recvframe(PADAPTER padapter, void *ptr)
 #endif /* CONFIG_CONCURRENT_MODE */
 
 			if (pphy_status)
-				rx_query_phy_status(precvframe, pphy_status);
+				rtl8188fu_rx_query_phy_status(precvframe, pphy_status);
 
-			if (rtw_recv_entry(precvframe) != _SUCCESS) {
+			if (rtl8188fu_rtw_recv_entry(precvframe) != _SUCCESS) {
 				/* Return fail except data frame */
-				/*DBG_8192C("%s: RX Error! rtw_recv_entry FAIL!\n", __func__); */
+				/*DBG_8192C("%s: RX Error! rtl8188fu_rtw_recv_entry FAIL!\n", __func__); */
 			}
 		} else {
 #ifdef CONFIG_C2H_PACKET_EN
@@ -363,7 +363,7 @@ int recvbuf2recvframe(PADAPTER padapter, void *ptr)
 						  __func__, pattrib->pkt_rpt_type);
 			}
 #endif /* CONFIG_C2H_PACKET_EN */
-			rtw_free_recvframe(precvframe, pfree_recv_queue);
+			rtl8188fu_rtw_free_recvframe(precvframe, pfree_recv_queue);
 		}
 
 #ifdef CONFIG_USB_RX_AGGREGATION
@@ -376,7 +376,7 @@ int recvbuf2recvframe(PADAPTER padapter, void *ptr)
 		precvframe = NULL;
 	} while (transfer_len > 0);
 
-_exit_recvbuf2recvframe:
+_exit_rtl8188fu_recvbuf2recvframe:
 
 	return _SUCCESS;
 }
@@ -394,7 +394,7 @@ void rtl8188fu_xmit_tasklet(void *priv)
 			break;
 		}
 
-		if (rtw_xmit_ac_blocked(padapter) == _TRUE)
+		if (rtl8188fu_rtw_xmit_ac_blocked(padapter) == _TRUE)
 			break;
 
 		ret = rtl8188fu_xmitframe_complete(padapter, pxmitpriv, NULL);
@@ -412,29 +412,29 @@ void rtl8188fu_set_intf_ops(struct _io_ops	*pops)
 {
 	_func_enter_;
 
-	_rtw_memset((u8 *)pops, 0, sizeof(struct _io_ops));
+	rtl8188fu__rtw_memset((u8 *)pops, 0, sizeof(struct _io_ops));
 
-	pops->_read8 = &usb_read8;
-	pops->_read16 = &usb_read16;
-	pops->_read32 = &usb_read32;
-	pops->_read_mem = &usb_read_mem;
-	pops->_read_port = &usb_read_port;
+	pops->_read8 = &rtl8188fu_usb_read8;
+	pops->_read16 = &rtl8188fu_usb_read16;
+	pops->_read32 = &rtl8188fu_usb_read32;
+	pops->_read_mem = &rtl8188fu_usb_read_mem;
+	pops->_read_port = &rtl8188fu_usb_read_port;
 
-	pops->_write8 = &usb_write8;
-	pops->_write16 = &usb_write16;
-	pops->_write32 = &usb_write32;
-	pops->_writeN = &usb_writeN;
+	pops->_write8 = &rtl8188fu_usb_write8;
+	pops->_write16 = &rtl8188fu_usb_write16;
+	pops->_write32 = &rtl8188fu_usb_write32;
+	pops->_writeN = &rtl8188fu_usb_writeN;
 
 #ifdef CONFIG_USB_SUPPORT_ASYNC_VDN_REQ
 	pops->_write8_async = &usb_async_write8;
 	pops->_write16_async = &usb_async_write16;
 	pops->_write32_async = &usb_async_write32;
 #endif
-	pops->_write_mem = &usb_write_mem;
-	pops->_write_port = &usb_write_port;
+	pops->_write_mem = &rtl8188fu_usb_write_mem;
+	pops->_write_port = &rtl8188fu_usb_write_port;
 
-	pops->_read_port_cancel = &usb_read_port_cancel;
-	pops->_write_port_cancel = &usb_write_port_cancel;
+	pops->_read_port_cancel = &rtl8188fu_usb_read_port_cancel;
+	pops->_write_port_cancel = &rtl8188fu_usb_write_port_cancel;
 
 	_func_exit_;
 

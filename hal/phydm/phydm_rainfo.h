@@ -220,7 +220,7 @@ typedef struct _ODM_RATE_ADAPTIVE {
 } ODM_RATE_ADAPTIVE, *PODM_RATE_ADAPTIVE;
 
 VOID
-ODM_C2HRaParaReportHandler(
+rtl8188fu_ODM_C2HRaParaReportHandler(
 	IN	PVOID	pDM_VOID,
 	IN pu1Byte   CmdBuf,
 	IN u1Byte   CmdLen
@@ -248,12 +248,12 @@ odm_RA_ParaAdjust(
 );
 
 VOID
-phydm_ra_dynamic_retry_count(
+rtl8188fu_phydm_ra_dynamic_retry_count(
 	IN	PVOID	pDM_VOID
 );
 
 VOID
-phydm_ra_dynamic_retry_limit(
+rtl8188fu_phydm_ra_dynamic_retry_limit(
 	IN	PVOID	pDM_VOID
 );
 
@@ -265,24 +265,24 @@ phydm_ra_dynamic_rate_id_on_assoc(
 );
 
 VOID
-phydm_c2h_ra_report_handler(
+rtl8188fu_phydm_c2h_ra_report_handler(
 	IN PVOID	pDM_VOID,
 	IN pu1Byte   CmdBuf,
 	IN u1Byte   CmdLen
 );
 
 VOID
-phydm_ra_info_init(
+rtl8188fu_phydm_ra_info_init(
 	IN	PVOID	pDM_VOID
 );
 
 VOID
-odm_RSSIMonitorInit(
+rtl8188fu_odm_RSSIMonitorInit(
 	IN	PVOID	pDM_VOID
 );
 
 VOID
-odm_RSSIMonitorCheck(
+rtl8188fu_odm_RSSIMonitorCheck(
 	IN	PVOID	pDM_VOID
 );
 
@@ -297,48 +297,48 @@ IN OUT	BOOLEAN	*pbLink_temp
 #endif
 
 VOID
-odm_RSSIMonitorCheckMP(
+rtl8188fu_odm_RSSIMonitorCheckMP(
 	IN	PVOID	pDM_VOID
 );
 
 VOID
-odm_RSSIMonitorCheckCE(
+rtl8188fu_odm_RSSIMonitorCheckCE(
 	IN	PVOID	pDM_VOID
 );
 
 VOID
-odm_RSSIMonitorCheckAP(
+rtl8188fu_odm_RSSIMonitorCheckAP(
 	IN	PVOID	pDM_VOID
 );
 
 
 VOID
-odm_RateAdaptiveMaskInit(
+rtl8188fu_odm_RateAdaptiveMaskInit(
 	IN 	PVOID	pDM_VOID
 );
 
 VOID
-odm_RefreshRateAdaptiveMask(
+rtl8188fu_odm_RefreshRateAdaptiveMask(
 	IN		PVOID		pDM_VOID
 );
 
 VOID
-odm_RefreshRateAdaptiveMaskMP(
+rtl8188fu_odm_RefreshRateAdaptiveMaskMP(
 	IN		PVOID		pDM_VOID
 );
 
 VOID
-odm_RefreshRateAdaptiveMaskCE(
+rtl8188fu_odm_RefreshRateAdaptiveMaskCE(
 	IN		PVOID		pDM_VOID
 );
 
 VOID
-odm_RefreshRateAdaptiveMaskAPADSL(
+rtl8188fu_odm_RefreshRateAdaptiveMaskAPADSL(
 	IN		PVOID		pDM_VOID
 );
 
 BOOLEAN
-ODM_RAStateCheck(
+rtl8188fu_ODM_RAStateCheck(
 	IN		PVOID		    pDM_VOID,
 	IN		s4Byte			RSSI,
 	IN		BOOLEAN			bForceUpdate,
@@ -346,25 +346,25 @@ ODM_RAStateCheck(
 );
 
 VOID
-odm_RefreshBasicRateMask(
+rtl8188fu_odm_RefreshBasicRateMask(
 	IN		PVOID		pDM_VOID
 );
 VOID
-ODM_RAPostActionOnAssoc(
+rtl8188fu_ODM_RAPostActionOnAssoc(
 	IN		PVOID	pDM_Odm
 );
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN | ODM_CE))
 
 u1Byte
-odm_Find_RTS_Rate(
+rtl8188fu_odm_Find_RTS_Rate(
 	IN	PVOID		pDM_VOID,
 	IN		u1Byte			Tx_Rate,
 	IN		BOOLEAN			bErpProtect
 );
 
 VOID
-ODM_UpdateNoisyState(
+rtl8188fu_ODM_UpdateNoisyState(
 	IN	PVOID		pDM_VOID,
 	IN	BOOLEAN		bNoisyStateFromC2H
 );
@@ -419,7 +419,7 @@ FindMinimumRSSI(
 );
 
 u8Byte
-PhyDM_Get_Rate_Bitmap_Ex(
+rtl8188fu_PhyDM_Get_Rate_Bitmap_Ex(
 	IN	PVOID		pDM_VOID,
 	IN	u4Byte		macid,
 	IN	u8Byte		ra_mask,
@@ -428,13 +428,13 @@ PhyDM_Get_Rate_Bitmap_Ex(
 	OUT		u1Byte	*dm_RteID
 );
 u4Byte
-ODM_Get_Rate_Bitmap(
+rtl8188fu_ODM_Get_Rate_Bitmap(
 	IN	PVOID	    pDM_VOID,
 	IN	u4Byte		macid,
 	IN	u4Byte 		ra_mask,
 	IN	u1Byte 		rssi_level
 );
-void phydm_ra_rssi_rpt_wk(PVOID pContext);
+void rtl8188fu_phydm_ra_rssi_rpt_wk(PVOID pContext);
 
 #endif/*#elif (DM_ODM_SUPPORT_TYPE == ODM_CE)*/
 

@@ -186,7 +186,7 @@ struct kfree_data_t {
 		s8 thermal;
 };
 
-bool kfree_data_is_bb_gain_empty(struct kfree_data_t *data);
+bool rtl8188fu_kfree_data_is_bb_gain_empty(struct kfree_data_t *data);
 
 struct hal_spec_t {
 	char *ic_name;
@@ -625,8 +625,8 @@ typedef struct hal_com_data HAL_DATA_TYPE, *PHAL_DATA_TYPE;
 #endif
 
 #ifdef CONFIG_AUTO_CHNL_SEL_NHM
-#define GET_ACS_STATE(padapter)					(ATOMIC_READ(&GET_HAL_DATA(padapter)->acs.state))
-#define SET_ACS_STATE(padapter, set_state)			(ATOMIC_SET(&GET_HAL_DATA(padapter)->acs.state, set_state))
+#define GET_ACS_STATE(padapter)					(rtl8188fu_ATOMIC_READ(&GET_HAL_DATA(padapter)->acs.state))
+#define SET_ACS_STATE(padapter, set_state)			(rtl8188fu_ATOMIC_SET(&GET_HAL_DATA(padapter)->acs.state, set_state))
 #define rtw_get_acs_channel(padapter)				(GET_HAL_DATA(padapter)->acs.ch)
 #define rtw_set_acs_channel(padapter, survey_ch)	(GET_HAL_DATA(padapter)->acs.ch = survey_ch)
 #endif /*CONFIG_AUTO_CHNL_SEL_NHM*/

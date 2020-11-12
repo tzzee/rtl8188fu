@@ -280,8 +280,8 @@ struct registry_priv
 	u8 enable80211d;
 #endif
 
-	u8 ifname[16];
-	u8 if2name[16];
+	u8 rtl8188fu_ifname[16];
+	u8 rtl8188fu_if2name[16];
 
 	u8 notch_filter;
 
@@ -428,7 +428,7 @@ struct rx_logs {
 	u32 core_rx_post_decrypt_unknown;
 	u32 core_rx_post_decrypt_err;
 	u32 core_rx_post_defrag_err;
-	u32 core_rx_post_portctrl_err;
+	u32 core_rx_post_rtl8188fu_portctrl_err;
 	u32 core_rx_post_indicate;
 	u32 core_rx_post_indicate_in_oder;
 	u32 core_rx_post_indicate_reoder;
@@ -664,7 +664,7 @@ struct rf_ctl_t {
 };
 
 #define RTW_CAC_STOPPED 0
-#define IS_UNDER_CAC(rfctl) ((rfctl)->cac_end_time > rtw_get_current_time())
+#define IS_UNDER_CAC(rfctl) ((rfctl)->cac_end_time > rtl8188fu_rtw_get_current_time())
 #define IS_CAC_STOPPED(rfctl) ((rfctl)->cac_end_time == RTW_CAC_STOPPED)
 
 struct dvobj_priv
@@ -875,7 +875,7 @@ static struct device *dvobj_to_dev(struct dvobj_priv *dvobj)
 }
 #endif
 
-_adapter *dvobj_get_port0_adapter(struct dvobj_priv *dvobj);
+_adapter *rtl8188fu_dvobj_get_port0_adapter(struct dvobj_priv *dvobj);
 
 enum _IFACE_TYPE {
 	IFACE_PORT0, //mapping to port0 for C/D series chips
@@ -1034,12 +1034,12 @@ struct _ADAPTER{
 
 #ifdef PLATFORM_LINUX
 	_nic_hdl pnetdev;
-	char old_ifname[IFNAMSIZ];
+	char old_rtl8188fu_ifname[IFNAMSIZ];
 
 	// used by rtw_rereg_nd_name related function
 	struct rereg_nd_name_data {
 		_nic_hdl old_pnetdev;
-		char old_ifname[IFNAMSIZ];
+		char old_rtl8188fu_ifname[IFNAMSIZ];
 		u8 old_ips_mode;
 		u8 old_bRegUseLed;
 	} rereg_nd_name_priv;
@@ -1186,22 +1186,22 @@ struct _ADAPTER{
 
 static inline void rtw_set_surprise_removed(_adapter *padapter)
 {
-	ATOMIC_SET(&adapter_to_dvobj(padapter)->bSurpriseRemoved, _TRUE);
+	rtl8188fu_ATOMIC_SET(&adapter_to_dvobj(padapter)->bSurpriseRemoved, _TRUE);
 }
 static inline void rtw_clr_surprise_removed(_adapter *padapter)
 {
-	ATOMIC_SET(&adapter_to_dvobj(padapter)->bSurpriseRemoved, _FALSE);
+	rtl8188fu_ATOMIC_SET(&adapter_to_dvobj(padapter)->bSurpriseRemoved, _FALSE);
 }
 static inline void rtw_set_drv_stopped(_adapter *padapter)
 {
-	ATOMIC_SET(&adapter_to_dvobj(padapter)->bDriverStopped, _TRUE);
+	rtl8188fu_ATOMIC_SET(&adapter_to_dvobj(padapter)->bDriverStopped, _TRUE);
 }
 static inline void rtw_clr_drv_stopped(_adapter *padapter)
 {
-	ATOMIC_SET(&adapter_to_dvobj(padapter)->bDriverStopped, _FALSE);
+	rtl8188fu_ATOMIC_SET(&adapter_to_dvobj(padapter)->bDriverStopped, _FALSE);
 }
-#define rtw_is_surprise_removed(padapter)	(ATOMIC_READ(&adapter_to_dvobj(padapter)->bSurpriseRemoved) == _TRUE)
-#define rtw_is_drv_stopped(padapter)		(ATOMIC_READ(&adapter_to_dvobj(padapter)->bDriverStopped) == _TRUE)
+#define rtw_is_surprise_removed(padapter)	(rtl8188fu_ATOMIC_READ(&adapter_to_dvobj(padapter)->bSurpriseRemoved) == _TRUE)
+#define rtw_is_drv_stopped(padapter)		(rtl8188fu_ATOMIC_READ(&adapter_to_dvobj(padapter)->bDriverStopped) == _TRUE)
 
 //
 // Function disabled.
@@ -1210,27 +1210,27 @@ static inline void rtw_clr_drv_stopped(_adapter *padapter)
 #define DF_RX_BIT		BIT1			/*read_port_cancel*/
 #define DF_IO_BIT		BIT2
 
-//#define RTW_DISABLE_FUNC(padapter, func) (ATOMIC_ADD(&adapter_to_dvobj(padapter)->disable_func, (func)))
-//#define RTW_ENABLE_FUNC(padapter, func) (ATOMIC_SUB(&adapter_to_dvobj(padapter)->disable_func, (func)))
+//#define RTW_DISABLE_FUNC(padapter, func) (rtl8188fu_ATOMIC_ADD(&adapter_to_dvobj(padapter)->disable_func, (func)))
+//#define RTW_ENABLE_FUNC(padapter, func) (rtl8188fu_ATOMIC_SUB(&adapter_to_dvobj(padapter)->disable_func, (func)))
 __inline static void RTW_DISABLE_FUNC(_adapter*padapter, int func_bit)
 {
-	int	df = ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func);
+	int	df = rtl8188fu_ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func);
 	df |= func_bit;
-	ATOMIC_SET(&adapter_to_dvobj(padapter)->disable_func, df);
+	rtl8188fu_ATOMIC_SET(&adapter_to_dvobj(padapter)->disable_func, df);
 }
 
 __inline static void RTW_ENABLE_FUNC(_adapter*padapter, int func_bit)
 {
-	int	df = ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func);
+	int	df = rtl8188fu_ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func);
 	df &= ~(func_bit);
-	ATOMIC_SET(&adapter_to_dvobj(padapter)->disable_func, df);
+	rtl8188fu_ATOMIC_SET(&adapter_to_dvobj(padapter)->disable_func, df);
 }
 
 #define RTW_CANNOT_RUN(padapter) \
 			(rtw_is_surprise_removed(padapter) || \
 				rtw_is_drv_stopped(padapter))
 
-#define RTW_IS_FUNC_DISABLED(padapter, func_bit) (ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func) & (func_bit))
+#define RTW_IS_FUNC_DISABLED(padapter, func_bit) (rtl8188fu_ATOMIC_READ(&adapter_to_dvobj(padapter)->disable_func) & (func_bit))
 
 #define RTW_CANNOT_IO(padapter) \
 			(rtw_is_surprise_removed(padapter) || \

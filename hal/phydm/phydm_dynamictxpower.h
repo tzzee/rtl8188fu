@@ -41,43 +41,43 @@
 #define		TxHighPwrLevel_100			9
 
 VOID 
-odm_DynamicTxPowerInit(
+rtl8188fu_odm_DynamicTxPowerInit(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID
-odm_DynamicTxPowerRestorePowerIndex(
+rtl8188fu_odm_DynamicTxPowerRestorePowerIndex(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID 
-odm_DynamicTxPowerNIC(
+rtl8188fu_odm_DynamicTxPowerNIC(
 	IN		PVOID					pDM_VOID
 	);
 
 #if(DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
 VOID
-odm_DynamicTxPowerSavePowerIndex(
+rtl8188fu_odm_DynamicTxPowerSavePowerIndex(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID
-odm_DynamicTxPowerWritePowerIndex(
+rtl8188fu_odm_DynamicTxPowerWritePowerIndex(
 	IN		PVOID					pDM_VOID, 
 	IN 	u1Byte		Value);
 
 VOID 
-odm_DynamicTxPower_92C(
+rtl8188fu_odm_DynamicTxPower_92C(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID 
-odm_DynamicTxPower_92D(
+rtl8188fu_odm_DynamicTxPower_92D(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID 
-odm_DynamicTxPower_8821(
+rtl8188fu_odm_DynamicTxPower_8821(
 	IN		PVOID					pDM_VOID,	
 	IN		pu1Byte					pDesc,
 	IN		u1Byte					macId
@@ -86,12 +86,12 @@ odm_DynamicTxPower_8821(
 #endif
 
 VOID 
-odm_DynamicTxPower(
+rtl8188fu_odm_DynamicTxPower(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID 
-odm_DynamicTxPowerAP(
+rtl8188fu_odm_DynamicTxPowerAP(
 	IN		PVOID					pDM_VOID
 	);
 

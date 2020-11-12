@@ -435,7 +435,7 @@ enum {
 	XMITBUF_CMD = 2,
 };
 
-bool rtw_xmit_ac_blocked(_adapter *adapter);
+bool rtl8188fu_rtw_xmit_ac_blocked(_adapter *adapter);
 
 struct  submit_ctx{
 	u32 submit_time; /* */
@@ -464,10 +464,10 @@ enum {
 };
 
 
-void rtw_sctx_init(struct submit_ctx *sctx, int timeout_ms);
-int rtw_sctx_wait(struct submit_ctx *sctx, const char *msg);
-void rtw_sctx_done_err(struct submit_ctx **sctx, int status);
-void rtw_sctx_done(struct submit_ctx **sctx);
+void rtl8188fu_rtw_sctx_init(struct submit_ctx *sctx, int timeout_ms);
+int rtl8188fu_rtw_sctx_wait(struct submit_ctx *sctx, const char *msg);
+void rtl8188fu_rtw_sctx_done_err(struct submit_ctx **sctx, int status);
+void rtl8188fu_rtw_sctx_done(struct submit_ctx **sctx);
 
 struct xmit_buf
 {
@@ -630,7 +630,7 @@ enum cmdbuf_type {
 	CMDBUF_MAX
 };
 
-u8 rtw_get_hwseq_no(_adapter *padapter);
+u8 rtl8188fu_rtw_get_hwseq_no(_adapter *padapter);
 
 struct	xmit_priv	{
 
@@ -765,81 +765,81 @@ struct	xmit_priv	{
 	_lock lock_sctx;
 };
 
-extern struct xmit_frame *__rtw_alloc_cmdxmitframe(struct xmit_priv *pxmitpriv,
+extern struct xmit_frame *rtl8188fu___rtw_alloc_cmdxmitframe(struct xmit_priv *pxmitpriv,
 		enum cmdbuf_type buf_type);
-#define rtw_alloc_cmdxmitframe(p) __rtw_alloc_cmdxmitframe(p, CMDBUF_RSVD)
+#define rtw_alloc_cmdxmitframe(p) rtl8188fu___rtw_alloc_cmdxmitframe(p, CMDBUF_RSVD)
 #if defined(CONFIG_RTL8192E) && defined(CONFIG_PCI_HCI) 
-extern struct xmit_frame *__rtw_alloc_cmdxmitframe_8192ee(struct xmit_priv *pxmitpriv,
+extern struct xmit_frame *rtl8188fu___rtw_alloc_cmdxmitframe_8192ee(struct xmit_priv *pxmitpriv,
 		enum cmdbuf_type buf_type);
-#define rtw_alloc_bcnxmitframe(p) __rtw_alloc_cmdxmitframe_8192ee(p, CMDBUF_BEACON)
+#define rtw_alloc_bcnxmitframe(p) rtl8188fu___rtw_alloc_cmdxmitframe_8192ee(p, CMDBUF_BEACON)
 #else
-#define rtw_alloc_bcnxmitframe(p) __rtw_alloc_cmdxmitframe(p, CMDBUF_BEACON)
+#define rtw_alloc_bcnxmitframe(p) rtl8188fu___rtw_alloc_cmdxmitframe(p, CMDBUF_BEACON)
 #endif
 
-extern struct xmit_buf *rtw_alloc_xmitbuf_ext(struct xmit_priv *pxmitpriv);
-extern s32 rtw_free_xmitbuf_ext(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
+extern struct xmit_buf *rtl8188fu_rtw_alloc_xmitbuf_ext(struct xmit_priv *pxmitpriv);
+extern s32 rtl8188fu_rtw_free_xmitbuf_ext(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 
-extern struct xmit_buf *rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv);
-extern s32 rtw_free_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
+extern struct xmit_buf *rtl8188fu_rtw_alloc_xmitbuf(struct xmit_priv *pxmitpriv);
+extern s32 rtl8188fu_rtw_free_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
 
-void rtw_count_tx_stats(_adapter *padapter, struct xmit_frame *pxmitframe, int sz);
-extern void rtw_update_protection(_adapter *padapter, u8 *ie, uint ie_len);
+void rtl8188fu_rtw_count_tx_stats(_adapter *padapter, struct xmit_frame *pxmitframe, int sz);
+extern void rtl8188fu_rtw_update_protection(_adapter *padapter, u8 *ie, uint ie_len);
 static s32 update_attrib_sec_info(_adapter *padapter, struct pkt_attrib *pattrib, struct sta_info *psta);
 static void update_attrib_phy_info(_adapter *padapter, struct pkt_attrib *pattrib, struct sta_info *psta);
-extern s32 rtw_make_wlanhdr(_adapter *padapter, u8 *hdr, struct pkt_attrib *pattrib);
-extern s32 rtw_put_snap(u8 *data, u16 h_proto);
+extern s32 rtl8188fu_rtw_make_wlanhdr(_adapter *padapter, u8 *hdr, struct pkt_attrib *pattrib);
+extern s32 rtl8188fu_rtw_put_snap(u8 *data, u16 h_proto);
 
-extern struct xmit_frame *rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv);
-struct xmit_frame *rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv);
-struct xmit_frame *rtw_alloc_xmitframe_once(struct xmit_priv *pxmitpriv);
-extern s32 rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitframe);
-extern void rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, _queue *pframequeue);
-struct tx_servq *rtw_get_sta_pending(_adapter *padapter, struct sta_info *psta, sint up, u8 *ac);
-extern s32 rtw_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
-extern struct xmit_frame* rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmit *phwxmit_i, sint entry);
+extern struct xmit_frame *rtl8188fu_rtw_alloc_xmitframe(struct xmit_priv *pxmitpriv);
+struct xmit_frame *rtl8188fu_rtw_alloc_xmitframe_ext(struct xmit_priv *pxmitpriv);
+struct xmit_frame *rtl8188fu_rtw_alloc_xmitframe_once(struct xmit_priv *pxmitpriv);
+extern s32 rtl8188fu_rtw_free_xmitframe(struct xmit_priv *pxmitpriv, struct xmit_frame *pxmitframe);
+extern void rtl8188fu_rtw_free_xmitframe_queue(struct xmit_priv *pxmitpriv, _queue *pframequeue);
+struct tx_servq *rtl8188fu_rtw_get_sta_pending(_adapter *padapter, struct sta_info *psta, sint up, u8 *ac);
+extern s32 rtl8188fu_rtw_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmitframe);
+extern struct xmit_frame* rtl8188fu_rtw_dequeue_xframe(struct xmit_priv *pxmitpriv, struct hw_xmit *phwxmit_i, sint entry);
 
-extern s32 rtw_xmit_classifier(_adapter *padapter, struct xmit_frame *pxmitframe);
-extern u32 rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib);
-#define rtw_wlan_pkt_size(f) rtw_calculate_wlan_pkt_size_by_attribue(&f->attrib)
-extern s32 rtw_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxmitframe);
+extern s32 rtl8188fu_rtw_xmit_classifier(_adapter *padapter, struct xmit_frame *pxmitframe);
+extern u32 rtl8188fu_rtw_calculate_wlan_pkt_size_by_attribue(struct pkt_attrib *pattrib);
+#define rtw_wlan_pkt_size(f) rtl8188fu_rtw_calculate_wlan_pkt_size_by_attribue(&f->attrib)
+extern s32 rtl8188fu_rtw_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxmitframe);
 #ifdef CONFIG_IEEE80211W
 extern s32 rtw_mgmt_xmitframe_coalesce(_adapter *padapter, _pkt *pkt, struct xmit_frame *pxmitframe);
 #endif //CONFIG_IEEE80211W
 #ifdef CONFIG_TDLS
 extern struct tdls_txmgmt *ptxmgmt;
-s32 rtw_xmit_tdls_coalesce(_adapter *padapter, struct xmit_frame *pxmitframe, struct tdls_txmgmt *ptxmgmt);
+s32 rtl8188fu_rtw_xmit_tdls_coalesce(_adapter *padapter, struct xmit_frame *pxmitframe, struct tdls_txmgmt *ptxmgmt);
 s32 update_tdls_attrib(_adapter *padapter, struct pkt_attrib *pattrib);
 #endif
 s32 _rtw_init_hw_txqueue(struct hw_txqueue* phw_txqueue, u8 ac_tag);
-void _rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
+void rtl8188fu__rtw_init_sta_xmit_priv(struct sta_xmit_priv *psta_xmitpriv);
 
 
-s32 rtw_txframes_pending(_adapter *padapter);
-s32 rtw_txframes_sta_ac_pending(_adapter *padapter, struct pkt_attrib *pattrib);
-void rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry);
+s32 rtl8188fu_rtw_txframes_pending(_adapter *padapter);
+s32 rtl8188fu_rtw_txframes_sta_ac_pending(_adapter *padapter, struct pkt_attrib *pattrib);
+void rtl8188fu_rtw_init_hwxmits(struct hw_xmit *phwxmit, sint entry);
 
 
-s32 _rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, _adapter *padapter);
-void _rtw_free_xmit_priv (struct xmit_priv *pxmitpriv);
+s32 rtl8188fu__rtw_init_xmit_priv(struct xmit_priv *pxmitpriv, _adapter *padapter);
+void rtl8188fu__rtw_free_xmit_priv (struct xmit_priv *pxmitpriv);
 
 
-void rtw_alloc_hwxmits(_adapter *padapter);
-void rtw_free_hwxmits(_adapter *padapter);
+void rtl8188fu_rtw_alloc_hwxmits(_adapter *padapter);
+void rtl8188fu_rtw_free_hwxmits(_adapter *padapter);
 
-s32 rtw_monitor_xmit_entry(struct sk_buff *skb, struct net_device *ndev);
+s32 rtl8188fu_rtw_monitor_xmit_entry(struct sk_buff *skb, struct net_device *ndev);
 
-s32 rtw_xmit(_adapter *padapter, _pkt **pkt);
-bool xmitframe_hiq_filter(struct xmit_frame *xmitframe);
+s32 rtl8188fu_rtw_xmit(_adapter *padapter, _pkt **pkt);
+bool rtl8188fu_xmitframe_hiq_filter(struct xmit_frame *xmitframe);
 #if defined(CONFIG_AP_MODE) || defined(CONFIG_TDLS)
-sint xmitframe_enqueue_for_sleeping_sta(_adapter *padapter, struct xmit_frame *pxmitframe);
-void stop_sta_xmit(_adapter *padapter, struct sta_info *psta);
-void wakeup_sta_to_xmit(_adapter *padapter, struct sta_info *psta);
-void xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta);
+sint rtl8188fu_xmitframe_enqueue_for_sleeping_sta(_adapter *padapter, struct xmit_frame *pxmitframe);
+void rtl8188fu_stop_sta_xmit(_adapter *padapter, struct sta_info *psta);
+void rtl8188fu_wakeup_sta_to_xmit(_adapter *padapter, struct sta_info *psta);
+void rtl8188fu_xmit_delivery_enabled_frames(_adapter *padapter, struct sta_info *psta);
 #endif
 
-u8	query_ra_short_GI(struct sta_info *psta);
+u8	rtl8188fu_query_ra_short_GI(struct sta_info *psta);
 
-u8	qos_acm(u8 acm_mask, u8 priority);
+u8	rtl8188fu_qos_acm(u8 acm_mask, u8 priority);
 
 #ifdef CONFIG_XMIT_THREAD_MODE
 void	enqueue_pending_xmitbuf(struct xmit_priv *pxmitpriv, struct xmit_buf *pxmitbuf);
@@ -847,15 +847,15 @@ void enqueue_pending_xmitbuf_to_head(struct xmit_priv *pxmitpriv, struct xmit_bu
 struct xmit_buf*	dequeue_pending_xmitbuf(struct xmit_priv *pxmitpriv);
 struct xmit_buf*	dequeue_pending_xmitbuf_under_survey(struct xmit_priv *pxmitpriv);
 sint	check_pending_xmitbuf(struct xmit_priv *pxmitpriv);
-thread_return	rtw_xmit_thread(thread_context context);
+thread_return	rtl8188fu_rtw_xmit_thread(thread_context context);
 #endif
 
 static void do_queue_select(_adapter * padapter, struct pkt_attrib * pattrib);
-u32	rtw_get_ff_hwaddr(struct xmit_frame	*pxmitframe);
+u32	rtl8188fu_rtw_get_ff_hwaddr(struct xmit_frame	*pxmitframe);
 
 #ifdef CONFIG_XMIT_ACK
-int rtw_ack_tx_wait(struct xmit_priv *pxmitpriv, u32 timeout_ms);
-void rtw_ack_tx_done(struct xmit_priv *pxmitpriv, int status);
+int rtl8188fu_rtw_ack_tx_wait(struct xmit_priv *pxmitpriv, u32 timeout_ms);
+void rtl8188fu_rtw_ack_tx_done(struct xmit_priv *pxmitpriv, int status);
 #endif //CONFIG_XMIT_ACK
 
 

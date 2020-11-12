@@ -35,96 +35,96 @@ MODULE_AUTHOR("Realtek Semiconductor Corp.");
 MODULE_VERSION(DRIVERVERSION);
 
 /* module param defaults */
-int rtw_chip_version = 0x00;
-int rtw_rfintfs = HWPI;
-int rtw_lbkmode = 0;//RTL8712_AIR_TRX;
+int rtl8188fu_rtw_chip_version = 0x00;
+int rtl8188fu_rtw_rfintfs = HWPI;
+int rtl8188fu_rtw_lbkmode = 0;//RTL8712_AIR_TRX;
 
 
-int rtw_network_mode = Ndis802_11IBSS;//Ndis802_11Infrastructure;//infra, ad-hoc, auto
+int rtl8188fu_rtw_network_mode = Ndis802_11IBSS;//Ndis802_11Infrastructure;//infra, ad-hoc, auto
 //NDIS_802_11_SSID	ssid;
-int rtw_channel = 1;//ad-hoc support requirement
-int rtw_wireless_mode = WIRELESS_MODE_MAX;
-int rtw_vrtl_carrier_sense = AUTO_VCS;
-int rtw_vcs_type = RTS_CTS;//*
-int rtw_rts_thresh = 2347;//*
-int rtw_frag_thresh = 2346;//*
-int rtw_preamble = PREAMBLE_LONG;//long, short, auto
-int rtw_scan_mode = 1;//active, passive
-int rtw_adhoc_tx_pwr = 1;
-int rtw_soft_ap = 0;
+int rtl8188fu_rtw_channel = 1;//ad-hoc support requirement
+int rtl8188fu_rtw_wireless_mode = WIRELESS_MODE_MAX;
+int rtl8188fu_rtw_vrtl_carrier_sense = AUTO_VCS;
+int rtl8188fu_rtw_vcs_type = RTS_CTS;//*
+int rtl8188fu_rtw_rts_thresh = 2347;//*
+int rtl8188fu_rtw_frag_thresh = 2346;//*
+int rtl8188fu_rtw_preamble = PREAMBLE_LONG;//long, short, auto
+int rtl8188fu_rtw_scan_mode = 1;//active, passive
+int rtl8188fu_rtw_adhoc_tx_pwr = 1;
+int rtl8188fu_rtw_soft_ap = 0;
 //int smart_ps = 1;
 #ifdef CONFIG_POWER_SAVING
-int rtw_power_mgnt = PS_MODE_MAX;
+int rtl8188fu_rtw_power_mgnt = PS_MODE_MAX;
 #ifdef CONFIG_IPS_LEVEL_2
-int rtw_ips_mode = IPS_LEVEL_2;
+int rtl8188fu_rtw_ips_mode = IPS_LEVEL_2;
 #else
-int rtw_ips_mode = IPS_NORMAL;
+int rtl8188fu_rtw_ips_mode = IPS_NORMAL;
 #endif
 #else
-int rtw_power_mgnt = PS_MODE_ACTIVE;
-int rtw_ips_mode = IPS_NONE;
+int rtl8188fu_rtw_power_mgnt = PS_MODE_ACTIVE;
+int rtl8188fu_rtw_ips_mode = IPS_NONE;
 #endif
-module_param(rtw_ips_mode, int, 0644);
-MODULE_PARM_DESC(rtw_ips_mode,"The default IPS mode");
+module_param(rtl8188fu_rtw_ips_mode, int, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_ips_mode,"The default IPS mode");
 
-int rtw_smart_ps = 2;
+int rtl8188fu_rtw_smart_ps = 2;
 
-int rtw_check_fw_ps = 1;
+int rtl8188fu_rtw_check_fw_ps = 1;
 
 #ifdef CONFIG_TX_EARLY_MODE
 int rtw_early_mode=1;
 #endif
 
-int rtw_usb_rxagg_mode = 2;//USB_RX_AGG_DMA =1,USB_RX_AGG_USB=2
-module_param(rtw_usb_rxagg_mode, int, 0644);
+int rtl8188fu_rtw_usb_rxagg_mode = 2;//USB_RX_AGG_DMA =1,USB_RX_AGG_USB=2
+module_param(rtl8188fu_rtw_usb_rxagg_mode, int, 0644);
 
-int rtw_radio_enable = 1;
-int rtw_long_retry_lmt = 7;
-int rtw_short_retry_lmt = 7;
-int rtw_busy_thresh = 40;
+int rtl8188fu_rtw_radio_enable = 1;
+int rtl8188fu_rtw_long_retry_lmt = 7;
+int rtl8188fu_rtw_short_retry_lmt = 7;
+int rtl8188fu_rtw_busy_thresh = 40;
 //int qos_enable = 0; //*
-int rtw_ack_policy = NORMAL_ACK;
+int rtl8188fu_rtw_ack_policy = NORMAL_ACK;
 
-int rtw_software_encrypt = 0;
-int rtw_software_decrypt = 0;
+int rtl8188fu_rtw_software_encrypt = 0;
+int rtl8188fu_rtw_software_decrypt = 0;
 
-int rtw_acm_method = 0;// 0:By SW 1:By HW.
+int rtl8188fu_rtw_acm_method = 0;// 0:By SW 1:By HW.
 
-int rtw_wmm_enable = 1;// default is set to enable the wmm.
-int rtw_uapsd_enable = 0;
-int rtw_uapsd_max_sp = NO_LIMIT;
-int rtw_uapsd_acbk_en = 0;
-int rtw_uapsd_acbe_en = 0;
-int rtw_uapsd_acvi_en = 0;
-int rtw_uapsd_acvo_en = 0;
+int rtl8188fu_rtw_wmm_enable = 1;// default is set to enable the wmm.
+int rtl8188fu_rtw_uapsd_enable = 0;
+int rtl8188fu_rtw_uapsd_max_sp = NO_LIMIT;
+int rtl8188fu_rtw_uapsd_acbk_en = 0;
+int rtl8188fu_rtw_uapsd_acbe_en = 0;
+int rtl8188fu_rtw_uapsd_acvi_en = 0;
+int rtl8188fu_rtw_uapsd_acvo_en = 0;
 #ifdef CONFIG_RTL8814A
-int rtw_pwrtrim_enable = 2; /* disable kfree , rename to power trim disable */
+int rtl8188fu_rtw_pwrtrim_enable = 2; /* disable kfree , rename to power trim disable */
 #else
-int rtw_pwrtrim_enable = 0; /* Default Enalbe  power trim by efuse config */
+int rtl8188fu_rtw_pwrtrim_enable = 0; /* Default Enalbe  power trim by efuse config */
 #endif
 #ifdef CONFIG_80211N_HT
-int rtw_ht_enable = 1;
+int rtl8188fu_rtw_ht_enable = 1;
 // 0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160MHz, 4: 80+80MHz
 // 2.4G use bit 0 ~ 3, 5G use bit 4 ~ 7
 // 0x21 means enable 2.4G 40MHz & 5G 80MHz
-int rtw_bw_mode = 0x21;
-int rtw_ampdu_enable = 1;//for enable tx_ampdu ,// 0: disable, 0x1:enable
-int rtw_rx_stbc = 1;// 0: disable, bit(0):enable 2.4g, bit(1):enable 5g, default is set to enable 2.4GHZ for IOT issue with bufflao's AP at 5GHZ
-int rtw_ampdu_amsdu = 0;// 0: disabled, 1:enabled, 2:auto . There is an IOT issu with DLINK DIR-629 when the flag turn on
+int rtl8188fu_rtw_bw_mode = 0x21;
+int rtl8188fu_rtw_ampdu_enable = 1;//for enable tx_ampdu ,// 0: disable, 0x1:enable
+int rtl8188fu_rtw_rx_stbc = 1;// 0: disable, bit(0):enable 2.4g, bit(1):enable 5g, default is set to enable 2.4GHZ for IOT issue with bufflao's AP at 5GHZ
+int rtl8188fu_rtw_ampdu_amsdu = 0;// 0: disabled, 1:enabled, 2:auto . There is an IOT issu with DLINK DIR-629 when the flag turn on
 // Short GI support Bit Map
 // BIT0 - 20MHz, 0: non-support, 1: support
 // BIT1 - 40MHz, 0: non-support, 1: support
 // BIT2 - 80MHz, 0: non-support, 1: support
 // BIT3 - 160MHz, 0: non-support, 1: support
-int rtw_short_gi = 0xf;
+int rtl8188fu_rtw_short_gi = 0xf;
 // BIT0: Enable VHT LDPC Rx, BIT1: Enable VHT LDPC Tx, BIT4: Enable HT LDPC Rx, BIT5: Enable HT LDPC Tx
-int rtw_ldpc_cap = 0x00;
+int rtl8188fu_rtw_ldpc_cap = 0x00;
 // BIT0: Enable VHT STBC Rx, BIT1: Enable VHT STBC Tx, BIT4: Enable HT STBC Rx, BIT5: Enable HT STBC Tx
-int rtw_stbc_cap = 0x13;
+int rtl8188fu_rtw_stbc_cap = 0x13;
 // BIT0: Enable VHT Beamformer, BIT1: Enable VHT Beamformee, BIT4: Enable HT Beamformer, BIT5: Enable HT Beamformee
-int rtw_beamform_cap = 0x2;
-int rtw_bfer_rf_number = 0; /*BeamformerCapRfNum Rf path number, 0 for auto, others for manual*/
-int rtw_bfee_rf_number = 0; /*BeamformeeCapRfNum  Rf path number, 0 for auto, others for manual*/
+int rtl8188fu_rtw_beamform_cap = 0x2;
+int rtl8188fu_rtw_bfer_rf_number = 0; /*BeamformerCapRfNum Rf path number, 0 for auto, others for manual*/
+int rtl8188fu_rtw_bfee_rf_number = 0; /*BeamformeeCapRfNum  Rf path number, 0 for auto, others for manual*/
 
 #endif //CONFIG_80211N_HT
 
@@ -134,70 +134,70 @@ int rtw_ampdu_factor = 7;
 int rtw_vht_rate_sel = 0;
 #endif //CONFIG_80211AC_VHT
 
-int rtw_lowrate_two_xmit = 1;//Use 2 path Tx to transmit MCS0~7 and legacy mode
+int rtl8188fu_rtw_lowrate_two_xmit = 1;//Use 2 path Tx to transmit MCS0~7 and legacy mode
 
 //int rf_config = RF_1T2R;  // 1T2R
-int rtw_rf_config = RF_MAX_TYPE;  //auto
+int rtl8188fu_rtw_rf_config = RF_MAX_TYPE;  //auto
 
-int rtw_low_power = 0;
+int rtl8188fu_rtw_low_power = 0;
 #ifdef CONFIG_WIFI_TEST
-int rtw_wifi_spec = 1;//for wifi test
+int rtl8188fu_rtw_wifi_spec = 1;//for wifi test
 #else
-int rtw_wifi_spec = 0;
+int rtl8188fu_rtw_wifi_spec = 0;
 #endif
 
-int rtw_special_rf_path = 0; //0: 2T2R ,1: only turn on path A 1T1R
+int rtl8188fu_rtw_special_rf_path = 0; //0: 2T2R ,1: only turn on path A 1T1R
 
-char rtw_country_unspecified[] = {0xFF, 0xFF, 0x00};
-char *rtw_country_code = rtw_country_unspecified;
-module_param(rtw_country_code, charp, 0644);
-MODULE_PARM_DESC(rtw_country_code, "The default country code (in alpha2)");
+char rtl8188fu_rtw_country_unspecified[] = {0xFF, 0xFF, 0x00};
+char *rtl8188fu_rtw_country_code = rtl8188fu_rtw_country_unspecified;
+module_param(rtl8188fu_rtw_country_code, charp, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_country_code, "The default country code (in alpha2)");
 
-int rtw_channel_plan = RTW_CHPLAN_MAX;
-module_param(rtw_channel_plan, int, 0644);
-MODULE_PARM_DESC(rtw_channel_plan, "The default chplan ID when rtw_alpha2 is not specified or valid");
+int rtl8188fu_rtw_channel_plan = RTW_CHPLAN_MAX;
+module_param(rtl8188fu_rtw_channel_plan, int, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_channel_plan, "The default chplan ID when rtw_alpha2 is not specified or valid");
 
 /*if concurrent softap + p2p(GO) is needed, this param lets p2p response full channel list.
 But Softap must be SHUT DOWN once P2P decide to set up connection and become a GO.*/
 #ifdef CONFIG_FULL_CH_IN_P2P_HANDSHAKE
-int rtw_full_ch_in_p2p_handshake = 1; /* reply full channel list*/
+int rtl8188fu_rtw_full_ch_in_p2p_handshake = 1; /* reply full channel list*/
 #else
-int rtw_full_ch_in_p2p_handshake = 0; /* reply only softap channel*/
+int rtl8188fu_rtw_full_ch_in_p2p_handshake = 0; /* reply only softap channel*/
 #endif
 
-int rtw_AcceptAddbaReq = _TRUE;// 0:Reject AP's Add BA req, 1:Accept AP's Add BA req.
+int rtl8188fu_rtw_AcceptAddbaReq = _TRUE;// 0:Reject AP's Add BA req, 1:Accept AP's Add BA req.
 
-int rtw_antdiv_cfg = 2; // 0:OFF , 1:ON, 2:decide by Efuse config
-int rtw_antdiv_type = 0 ; //0:decide by efuse  1: for 88EE, 1Tx and 1RxCG are diversity.(2 Ant with SPDT), 2:  for 88EE, 1Tx and 2Rx are diversity.( 2 Ant, Tx and RxCG are both on aux port, RxCS is on main port ), 3: for 88EE, 1Tx and 1RxCG are fixed.(1Ant, Tx and RxCG are both on aux port)
+int rtl8188fu_rtw_antdiv_cfg = 2; // 0:OFF , 1:ON, 2:decide by Efuse config
+int rtl8188fu_rtw_antdiv_type = 0 ; //0:decide by efuse  1: for 88EE, 1Tx and 1RxCG are diversity.(2 Ant with SPDT), 2:  for 88EE, 1Tx and 2Rx are diversity.( 2 Ant, Tx and RxCG are both on aux port, RxCS is on main port ), 3: for 88EE, 1Tx and 1RxCG are fixed.(1Ant, Tx and RxCG are both on aux port)
 
 int rtw_switch_usb3 = _FALSE; /* _FALSE: doesn't switch, _TRUE: switch from usb2.0 to usb 3.0 */
 
 #ifdef CONFIG_USB_AUTOSUSPEND
-int rtw_enusbss = 1;//0:disable,1:enable
+int rtl8188fu_rtw_enusbss = 1;//0:disable,1:enable
 #else
-int rtw_enusbss = 0;//0:disable,1:enable
+int rtl8188fu_rtw_enusbss = 0;//0:disable,1:enable
 #endif
 
-int rtw_hwpdn_mode=2;//0:disable,1:enable,2: by EFUSE config
+int rtl8188fu_rtw_hwpdn_mode=2;//0:disable,1:enable,2: by EFUSE config
 
 #ifdef CONFIG_HW_PWRP_DETECTION
-int rtw_hwpwrp_detect = 1;
+int rtl8188fu_rtw_hwpwrp_detect = 1;
 #else
-int rtw_hwpwrp_detect = 0; //HW power  ping detect 0:disable , 1:enable
+int rtl8188fu_rtw_hwpwrp_detect = 0; //HW power  ping detect 0:disable , 1:enable
 #endif
 
 #ifdef CONFIG_USB_HCI
-int rtw_hw_wps_pbc = 1;
+int rtl8188fu_rtw_hw_wps_pbc = 1;
 #else
-int rtw_hw_wps_pbc = 0;
+int rtl8188fu_rtw_hw_wps_pbc = 0;
 #endif
 
 #ifdef CONFIG_TX_MCAST2UNI
-int rtw_mc2u_disable = 0;
+int rtl8188fu_rtw_mc2u_disable = 0;
 #endif	// CONFIG_TX_MCAST2UNI
 
 #ifdef CONFIG_80211D
-int rtw_80211d = 0;
+int rtl8188fu_rtw_80211d = 0;
 #endif
 
 #ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
@@ -208,11 +208,11 @@ module_param(rtw_force_igi, int, 0644);
 #endif
 
 #ifdef CONFIG_QOS_OPTIMIZATION
-int rtw_qos_opt_enable=1;//0: disable,1:enable
+int rtl8188fu_rtw_qos_opt_enable=1;//0: disable,1:enable
 #else
-int rtw_qos_opt_enable=0;//0: disable,1:enable
+int rtl8188fu_rtw_qos_opt_enable=0;//0: disable,1:enable
 #endif
-module_param(rtw_qos_opt_enable,int,0644);
+module_param(rtl8188fu_rtw_qos_opt_enable,int,0644);
 
 #ifdef CONFIG_AUTO_CHNL_SEL_NHM
 int rtw_acs_mode = 1; /*0:disable, 1:enable*/
@@ -223,70 +223,70 @@ module_param(rtw_acs_auto_scan, int, 0644);
 
 #endif
 
-char* ifname = "wlan%d";
-module_param(ifname, charp, 0644);
-MODULE_PARM_DESC(ifname, "The default name to allocate for first interface");
+char* rtl8188fu_ifname = "wlan%d";
+module_param(rtl8188fu_ifname, charp, 0644);
+MODULE_PARM_DESC(rtl8188fu_ifname, "The default name to allocate for first interface");
 
 #ifdef CONFIG_PLATFORM_ANDROID
-char* if2name = "p2p%d";
+char* rtl8188fu_if2name = "p2p%d";
 #else //CONFIG_PLATFORM_ANDROID
-char* if2name = "wlan%d";
+char* rtl8188fu_if2name = "wlan%d";
 #endif //CONFIG_PLATFORM_ANDROID
-module_param(if2name, charp, 0644);
-MODULE_PARM_DESC(if2name, "The default name to allocate for second interface");
+module_param(rtl8188fu_if2name, charp, 0644);
+MODULE_PARM_DESC(rtl8188fu_if2name, "The default name to allocate for second interface");
 
-char* rtw_initmac = 0;  // temp mac address if users want to use instead of the mac address in Efuse
+char* rtl8188fu_rtw_initmac = 0;  // temp mac address if users want to use instead of the mac address in Efuse
 
 #ifdef CONFIG_MULTI_VIR_IFACES
 int rtw_ext_iface_num  = 1;//primary/secondary iface is excluded
 module_param(rtw_ext_iface_num, int, 0644);
 #endif //CONFIG_MULTI_VIR_IFACES
 
-module_param(rtw_pwrtrim_enable, int, 0644);
-module_param(rtw_initmac, charp, 0644);
-module_param(rtw_special_rf_path, int, 0644);
-module_param(rtw_chip_version, int, 0644);
-module_param(rtw_rfintfs, int, 0644);
-module_param(rtw_lbkmode, int, 0644);
-module_param(rtw_network_mode, int, 0644);
-module_param(rtw_channel, int, 0644);
-module_param(rtw_wmm_enable, int, 0644);
-module_param(rtw_vrtl_carrier_sense, int, 0644);
-module_param(rtw_vcs_type, int, 0644);
-module_param(rtw_busy_thresh, int, 0644);
+module_param(rtl8188fu_rtw_pwrtrim_enable, int, 0644);
+module_param(rtl8188fu_rtw_initmac, charp, 0644);
+module_param(rtl8188fu_rtw_special_rf_path, int, 0644);
+module_param(rtl8188fu_rtw_chip_version, int, 0644);
+module_param(rtl8188fu_rtw_rfintfs, int, 0644);
+module_param(rtl8188fu_rtw_lbkmode, int, 0644);
+module_param(rtl8188fu_rtw_network_mode, int, 0644);
+module_param(rtl8188fu_rtw_channel, int, 0644);
+module_param(rtl8188fu_rtw_wmm_enable, int, 0644);
+module_param(rtl8188fu_rtw_vrtl_carrier_sense, int, 0644);
+module_param(rtl8188fu_rtw_vcs_type, int, 0644);
+module_param(rtl8188fu_rtw_busy_thresh, int, 0644);
 
 #ifdef CONFIG_80211N_HT
-module_param(rtw_ht_enable, int, 0644);
-module_param(rtw_bw_mode, int, 0644);
-module_param(rtw_ampdu_enable, int, 0644);
-module_param(rtw_rx_stbc, int, 0644);
-module_param(rtw_ampdu_amsdu, int, 0644);
+module_param(rtl8188fu_rtw_ht_enable, int, 0644);
+module_param(rtl8188fu_rtw_bw_mode, int, 0644);
+module_param(rtl8188fu_rtw_ampdu_enable, int, 0644);
+module_param(rtl8188fu_rtw_rx_stbc, int, 0644);
+module_param(rtl8188fu_rtw_ampdu_amsdu, int, 0644);
 #endif //CONFIG_80211N_HT
 #ifdef CONFIG_80211AC_VHT
 module_param(rtw_vht_enable, int, 0644);
 #endif //CONFIG_80211AC_VHT
 #ifdef CONFIG_BEAMFORMING
-module_param(rtw_beamform_cap, int, 0644);
+module_param(rtl8188fu_rtw_beamform_cap, int, 0644);
 #endif
-module_param(rtw_lowrate_two_xmit, int, 0644);
+module_param(rtl8188fu_rtw_lowrate_two_xmit, int, 0644);
 
-module_param(rtw_rf_config, int, 0644);
-module_param(rtw_power_mgnt, int, 0644);
-module_param(rtw_smart_ps, int, 0644);
-module_param(rtw_low_power, int, 0644);
-module_param(rtw_wifi_spec, int, 0644);
+module_param(rtl8188fu_rtw_rf_config, int, 0644);
+module_param(rtl8188fu_rtw_power_mgnt, int, 0644);
+module_param(rtl8188fu_rtw_smart_ps, int, 0644);
+module_param(rtl8188fu_rtw_low_power, int, 0644);
+module_param(rtl8188fu_rtw_wifi_spec, int, 0644);
 
-module_param(rtw_full_ch_in_p2p_handshake, int, 0644);
-module_param(rtw_antdiv_cfg, int, 0644);
-module_param(rtw_antdiv_type, int, 0644);
+module_param(rtl8188fu_rtw_full_ch_in_p2p_handshake, int, 0644);
+module_param(rtl8188fu_rtw_antdiv_cfg, int, 0644);
+module_param(rtl8188fu_rtw_antdiv_type, int, 0644);
 
 module_param(rtw_switch_usb3, int, 0644);
 
-module_param(rtw_enusbss, int, 0644);
-module_param(rtw_hwpdn_mode, int, 0644);
-module_param(rtw_hwpwrp_detect, int, 0644);
+module_param(rtl8188fu_rtw_enusbss, int, 0644);
+module_param(rtl8188fu_rtw_hwpdn_mode, int, 0644);
+module_param(rtl8188fu_rtw_hwpwrp_detect, int, 0644);
 
-module_param(rtw_hw_wps_pbc, int, 0644);
+module_param(rtl8188fu_rtw_hw_wps_pbc, int, 0644);
 
 #ifdef CONFIG_TX_EARLY_MODE
 module_param(rtw_early_mode, int, 0644);
@@ -298,9 +298,9 @@ MODULE_PARM_DESC(rtw_adaptor_info_caching_file_path, "The path of adapter info c
 #endif //CONFIG_ADAPTOR_INFO_CACHING_FILE
 
 #ifdef CONFIG_LAYER2_ROAMING
-uint rtw_max_roaming_times=2;
-module_param(rtw_max_roaming_times, uint, 0644);
-MODULE_PARM_DESC(rtw_max_roaming_times,"The max roaming times to try");
+uint rtl8188fu_rtw_max_roaming_times=2;
+module_param(rtl8188fu_rtw_max_roaming_times, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_max_roaming_times,"The max roaming times to try");
 #endif //CONFIG_LAYER2_ROAMING
 
 #ifdef CONFIG_IOL
@@ -326,103 +326,103 @@ MODULE_PARM_DESC(rtw_fw_mp_bt_file_path, "The path of fw for MP-BT image");
 #endif // CONFIG_FILE_FWIMG
 
 #ifdef CONFIG_TX_MCAST2UNI
-module_param(rtw_mc2u_disable, int, 0644);
+module_param(rtl8188fu_rtw_mc2u_disable, int, 0644);
 #endif	// CONFIG_TX_MCAST2UNI
 
 #ifdef CONFIG_80211D
-module_param(rtw_80211d, int, 0644);
-MODULE_PARM_DESC(rtw_80211d, "Enable 802.11d mechanism");
+module_param(rtl8188fu_rtw_80211d, int, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_80211d, "Enable 802.11d mechanism");
 #endif
 
-uint rtw_notch_filter = RTW_NOTCH_FILTER;
-module_param(rtw_notch_filter, uint, 0644);
-MODULE_PARM_DESC(rtw_notch_filter, "0:Disable, 1:Enable, 2:Enable only for P2P");
+uint rtl8188fu_rtw_notch_filter = RTW_NOTCH_FILTER;
+module_param(rtl8188fu_rtw_notch_filter, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_notch_filter, "0:Disable, 1:Enable, 2:Enable only for P2P");
 
-uint rtw_hiq_filter = CONFIG_RTW_HIQ_FILTER;
-module_param(rtw_hiq_filter, uint, 0644);
-MODULE_PARM_DESC(rtw_hiq_filter, "0:allow all, 1:allow special, 2:deny all");
+uint rtl8188fu_rtw_hiq_filter = CONFIG_RTW_HIQ_FILTER;
+module_param(rtl8188fu_rtw_hiq_filter, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_hiq_filter, "0:allow all, 1:allow special, 2:deny all");
 
-uint rtw_adaptivity_en = CONFIG_RTW_ADAPTIVITY_EN;
-module_param(rtw_adaptivity_en, uint, 0644);
-MODULE_PARM_DESC(rtw_adaptivity_en, "0:disable, 1:enable");
+uint rtl8188fu_rtw_adaptivity_en = CONFIG_RTW_ADAPTIVITY_EN;
+module_param(rtl8188fu_rtw_adaptivity_en, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_adaptivity_en, "0:disable, 1:enable");
 
-uint rtw_adaptivity_mode = CONFIG_RTW_ADAPTIVITY_MODE;
-module_param(rtw_adaptivity_mode, uint, 0644);
-MODULE_PARM_DESC(rtw_adaptivity_mode, "0:normal, 1:carrier sense");
+uint rtl8188fu_rtw_adaptivity_mode = CONFIG_RTW_ADAPTIVITY_MODE;
+module_param(rtl8188fu_rtw_adaptivity_mode, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_adaptivity_mode, "0:normal, 1:carrier sense");
 
-uint rtw_adaptivity_dml = CONFIG_RTW_ADAPTIVITY_DML;
-module_param(rtw_adaptivity_dml, uint, 0644);
-MODULE_PARM_DESC(rtw_adaptivity_dml, "0:disable, 1:enable");
+uint rtl8188fu_rtw_adaptivity_dml = CONFIG_RTW_ADAPTIVITY_DML;
+module_param(rtl8188fu_rtw_adaptivity_dml, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_adaptivity_dml, "0:disable, 1:enable");
 
-uint rtw_adaptivity_dc_backoff = CONFIG_RTW_ADAPTIVITY_DC_BACKOFF;
-module_param(rtw_adaptivity_dc_backoff, uint, 0644);
-MODULE_PARM_DESC(rtw_adaptivity_dc_backoff, "DC backoff for Adaptivity");
+uint rtl8188fu_rtw_adaptivity_dc_backoff = CONFIG_RTW_ADAPTIVITY_DC_BACKOFF;
+module_param(rtl8188fu_rtw_adaptivity_dc_backoff, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_adaptivity_dc_backoff, "DC backoff for Adaptivity");
 
-int rtw_adaptivity_th_l2h_ini = CONFIG_RTW_ADAPTIVITY_TH_L2H_INI;
-module_param(rtw_adaptivity_th_l2h_ini, int, 0644);
-MODULE_PARM_DESC(rtw_adaptivity_th_l2h_ini, "TH_L2H_ini for Adaptivity");
+int rtl8188fu_rtw_adaptivity_th_l2h_ini = CONFIG_RTW_ADAPTIVITY_TH_L2H_INI;
+module_param(rtl8188fu_rtw_adaptivity_th_l2h_ini, int, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_adaptivity_th_l2h_ini, "TH_L2H_ini for Adaptivity");
 
-int rtw_adaptivity_th_edcca_hl_diff = CONFIG_RTW_ADAPTIVITY_TH_EDCCA_HL_DIFF;
-module_param(rtw_adaptivity_th_edcca_hl_diff, int, 0644);
-MODULE_PARM_DESC(rtw_adaptivity_th_edcca_hl_diff, "TH_EDCCA_HL_diff for Adaptivity");
+int rtl8188fu_rtw_adaptivity_th_edcca_hl_diff = CONFIG_RTW_ADAPTIVITY_TH_EDCCA_HL_DIFF;
+module_param(rtl8188fu_rtw_adaptivity_th_edcca_hl_diff, int, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_adaptivity_th_edcca_hl_diff, "TH_EDCCA_HL_diff for Adaptivity");
 
-uint rtw_amplifier_type_2g = CONFIG_RTW_AMPLIFIER_TYPE_2G;
-module_param(rtw_amplifier_type_2g, uint, 0644);
-MODULE_PARM_DESC(rtw_amplifier_type_2g, "BIT3:2G ext-PA, BIT4:2G ext-LNA");
+uint rtl8188fu_rtw_amplifier_type_2g = CONFIG_RTW_AMPLIFIER_TYPE_2G;
+module_param(rtl8188fu_rtw_amplifier_type_2g, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_amplifier_type_2g, "BIT3:2G ext-PA, BIT4:2G ext-LNA");
 
-uint rtw_amplifier_type_5g = CONFIG_RTW_AMPLIFIER_TYPE_5G;
-module_param(rtw_amplifier_type_5g, uint, 0644);
-MODULE_PARM_DESC(rtw_amplifier_type_5g, "BIT6:5G ext-PA, BIT7:5G ext-LNA");
+uint rtl8188fu_rtw_amplifier_type_5g = CONFIG_RTW_AMPLIFIER_TYPE_5G;
+module_param(rtl8188fu_rtw_amplifier_type_5g, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_amplifier_type_5g, "BIT6:5G ext-PA, BIT7:5G ext-LNA");
 
-uint rtw_RFE_type = CONFIG_RTW_RFE_TYPE;
-module_param(rtw_RFE_type, uint, 0644);
-MODULE_PARM_DESC(rtw_RFE_type, "default init value:64");
+uint rtl8188fu_rtw_RFE_type = CONFIG_RTW_RFE_TYPE;
+module_param(rtl8188fu_rtw_RFE_type, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_RFE_type, "default init value:64");
 
-uint rtw_GLNA_type = CONFIG_RTW_GLNA_TYPE;
-module_param(rtw_GLNA_type, uint, 0644);
-MODULE_PARM_DESC(rtw_GLNA_type, "default init value:0");
+uint rtl8188fu_rtw_GLNA_type = CONFIG_RTW_GLNA_TYPE;
+module_param(rtl8188fu_rtw_GLNA_type, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_GLNA_type, "default init value:0");
 
-uint rtw_TxBBSwing_2G = 0xFF;
-module_param(rtw_TxBBSwing_2G, uint, 0644);
-MODULE_PARM_DESC(rtw_TxBBSwing_2G, "default init value:0xFF");
+uint rtl8188fu_rtw_TxBBSwing_2G = 0xFF;
+module_param(rtl8188fu_rtw_TxBBSwing_2G, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_TxBBSwing_2G, "default init value:0xFF");
 
-uint rtw_TxBBSwing_5G = 0xFF;
-module_param(rtw_TxBBSwing_5G, uint, 0644);
-MODULE_PARM_DESC(rtw_TxBBSwing_5G, "default init value:0xFF");
+uint rtl8188fu_rtw_TxBBSwing_5G = 0xFF;
+module_param(rtl8188fu_rtw_TxBBSwing_5G, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_TxBBSwing_5G, "default init value:0xFF");
 
-uint rtw_OffEfuseMask = 0;
-module_param(rtw_OffEfuseMask, uint, 0644);
-MODULE_PARM_DESC(rtw_OffEfuseMask, "default open Efuse Mask value:0");
+uint rtl8188fu_rtw_OffEfuseMask = 0;
+module_param(rtl8188fu_rtw_OffEfuseMask, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_OffEfuseMask, "default open Efuse Mask value:0");
 
-uint rtw_FileMaskEfuse = 0;
-module_param(rtw_FileMaskEfuse, uint, 0644);
-MODULE_PARM_DESC(rtw_FileMaskEfuse, "default drv Mask Efuse value:0");
+uint rtl8188fu_rtw_FileMaskEfuse = 0;
+module_param(rtl8188fu_rtw_FileMaskEfuse, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_FileMaskEfuse, "default drv Mask Efuse value:0");
 
-uint rtw_pll_ref_clk_sel = CONFIG_RTW_PLL_REF_CLK_SEL;
-module_param(rtw_pll_ref_clk_sel, uint, 0644);
-MODULE_PARM_DESC(rtw_pll_ref_clk_sel, "force pll_ref_clk_sel, 0xF:use autoload value");
+uint rtl8188fu_rtw_pll_ref_clk_sel = CONFIG_RTW_PLL_REF_CLK_SEL;
+module_param(rtl8188fu_rtw_pll_ref_clk_sel, uint, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_pll_ref_clk_sel, "force pll_ref_clk_sel, 0xF:use autoload value");
 
 #if defined(CONFIG_CALIBRATE_TX_POWER_BY_REGULATORY) //eFuse: Regulatory selection=1
-int rtw_tx_pwr_lmt_enable = 1;
-int rtw_tx_pwr_by_rate = 1;
+int rtl8188fu_rtw_tx_pwr_lmt_enable = 1;
+int rtl8188fu_rtw_tx_pwr_by_rate = 1;
 #elif defined(CONFIG_CALIBRATE_TX_POWER_TO_MAX)//eFuse: Regulatory selection=0
-int rtw_tx_pwr_lmt_enable = 0;
-int rtw_tx_pwr_by_rate = 1;
+int rtl8188fu_rtw_tx_pwr_lmt_enable = 0;
+int rtl8188fu_rtw_tx_pwr_by_rate = 1;
 #else //eFuse: Regulatory selection=2
 #ifdef CONFIG_PCI_HCI
-int rtw_tx_pwr_lmt_enable = 2; // 2- Depend on efuse
-int rtw_tx_pwr_by_rate = 2;// 2- Depend on efuse
+int rtl8188fu_rtw_tx_pwr_lmt_enable = 2; // 2- Depend on efuse
+int rtl8188fu_rtw_tx_pwr_by_rate = 2;// 2- Depend on efuse
 #else // USB & SDIO
-int rtw_tx_pwr_lmt_enable = 0;
-int rtw_tx_pwr_by_rate = 0;
+int rtl8188fu_rtw_tx_pwr_lmt_enable = 0;
+int rtl8188fu_rtw_tx_pwr_by_rate = 0;
 #endif 
 #endif
 
-module_param(rtw_tx_pwr_lmt_enable, int, 0644);
-MODULE_PARM_DESC(rtw_tx_pwr_lmt_enable,"0:Disable, 1:Enable, 2: Depend on efuse");
+module_param(rtl8188fu_rtw_tx_pwr_lmt_enable, int, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_tx_pwr_lmt_enable,"0:Disable, 1:Enable, 2: Depend on efuse");
 
-module_param(rtw_tx_pwr_by_rate, int, 0644);
-MODULE_PARM_DESC(rtw_tx_pwr_by_rate,"0:Disable, 1:Enable, 2: Depend on efuse");
+module_param(rtl8188fu_rtw_tx_pwr_by_rate, int, 0644);
+MODULE_PARM_DESC(rtl8188fu_rtw_tx_pwr_by_rate,"0:Disable, 1:Enable, 2: Depend on efuse");
 
 static int rtw_target_tx_pwr_2g_a[RATE_SECTION_NUM] = CONFIG_RTW_TARGET_TX_PWR_2G_A;
 static int rtw_target_tx_pwr_2g_a_num = 0;
@@ -466,14 +466,14 @@ module_param_array(rtw_target_tx_pwr_5g_d, int, &rtw_target_tx_pwr_5g_d_num, 064
 MODULE_PARM_DESC(rtw_target_tx_pwr_5g_d, "5G target tx power (unit:dBm) of RF path D for each rate section, should match the real calibrate power, -1: undefined");
 #endif /* CONFIG_IEEE80211_BAND_5GHZ */
 
-int _netdev_open(struct net_device *pnetdev);
-int netdev_open (struct net_device *pnetdev);
+int _rtl8188furtl8188fu__netdev_open(struct net_device *pnetdev);
+int rtl8188furtl8188fu__netdev_open (struct net_device *pnetdev);
 static int netdev_close (struct net_device *pnetdev);
 #ifdef CONFIG_PLATFORM_INTEL_BYT
 extern int rtw_sdio_set_power(int on);
 #endif //CONFIG_PLATFORM_INTEL_BYT
 
-void rtw_regsty_load_target_tx_power(struct registry_priv *regsty)
+void rtl8188fu_rtw_regsty_load_target_tx_power(struct registry_priv *regsty)
 {
 	int path, rs;
 	int *target_tx_pwr;
@@ -509,24 +509,24 @@ void rtw_regsty_load_target_tx_power(struct registry_priv *regsty)
 #endif /* CONFIG_IEEE80211_BAND_5GHZ */
 }
 
-uint loadparam(_adapter *padapter)
+uint rtl8188fu_loadparam(_adapter *padapter)
 {
 	uint status = _SUCCESS;
 	struct registry_priv  *registry_par = &padapter->registrypriv;
 
 _func_enter_;
 
-	registry_par->chip_version = (u8)rtw_chip_version;
-	registry_par->rfintfs = (u8)rtw_rfintfs;
-	registry_par->lbkmode = (u8)rtw_lbkmode;
+	registry_par->chip_version = (u8)rtl8188fu_rtw_chip_version;
+	registry_par->rfintfs = (u8)rtl8188fu_rtw_rfintfs;
+	registry_par->lbkmode = (u8)rtl8188fu_rtw_lbkmode;
 	//registry_par->hci = (u8)hci;
-	registry_par->network_mode  = (u8)rtw_network_mode;
+	registry_par->network_mode  = (u8)rtl8188fu_rtw_network_mode;
 
-	_rtw_memcpy(registry_par->ssid.Ssid, "ANY", 3);
+	rtl8188fu__rtw_memcpy(registry_par->ssid.Ssid, "ANY", 3);
 	registry_par->ssid.SsidLength = 3;
 
-	registry_par->channel = (u8)rtw_channel;
-	registry_par->wireless_mode = (u8)rtw_wireless_mode;
+	registry_par->channel = (u8)rtl8188fu_rtw_channel;
+	registry_par->wireless_mode = (u8)rtl8188fu_rtw_wireless_mode;
 
 	if (IsSupported24G(registry_par->wireless_mode) && (!IsSupported5G(registry_par->wireless_mode))
 		&& (registry_par->channel > 14)) {
@@ -537,53 +537,53 @@ _func_enter_;
 		registry_par->channel = 36;
 	}
 	
-	registry_par->vrtl_carrier_sense = (u8)rtw_vrtl_carrier_sense ;
-	registry_par->vcs_type = (u8)rtw_vcs_type;
-	registry_par->rts_thresh=(u16)rtw_rts_thresh;
-	registry_par->frag_thresh=(u16)rtw_frag_thresh;
-	registry_par->preamble = (u8)rtw_preamble;
-	registry_par->scan_mode = (u8)rtw_scan_mode;
-	registry_par->adhoc_tx_pwr = (u8)rtw_adhoc_tx_pwr;
-	registry_par->soft_ap=  (u8)rtw_soft_ap;
-	registry_par->smart_ps =  (u8)rtw_smart_ps;
-	registry_par->check_fw_ps = (u8)rtw_check_fw_ps;
-	registry_par->power_mgnt = (u8)rtw_power_mgnt;
-	registry_par->ips_mode = (u8)rtw_ips_mode;
-	registry_par->radio_enable = (u8)rtw_radio_enable;
-	registry_par->long_retry_lmt = (u8)rtw_long_retry_lmt;
-	registry_par->short_retry_lmt = (u8)rtw_short_retry_lmt;
-  	registry_par->busy_thresh = (u16)rtw_busy_thresh;
+	registry_par->vrtl_carrier_sense = (u8)rtl8188fu_rtw_vrtl_carrier_sense ;
+	registry_par->vcs_type = (u8)rtl8188fu_rtw_vcs_type;
+	registry_par->rts_thresh=(u16)rtl8188fu_rtw_rts_thresh;
+	registry_par->frag_thresh=(u16)rtl8188fu_rtw_frag_thresh;
+	registry_par->preamble = (u8)rtl8188fu_rtw_preamble;
+	registry_par->scan_mode = (u8)rtl8188fu_rtw_scan_mode;
+	registry_par->adhoc_tx_pwr = (u8)rtl8188fu_rtw_adhoc_tx_pwr;
+	registry_par->soft_ap=  (u8)rtl8188fu_rtw_soft_ap;
+	registry_par->smart_ps =  (u8)rtl8188fu_rtw_smart_ps;
+	registry_par->check_fw_ps = (u8)rtl8188fu_rtw_check_fw_ps;
+	registry_par->power_mgnt = (u8)rtl8188fu_rtw_power_mgnt;
+	registry_par->ips_mode = (u8)rtl8188fu_rtw_ips_mode;
+	registry_par->radio_enable = (u8)rtl8188fu_rtw_radio_enable;
+	registry_par->long_retry_lmt = (u8)rtl8188fu_rtw_long_retry_lmt;
+	registry_par->short_retry_lmt = (u8)rtl8188fu_rtw_short_retry_lmt;
+  	registry_par->busy_thresh = (u16)rtl8188fu_rtw_busy_thresh;
   	//registry_par->qos_enable = (u8)rtw_qos_enable;
-	registry_par->ack_policy = (u8)rtw_ack_policy;
-	registry_par->software_encrypt = (u8)rtw_software_encrypt;
-	registry_par->software_decrypt = (u8)rtw_software_decrypt;
+	registry_par->ack_policy = (u8)rtl8188fu_rtw_ack_policy;
+	registry_par->software_encrypt = (u8)rtl8188fu_rtw_software_encrypt;
+	registry_par->software_decrypt = (u8)rtl8188fu_rtw_software_decrypt;
 
-	registry_par->acm_method = (u8)rtw_acm_method;
-	registry_par->usb_rxagg_mode = (u8)rtw_usb_rxagg_mode;
+	registry_par->acm_method = (u8)rtl8188fu_rtw_acm_method;
+	registry_par->usb_rxagg_mode = (u8)rtl8188fu_rtw_usb_rxagg_mode;
 
 	 //UAPSD
-	registry_par->wmm_enable = (u8)rtw_wmm_enable;
-	registry_par->uapsd_enable = (u8)rtw_uapsd_enable;
-	registry_par->uapsd_max_sp = (u8)rtw_uapsd_max_sp;
-	registry_par->uapsd_acbk_en = (u8)rtw_uapsd_acbk_en;
-	registry_par->uapsd_acbe_en = (u8)rtw_uapsd_acbe_en;
-	registry_par->uapsd_acvi_en = (u8)rtw_uapsd_acvi_en;
-	registry_par->uapsd_acvo_en = (u8)rtw_uapsd_acvo_en;
+	registry_par->wmm_enable = (u8)rtl8188fu_rtw_wmm_enable;
+	registry_par->uapsd_enable = (u8)rtl8188fu_rtw_uapsd_enable;
+	registry_par->uapsd_max_sp = (u8)rtl8188fu_rtw_uapsd_max_sp;
+	registry_par->uapsd_acbk_en = (u8)rtl8188fu_rtw_uapsd_acbk_en;
+	registry_par->uapsd_acbe_en = (u8)rtl8188fu_rtw_uapsd_acbe_en;
+	registry_par->uapsd_acvi_en = (u8)rtl8188fu_rtw_uapsd_acvi_en;
+	registry_par->uapsd_acvo_en = (u8)rtl8188fu_rtw_uapsd_acvo_en;
 
-	registry_par->RegPwrTrimEnable = (u8)rtw_pwrtrim_enable;
+	registry_par->RegPwrTrimEnable = (u8)rtl8188fu_rtw_pwrtrim_enable;
 	
 #ifdef CONFIG_80211N_HT
-	registry_par->ht_enable = (u8)rtw_ht_enable;
-	registry_par->bw_mode = (u8)rtw_bw_mode;
-	registry_par->ampdu_enable = (u8)rtw_ampdu_enable;
-	registry_par->rx_stbc = (u8)rtw_rx_stbc;
-	registry_par->ampdu_amsdu = (u8)rtw_ampdu_amsdu;
-	registry_par->short_gi = (u8)rtw_short_gi;
-	registry_par->ldpc_cap = (u8)rtw_ldpc_cap;
-	registry_par->stbc_cap = (u8)rtw_stbc_cap;
-	registry_par->beamform_cap = (u8)rtw_beamform_cap;
-	registry_par->beamformer_rf_num = (u8)rtw_bfer_rf_number;
-	registry_par->beamformee_rf_num = (u8)rtw_bfee_rf_number;
+	registry_par->ht_enable = (u8)rtl8188fu_rtw_ht_enable;
+	registry_par->bw_mode = (u8)rtl8188fu_rtw_bw_mode;
+	registry_par->ampdu_enable = (u8)rtl8188fu_rtw_ampdu_enable;
+	registry_par->rx_stbc = (u8)rtl8188fu_rtw_rx_stbc;
+	registry_par->ampdu_amsdu = (u8)rtl8188fu_rtw_ampdu_amsdu;
+	registry_par->short_gi = (u8)rtl8188fu_rtw_short_gi;
+	registry_par->ldpc_cap = (u8)rtl8188fu_rtw_ldpc_cap;
+	registry_par->stbc_cap = (u8)rtl8188fu_rtw_stbc_cap;
+	registry_par->beamform_cap = (u8)rtl8188fu_rtw_beamform_cap;
+	registry_par->beamformer_rf_num = (u8)rtl8188fu_rtw_bfer_rf_number;
+	registry_par->beamformee_rf_num = (u8)rtl8188fu_rtw_bfee_rf_number;
 #endif
 
 #ifdef CONFIG_80211AC_VHT
@@ -595,44 +595,44 @@ _func_enter_;
 #ifdef CONFIG_TX_EARLY_MODE
 	registry_par->early_mode = (u8)rtw_early_mode;
 #endif
-	registry_par->lowrate_two_xmit = (u8)rtw_lowrate_two_xmit;
-	registry_par->rf_config = (u8)rtw_rf_config;
-	registry_par->low_power = (u8)rtw_low_power;
+	registry_par->lowrate_two_xmit = (u8)rtl8188fu_rtw_lowrate_two_xmit;
+	registry_par->rf_config = (u8)rtl8188fu_rtw_rf_config;
+	registry_par->low_power = (u8)rtl8188fu_rtw_low_power;
 
 
-	registry_par->wifi_spec = (u8)rtw_wifi_spec;
+	registry_par->wifi_spec = (u8)rtl8188fu_rtw_wifi_spec;
 
-	if (strlen(rtw_country_code) != 2
-		|| is_alpha(rtw_country_code[0]) == _FALSE
-		|| is_alpha(rtw_country_code[1]) == _FALSE
+	if (strlen(rtl8188fu_rtw_country_code) != 2
+		|| rtl8188fu_is_alpha(rtl8188fu_rtw_country_code[0]) == _FALSE
+		|| rtl8188fu_is_alpha(rtl8188fu_rtw_country_code[1]) == _FALSE
 	) {
-		if (rtw_country_code != rtw_country_unspecified)
-			DBG_871X_LEVEL(_drv_err_, "%s discard rtw_country_code not in alpha2\n", __func__);
-		_rtw_memset(registry_par->alpha2, 0xFF, 2);
+		if (rtl8188fu_rtw_country_code != rtl8188fu_rtw_country_unspecified)
+			DBG_871X_LEVEL(_drv_err_, "%s discard rtl8188fu_rtw_country_code not in alpha2\n", __func__);
+		rtl8188fu__rtw_memset(registry_par->alpha2, 0xFF, 2);
 	} else
-		_rtw_memcpy(registry_par->alpha2, rtw_country_code, 2);
+		rtl8188fu__rtw_memcpy(registry_par->alpha2, rtl8188fu_rtw_country_code, 2);
 
-	registry_par->channel_plan = (u8)rtw_channel_plan;
-	registry_par->special_rf_path = (u8)rtw_special_rf_path;
+	registry_par->channel_plan = (u8)rtl8188fu_rtw_channel_plan;
+	registry_par->special_rf_path = (u8)rtl8188fu_rtw_special_rf_path;
 
-	registry_par->full_ch_in_p2p_handshake = (u8)rtw_full_ch_in_p2p_handshake;
+	registry_par->full_ch_in_p2p_handshake = (u8)rtl8188fu_rtw_full_ch_in_p2p_handshake;
 
-	registry_par->bAcceptAddbaReq = (u8)rtw_AcceptAddbaReq;
+	registry_par->bAcceptAddbaReq = (u8)rtl8188fu_rtw_AcceptAddbaReq;
 
-	registry_par->antdiv_cfg = (u8)rtw_antdiv_cfg;
-	registry_par->antdiv_type = (u8)rtw_antdiv_type;
+	registry_par->antdiv_cfg = (u8)rtl8188fu_rtw_antdiv_cfg;
+	registry_par->antdiv_type = (u8)rtl8188fu_rtw_antdiv_type;
 	
 	registry_par->switch_usb3 = (u8)rtw_switch_usb3;
 
 #ifdef CONFIG_AUTOSUSPEND
-	registry_par->usbss_enable = (u8)rtw_enusbss;//0:disable,1:enable
+	registry_par->usbss_enable = (u8)rtl8188fu_rtw_enusbss;//0:disable,1:enable
 #endif
 #ifdef SUPPORT_HW_RFOFF_DETECTED
-	registry_par->hwpdn_mode = (u8)rtw_hwpdn_mode;//0:disable,1:enable,2:by EFUSE config
-	registry_par->hwpwrp_detect = (u8)rtw_hwpwrp_detect;//0:disable,1:enable
+	registry_par->hwpdn_mode = (u8)rtl8188fu_rtw_hwpdn_mode;//0:disable,1:enable,2:by EFUSE config
+	registry_par->hwpwrp_detect = (u8)rtl8188fu_rtw_hwpwrp_detect;//0:disable,1:enable
 #endif
 
-	registry_par->hw_wps_pbc = (u8)rtw_hw_wps_pbc;
+	registry_par->hw_wps_pbc = (u8)rtl8188fu_rtw_hw_wps_pbc;
 
 #ifdef CONFIG_ADAPTOR_INFO_CACHING_FILE
 	snprintf(registry_par->adaptor_info_caching_file_path, PATH_LENGTH_MAX, "%s", rtw_adaptor_info_caching_file_path);
@@ -640,9 +640,9 @@ _func_enter_;
 #endif
 
 #ifdef CONFIG_LAYER2_ROAMING
-	registry_par->max_roaming_times = (u8)rtw_max_roaming_times;
+	registry_par->max_roaming_times = (u8)rtl8188fu_rtw_max_roaming_times;
 #ifdef CONFIG_INTEL_WIDI
-	registry_par->max_roaming_times = (u8)rtw_max_roaming_times + 2;
+	registry_par->max_roaming_times = (u8)rtl8188fu_rtw_max_roaming_times + 2;
 #endif // CONFIG_INTEL_WIDI
 #endif
 
@@ -651,13 +651,13 @@ _func_enter_;
 #endif
 
 #ifdef CONFIG_80211D
-	registry_par->enable80211d = (u8)rtw_80211d;
+	registry_par->enable80211d = (u8)rtl8188fu_rtw_80211d;
 #endif
 
-	snprintf(registry_par->ifname, 16, "%s", ifname);
-	snprintf(registry_par->if2name, 16, "%s", if2name);
+	snprintf(registry_par->rtl8188fu_ifname, 16, "%s", rtl8188fu_ifname);
+	snprintf(registry_par->rtl8188fu_if2name, 16, "%s", rtl8188fu_if2name);
 
-	registry_par->notch_filter = (u8)rtw_notch_filter;
+	registry_par->notch_filter = (u8)rtl8188fu_rtw_notch_filter;
 
 #ifdef CONFIG_SPECIAL_SETTING_FOR_FUNAI_TV
 	registry_par->force_ant = (u8)rtw_force_ant;
@@ -668,34 +668,34 @@ _func_enter_;
 	registry_par->ext_iface_num = (u8)rtw_ext_iface_num;
 #endif //CONFIG_MULTI_VIR_IFACES
 
-	registry_par->pll_ref_clk_sel = (u8)rtw_pll_ref_clk_sel;
+	registry_par->pll_ref_clk_sel = (u8)rtl8188fu_rtw_pll_ref_clk_sel;
 
-	registry_par->RegEnableTxPowerLimit = (u8)rtw_tx_pwr_lmt_enable;
-	registry_par->RegEnableTxPowerByRate = (u8)rtw_tx_pwr_by_rate;
+	registry_par->RegEnableTxPowerLimit = (u8)rtl8188fu_rtw_tx_pwr_lmt_enable;
+	registry_par->RegEnableTxPowerByRate = (u8)rtl8188fu_rtw_tx_pwr_by_rate;
 
-	rtw_regsty_load_target_tx_power(registry_par);
+	rtl8188fu_rtw_regsty_load_target_tx_power(registry_par);
 
 	registry_par->RegPowerBase = 14;
-	registry_par->TxBBSwing_2G = (s8)rtw_TxBBSwing_2G;
-	registry_par->TxBBSwing_5G = (s8)rtw_TxBBSwing_5G;
+	registry_par->TxBBSwing_2G = (s8)rtl8188fu_rtw_TxBBSwing_2G;
+	registry_par->TxBBSwing_5G = (s8)rtl8188fu_rtw_TxBBSwing_5G;
 	registry_par->bEn_RFE = 1;
-	registry_par->RFE_Type = (u8)rtw_RFE_type;
-	registry_par->AmplifierType_2G = (u8)rtw_amplifier_type_2g;
-	registry_par->AmplifierType_5G = (u8)rtw_amplifier_type_5g;
-	registry_par->GLNA_Type = (u8)rtw_GLNA_type;
-	registry_par->qos_opt_enable = (u8)rtw_qos_opt_enable;
+	registry_par->RFE_Type = (u8)rtl8188fu_rtw_RFE_type;
+	registry_par->AmplifierType_2G = (u8)rtl8188fu_rtw_amplifier_type_2g;
+	registry_par->AmplifierType_5G = (u8)rtl8188fu_rtw_amplifier_type_5g;
+	registry_par->GLNA_Type = (u8)rtl8188fu_rtw_GLNA_type;
+	registry_par->qos_opt_enable = (u8)rtl8188fu_rtw_qos_opt_enable;
 
-	registry_par->hiq_filter = (u8)rtw_hiq_filter;
+	registry_par->hiq_filter = (u8)rtl8188fu_rtw_hiq_filter;
 
-	registry_par->adaptivity_en = (u8)rtw_adaptivity_en;
-	registry_par->adaptivity_mode = (u8)rtw_adaptivity_mode;
-	registry_par->adaptivity_dml = (u8)rtw_adaptivity_dml;
-	registry_par->adaptivity_dc_backoff = (u8)rtw_adaptivity_dc_backoff;
-	registry_par->adaptivity_th_l2h_ini = (s8)rtw_adaptivity_th_l2h_ini;
-	registry_par->adaptivity_th_edcca_hl_diff = (s8)rtw_adaptivity_th_edcca_hl_diff;
+	registry_par->adaptivity_en = (u8)rtl8188fu_rtw_adaptivity_en;
+	registry_par->adaptivity_mode = (u8)rtl8188fu_rtw_adaptivity_mode;
+	registry_par->adaptivity_dml = (u8)rtl8188fu_rtw_adaptivity_dml;
+	registry_par->adaptivity_dc_backoff = (u8)rtl8188fu_rtw_adaptivity_dc_backoff;
+	registry_par->adaptivity_th_l2h_ini = (s8)rtl8188fu_rtw_adaptivity_th_l2h_ini;
+	registry_par->adaptivity_th_edcca_hl_diff = (s8)rtl8188fu_rtw_adaptivity_th_edcca_hl_diff;
 
-	registry_par->boffefusemask = (u8)rtw_OffEfuseMask;
-	registry_par->bFileMaskEfuse = (u8)rtw_FileMaskEfuse;
+	registry_par->boffefusemask = (u8)rtl8188fu_rtw_OffEfuseMask;
+	registry_par->bFileMaskEfuse = (u8)rtl8188fu_rtw_FileMaskEfuse;
 #ifdef CONFIG_AUTO_CHNL_SEL_NHM
 	registry_par->acs_mode = (u8)rtw_acs_mode;
 	registry_par->acs_auto_scan = (u8)rtw_acs_auto_scan;
@@ -747,20 +747,20 @@ static int rtw_net_set_mac_address(struct net_device *pnetdev, void *addr)
 	}
 
 	/* check whether the input mac address is valid to permit modifying mac addr */
-	if (rtw_check_invalid_mac_address(sa->sa_data, _FALSE) == _TRUE) {
+	if (rtl8188fu_rtw_check_invalid_mac_address(sa->sa_data, _FALSE) == _TRUE) {
 		DBG_871X(FUNC_ADPT_FMT": Invalid Mac Addr for "MAC_FMT"\n"
 			, FUNC_ADPT_ARG(padapter), MAC_ARG(sa->sa_data));
 
 		return ret;
 	}
 
-	_rtw_memcpy(adapter_mac_addr(padapter), sa->sa_data, ETH_ALEN); /* set mac addr to adapter */
-	_rtw_memcpy(pnetdev->dev_addr, sa->sa_data, ETH_ALEN); /* set mac addr to net_device */
+	rtl8188fu__rtw_memcpy(adapter_mac_addr(padapter), sa->sa_data, ETH_ALEN); /* set mac addr to adapter */
+	rtl8188fu__rtw_memcpy(pnetdev->dev_addr, sa->sa_data, ETH_ALEN); /* set mac addr to net_device */
 
-	rtw_ps_deny(padapter, PS_DENY_IOCTL);
-	LeaveAllPowerSaveModeDirect(padapter); /* leave PS mode for guaranteeing to access hw register successfully */
-	rtw_hal_set_hwreg(padapter, HW_VAR_MAC_ADDR, sa->sa_data); /* set mac addr to mac register */
-	rtw_ps_deny_cancel(padapter, PS_DENY_IOCTL);
+	rtl8188fu_rtw_ps_deny(padapter, PS_DENY_IOCTL);
+	rtl8188fu_LeaveAllPowerSaveModeDirect(padapter); /* leave PS mode for guaranteeing to access hw register successfully */
+	rtl8188fu_rtw_hal_set_hwreg(padapter, HW_VAR_MAC_ADDR, sa->sa_data); /* set mac addr to mac register */
+	rtl8188fu_rtw_ps_deny_cancel(padapter, PS_DENY_IOCTL);
 
 	DBG_871X(FUNC_ADPT_FMT": Set Mac Addr to "MAC_FMT" Successfully\n"
 		, FUNC_ADPT_ARG(padapter), MAC_ARG(sa->sa_data));
@@ -798,7 +798,7 @@ static struct net_device_stats *rtw_net_get_stats(struct net_device *pnetdev)
 static const u16 rtw_1d_to_queue[8] = { 2, 3, 3, 2, 1, 1, 0, 0 };
 
 /* Given a data frame determine the 802.1p/1d tag to use. */
-unsigned int rtw_classify8021d(struct sk_buff *skb)
+unsigned int rtl8188fu_rtw_classify8021d(struct sk_buff *skb)
 {
 	unsigned int dscp;
 
@@ -841,17 +841,17 @@ static u16 rtw_select_queue(struct net_device *dev, struct sk_buff *skb
 	_adapter	*padapter = rtw_netdev_priv(dev);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 
-	skb->priority = rtw_classify8021d(skb);
+	skb->priority = rtl8188fu_rtw_classify8021d(skb);
 
 	if(pmlmepriv->acm_mask != 0)
 	{
-		skb->priority = qos_acm(pmlmepriv->acm_mask, skb->priority);
+		skb->priority = rtl8188fu_qos_acm(pmlmepriv->acm_mask, skb->priority);
 	}
 
 	return rtw_1d_to_queue[skb->priority];
 }
 
-u16 rtw_recv_select_queue(struct sk_buff *skb)
+u16 rtl8188fu_rtw_recv_select_queue(struct sk_buff *skb)
 {
 	struct iphdr *piphdr;
 	unsigned int dscp;
@@ -859,7 +859,7 @@ u16 rtw_recv_select_queue(struct sk_buff *skb)
 	u32 priority;
 	u8 *pdata = skb->data;
 
-	_rtw_memcpy(&eth_type, pdata+(ETH_ALEN<<1), 2);
+	rtl8188fu__rtw_memcpy(&eth_type, pdata+(ETH_ALEN<<1), 2);
 
 	switch (eth_type) {
 		case htons(ETH_P_IP):
@@ -898,12 +898,12 @@ static int rtw_ndev_notifier_call(struct notifier_block * nb, unsigned long stat
 	if (dev->netdev_ops->ndo_do_ioctl == NULL)
 		return NOTIFY_DONE;
 
-	if (dev->netdev_ops->ndo_do_ioctl != rtw_ioctl)
+	if (dev->netdev_ops->ndo_do_ioctl != rtl8188fu_rtw_ioctl)
 #else
 	if (dev->do_ioctl == NULL)
 		return NOTIFY_DONE;
 
-	if (dev->do_ioctl != rtw_ioctl)
+	if (dev->do_ioctl != rtl8188fu_rtw_ioctl)
 #endif
 		return NOTIFY_DONE;
 
@@ -916,30 +916,30 @@ static struct notifier_block rtw_ndev_notifier = {
 	.notifier_call = rtw_ndev_notifier_call,
 };
 
-int rtw_ndev_notifier_register(void)
+int rtl8188fu_rtw_ndev_notifier_register(void)
 {
 	return register_netdevice_notifier(&rtw_ndev_notifier);
 }
 
-void rtw_ndev_notifier_unregister(void)
+void rtl8188fu_rtw_ndev_notifier_unregister(void)
 {
 	unregister_netdevice_notifier(&rtw_ndev_notifier);
 }
 
 
-int rtw_ndev_init(struct net_device *dev)
+int rtl8188fu_rtw_ndev_init(struct net_device *dev)
 {
 	_adapter *adapter = rtw_netdev_priv(dev);
 
 	DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" if%d mac_addr="MAC_FMT"\n"
 		, FUNC_ADPT_ARG(adapter), (adapter->iface_id+1), MAC_ARG(dev->dev_addr));
-	strncpy(adapter->old_ifname, dev->name, IFNAMSIZ);
-	adapter->old_ifname[IFNAMSIZ-1] = '\0';
+	strncpy(adapter->old_rtl8188fu_ifname, dev->name, IFNAMSIZ);
+	adapter->old_rtl8188fu_ifname[IFNAMSIZ-1] = '\0';
 
 	return 0;
 }
 
-void rtw_ndev_uninit(struct net_device *dev)
+void rtl8188fu_rtw_ndev_uninit(struct net_device *dev)
 {
 	_adapter *adapter = rtw_netdev_priv(dev);
 
@@ -949,21 +949,21 @@ void rtw_ndev_uninit(struct net_device *dev)
 
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 static const struct net_device_ops rtw_netdev_ops = {
-	.ndo_init = rtw_ndev_init,
-	.ndo_uninit = rtw_ndev_uninit,
-	.ndo_open = netdev_open,
+	.ndo_init = rtl8188fu_rtw_ndev_init,
+	.ndo_uninit = rtl8188fu_rtw_ndev_uninit,
+	.ndo_open = rtl8188furtl8188fu__netdev_open,
 	.ndo_stop = netdev_close,
-	.ndo_start_xmit = rtw_xmit_entry,
+	.ndo_start_xmit = rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry,
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	.ndo_select_queue	= rtw_select_queue,
 #endif
 	.ndo_set_mac_address = rtw_net_set_mac_address,
 	.ndo_get_stats = rtw_net_get_stats,
-	.ndo_do_ioctl = rtw_ioctl,
+	.ndo_do_ioctl = rtl8188fu_rtw_ioctl,
 };
 #endif
 
-int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
+int rtl8188fu_rtw_init_netdev_name(struct net_device *pnetdev, const char *rtl8188fu_ifname)
 {
 	_adapter *padapter = rtw_netdev_priv(pnetdev);
 
@@ -1001,7 +1001,7 @@ int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
 	}
 #endif //CONFIG_EASY_REPLACEMENT
 
-	if(dev_alloc_name(pnetdev, ifname) < 0)
+	if(dev_alloc_name(pnetdev, rtl8188fu_ifname) < 0)
 	{
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("dev_alloc_name, fail! \n"));
 	}
@@ -1012,23 +1012,23 @@ int rtw_init_netdev_name(struct net_device *pnetdev, const char *ifname)
 	return 0;
 }
 
-void rtw_hook_if_ops(struct net_device *ndev)
+void rtl8188fu_rtw_hook_if_ops(struct net_device *ndev)
 {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 29))
 	ndev->netdev_ops = &rtw_netdev_ops;
 #else
-	ndev->init = rtw_ndev_init;
-	ndev->uninit = rtw_ndev_uninit;
-	ndev->open = netdev_open;
+	ndev->init = rtl8188fu_rtw_ndev_init;
+	ndev->uninit = rtl8188fu_rtw_ndev_uninit;
+	ndev->open = rtl8188furtl8188fu__netdev_open;
 	ndev->stop = netdev_close;
-	ndev->hard_start_xmit = rtw_xmit_entry;
+	ndev->hard_start_xmit = rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry;
 	ndev->set_mac_address = rtw_net_set_mac_address;
 	ndev->get_stats = rtw_net_get_stats;
-	ndev->do_ioctl = rtw_ioctl;
+	ndev->do_ioctl = rtl8188fu_rtw_ioctl;
 #endif
 }
 
-struct net_device *rtw_init_netdev(_adapter *old_padapter)
+struct net_device *rtl8188fu_rtw_init_netdev(_adapter *old_padapter)
 {
 	_adapter *padapter;
 	struct net_device *pnetdev;
@@ -1036,9 +1036,9 @@ struct net_device *rtw_init_netdev(_adapter *old_padapter)
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+init_net_dev\n"));
 
 	if(old_padapter != NULL)
-		pnetdev = rtw_alloc_etherdev_with_old_priv(sizeof(_adapter), (void *)old_padapter);
+		pnetdev = rtl8188fu_rtw_alloc_etherdev_with_old_priv(sizeof(_adapter), (void *)old_padapter);
 	else
-		pnetdev = rtw_alloc_etherdev(sizeof(_adapter));
+		pnetdev = rtl8188fu_rtw_alloc_etherdev(sizeof(_adapter));
 
 	if (!pnetdev)
 		return NULL;
@@ -1050,7 +1050,7 @@ struct net_device *rtw_init_netdev(_adapter *old_padapter)
 	SET_MODULE_OWNER(pnetdev);
 #endif
 
-	rtw_hook_if_ops(pnetdev);
+	rtl8188fu_rtw_hook_if_ops(pnetdev);
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
 	pnetdev->features |= NETIF_F_IP_CSUM;
@@ -1071,12 +1071,12 @@ struct net_device *rtw_init_netdev(_adapter *old_padapter)
 	return pnetdev;
 }
 
-int rtw_os_ndev_alloc(_adapter *adapter)
+int rtl8188fu_rtw_os_ndev_alloc(_adapter *adapter)
 {
 	int ret = _FAIL;
 	struct net_device *ndev = NULL;
 
-	ndev = rtw_init_netdev(adapter);
+	ndev = rtl8188fu_rtw_init_netdev(adapter);
 	if (ndev == NULL) {
 		rtw_warn_on(1);
 		goto exit;
@@ -1092,7 +1092,7 @@ int rtw_os_ndev_alloc(_adapter *adapter)
 	#endif
 
 #if defined(CONFIG_IOCTL_CFG80211)
-	if (rtw_cfg80211_ndev_res_alloc(adapter) != _SUCCESS) {
+	if (rtl8188fu_rtw_cfg80211_ndev_res_alloc(adapter) != _SUCCESS) {
 		rtw_warn_on(1);
 		goto free_ndev;
 	}
@@ -1102,30 +1102,30 @@ int rtw_os_ndev_alloc(_adapter *adapter)
 
 free_ndev:
 	if (ret != _SUCCESS && ndev)
-		rtw_free_netdev(ndev);
+		rtl8188fu_rtw_free_netdev(ndev);
 exit:
 	return ret;
 }
 
-void rtw_os_ndev_free(_adapter *adapter)
+void rtl8188fu_rtw_os_ndev_free(_adapter *adapter)
 {
 #if defined(CONFIG_IOCTL_CFG80211)
-	rtw_cfg80211_ndev_res_free(adapter);
+	rtl8188fu_rtw_cfg80211_ndev_res_free(adapter);
 #endif
 
 	if (adapter->pnetdev) {
-		rtw_free_netdev(adapter->pnetdev);
+		rtl8188fu_rtw_free_netdev(adapter->pnetdev);
 		adapter->pnetdev = NULL;
 	}
 }
 
-int rtw_os_ndev_register(_adapter *adapter, char *name)
+int rtl8188fu_rtw_os_ndev_register(_adapter *adapter, char *name)
 {
 	int ret = _SUCCESS;
 	struct net_device *ndev = adapter->pnetdev;
 
 #if defined(CONFIG_IOCTL_CFG80211)
-	if (rtw_cfg80211_ndev_res_register(adapter) != _SUCCESS) {
+	if (rtl8188fu_rtw_cfg80211_ndev_res_register(adapter) != _SUCCESS) {
 		rtw_warn_on(1);
 		ret = _FAIL;
 		goto exit;
@@ -1133,9 +1133,9 @@ int rtw_os_ndev_register(_adapter *adapter, char *name)
 #endif
 
 	/* alloc netdev name */
-	rtw_init_netdev_name(ndev, name);
+	rtl8188fu_rtw_init_netdev_name(ndev, name);
 
-	_rtw_memcpy(ndev->dev_addr, adapter_mac_addr(adapter), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(ndev->dev_addr, adapter_mac_addr(adapter), ETH_ALEN);
 
 	/* Tell the network stack we exist */
 	if (register_netdev(ndev) != 0) {
@@ -1145,9 +1145,9 @@ int rtw_os_ndev_register(_adapter *adapter, char *name)
 
 #if defined(CONFIG_IOCTL_CFG80211)
 	if (ret != _SUCCESS) {
-		rtw_cfg80211_ndev_res_unregister(adapter);
+		rtl8188fu_rtw_cfg80211_ndev_res_unregister(adapter);
 		#if !defined(RTW_SINGLE_WIPHY)
-		rtw_wiphy_unregister(adapter_to_wiphy(adapter));
+		rtl8188fu_rtw_wiphy_unregister(adapter_to_wiphy(adapter));
 		#endif
 	}
 #endif
@@ -1156,7 +1156,7 @@ exit:
 	return ret;
 }
 
-void rtw_os_ndev_unregister(_adapter *adapter)
+void rtl8188fu_rtw_os_ndev_unregister(_adapter *adapter)
 {
 	struct net_device *netdev = NULL;
 
@@ -1168,63 +1168,63 @@ void rtw_os_ndev_unregister(_adapter *adapter)
 	netdev = adapter->pnetdev;
 
 #if defined(CONFIG_IOCTL_CFG80211)
-	rtw_cfg80211_ndev_res_unregister(adapter);
+	rtl8188fu_rtw_cfg80211_ndev_res_unregister(adapter);
 #endif
 
 	if ((adapter->DriverState != DRIVER_DISAPPEAR) && netdev)
 		unregister_netdev(netdev); /* will call netdev_close() */
 
 #if defined(CONFIG_IOCTL_CFG80211) && !defined(RTW_SINGLE_WIPHY)
-	rtw_wiphy_unregister(adapter_to_wiphy(adapter));
+	rtl8188fu_rtw_wiphy_unregister(adapter_to_wiphy(adapter));
 #endif
 
 	adapter->ndev_unregistering = 0;
 }
 
 /**
- * rtw_os_ndev_init - Allocate and register OS layer net device and relating structures for @adapter
+ * rtl8188fu_rtw_os_ndev_init - Allocate and register OS layer net device and relating structures for @adapter
  * @adapter: the adapter on which this function applies
  * @name: the requesting net device name
  *
  * Returns:
  * _SUCCESS or _FAIL
  */
-int rtw_os_ndev_init(_adapter *adapter, char *name)
+int rtl8188fu_rtw_os_ndev_init(_adapter *adapter, char *name)
 {
 	int ret = _FAIL;
 
-	if (rtw_os_ndev_alloc(adapter) != _SUCCESS)
+	if (rtl8188fu_rtw_os_ndev_alloc(adapter) != _SUCCESS)
 		goto exit;
 
-	if (rtw_os_ndev_register(adapter, name) != _SUCCESS)
+	if (rtl8188fu_rtw_os_ndev_register(adapter, name) != _SUCCESS)
 		goto os_ndev_free;
 
 	ret = _SUCCESS;
 
 os_ndev_free:
 	if (ret != _SUCCESS)
-		rtw_os_ndev_free(adapter);
+		rtl8188fu_rtw_os_ndev_free(adapter);
 exit:
 	return ret;
 }
 
 /**
- * rtw_os_ndev_deinit - Unregister and free OS layer net device and relating structures for @adapter
+ * rtl8188fu_rtw_os_ndev_deinit - Unregister and free OS layer net device and relating structures for @adapter
  * @adapter: the adapter on which this function applies
  */
-void rtw_os_ndev_deinit(_adapter *adapter)
+void rtl8188fu_rtw_os_ndev_deinit(_adapter *adapter)
 {
-	rtw_os_ndev_unregister(adapter);
-	rtw_os_ndev_free(adapter);
+	rtl8188fu_rtw_os_ndev_unregister(adapter);
+	rtl8188fu_rtw_os_ndev_free(adapter);
 }
 
-int rtw_os_ndevs_alloc(struct dvobj_priv *dvobj)
+int rtl8188fu_rtw_os_ndevs_alloc(struct dvobj_priv *dvobj)
 {
 	int i, status = _SUCCESS;
 	_adapter *adapter;
 
 #if defined(CONFIG_IOCTL_CFG80211)
-	if (rtw_cfg80211_dev_res_alloc(dvobj) != _SUCCESS) {
+	if (rtl8188fu_rtw_cfg80211_dev_res_alloc(dvobj) != _SUCCESS) {
 		rtw_warn_on(1);
 		status = _FAIL;
 		goto exit;
@@ -1241,7 +1241,7 @@ int rtw_os_ndevs_alloc(struct dvobj_priv *dvobj)
 
 		adapter = dvobj->padapters[i];
 		if (adapter && !adapter->pnetdev) {
-			status = rtw_os_ndev_alloc(adapter);
+			status = rtl8188fu_rtw_os_ndev_alloc(adapter);
 			if (status != _SUCCESS) {
 				rtw_warn_on(1);
 				break;
@@ -1253,19 +1253,19 @@ int rtw_os_ndevs_alloc(struct dvobj_priv *dvobj)
 		for (; i >= 0; i--) {
 			adapter = dvobj->padapters[i];
 			if (adapter && adapter->pnetdev)
-				rtw_os_ndev_free(adapter);
+				rtl8188fu_rtw_os_ndev_free(adapter);
 		}
 	}
 
 #if defined(CONFIG_IOCTL_CFG80211)
 	if (status != _SUCCESS)
-		rtw_cfg80211_dev_res_free(dvobj);
+		rtl8188fu_rtw_cfg80211_dev_res_free(dvobj);
 #endif
 exit:
 	return status;
 }
 
-void rtw_os_ndevs_free(struct dvobj_priv *dvobj)
+void rtl8188fu_rtw_os_ndevs_free(struct dvobj_priv *dvobj)
 {
 	int i;
 	_adapter *adapter = NULL;
@@ -1283,26 +1283,26 @@ void rtw_os_ndevs_free(struct dvobj_priv *dvobj)
 		if (adapter == NULL)
 			continue;
 
-		rtw_os_ndev_free(adapter);
+		rtl8188fu_rtw_os_ndev_free(adapter);
 	}
 
 #if defined(CONFIG_IOCTL_CFG80211)
-	rtw_cfg80211_dev_res_free(dvobj);
+	rtl8188fu_rtw_cfg80211_dev_res_free(dvobj);
 #endif
 }
 
-u32 rtw_start_drv_threads(_adapter *padapter)
+u32 rtl8188fu_rtw_start_drv_threads(_adapter *padapter)
 {
 	u32 _status = _SUCCESS;
 
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_start_drv_threads\n"));
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtl8188fu_rtw_start_drv_threads\n"));
 
 #ifdef CONFIG_XMIT_THREAD_MODE
 #if defined(CONFIG_SDIO_HCI)
 	if (is_primary_adapter(padapter))
 #endif		
 	{
-		padapter->xmitThread = kthread_run(rtw_xmit_thread, padapter, "RTW_XMIT_THREAD");
+		padapter->xmitThread = kthread_run(rtl8188fu_rtw_xmit_thread, padapter, "RTW_XMIT_THREAD");
 		if(IS_ERR(padapter->xmitThread))
 			_status = _FAIL;
 	}
@@ -1315,11 +1315,11 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 #endif
 
 	if (is_primary_adapter(padapter)) {
-		padapter->cmdThread = kthread_run(rtw_cmd_thread, padapter, "RTW_CMD_THREAD");
+		padapter->cmdThread = kthread_run(rtl8188fu_rtw_cmd_thread, padapter, "RTW_CMD_THREAD");
 	        if(IS_ERR(padapter->cmdThread))
 			_status = _FAIL;
 		else
-			_rtw_down_sema(&padapter->cmdpriv.terminate_cmdthread_sema); //wait for cmd_thread to run
+			rtl8188fu__rtw_down_sema(&padapter->cmdpriv.terminate_cmdthread_sema); //wait for cmd_thread to run
 	}
 
 
@@ -1329,22 +1329,22 @@ u32 rtw_start_drv_threads(_adapter *padapter)
 		_status = _FAIL;
 #endif
 
-	rtw_hal_start_thread(padapter);
+	rtl8188fu_rtw_hal_start_thread(padapter);
 	return _status;
 
 }
 
-void rtw_stop_drv_threads (_adapter *padapter)
+void rtl8188fu_rtw_stop_drv_threads (_adapter *padapter)
 {
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_stop_drv_threads\n"));
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtl8188fu_rtw_stop_drv_threads\n"));
 
 	if (is_primary_adapter(padapter))
-		rtw_stop_cmd_thread(padapter);
+		rtl8188fu_rtw_stop_cmd_thread(padapter);
 
 #ifdef CONFIG_EVENT_THREAD_MODE
-        _rtw_up_sema(&padapter->evtpriv.evt_notify);
+        rtl8188fu__rtw_up_sema(&padapter->evtpriv.evt_notify);
 	if(padapter->evtThread){
-		_rtw_down_sema(&padapter->evtpriv.terminate_evtthread_sema);
+		rtl8188fu__rtw_down_sema(&padapter->evtpriv.terminate_evtthread_sema);
 	}
 #endif
 
@@ -1355,24 +1355,24 @@ void rtw_stop_drv_threads (_adapter *padapter)
 	if (is_primary_adapter(padapter))
 #endif  /*SDIO_HCI */
 	{
-		_rtw_up_sema(&padapter->xmitpriv.xmit_sema);
-		_rtw_down_sema(&padapter->xmitpriv.terminate_xmitthread_sema);
+		rtl8188fu__rtw_up_sema(&padapter->xmitpriv.xmit_sema);
+		rtl8188fu__rtw_down_sema(&padapter->xmitpriv.terminate_xmitthread_sema);
 	}
-	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("\n drv_halt: rtw_xmit_thread can be terminated !\n"));
+	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("\n drv_halt: rtl8188fu_rtw_xmit_thread can be terminated !\n"));
 #endif
 
 #ifdef CONFIG_RECV_THREAD_MODE
 	// Below is to termindate rx_thread...
-	_rtw_up_sema(&padapter->recvpriv.recv_sema);
-	_rtw_down_sema(&padapter->recvpriv.terminate_recvthread_sema);
+	rtl8188fu__rtw_up_sema(&padapter->recvpriv.recv_sema);
+	rtl8188fu__rtw_down_sema(&padapter->recvpriv.terminate_recvthread_sema);
 	RT_TRACE(_module_os_intfs_c_,_drv_info_,("\n drv_halt:recv_thread can be terminated! \n"));
 #endif
 
-	rtw_hal_stop_thread(padapter);
+	rtl8188fu_rtw_hal_stop_thread(padapter);
 }
 
-u8 rtw_init_default_value(_adapter *padapter);
-u8 rtw_init_default_value(_adapter *padapter)
+u8 rtl8188fu_rtw_init_default_value(_adapter *padapter);
+u8 rtl8188fu_rtw_init_default_value(_adapter *padapter)
 {
 	u8 ret  = _SUCCESS;
 	struct registry_priv* pregistrypriv = &padapter->registrypriv;
@@ -1401,7 +1401,7 @@ u8 rtw_init_default_value(_adapter *padapter)
 #endif
 
 	//security_priv
-	//rtw_get_encrypt_decrypt_from_registrypriv(padapter);
+	//rtl8188fu_rtw_get_encrypt_decrypt_from_registrypriv(padapter);
 	psecuritypriv->binstallGrpkey = _FAIL;
 #ifdef CONFIG_GTK_OL
 	psecuritypriv->binstallKCK_KEK = _FAIL;
@@ -1425,12 +1425,12 @@ u8 rtw_init_default_value(_adapter *padapter)
 
 
 	//registry_priv
-	rtw_init_registrypriv_dev_network(padapter);
-	rtw_update_registrypriv_dev_network(padapter);
+	rtl8188fu_rtw_init_registrypriv_dev_network(padapter);
+	rtl8188fu_rtw_update_registrypriv_dev_network(padapter);
 
 
 	//hal_priv
-	rtw_hal_def_value_init(padapter);
+	rtl8188fu_rtw_hal_def_value_init(padapter);
 
 	//misc.
 	RTW_ENABLE_FUNC(padapter, DF_RX_BIT);
@@ -1458,7 +1458,7 @@ u8 rtw_init_default_value(_adapter *padapter)
 	return ret;
 }
 
-struct dvobj_priv *devobj_init(void)
+struct dvobj_priv *rtl8188fu_devobj_init(void)
 {
 	struct dvobj_priv *pdvobj = NULL;
 
@@ -1467,64 +1467,64 @@ struct dvobj_priv *devobj_init(void)
 		return NULL;
 	}
 
-	_rtw_mutex_init(&pdvobj->hw_init_mutex);
-	_rtw_mutex_init(&pdvobj->h2c_fwcmd_mutex);
-	_rtw_mutex_init(&pdvobj->setch_mutex);
-	_rtw_mutex_init(&pdvobj->setbw_mutex);
-	_rtw_mutex_init(&pdvobj->rf_read_reg_mutex);
+	rtl8188fu__rtw_mutex_init(&pdvobj->hw_init_mutex);
+	rtl8188fu__rtw_mutex_init(&pdvobj->h2c_fwcmd_mutex);
+	rtl8188fu__rtw_mutex_init(&pdvobj->setch_mutex);
+	rtl8188fu__rtw_mutex_init(&pdvobj->setbw_mutex);
+	rtl8188fu__rtw_mutex_init(&pdvobj->rf_read_reg_mutex);
 #ifdef CONFIG_SDIO_INDIRECT_ACCESS
-	_rtw_mutex_init(&pdvobj->sd_indirect_access_mutex);
+	rtl8188fu__rtw_mutex_init(&pdvobj->sd_indirect_access_mutex);
 #endif
 
 #ifdef CONFIG_RTW_CUSTOMER_STR
-	_rtw_mutex_init(&pdvobj->customer_str_mutex);
-	_rtw_memset(pdvobj->customer_str, 0xFF, RTW_CUSTOMER_STR_LEN);
+	rtl8188fu__rtw_mutex_init(&pdvobj->customer_str_mutex);
+	rtl8188fu__rtw_memset(pdvobj->customer_str, 0xFF, RTW_CUSTOMER_STR_LEN);
 #endif
 
 	pdvobj->processing_dev_remove = _FALSE;
 
-	ATOMIC_SET(&pdvobj->disable_func, 0);
+	rtl8188fu_ATOMIC_SET(&pdvobj->disable_func, 0);
 
-	rtw_macid_ctl_init(&pdvobj->macid_ctl);
-	_rtw_spinlock_init(&pdvobj->cam_ctl.lock);
-	_rtw_mutex_init(&pdvobj->cam_ctl.sec_cam_access_mutex);
+	rtl8188fu_rtw_macid_ctl_init(&pdvobj->macid_ctl);
+	rtl8188fu__rtw_spinlock_init(&pdvobj->cam_ctl.lock);
+	rtl8188fu__rtw_mutex_init(&pdvobj->cam_ctl.sec_cam_access_mutex);
 
 	return pdvobj;
 
 }
 
-void devobj_deinit(struct dvobj_priv *pdvobj)
+void rtl8188fu_devobj_deinit(struct dvobj_priv *pdvobj)
 {
 	if(!pdvobj)
 		return;
 
-	/* TODO: use rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
+	/* TODO: use rtl8188fu_rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
 #if defined(CONFIG_IOCTL_CFG80211)
-	rtw_cfg80211_dev_res_free(pdvobj);
+	rtl8188fu_rtw_cfg80211_dev_res_free(pdvobj);
 #endif
 
-	_rtw_mutex_free(&pdvobj->hw_init_mutex);
-	_rtw_mutex_free(&pdvobj->h2c_fwcmd_mutex);
+	rtl8188fu__rtw_mutex_free(&pdvobj->hw_init_mutex);
+	rtl8188fu__rtw_mutex_free(&pdvobj->h2c_fwcmd_mutex);
 
 #ifdef CONFIG_RTW_CUSTOMER_STR
-	_rtw_mutex_free(&pdvobj->customer_str_mutex);
+	rtl8188fu__rtw_mutex_free(&pdvobj->customer_str_mutex);
 #endif
 
-	_rtw_mutex_free(&pdvobj->setch_mutex);
-	_rtw_mutex_free(&pdvobj->setbw_mutex);
-	_rtw_mutex_free(&pdvobj->rf_read_reg_mutex);
+	rtl8188fu__rtw_mutex_free(&pdvobj->setch_mutex);
+	rtl8188fu__rtw_mutex_free(&pdvobj->setbw_mutex);
+	rtl8188fu__rtw_mutex_free(&pdvobj->rf_read_reg_mutex);
 #ifdef CONFIG_SDIO_INDIRECT_ACCESS
-	_rtw_mutex_free(&pdvobj->sd_indirect_access_mutex);
+	rtl8188fu__rtw_mutex_free(&pdvobj->sd_indirect_access_mutex);
 #endif
 
-	rtw_macid_ctl_deinit(&pdvobj->macid_ctl);
-	_rtw_spinlock_free(&pdvobj->cam_ctl.lock);
-	_rtw_mutex_free(&pdvobj->cam_ctl.sec_cam_access_mutex);
+	rtl8188fu_rtw_macid_ctl_deinit(&pdvobj->macid_ctl);
+	rtl8188fu__rtw_spinlock_free(&pdvobj->cam_ctl.lock);
+	rtl8188fu__rtw_mutex_free(&pdvobj->cam_ctl.sec_cam_access_mutex);
 
 	rtw_mfree((u8*)pdvobj, sizeof(*pdvobj));
 }	
 
-u8 rtw_reset_drv_sw(_adapter *padapter)
+u8 rtl8188fu_rtw_reset_drv_sw(_adapter *padapter)
 {
 	u8	ret8=_SUCCESS;
 	struct mlme_priv *pmlmepriv= &padapter->mlmepriv;
@@ -1532,7 +1532,7 @@ u8 rtw_reset_drv_sw(_adapter *padapter)
 
 	//hal_priv
 	if( is_primary_adapter(padapter))
-		rtw_hal_def_value_init(padapter);
+		rtl8188fu_rtw_hal_def_value_init(padapter);
 
 	RTW_ENABLE_FUNC(padapter, DF_RX_BIT);
 	RTW_ENABLE_FUNC(padapter, DF_TX_BIT);
@@ -1557,7 +1557,7 @@ u8 rtw_reset_drv_sw(_adapter *padapter)
 
 #ifdef DBG_CONFIG_ERROR_DETECT
 	if (is_primary_adapter(padapter))
-		rtw_hal_sreset_reset_value(padapter);
+		rtw_hal_rtl8188fu_sreset_reset_value(padapter);
 #endif
 	pwrctrlpriv->pwr_state_check_cnts = 0;
 
@@ -1572,18 +1572,18 @@ u8 rtw_reset_drv_sw(_adapter *padapter)
 }
 
 
-u8 rtw_init_drv_sw(_adapter *padapter)
+u8 rtl8188fu_rtw_init_drv_sw(_adapter *padapter)
 {
 
 	u8	ret8=_SUCCESS;
 
 _func_enter_;
 
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_init_drv_sw\n"));
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtl8188fu_rtw_init_drv_sw\n"));
 
-	ret8 = rtw_init_default_value(padapter);
+	ret8 = rtl8188fu_rtw_init_default_value(padapter);
 
-	if ((rtw_init_cmd_priv(&padapter->cmdpriv)) == _FAIL)
+	if ((rtl8188furtl8188fu__rtw_init_cmd_priv(&padapter->cmdpriv)) == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init cmd_priv\n"));
 		ret8=_FAIL;
@@ -1592,7 +1592,7 @@ _func_enter_;
 
 	padapter->cmdpriv.padapter=padapter;
 
-	if ((rtw_init_evt_priv(&padapter->evtpriv)) == _FAIL)
+	if ((rtl8188furtl8188fu__rtw_init_evt_priv(&padapter->evtpriv)) == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init evt_priv\n"));
 		ret8=_FAIL;
@@ -1600,7 +1600,7 @@ _func_enter_;
 	}
 
 
-	if (rtw_init_mlme_priv(padapter) == _FAIL)
+	if (rtl8188fu_rtw_init_mlme_priv(padapter) == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init mlme_priv\n"));
 		ret8=_FAIL;
@@ -1608,19 +1608,19 @@ _func_enter_;
 	}
 
 #ifdef CONFIG_P2P
-	rtw_init_wifidirect_timers(padapter);
-	init_wifidirect_info(padapter, P2P_ROLE_DISABLE);
-	reset_global_wifidirect_info(padapter);
+	rtl8188fu_rtw_init_wifidirect_timers(padapter);
+	rtl8188fu_init_wifidirect_info(padapter, P2P_ROLE_DISABLE);
+	rtl8188fu_reset_global_wifidirect_info(padapter);
 	#ifdef CONFIG_IOCTL_CFG80211
-	rtw_init_cfg80211_wifidirect_info(padapter);
+	rtl8188fu_rtw_init_cfg80211_wifidirect_info(padapter);
 	#endif
 #ifdef CONFIG_WFD
-	if(rtw_init_wifi_display_info(padapter) == _FAIL)
+	if(rtl8188fu_rtw_init_wifi_display_info(padapter) == _FAIL)
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init init_wifi_display_info\n"));
 #endif
 #endif /* CONFIG_P2P */
 
-	if(init_mlme_ext_priv(padapter) == _FAIL)
+	if(rtl8188fu_init_mlme_ext_priv(padapter) == _FAIL)
 	{
 		RT_TRACE(_module_os_intfs_c_,_drv_err_,("\n Can't init mlme_ext_priv\n"));
 		ret8=_FAIL;
@@ -1636,30 +1636,30 @@ _func_enter_;
 	}
 #endif //CONFIG_TDLS
 
-	if(_rtw_init_xmit_priv(&padapter->xmitpriv, padapter) == _FAIL)
+	if(rtl8188fu__rtw_init_xmit_priv(&padapter->xmitpriv, padapter) == _FAIL)
 	{
-		DBG_871X("Can't _rtw_init_xmit_priv\n");
+		DBG_871X("Can't rtl8188fu__rtw_init_xmit_priv\n");
 		ret8=_FAIL;
 		goto exit;
 	}
 
-	if(_rtw_init_recv_priv(&padapter->recvpriv, padapter) == _FAIL)
+	if(rtl8188fu__rtw_init_recv_priv(&padapter->recvpriv, padapter) == _FAIL)
 	{
-		DBG_871X("Can't _rtw_init_recv_priv\n");
+		DBG_871X("Can't rtl8188fu__rtw_init_recv_priv\n");
 		ret8=_FAIL;
 		goto exit;
 	}
 	// add for CONFIG_IEEE80211W, none 11w also can use
-	_rtw_spinlock_init(&padapter->security_key_mutex);
+	rtl8188fu__rtw_spinlock_init(&padapter->security_key_mutex);
 	
 	// We don't need to memset padapter->XXX to zero, because adapter is allocated by rtw_zvmalloc().
-	//_rtw_memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
+	//rtl8188fu__rtw_memset((unsigned char *)&padapter->securitypriv, 0, sizeof (struct security_priv));
 
-	//_init_timer(&(padapter->securitypriv.tkip_timer), padapter->pifp, rtw_use_tkipkey_handler, padapter);
+	//_init_timer(&(padapter->securitypriv.tkip_timer), padapter->pifp, rtl8188fu_rtw_use_tkipkey_handler, padapter);
 
-	if(_rtw_init_sta_priv(&padapter->stapriv) == _FAIL)
+	if(rtl8188fu__rtw_init_sta_priv(&padapter->stapriv) == _FAIL)
 	{
-		DBG_871X("Can't _rtw_init_sta_priv\n");
+		DBG_871X("Can't rtl8188fu__rtw_init_sta_priv\n");
 		ret8=_FAIL;
 		goto exit;
 	}
@@ -1676,21 +1676,21 @@ _func_enter_;
 	padapter->drv_rx_cnt_crcerror = 0;
 	padapter->drv_rx_cnt_drop = 0;
 #endif	
-	rtw_init_bcmc_stainfo(padapter);
+	rtl8188fu_rtw_init_bcmc_stainfo(padapter);
 
-	rtw_init_pwrctrl_priv(padapter);
+	rtl8188fu_rtw_init_pwrctrl_priv(padapter);
 
-	//_rtw_memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
+	//rtl8188fu__rtw_memset((u8 *)&padapter->qospriv, 0, sizeof (struct qos_priv));//move to mlme_priv
 
 #ifdef CONFIG_MP_INCLUDED
-	if (init_mp_priv(padapter) == _FAIL) {
+	if (rtl8188fu_init_mp_priv(padapter) == _FAIL) {
 		DBG_871X("%s: initialize MP private data Fail!\n", __func__);
 	}
 #endif
 
-	rtw_hal_dm_init(padapter);
+	rtl8188fu_rtw_hal_dm_init(padapter);
 #ifdef CONFIG_SW_LED
-	rtw_hal_sw_led_init(padapter);
+	rtl8188fu_rtw_hal_sw_led_init(padapter);
 #endif
 #ifdef DBG_CONFIG_ERROR_DETECT
 	rtw_hal_sreset_init(padapter);
@@ -1711,12 +1711,12 @@ _func_enter_;
 #endif
 
 #ifdef CONFIG_BR_EXT
-	_rtw_spinlock_init(&padapter->br_ext_lock);
+	rtl8188fu__rtw_spinlock_init(&padapter->br_ext_lock);
 #endif	// CONFIG_BR_EXT
 
 exit:
 
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-rtw_init_drv_sw\n"));
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-rtl8188fu_rtw_init_drv_sw\n"));
 
 	_func_exit_;
 
@@ -1724,31 +1724,31 @@ exit:
 
 }
 
-void rtw_cancel_all_timer(_adapter *padapter)
+void rtl8188fu_rtw_cancel_all_timer(_adapter *padapter)
 {
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtw_cancel_all_timer\n"));
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("+rtl8188fu_rtw_cancel_all_timer\n"));
 
 	_cancel_timer_ex(&padapter->mlmepriv.assoc_timer);
-	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtw_cancel_all_timer:cancel association timer complete!\n"));
+	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtl8188fu_rtw_cancel_all_timer:cancel association timer complete!\n"));
 
 	#if 0
 	_cancel_timer_ex(&padapter->securitypriv.tkip_timer);
-	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtw_cancel_all_timer:cancel tkip_timer!\n"));
+	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtl8188fu_rtw_cancel_all_timer:cancel tkip_timer!\n"));
 	#endif
 
 	_cancel_timer_ex(&padapter->mlmepriv.scan_to_timer);
-	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtw_cancel_all_timer:cancel scan_to_timer!\n"));
+	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtl8188fu_rtw_cancel_all_timer:cancel scan_to_timer!\n"));
 
 	#ifdef CONFIG_DFS_MASTER
 	_cancel_timer_ex(&padapter->mlmepriv.dfs_master_timer);
 	#endif
 
 	_cancel_timer_ex(&padapter->mlmepriv.dynamic_chk_timer);
-	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtw_cancel_all_timer:cancel dynamic_chk_timer!\n"));
+	RT_TRACE(_module_os_intfs_c_, _drv_info_, ("rtl8188fu_rtw_cancel_all_timer:cancel dynamic_chk_timer!\n"));
 
 	// cancel sw led timer
-	rtw_hal_sw_led_deinit(padapter);
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel DeInitSwLeds! \n"));
+	rtl8188fu_rtw_hal_sw_led_deinit(padapter);
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtl8188fu_rtw_cancel_all_timer:cancel DeInitSwLeds! \n"));
 
 	_cancel_timer_ex(&(adapter_to_pwrctl(padapter)->pwr_state_check_timer));
 
@@ -1760,32 +1760,32 @@ void rtw_cancel_all_timer(_adapter *padapter)
 
 #ifdef CONFIG_SET_SCAN_DENY_TIMER
 	_cancel_timer_ex(&padapter->mlmepriv.set_scan_deny_timer);
-	rtw_clear_scan_deny(padapter);
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtw_cancel_all_timer:cancel set_scan_deny_timer! \n"));
+	rtl8188fu_rtw_clear_scan_deny(padapter);
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("rtl8188fu_rtw_cancel_all_timer:cancel set_scan_deny_timer! \n"));
 #endif
 
 #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
 	_cancel_timer_ex(&padapter->recvpriv.signal_stat_timer);
 #endif
 	//cancel dm timer
-	rtw_hal_dm_deinit(padapter);
+	rtl8188fu_rtw_hal_dm_deinit(padapter);
 
 #ifdef CONFIG_PLATFORM_FS_MX61
 	msleep(50);
 #endif
 }
 
-u8 rtw_free_drv_sw(_adapter *padapter)
+u8 rtl8188fu_rtw_free_drv_sw(_adapter *padapter)
 {
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("==>rtw_free_drv_sw"));
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("==>rtl8188fu_rtw_free_drv_sw"));
 
 #ifdef CONFIG_WAPI_SUPPORT
 	rtw_wapi_free(padapter);
 #endif
 
-	//we can call rtw_p2p_enable here, but:
-	// 1. rtw_p2p_enable may have IO operation
-	// 2. rtw_p2p_enable is bundled with wext interface
+	//we can call rtl8188fu_rtw_p2p_enable here, but:
+	// 1. rtl8188fu_rtw_p2p_enable may have IO operation
+	// 2. rtl8188fu_rtw_p2p_enable is bundled with wext interface
 	#ifdef CONFIG_P2P
 	{
 		struct wifidirect_info *pwdinfo = &padapter->wdinfo;
@@ -1802,37 +1802,37 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	}
 	#endif
 	// add for CONFIG_IEEE80211W, none 11w also can use
-	_rtw_spinlock_free(&padapter->security_key_mutex);
+	rtl8188fu__rtw_spinlock_free(&padapter->security_key_mutex);
 	
 #ifdef CONFIG_BR_EXT
-	_rtw_spinlock_free(&padapter->br_ext_lock);
+	rtl8188fu__rtw_spinlock_free(&padapter->br_ext_lock);
 #endif	// CONFIG_BR_EXT
 
 #ifdef CONFIG_INTEL_WIDI
 	rtw_free_intel_widi(padapter);
 #endif //CONFIG_INTEL_WIDI
 
-	free_mlme_ext_priv(&padapter->mlmeextpriv);
+	rtl8188fu_free_mlme_ext_priv(&padapter->mlmeextpriv);
 
 #ifdef CONFIG_TDLS
 	//rtw_free_tdls_info(&padapter->tdlsinfo);
 #endif //CONFIG_TDLS
 
-	rtw_free_cmd_priv(&padapter->cmdpriv);
+	rtl8188fu_rtw_free_cmd_priv(&padapter->cmdpriv);
 
-	rtw_free_evt_priv(&padapter->evtpriv);
+	rtl8188fu_rtw_free_evt_priv(&padapter->evtpriv);
 
-	rtw_free_mlme_priv(&padapter->mlmepriv);
+	rtl8188fu_rtw_free_mlme_priv(&padapter->mlmepriv);
 
 	//free_io_queue(padapter);
 
-	_rtw_free_xmit_priv(&padapter->xmitpriv);
+	rtl8188fu__rtw_free_xmit_priv(&padapter->xmitpriv);
 
-	_rtw_free_sta_priv(&padapter->stapriv); //will free bcmc_stainfo here
+	rtl8188fu__rtw_free_sta_priv(&padapter->stapriv); //will free bcmc_stainfo here
 
-	_rtw_free_recv_priv(&padapter->recvpriv);
+	rtl8188fu__rtw_free_recv_priv(&padapter->recvpriv);
 
-	rtw_free_pwrctrl_priv(padapter);
+	rtl8188fu_rtw_free_pwrctrl_priv(padapter);
 
 	//rtw_mfree((void *)padapter, sizeof (padapter));
 
@@ -1840,9 +1840,9 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 	free_drvext(&padapter->drvextpriv);
 #endif
 
-	rtw_hal_free_data(padapter);
+	rtl8188fu_rtw_hal_free_data(padapter);
 
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("<==rtw_free_drv_sw\n"));
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("<==rtl8188fu_rtw_free_drv_sw\n"));
 
 	//free the old_pnetdev
 	if(padapter->rereg_nd_name_priv.old_pnetdev) {
@@ -1855,7 +1855,7 @@ u8 rtw_free_drv_sw(_adapter *padapter)
 		padapter->pbuddy_adapter->pbuddy_adapter = NULL;
 	}
 
-	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-rtw_free_drv_sw\n"));
+	RT_TRACE(_module_os_intfs_c_,_drv_info_,("-rtl8188fu_rtw_free_drv_sw\n"));
 
 	return _SUCCESS;
 
@@ -1874,20 +1874,20 @@ int _netdev_vir_if_open(struct net_device *pnetdev)
 		goto _netdev_virtual_iface_open_error;
 
 	if (primary_padapter->bup == _FALSE || !rtw_is_hw_init_completed(primary_padapter))
-		_netdev_open(primary_padapter->pnetdev);
+		_rtl8188furtl8188fu__netdev_open(primary_padapter->pnetdev);
 
 	if(padapter->bup == _FALSE && primary_padapter->bup == _TRUE &&
 		rtw_is_hw_init_completed(primary_padapter))
 	{
 		padapter->bFWReady = primary_padapter->bFWReady;
 
-		if(rtw_start_drv_threads(padapter) == _FAIL)
+		if(rtl8188fu_rtw_start_drv_threads(padapter) == _FAIL)
 		{
 			goto _netdev_virtual_iface_open_error;
 		}
 
 #ifdef CONFIG_IOCTL_CFG80211
-		rtw_cfg80211_init_wiphy(padapter);
+		rtl8188fu_rtw_cfg80211_init_wiphy(padapter);
 #endif
 
 		padapter->bup = _TRUE;
@@ -1943,8 +1943,8 @@ static int netdev_vir_if_close(struct net_device *pnetdev)
 	}
 
 #ifdef CONFIG_IOCTL_CFG80211
-	rtw_scan_abort(padapter);
-	rtw_cfg80211_wait_scan_req_empty(padapter, 200);
+	rtl8188fu_rtw_scan_abort(padapter);
+	rtl8188fu_rtw_cfg80211_wait_scan_req_empty(padapter, 200);
 	adapter_wdev_data(padapter)->bandroid_scan = _FALSE;
 #endif
 
@@ -1955,10 +1955,10 @@ static int netdev_vir_if_close(struct net_device *pnetdev)
 static const struct net_device_ops rtw_netdev_vir_if_ops = {
 	 .ndo_open = netdev_vir_if_open,
         .ndo_stop = netdev_vir_if_close,
-        .ndo_start_xmit = rtw_xmit_entry,
+        .ndo_start_xmit = rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry,
         .ndo_set_mac_address = rtw_net_set_mac_address,
         .ndo_get_stats = rtw_net_get_stats,
-        .ndo_do_ioctl = rtw_ioctl,
+        .ndo_do_ioctl = rtl8188fu_rtw_ioctl,
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	.ndo_select_queue	= rtw_select_queue,
 #endif
@@ -1995,10 +1995,10 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 	if (padapter == NULL)
 		goto exit;
 
-	if (loadparam(padapter) != _SUCCESS)
+	if (rtl8188fu_loadparam(padapter) != _SUCCESS)
 		goto free_adapter;
 
-	_rtw_memcpy(padapter, primary_padapter, sizeof(_adapter));
+	rtl8188fu__rtw_memcpy(padapter, primary_padapter, sizeof(_adapter));
 
 	//
 	padapter->bup = _FALSE;
@@ -2031,18 +2031,18 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 	padapter->intf_stop = NULL;
 
 	//step init_io_priv
-	if ((rtw_init_io_priv(padapter, set_intf_ops)) == _FAIL) {
+	if ((rtl8188fu_rtw_init_io_priv(padapter, set_intf_ops)) == _FAIL) {
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("\n Can't init io_reqs\n"));
 		goto free_adapter;
 	}
 
 	//init drv data
-	if(rtw_init_drv_sw(padapter)!= _SUCCESS)
+	if(rtl8188fu_rtw_init_drv_sw(padapter)!= _SUCCESS)
 		goto free_drv_sw;
 
 
 	//get mac address from primary_padapter
-	_rtw_memcpy(mac, adapter_mac_addr(primary_padapter), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(mac, adapter_mac_addr(primary_padapter), ETH_ALEN);
 
 	/*
 	* If the BIT1 is 0, the address is universally administered.
@@ -2053,13 +2053,13 @@ _adapter *rtw_drv_add_vir_if(_adapter *primary_padapter,
 	mac[0] |= (padapter->iface_id-1)<<4;
 #endif
 
-	_rtw_memcpy(adapter_mac_addr(padapter), mac, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(adapter_mac_addr(padapter), mac, ETH_ALEN);
 
 	res = _SUCCESS;
 
 free_drv_sw:
 	if (res != _SUCCESS && padapter)
-		rtw_free_drv_sw(padapter);
+		rtl8188fu_rtw_free_drv_sw(padapter);
 free_adapter:
 	if (res != _SUCCESS && padapter) {
 		rtw_vmfree((u8 *)padapter, sizeof(*padapter));
@@ -2083,7 +2083,7 @@ void rtw_drv_stop_vir_if(_adapter *padapter)
 	{
 		#ifdef CONFIG_XMIT_ACK
 		if (padapter->xmitpriv.ack_tx)
-			rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_DRV_STOP);
+			rtl8188fu_rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_DRV_STOP);
 		#endif
 
 		if (padapter->intf_stop)
@@ -2091,13 +2091,13 @@ void rtw_drv_stop_vir_if(_adapter *padapter)
 			padapter->intf_stop(padapter);
 		}
 
-		rtw_stop_drv_threads(padapter);
+		rtl8188fu_rtw_stop_drv_threads(padapter);
 
 		padapter->bup = _FALSE;
 	}
 
 	/* cancel timer after thread stop */
-	rtw_cancel_all_timer(padapter);
+	rtl8188fu_rtw_cancel_all_timer(padapter);
 }
 
 void rtw_drv_free_vir_if(_adapter *padapter)
@@ -2107,10 +2107,10 @@ void rtw_drv_free_vir_if(_adapter *padapter)
 
 	padapter->pbuddy_adapter = NULL;
 
-	rtw_free_drv_sw(padapter);
+	rtl8188fu_rtw_free_drv_sw(padapter);
 
-	/* TODO: use rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
-	rtw_os_ndev_free(padapter);
+	/* TODO: use rtl8188fu_rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
+	rtl8188fu_rtw_os_ndev_free(padapter);
 
 	rtw_vmfree((u8 *)padapter, sizeof(_adapter));
 }
@@ -2169,9 +2169,9 @@ int _netdev_if2_open(struct net_device *pnetdev)
 
 		/* get mac address from primary_padapter */
 		if (primary_padapter->bup == _FALSE)
-			rtw_macaddr_cfg(adapter_mac_addr(primary_padapter), get_hal_mac_addr(primary_padapter));
+			rtl8188fu_rtw_macaddr_cfg(adapter_mac_addr(primary_padapter), get_hal_mac_addr(primary_padapter));
 
-		_rtw_memcpy(mac, adapter_mac_addr(primary_padapter), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(mac, adapter_mac_addr(primary_padapter), ETH_ALEN);
 
 		/*
 		* If the BIT1 is 0, the address is universally administered.
@@ -2179,25 +2179,25 @@ int _netdev_if2_open(struct net_device *pnetdev)
 		*/
 		mac[0] |= BIT(1);
 
-		_rtw_memcpy(adapter_mac_addr(padapter), mac, ETH_ALEN);
-		rtw_init_wifidirect_addrs(padapter, adapter_mac_addr(padapter), adapter_mac_addr(padapter));
-		_rtw_memcpy(pnetdev->dev_addr, adapter_mac_addr(padapter), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(adapter_mac_addr(padapter), mac, ETH_ALEN);
+		rtl8188fu_rtw_init_wifidirect_addrs(padapter, adapter_mac_addr(padapter), adapter_mac_addr(padapter));
+		rtl8188fu__rtw_memcpy(pnetdev->dev_addr, adapter_mac_addr(padapter), ETH_ALEN);
 	}
 #endif //CONFIG_PLATFORM_INTEL_BYT
 
 	if (primary_padapter->bup == _FALSE || !rtw_is_hw_init_completed(primary_padapter))
-		_netdev_open(primary_padapter->pnetdev);
+		_rtl8188furtl8188fu__netdev_open(primary_padapter->pnetdev);
 
 	if(padapter->bup == _FALSE && primary_padapter->bup == _TRUE &&
 		rtw_is_hw_init_completed(primary_padapter))
 	{
 		padapter->bFWReady = primary_padapter->bFWReady;
 
-		//if (init_mlme_ext_priv(padapter) == _FAIL)
+		//if (rtl8188fu_init_mlme_ext_priv(padapter) == _FAIL)
 		//	goto netdev_if2_open_error;
 
 
-		if (rtw_start_drv_threads(padapter) == _FAIL)
+		if (rtl8188fu_rtw_start_drv_threads(padapter) == _FAIL)
 		{
 			goto netdev_if2_open_error;
 		}
@@ -2209,7 +2209,7 @@ int _netdev_if2_open(struct net_device *pnetdev)
 		}
 
 #ifdef CONFIG_IOCTL_CFG80211
-		rtw_cfg80211_init_wiphy(padapter);
+		rtl8188fu_rtw_cfg80211_init_wiphy(padapter);
 #endif
 
 		padapter->bup = _TRUE;
@@ -2277,12 +2277,12 @@ static int netdev_if2_close(struct net_device *pnetdev)
 
 #ifdef CONFIG_P2P
 	if (!rtw_p2p_chk_role(&padapter->wdinfo, P2P_ROLE_DISABLE))
-		rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
+		rtl8188fu_rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
 #endif
 
 #ifdef CONFIG_IOCTL_CFG80211
-	rtw_scan_abort(padapter);
-	rtw_cfg80211_wait_scan_req_empty(padapter, 200);
+	rtl8188fu_rtw_scan_abort(padapter);
+	rtl8188fu_rtw_cfg80211_wait_scan_req_empty(padapter, 200);
 	adapter_wdev_data(padapter)->bandroid_scan = _FALSE;
 #endif
 
@@ -2291,14 +2291,14 @@ static int netdev_if2_close(struct net_device *pnetdev)
 
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,29))
 static const struct net_device_ops rtw_netdev_if2_ops = {
-	.ndo_init = rtw_ndev_init,
-	.ndo_uninit = rtw_ndev_uninit,
+	.ndo_init = rtl8188fu_rtw_ndev_init,
+	.ndo_uninit = rtl8188fu_rtw_ndev_uninit,
 	.ndo_open = netdev_if2_open,
 	.ndo_stop = netdev_if2_close,
-	.ndo_start_xmit = rtw_xmit_entry,
+	.ndo_start_xmit = rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry,
 	.ndo_set_mac_address = rtw_net_set_mac_address,
 	.ndo_get_stats = rtw_net_get_stats,
-	.ndo_do_ioctl = rtw_ioctl,
+	.ndo_do_ioctl = rtl8188fu_rtw_ioctl,
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
 	.ndo_select_queue	= rtw_select_queue,
 #endif
@@ -2310,8 +2310,8 @@ void rtw_hook_if2_ops(struct net_device *ndev)
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 29))
 	ndev->netdev_ops = &rtw_netdev_if2_ops;
 #else
-	ndev->init = rtw_ndev_init;
-	ndev->uninit = rtw_ndev_uninit;
+	ndev->init = rtl8188fu_rtw_ndev_init;
+	ndev->uninit = rtl8188fu_rtw_ndev_uninit;
 	ndev->open = netdev_if2_open;
 	ndev->stop = netdev_if2_close;
 	ndev->set_mac_address = rtw_net_set_mac_address;
@@ -2331,10 +2331,10 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	if (padapter == NULL)
 		goto exit;
 
-	if (loadparam(padapter) != _SUCCESS)
+	if (rtl8188fu_loadparam(padapter) != _SUCCESS)
 		goto free_adapter;
 
-	_rtw_memcpy(padapter, primary_padapter, sizeof(*padapter));
+	rtl8188fu__rtw_memcpy(padapter, primary_padapter, sizeof(*padapter));
 
 	//
 	padapter->bup = _FALSE;
@@ -2362,18 +2362,18 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	padapter->intf_stop = primary_padapter->intf_stop;
 
 	//step init_io_priv
-	if ((rtw_init_io_priv(padapter, set_intf_ops)) == _FAIL) {
+	if ((rtl8188fu_rtw_init_io_priv(padapter, set_intf_ops)) == _FAIL) {
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("\n Can't init io_reqs\n"));
 		goto free_adapter;
 	}
 
 	//init drv data
-	if(rtw_init_drv_sw(padapter)!= _SUCCESS)
+	if(rtl8188fu_rtw_init_drv_sw(padapter)!= _SUCCESS)
 		goto free_drv_sw;
 
 
 	/* get mac address from primary_padapter */
-	_rtw_memcpy(mac, adapter_mac_addr(primary_padapter), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(mac, adapter_mac_addr(primary_padapter), ETH_ALEN);
 
 	/*
 	* If the BIT1 is 0, the address is universally administered.
@@ -2381,8 +2381,8 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 	*/
 	mac[0] |= BIT(1);
 
-	_rtw_memcpy(adapter_mac_addr(padapter), mac, ETH_ALEN);
-	rtw_init_wifidirect_addrs(padapter, adapter_mac_addr(padapter), adapter_mac_addr(padapter));
+	rtl8188fu__rtw_memcpy(adapter_mac_addr(padapter), mac, ETH_ALEN);
+	rtl8188fu_rtw_init_wifidirect_addrs(padapter, adapter_mac_addr(padapter), adapter_mac_addr(padapter));
 
 	primary_padapter->pbuddy_adapter = padapter;
 
@@ -2390,7 +2390,7 @@ _adapter *rtw_drv_if2_init(_adapter *primary_padapter,
 
 free_drv_sw:
 	if (res != _SUCCESS && padapter)
-		rtw_free_drv_sw(padapter);
+		rtl8188fu_rtw_free_drv_sw(padapter);
 free_adapter:
 	if (res != _SUCCESS && padapter) {
 		rtw_vmfree((u8 *)padapter, sizeof(*padapter));
@@ -2407,10 +2407,10 @@ void rtw_drv_if2_free(_adapter *if2)
 	if (padapter == NULL)
 		return;
 
-	rtw_free_drv_sw(padapter);
+	rtl8188fu_rtw_free_drv_sw(padapter);
 
-	/* TODO: use rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
-	rtw_os_ndev_free(padapter);
+	/* TODO: use rtl8188fu_rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
+	rtl8188fu_rtw_os_ndev_free(padapter);
 
 	rtw_vmfree((u8 *)padapter, sizeof(_adapter));
 }
@@ -2427,7 +2427,7 @@ void rtw_drv_if2_stop(_adapter *if2)
 	if (padapter->bup == _TRUE) {
 		#ifdef CONFIG_XMIT_ACK
 		if (padapter->xmitpriv.ack_tx)
-			rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_DRV_STOP);
+			rtl8188fu_rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_DRV_STOP);
 		#endif
 
 		if (padapter->intf_stop)
@@ -2435,24 +2435,24 @@ void rtw_drv_if2_stop(_adapter *if2)
 			padapter->intf_stop(padapter);
 		}
 
-		rtw_stop_drv_threads(padapter);
+		rtl8188fu_rtw_stop_drv_threads(padapter);
 
 		padapter->bup = _FALSE;
 	}
 
 	/* cancel timer after thread stop */
-	rtw_cancel_all_timer(padapter);
+	rtl8188fu_rtw_cancel_all_timer(padapter);
 }
 #endif //end of CONFIG_CONCURRENT_MODE
 
-int rtw_os_ndevs_register(struct dvobj_priv *dvobj)
+int rtl8188fu_rtw_os_ndevs_register(struct dvobj_priv *dvobj)
 {
 	int i, status = _SUCCESS;
 	struct registry_priv *regsty = dvobj_to_regsty(dvobj);
 	_adapter *adapter;
 
 #if defined(CONFIG_IOCTL_CFG80211)
-	if (rtw_cfg80211_dev_res_register(dvobj) != _SUCCESS) {
+	if (rtl8188fu_rtw_cfg80211_dev_res_register(dvobj) != _SUCCESS) {
 		rtw_warn_on(1);
 		status = _FAIL;
 		goto exit;
@@ -2472,9 +2472,9 @@ int rtw_os_ndevs_register(struct dvobj_priv *dvobj)
 			char *name;
 
 			if (adapter->iface_id == IFACE_ID0)
-				name = regsty->ifname;
+				name = regsty->rtl8188fu_ifname;
 			else if (adapter->iface_id == IFACE_ID1)
-				name = regsty->if2name;
+				name = regsty->rtl8188fu_if2name;
 			else
 				name = "wlan%d";
 
@@ -2491,7 +2491,7 @@ int rtw_os_ndevs_register(struct dvobj_priv *dvobj)
 			}
 			#endif /* CONFIG_CONCURRENT_MODE */
 
-			status = rtw_os_ndev_register(adapter, name);
+			status = rtl8188fu_rtw_os_ndev_register(adapter, name);
 
 			if (status != _SUCCESS) {
 				rtw_warn_on(1);
@@ -2504,19 +2504,19 @@ int rtw_os_ndevs_register(struct dvobj_priv *dvobj)
 		for (; i >= 0; i--) {
 			adapter = dvobj->padapters[i];
 			if (adapter)
-				rtw_os_ndev_unregister(adapter);
+				rtl8188fu_rtw_os_ndev_unregister(adapter);
 		}
 	}
 
 #if defined(CONFIG_IOCTL_CFG80211)
 	if (status != _SUCCESS)
-		rtw_cfg80211_dev_res_unregister(dvobj);
+		rtl8188fu_rtw_cfg80211_dev_res_unregister(dvobj);
 #endif
 exit:
 	return status;
 }
 
-void rtw_os_ndevs_unregister(struct dvobj_priv *dvobj)
+void rtl8188fu_rtw_os_ndevs_unregister(struct dvobj_priv *dvobj)
 {
 	int i;
 	_adapter *adapter = NULL;
@@ -2527,52 +2527,52 @@ void rtw_os_ndevs_unregister(struct dvobj_priv *dvobj)
 		if (adapter == NULL)
 			continue;
 
-		rtw_os_ndev_unregister(adapter);
+		rtl8188fu_rtw_os_ndev_unregister(adapter);
 	}
 
 #if defined(CONFIG_IOCTL_CFG80211)
-	rtw_cfg80211_dev_res_unregister(dvobj);
+	rtl8188fu_rtw_cfg80211_dev_res_unregister(dvobj);
 #endif
 }
 
 /**
- * rtw_os_ndevs_init - Allocate and register OS layer net devices and relating structures for @dvobj
+ * rtl8188fu_rtw_os_ndevs_init - Allocate and register OS layer net devices and relating structures for @dvobj
  * @dvobj: the dvobj on which this function applies
  *
  * Returns:
  * _SUCCESS or _FAIL
  */
-int rtw_os_ndevs_init(struct dvobj_priv *dvobj)
+int rtl8188fu_rtw_os_ndevs_init(struct dvobj_priv *dvobj)
 {
 	int ret = _FAIL;
 
-	if (rtw_os_ndevs_alloc(dvobj) != _SUCCESS)
+	if (rtl8188fu_rtw_os_ndevs_alloc(dvobj) != _SUCCESS)
 		goto exit;
 
-	if (rtw_os_ndevs_register(dvobj) != _SUCCESS)
+	if (rtl8188fu_rtw_os_ndevs_register(dvobj) != _SUCCESS)
 		goto os_ndevs_free;
 
 	ret = _SUCCESS;
 
 os_ndevs_free:
 	if (ret != _SUCCESS)
-		rtw_os_ndevs_free(dvobj);
+		rtl8188fu_rtw_os_ndevs_free(dvobj);
 exit:
 	return ret;
 }
 
 /**
- * rtw_os_ndevs_deinit - Unregister and free OS layer net devices and relating structures for @dvobj
+ * rtl8188fu_rtw_os_ndevs_deinit - Unregister and free OS layer net devices and relating structures for @dvobj
  * @dvobj: the dvobj on which this function applies
  */
-void rtw_os_ndevs_deinit(struct dvobj_priv *dvobj)
+void rtl8188fu_rtw_os_ndevs_deinit(struct dvobj_priv *dvobj)
 {
-	rtw_os_ndevs_unregister(dvobj);
-	rtw_os_ndevs_free(dvobj);
+	rtl8188fu_rtw_os_ndevs_unregister(dvobj);
+	rtl8188fu_rtw_os_ndevs_free(dvobj);
 }
 
 #ifdef CONFIG_BR_EXT
-void netdev_br_init(struct net_device *netdev)
+void rtl8188fu_netdev_br_init(struct net_device *netdev)
 {
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(netdev);
 
@@ -2620,7 +2620,7 @@ void netdev_br_init(struct net_device *netdev)
 }
 #endif //CONFIG_BR_EXT
 
-int _netdev_open(struct net_device *pnetdev)
+int _rtl8188furtl8188fu__netdev_open(struct net_device *pnetdev)
 {
 	uint status;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
@@ -2637,34 +2637,34 @@ int _netdev_open(struct net_device *pnetdev)
 
 	if(pwrctrlpriv->ps_flag == _TRUE){
 		padapter->net_closed = _FALSE;
-		goto netdev_open_normal_process;
+		goto rtl8188furtl8188fu__netdev_open_normal_process;
 	}
 
 	if(padapter->bup == _FALSE)
 	{
 #ifdef CONFIG_PLATFORM_INTEL_BYT
-		rtw_macaddr_cfg(adapter_mac_addr(padapter),  get_hal_mac_addr(padapter));
-		rtw_init_wifidirect_addrs(padapter, adapter_mac_addr(padapter), adapter_mac_addr(padapter));
-		_rtw_memcpy(pnetdev->dev_addr, adapter_mac_addr(padapter), ETH_ALEN);
+		rtl8188fu_rtw_macaddr_cfg(adapter_mac_addr(padapter),  get_hal_mac_addr(padapter));
+		rtl8188fu_rtw_init_wifidirect_addrs(padapter, adapter_mac_addr(padapter), adapter_mac_addr(padapter));
+		rtl8188fu__rtw_memcpy(pnetdev->dev_addr, adapter_mac_addr(padapter), ETH_ALEN);
 #endif //CONFIG_PLATFORM_INTEL_BYT
 
 		rtw_clr_surprise_removed(padapter);
 		rtw_clr_drv_stopped(padapter);
 
-		status = rtw_hal_init(padapter);
+		status = rtl8188fu_rtw_hal_init(padapter);
 		if (status ==_FAIL)
 		{
 			RT_TRACE(_module_os_intfs_c_,_drv_err_,("rtl871x_hal_init(): Can't init h/w!\n"));
-			goto netdev_open_error;
+			goto rtl8188furtl8188fu__netdev_open_error;
 		}
 
 		DBG_871X("MAC Address = "MAC_FMT"\n", MAC_ARG(pnetdev->dev_addr));
 
-		status=rtw_start_drv_threads(padapter);
+		status=rtl8188fu_rtw_start_drv_threads(padapter);
 		if(status ==_FAIL)
 		{
 			DBG_871X("Initialize driver software resource Failed!\n");
-			goto netdev_open_error;
+			goto rtl8188furtl8188fu__netdev_open_error;
 		}
 
 #ifdef CONFIG_DRVEXT_MODULE
@@ -2677,7 +2677,7 @@ int _netdev_open(struct net_device *pnetdev)
 		}
 
 #ifdef CONFIG_IOCTL_CFG80211
-		rtw_cfg80211_init_wiphy(padapter);
+		rtl8188fu_rtw_cfg80211_init_wiphy(padapter);
 #endif
 
 		rtw_led_control(padapter, LED_CTL_NO_LINK);
@@ -2696,14 +2696,14 @@ int _netdev_open(struct net_device *pnetdev)
 	rtw_set_pwr_state_check_timer(pwrctrlpriv);
 #endif 
 
-	//netif_carrier_on(pnetdev);//call this func when rtw_joinbss_event_callback return success
+	//netif_carrier_on(pnetdev);//call this func when rtl8188fu_rtw_joinbss_event_callback return success
 	rtw_netif_wake_queue(pnetdev);
 
 #ifdef CONFIG_BR_EXT
-	netdev_br_init(pnetdev);
+	rtl8188fu_netdev_br_init(pnetdev);
 #endif	// CONFIG_BR_EXT
 
-netdev_open_normal_process:
+rtl8188furtl8188fu__netdev_open_normal_process:
 
 	#ifdef CONFIG_CONCURRENT_MODE
 	{
@@ -2718,7 +2718,7 @@ netdev_open_normal_process:
 
 	return 0;
 
-netdev_open_error:
+rtl8188furtl8188fu__netdev_open_error:
 
 	padapter->bup = _FALSE;
 
@@ -2732,7 +2732,7 @@ netdev_open_error:
 
 }
 
-int netdev_open(struct net_device *pnetdev)
+int rtl8188furtl8188fu__netdev_open(struct net_device *pnetdev)
 {
 	int ret;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
@@ -2745,14 +2745,14 @@ int netdev_open(struct net_device *pnetdev)
 	}
 
 	_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
-	ret = _netdev_open(pnetdev);
+	ret = _rtl8188furtl8188fu__netdev_open(pnetdev);
 	_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 
 	return ret;
 }
 
 #ifdef CONFIG_IPS
-int  ips_netdrv_open(_adapter *padapter)
+int  rtl8188fu_ips_netdrv_open(_adapter *padapter)
 {
 	int status = _SUCCESS;
 	//struct pwrctrl_priv	*pwrpriv = adapter_to_pwrctl(padapter);
@@ -2765,11 +2765,11 @@ int  ips_netdrv_open(_adapter *padapter)
 	rtw_clr_drv_stopped(padapter);
 	//padapter->bup = _TRUE;
 
-	status = rtw_hal_init(padapter);
+	status = rtl8188fu_rtw_hal_init(padapter);
 	if (status ==_FAIL)
 	{
-		RT_TRACE(_module_os_intfs_c_,_drv_err_,("ips_netdrv_open(): Can't init h/w!\n"));
-		goto netdev_open_error;
+		RT_TRACE(_module_os_intfs_c_,_drv_err_,("rtl8188fu_ips_netdrv_open(): Can't init h/w!\n"));
+		goto rtl8188furtl8188fu__netdev_open_error;
 	}
 
 	if (padapter->intf_start)
@@ -2784,52 +2784,52 @@ int  ips_netdrv_open(_adapter *padapter)
 
 	 return _SUCCESS;
 
-netdev_open_error:
+rtl8188furtl8188fu__netdev_open_error:
 	//padapter->bup = _FALSE;
-	DBG_871X("-ips_netdrv_open - drv_open failure, bup=%d\n", padapter->bup);
+	DBG_871X("-rtl8188fu_ips_netdrv_open - drv_open failure, bup=%d\n", padapter->bup);
 
 	return _FAIL;
 }
 
 
-int rtw_ips_pwr_up(_adapter *padapter)
+int rtl8188fu_rtw_ips_pwr_up(_adapter *padapter)
 {
 	int result;
 	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(padapter);
 #ifdef DBG_CONFIG_ERROR_DETECT
 	struct sreset_priv *psrtpriv = &pHalData->srestpriv;
 #endif//#ifdef DBG_CONFIG_ERROR_DETECT
-	u32 start_time = rtw_get_current_time();
-	DBG_871X("===>  rtw_ips_pwr_up..............\n");
+	u32 start_time = rtl8188fu_rtw_get_current_time();
+	DBG_871X("===>  rtl8188fu_rtw_ips_pwr_up..............\n");
 
 #if defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
 #ifdef DBG_CONFIG_ERROR_DETECT
 	if (psrtpriv->silent_reset_inprogress == _TRUE)
 #endif//#ifdef DBG_CONFIG_ERROR_DETECT		
 #endif //defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
-		rtw_reset_drv_sw(padapter);
+		rtl8188fu_rtw_reset_drv_sw(padapter);
 
-	result = ips_netdrv_open(padapter);
+	result = rtl8188fu_ips_netdrv_open(padapter);
 
 	rtw_led_control(padapter, LED_CTL_NO_LINK);
 
- 	DBG_871X("<===  rtw_ips_pwr_up.............. in %dms\n", rtw_get_passing_time_ms(start_time));
+ 	DBG_871X("<===  rtl8188fu_rtw_ips_pwr_up.............. in %dms\n", rtl8188fu_rtw_get_passing_time_ms(start_time));
 	return result;
 
 }
 
-void rtw_ips_pwr_down(_adapter *padapter)
+void rtl8188fu_rtw_ips_pwr_down(_adapter *padapter)
 {
-	u32 start_time = rtw_get_current_time();
-	DBG_871X("===> rtw_ips_pwr_down...................\n");
+	u32 start_time = rtl8188fu_rtw_get_current_time();
+	DBG_871X("===> rtl8188fu_rtw_ips_pwr_down...................\n");
 
 	padapter->net_closed = _TRUE;
 
-	rtw_ips_dev_unload(padapter);
-	DBG_871X("<=== rtw_ips_pwr_down..................... in %dms\n", rtw_get_passing_time_ms(start_time));
+	rtl8188fu_rtw_ips_dev_unload(padapter);
+	DBG_871X("<=== rtl8188fu_rtw_ips_pwr_down..................... in %dms\n", rtl8188fu_rtw_get_passing_time_ms(start_time));
 }
 #endif
-void rtw_ips_dev_unload(_adapter *padapter)
+void rtl8188fu_rtw_ips_dev_unload(_adapter *padapter)
 {
 	struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;
 	struct xmit_priv	*pxmitpriv = &(padapter->xmitpriv);
@@ -2846,7 +2846,7 @@ void rtw_ips_dev_unload(_adapter *padapter)
 #endif //#ifdef DBG_CONFIG_ERROR_DETECT		
 #endif //defined(CONFIG_SWLPS_IN_IPS) || defined(CONFIG_FWLPS_IN_IPS)
 	{
-		rtw_hal_set_hwreg(padapter, HW_VAR_FIFO_CLEARN_UP, 0);
+		rtl8188fu_rtw_hal_set_hwreg(padapter, HW_VAR_FIFO_CLEARN_UP, 0);
 
 		if (padapter->intf_stop)
 		{
@@ -2855,12 +2855,12 @@ void rtw_ips_dev_unload(_adapter *padapter)
 	}
 
 	if (!rtw_is_surprise_removed(padapter))
-		rtw_hal_deinit(padapter);
+		rtl8188fu_rtw_hal_deinit(padapter);
 
 }
 
 
-int pm_netdev_open(struct net_device *pnetdev,u8 bnormal)
+int pm_rtl8188furtl8188fu__netdev_open(struct net_device *pnetdev,u8 bnormal)
 {
 	int status = 0;
 
@@ -2869,12 +2869,12 @@ int pm_netdev_open(struct net_device *pnetdev,u8 bnormal)
 	if (_TRUE == bnormal)
 	{
 		_enter_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
-		status = _netdev_open(pnetdev);
+		status = _rtl8188furtl8188fu__netdev_open(pnetdev);
 		_exit_critical_mutex(&(adapter_to_dvobj(padapter)->hw_init_mutex), NULL);
 	}	
 #ifdef CONFIG_IPS
 	else
-		status =  (_SUCCESS == ips_netdrv_open(padapter))?(0):(-1);
+		status =  (_SUCCESS == rtl8188fu_ips_netdrv_open(padapter))?(0):(-1);
 #endif
 
 	return status;
@@ -2904,7 +2904,7 @@ static int netdev_close(struct net_device *pnetdev)
 
 		rtw_set_drv_stopped(padapter);
 
-		rtw_dev_unload(padapter);
+		rtl8188fu_rtw_dev_unload(padapter);
 	}
 	else*/
 	if(pwrctl->rf_pwrstate == rf_on){
@@ -2918,14 +2918,14 @@ static int netdev_close(struct net_device *pnetdev)
 
 #ifndef CONFIG_ANDROID
 		//s2.
-		LeaveAllPowerSaveMode(padapter);
-		rtw_disassoc_cmd(padapter, 500, _FALSE);
+		rtl8188fu_LeaveAllPowerSaveMode(padapter);
+		rtl8188fu_rtw_disassoc_cmd(padapter, 500, _FALSE);
 		//s2-2.  indicate disconnect to os
-		rtw_indicate_disconnect(padapter, 0, _FALSE);
+		rtl8188fu_rtw_indicate_disconnect(padapter, 0, _FALSE);
 		//s2-3.
-		rtw_free_assoc_resources(padapter, 1);
+		rtl8188fu_rtw_free_assoc_resources(padapter, 1);
 		//s2-4.
-		rtw_free_network_queue(padapter,_TRUE);
+		rtl8188furtl8188fu__rtl8188fu_rtw_free_network_queue(padapter,_TRUE);
 #endif
 		// Close LED
 		rtw_led_control(padapter, LED_CTL_POWER_OFF);
@@ -2934,19 +2934,19 @@ static int netdev_close(struct net_device *pnetdev)
 #ifdef CONFIG_BR_EXT
 	//if (OPMODE & (WIFI_STATION_STATE | WIFI_ADHOC_STATE))
 	{
-		//void nat25_db_cleanup(_adapter *priv);
-		nat25_db_cleanup(padapter);
+		//void rtl8188fu_nat25_db_cleanup(_adapter *priv);
+		rtl8188fu_nat25_db_cleanup(padapter);
 	}
 #endif	// CONFIG_BR_EXT
 
 #ifdef CONFIG_P2P
 	if (!rtw_p2p_chk_role(&padapter->wdinfo, P2P_ROLE_DISABLE))
-		rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
+		rtl8188fu_rtw_p2p_enable(padapter, P2P_ROLE_DISABLE);
 #endif //CONFIG_P2P
 
 #ifdef CONFIG_IOCTL_CFG80211
-	rtw_scan_abort(padapter);
-	rtw_cfg80211_wait_scan_req_empty(padapter, 200);
+	rtl8188fu_rtw_scan_abort(padapter);
+	rtl8188fu_rtw_cfg80211_wait_scan_req_empty(padapter, 200);
 	adapter_wdev_data(padapter)->bandroid_scan = _FALSE;
 	//padapter->rtw_wdev->iftype = NL80211_IFTYPE_MONITOR; //set this at the end
 #endif //CONFIG_IOCTL_CFG80211
@@ -2962,16 +2962,16 @@ static int netdev_close(struct net_device *pnetdev)
 		return 0;
 	}
 
-	rtw_scan_abort(padapter); // stop scanning process before wifi is going to down
+	rtl8188fu_rtw_scan_abort(padapter); // stop scanning process before wifi is going to down
 	#ifdef CONFIG_IOCTL_CFG80211
-	rtw_cfg80211_wait_scan_req_empty(padapter, 200);
+	rtl8188fu_rtw_cfg80211_wait_scan_req_empty(padapter, 200);
 	#endif
 
 	DBG_871X("netdev_close, bips_processing=%d\n", pwrctl->bips_processing);
-	while (pwrctl->bips_processing == _TRUE) // waiting for ips_processing done before call rtw_dev_unload()
-		rtw_msleep_os(1);	
+	while (pwrctl->bips_processing == _TRUE) // waiting for ips_processing done before call rtl8188fu_rtw_dev_unload()
+		rtl8188fu_rtw_msleep_os(1);	
 
-	rtw_dev_unload(padapter);
+	rtl8188fu_rtw_dev_unload(padapter);
 	rtw_sdio_set_power(0);
 
 #endif //!CONFIG_PLATFORM_INTEL_BYT
@@ -2983,7 +2983,7 @@ static int netdev_close(struct net_device *pnetdev)
 
 }
 
-int pm_netdev_close(struct net_device *pnetdev,u8 bnormal)
+int rtl8188fu_pm_netdev_close(struct net_device *pnetdev,u8 bnormal)
 {
 	int status = 0;
 
@@ -2992,7 +2992,7 @@ int pm_netdev_close(struct net_device *pnetdev,u8 bnormal)
 	return status;
 }
 
-void rtw_ndev_destructor(struct net_device *ndev)
+void rtl8188fu_rtw_ndev_destructor(struct net_device *ndev)
 {
 	DBG_871X(FUNC_NDEV_FMT"\n", FUNC_NDEV_ARG(ndev));
 
@@ -3236,7 +3236,7 @@ static int arp_query(unsigned char *haddr, u32 paddr,
 	if (neighbor_entry != NULL) {
 		neighbor_entry->used = jiffies;
 		if (neighbor_entry->nud_state & NUD_VALID) {
-			_rtw_memcpy(haddr, neighbor_entry->ha, dev->addr_len);
+			rtl8188fu__rtw_memcpy(haddr, neighbor_entry->ha, dev->addr_len);
 			ret = 1;
 		}
 		neigh_release(neighbor_entry);
@@ -3293,7 +3293,7 @@ int	rtw_gw_addr_query(_adapter *padapter)
 		pmlmepriv->gw_ip[1] = (gw_addr&0xff00)>>8;
 		pmlmepriv->gw_ip[2] = (gw_addr&0xff0000)>>16;
 		pmlmepriv->gw_ip[3] = (gw_addr&0xff000000)>>24;
-		_rtw_memcpy(pmlmepriv->gw_mac_addr, gw_mac, 6);
+		rtl8188fu__rtw_memcpy(pmlmepriv->gw_mac_addr, gw_mac, 6);
 		DBG_871X("%s Gateway Mac:\t" MAC_FMT "\n", __FUNCTION__, MAC_ARG(pmlmepriv->gw_mac_addr));
 		DBG_871X("%s Gateway IP:\t" IP_FMT "\n", __FUNCTION__, IP_ARG(pmlmepriv->gw_ip));
 	}
@@ -3306,7 +3306,7 @@ int	rtw_gw_addr_query(_adapter *padapter)
 }
 #endif
 
-void rtw_dev_unload(PADAPTER padapter)
+void rtl8188fu_rtw_dev_unload(PADAPTER padapter)
 {
 	struct net_device *pnetdev = (struct net_device*)padapter->pnetdev;	
 	struct pwrctrl_priv *pwrctl = adapter_to_pwrctl(padapter);
@@ -3324,32 +3324,32 @@ void rtw_dev_unload(PADAPTER padapter)
 		rtw_set_drv_stopped(padapter);
 		#ifdef CONFIG_XMIT_ACK
 		if (padapter->xmitpriv.ack_tx)
-			rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_DRV_STOP);
+			rtl8188fu_rtw_ack_tx_done(&padapter->xmitpriv, RTW_SCTX_DONE_DRV_STOP);
 		#endif
 
 		if (padapter->intf_stop)
 			padapter->intf_stop(padapter);
 		
-		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ rtw_dev_unload: stop intf complete!\n"));
+		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ rtl8188fu_rtw_dev_unload: stop intf complete!\n"));
 
 		if (!pwrctl->bInternalAutoSuspend)
-			rtw_stop_drv_threads(padapter);
+			rtl8188fu_rtw_stop_drv_threads(padapter);
 
-		while(ATOMIC_READ(&(pcmdpriv->cmdthd_running)) == _TRUE){
+		while(rtl8188fu_ATOMIC_READ(&(pcmdpriv->cmdthd_running)) == _TRUE){
 			if (cnt > 5) {
 				DBG_871X("stop cmdthd timeout\n");
 				break;
 			} else {
 				cnt ++;
 				DBG_871X("cmdthd is running(%d)\n", cnt);
-				rtw_msleep_os(10);
+				rtl8188fu_rtw_msleep_os(10);
 			}
 		}
 
 		RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("@ %s: stop thread complete!\n",__FUNCTION__));
 
 		//check the status of IPS
-		if(rtw_hal_check_ips_status(padapter) == _TRUE || pwrctl->rf_pwrstate == rf_off) { //check HW status and SW state
+		if(rtl8188fu_rtw_hal_check_ips_status(padapter) == _TRUE || pwrctl->rf_pwrstate == rf_off) { //check HW status and SW state
 			DBG_871X_LEVEL(_drv_always_, "%s: driver in IPS-FWLPS\n", __func__);
 			pdbgpriv->dbg_dev_unload_inIPS_cnt++;
 		} else {
@@ -3359,7 +3359,7 @@ void rtw_dev_unload(PADAPTER padapter)
 		if (!rtw_is_surprise_removed(padapter)) {
 			{
 				//amy modify 20120221 for power seq is different between driver open and ips
-				rtw_hal_deinit(padapter);
+				rtl8188fu_rtw_hal_deinit(padapter);
 			}
 			rtw_set_surprise_removed(padapter);
 		}
@@ -3375,11 +3375,11 @@ void rtw_dev_unload(PADAPTER padapter)
 	}
 
 	/* cancel timer after thread stop */
-	rtw_cancel_all_timer(padapter);
+	rtl8188fu_rtw_cancel_all_timer(padapter);
 	RT_TRACE(_module_hci_intfs_c_, _drv_notice_, ("-%s\n",__FUNCTION__));
 }
 
-int rtw_suspend_free_assoc_resource(_adapter *padapter)
+int rtl8188fu_rtw_suspend_free_assoc_resource(_adapter *padapter)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct net_device *pnetdev = padapter->pnetdev;
@@ -3402,49 +3402,49 @@ int rtw_suspend_free_assoc_resource(_adapter *padapter)
 					MAC_ARG(pmlmepriv->cur_network.network.MacAddress),
 					pmlmepriv->cur_network.network.Ssid.SsidLength,
 					pmlmepriv->assoc_ssid.SsidLength);
-			rtw_set_to_roam(padapter, 1);
+			rtl8188fu_rtw_set_to_roam(padapter, 1);
 		}
 	}
 
 	if(check_fwstate(pmlmepriv, WIFI_STATION_STATE) && check_fwstate(pmlmepriv, _FW_LINKED))
 	{	
-		rtw_disassoc_cmd(padapter, 0, _FALSE);	
+		rtl8188fu_rtw_disassoc_cmd(padapter, 0, _FALSE);	
 		//s2-2.  indicate disconnect to os
-		rtw_indicate_disconnect(padapter, 0, _FALSE);
+		rtl8188fu_rtw_indicate_disconnect(padapter, 0, _FALSE);
 	}
 	#ifdef CONFIG_AP_MODE
 	else if(check_fwstate(pmlmepriv, WIFI_AP_STATE))	
 	{
-		rtw_sta_flush(padapter, _TRUE);
+		rtl8188fu_rtw_sta_flush(padapter, _TRUE);
 	}
 	#endif
 		
 	//s2-3.
-	rtw_free_assoc_resources(padapter, 1);
+	rtl8188fu_rtw_free_assoc_resources(padapter, 1);
 
 	//s2-4.
 #ifdef CONFIG_AUTOSUSPEND
 	if(is_primary_adapter(padapter) && (!adapter_to_pwrctl(padapter)->bInternalAutoSuspend ))
 #endif
-		rtw_free_network_queue(padapter, _TRUE);
+		rtl8188furtl8188fu__rtl8188fu_rtw_free_network_queue(padapter, _TRUE);
 
 	if (check_fwstate(pmlmepriv, _FW_UNDER_SURVEY)) {
 		DBG_871X_LEVEL(_drv_always_, "%s: fw_under_survey\n", __func__);
-		rtw_indicate_scan_done(padapter, 1);
+		rtl8188fu_rtw_indicate_scan_done(padapter, 1);
 		clr_fwstate(pmlmepriv, _FW_UNDER_SURVEY);
 	}
 
 	if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING) == _TRUE)
 	{
 		DBG_871X_LEVEL(_drv_always_, "%s: fw_under_linking\n", __FUNCTION__);
-		rtw_indicate_disconnect(padapter, 0, _FALSE);
+		rtl8188fu_rtw_indicate_disconnect(padapter, 0, _FALSE);
 	}
 	
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 	return _SUCCESS;
 }
 
-int rtw_suspend_normal(_adapter *padapter)
+int rtl8188fu_rtw_suspend_normal(_adapter *padapter)
 {
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	struct net_device *pnetdev = padapter->pnetdev;
@@ -3467,16 +3467,16 @@ int rtw_suspend_normal(_adapter *padapter)
 	}
 #endif	
 
-	rtw_suspend_free_assoc_resource(padapter);
+	rtl8188fu_rtw_suspend_free_assoc_resource(padapter);
 
 #ifdef CONFIG_CONCURRENT_MODE
 	if(rtw_buddy_adapter_up(padapter)){
-		rtw_suspend_free_assoc_resource(padapter->pbuddy_adapter);
+		rtl8188fu_rtw_suspend_free_assoc_resource(padapter->pbuddy_adapter);
 	}
 #endif
 	rtw_led_control(padapter, LED_CTL_POWER_OFF);
 
-	if ((rtw_hal_check_ips_status(padapter) == _TRUE)
+	if ((rtl8188fu_rtw_hal_check_ips_status(padapter) == _TRUE)
 		|| (adapter_to_pwrctl(padapter)->rf_pwrstate == rf_off))
 	{
 		DBG_871X_LEVEL(_drv_always_, "%s: ### ERROR #### driver in IPS ####ERROR###!!!\n", __FUNCTION__);	
@@ -3485,10 +3485,10 @@ int rtw_suspend_normal(_adapter *padapter)
 	
 #ifdef CONFIG_CONCURRENT_MODE
 	if(rtw_buddy_adapter_up(padapter)){
-		rtw_dev_unload(padapter->pbuddy_adapter);
+		rtl8188fu_rtw_dev_unload(padapter->pbuddy_adapter);
 	}
 #endif
-	rtw_dev_unload(padapter);
+	rtl8188fu_rtw_dev_unload(padapter);
 
 	//sdio_deinit(adapter_to_dvobj(padapter));
 	if(padapter->intf_deinit)
@@ -3498,7 +3498,7 @@ int rtw_suspend_normal(_adapter *padapter)
 	return ret;
 }
 
-int rtw_suspend_common(_adapter *padapter)
+int rtl8188fu_rtw_suspend_common(_adapter *padapter)
 {
 	struct dvobj_priv *psdpriv = padapter->dvobj;
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
@@ -3506,7 +3506,7 @@ int rtw_suspend_common(_adapter *padapter)
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	
 	int ret = 0;
-	u32 start_time = rtw_get_current_time();
+	u32 start_time = rtl8188fu_rtw_get_current_time();
 
 	DBG_871X_LEVEL(_drv_always_, " suspend start\n");
 	DBG_871X("==> %s (%s:%d)\n",__FUNCTION__, current->comm, current->pid);
@@ -3516,14 +3516,14 @@ int rtw_suspend_common(_adapter *padapter)
 	pwrpriv->bInSuspend = _TRUE;
 	
 	while (pwrpriv->bips_processing == _TRUE)
-		rtw_msleep_os(1);		
+		rtl8188fu_rtw_msleep_os(1);		
 
 #ifdef CONFIG_IOL_READ_EFUSE_MAP
 	if(!padapter->bup){
 		u8 bMacPwrCtrlOn = _FALSE;
-		rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
+		rtl8188fu_rtw_hal_get_hwreg(padapter, HW_VAR_APFM_ON_MAC, &bMacPwrCtrlOn);
 		if(bMacPwrCtrlOn)
-			rtw_hal_power_off(padapter);
+			rtl8188fu_rtw_hal_power_off(padapter);
 	}
 #endif
 
@@ -3535,55 +3535,55 @@ int rtw_suspend_common(_adapter *padapter)
 		pdbgpriv->dbg_suspend_error_cnt++;
 		goto exit;
 	}
-	rtw_ps_deny(padapter, PS_DENY_SUSPEND);
+	rtl8188fu_rtw_ps_deny(padapter, PS_DENY_SUSPEND);
 
-	rtw_cancel_all_timer(padapter);
+	rtl8188fu_rtw_cancel_all_timer(padapter);
 #ifdef CONFIG_CONCURRENT_MODE
 	if (padapter->pbuddy_adapter){
-		rtw_cancel_all_timer(padapter->pbuddy_adapter);
+		rtl8188fu_rtw_cancel_all_timer(padapter->pbuddy_adapter);
 	}
 #endif // CONFIG_CONCURRENT_MODE
 
-	LeaveAllPowerSaveModeDirect(padapter);
+	rtl8188fu_LeaveAllPowerSaveModeDirect(padapter);
 
-	rtw_stop_cmd_thread(padapter);
+	rtl8188fu_rtw_stop_cmd_thread(padapter);
 	
-	rtw_ps_deny_cancel(padapter, PS_DENY_SUSPEND);
+	rtl8188fu_rtw_ps_deny_cancel(padapter, PS_DENY_SUSPEND);
 
 	if (check_fwstate(pmlmepriv,WIFI_STATION_STATE) == _TRUE
 #ifdef CONFIG_CONCURRENT_MODE
 		&& check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	) {
-		rtw_suspend_normal(padapter);
+		rtl8188fu_rtw_suspend_normal(padapter);
 	} else if (check_fwstate(pmlmepriv,WIFI_AP_STATE) == _TRUE
 #ifdef CONFIG_CONCURRENT_MODE
 		&& check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	) {
-		rtw_suspend_normal(padapter);
+		rtl8188fu_rtw_suspend_normal(padapter);
 #ifdef CONFIG_CONCURRENT_MODE
 	} else if (check_fwstate(pmlmepriv,WIFI_STATION_STATE) == _TRUE
 		&& check_buddy_fwstate(padapter, WIFI_AP_STATE) == _TRUE) {
-		rtw_suspend_normal(padapter);
+		rtl8188fu_rtw_suspend_normal(padapter);
 #endif
 	} else {
-		rtw_suspend_normal(padapter);
+		rtl8188fu_rtw_suspend_normal(padapter);
 	}
 
 
 	DBG_871X_LEVEL(_drv_always_, "rtw suspend success in %d ms\n",
-		rtw_get_passing_time_ms(start_time));
+		rtl8188fu_rtw_get_passing_time_ms(start_time));
 
 exit:
 	DBG_871X("<===  %s return %d.............. in %dms\n", __FUNCTION__
-		, ret, rtw_get_passing_time_ms(start_time));
+		, ret, rtl8188fu_rtw_get_passing_time_ms(start_time));
 
 	return ret;	
 }
 
 
-int rtw_resume_process_normal(_adapter *padapter)
+int rtl8188fu_rtw_resume_process_normal(_adapter *padapter)
 {
 	struct net_device *pnetdev;
 	#ifdef CONFIG_CONCURRENT_MODE
@@ -3617,7 +3617,7 @@ _func_enter_;
 		RT_TRACE(_module_hci_intfs_c_, _drv_err_, ("%s: initialize SDIO Failed!!\n", __FUNCTION__));
 		goto exit;
 	}
-	rtw_hal_disable_interrupt(padapter);
+	rtl8188fu_rtw_hal_disable_interrupt(padapter);
 	//if (sdio_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS)
 	if ((padapter->intf_alloc_irq)&&(padapter->intf_alloc_irq(adapter_to_dvobj(padapter)) != _SUCCESS))
 	{
@@ -3626,15 +3626,15 @@ _func_enter_;
 		goto exit;
 	}
 
-	rtw_reset_drv_sw(padapter);
+	rtl8188fu_rtw_reset_drv_sw(padapter);
 	#ifdef CONFIG_CONCURRENT_MODE
-	rtw_reset_drv_sw(padapter->pbuddy_adapter);
+	rtl8188fu_rtw_reset_drv_sw(padapter->pbuddy_adapter);
 	#endif
 	
 	pwrpriv->bkeepfwalive = _FALSE;
 
 	DBG_871X("bkeepfwalive(%x)\n",pwrpriv->bkeepfwalive);
-	if(pm_netdev_open(pnetdev,_TRUE) != 0) {
+	if(pm_rtl8188furtl8188fu__netdev_open(pnetdev,_TRUE) != 0) {
 		ret = -1;
 		pdbgpriv->dbg_resume_error_cnt++;
 		goto exit;
@@ -3663,11 +3663,11 @@ _func_enter_;
 		DBG_871X(FUNC_ADPT_FMT" fwstate:0x%08x - WIFI_STATION_STATE\n", FUNC_ADPT_ARG(padapter), get_fwstate(pmlmepriv));
 
 		if (rtw_chk_roam_flags(padapter, RTW_ROAM_ON_RESUME))
-			rtw_roaming(padapter, NULL);
+			rtl8188fu_rtw_roaming(padapter, NULL);
 		
 	} else if (check_fwstate(pmlmepriv, WIFI_AP_STATE)) {
 		DBG_871X(FUNC_ADPT_FMT" fwstate:0x%08x - WIFI_AP_STATE\n", FUNC_ADPT_ARG(padapter), get_fwstate(pmlmepriv));
-		rtw_ap_restore_network(padapter);
+		rtl8188fu_rtw_ap_restore_network(padapter);
 	} else if (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE)) {
 		DBG_871X(FUNC_ADPT_FMT" fwstate:0x%08x - WIFI_ADHOC_STATE\n", FUNC_ADPT_ARG(padapter), get_fwstate(pmlmepriv));
 	} else {
@@ -3683,11 +3683,11 @@ _func_enter_;
 			DBG_871X(FUNC_ADPT_FMT" fwstate:0x%08x - WIFI_STATION_STATE\n", FUNC_ADPT_ARG(buddy), get_fwstate(buddy_mlme));
 
 			if (rtw_chk_roam_flags(buddy, RTW_ROAM_ON_RESUME))
-				rtw_roaming(buddy, NULL);
+				rtl8188fu_rtw_roaming(buddy, NULL);
 		
 		} else if (check_fwstate(buddy_mlme, WIFI_AP_STATE)) {
 			DBG_871X(FUNC_ADPT_FMT" fwstate:0x%08x - WIFI_AP_STATE\n", FUNC_ADPT_ARG(buddy), get_fwstate(buddy_mlme));
-			rtw_ap_restore_network(buddy);
+			rtl8188fu_rtw_ap_restore_network(buddy);
 		} else if (check_fwstate(buddy_mlme, WIFI_ADHOC_STATE)) {
 			DBG_871X(FUNC_ADPT_FMT" fwstate:0x%08x - WIFI_ADHOC_STATE\n", FUNC_ADPT_ARG(buddy), get_fwstate(buddy_mlme));
 		} else {
@@ -3697,7 +3697,7 @@ _func_enter_;
 	#endif
 
 #ifdef CONFIG_RESUME_IN_WORKQUEUE
-	//rtw_unlock_suspend();
+	//rtl8188fu_rtw_unlock_suspend();
 #endif //CONFIG_RESUME_IN_WORKQUEUE
 	DBG_871X("<== "FUNC_ADPT_FMT" exit....\n", FUNC_ADPT_ARG(padapter));
 
@@ -3706,10 +3706,10 @@ _func_exit_;
 	return ret;	
 }
 
-int rtw_resume_common(_adapter *padapter)
+int rtl8188fu_rtw_resume_common(_adapter *padapter)
 {
 	int ret = 0;
-	u32 start_time = rtw_get_current_time();
+	u32 start_time = rtl8188fu_rtw_get_current_time();
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
 	struct mlme_priv *pmlmepriv = &padapter->mlmepriv;
 	
@@ -3726,21 +3726,21 @@ int rtw_resume_common(_adapter *padapter)
 		&& check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	) {
-		rtw_resume_process_normal(padapter);
+		rtl8188fu_rtw_resume_process_normal(padapter);
 
 	} else if (check_fwstate(pmlmepriv,WIFI_AP_STATE) == _TRUE
 #ifdef CONFIG_CONCURRENT_MODE
 		&& check_buddy_fwstate(padapter, WIFI_AP_STATE) == _FALSE
 #endif
 	) {
-		rtw_resume_process_normal(padapter);
+		rtl8188fu_rtw_resume_process_normal(padapter);
 #ifdef CONFIG_CONCURRENT_MODE
 	} else if (check_fwstate(pmlmepriv,WIFI_STATION_STATE) == _TRUE
 		&& check_buddy_fwstate(padapter, WIFI_AP_STATE) == _TRUE) {
-		rtw_resume_process_normal(padapter);
+		rtl8188fu_rtw_resume_process_normal(padapter);
 #endif
 	} else {
-		rtw_resume_process_normal(padapter);
+		rtl8188fu_rtw_resume_process_normal(padapter);
 	}
 
 	if (pwrpriv) {
@@ -3750,7 +3750,7 @@ int rtw_resume_common(_adapter *padapter)
 	#endif
 	}
 	DBG_871X_LEVEL(_drv_always_, "%s:%d in %d ms\n", __FUNCTION__ ,ret,
-		rtw_get_passing_time_ms(start_time));
+		rtl8188fu_rtw_get_passing_time_ms(start_time));
 
 	_func_exit_;
 	

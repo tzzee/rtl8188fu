@@ -31,17 +31,17 @@
 #endif
 
 #ifdef CONFIG_80211N_HT
-extern int rtw_ht_enable;
-extern int rtw_bw_mode;
-extern int rtw_ampdu_enable;//for enable tx_ampdu
+extern int rtl8188fu_rtw_ht_enable;
+extern int rtl8188fu_rtw_bw_mode;
+extern int rtl8188fu_rtw_ampdu_enable;//for enable tx_ampdu
 #endif
 
 #ifdef CONFIG_GLOBAL_UI_PID
-int ui_pid[3] = {0, 0, 0};
+int rtl8188fu_ui_pid[3] = {0, 0, 0};
 #endif
 
 
-extern int pm_netdev_open(struct net_device *pnetdev,u8 bnormal);
+extern int pm_rtl8188furtl8188fu__netdev_open(struct net_device *pnetdev,u8 bnormal);
 static int rtw_suspend(struct usb_interface *intf, pm_message_t message);
 static int rtw_resume(struct usb_interface *intf);
 
@@ -64,7 +64,7 @@ static void rtw_dev_shutdown(struct device *dev)
 		if (dvobj)
 		{
 			rtw_set_surprise_removed(dvobj->padapters[IFACE_ID0]);
-			ATOMIC_SET(&dvobj->continual_io_error, MAX_CONTINUAL_IO_ERR+1);
+			rtl8188fu_ATOMIC_SET(&dvobj->continual_io_error, MAX_CONTINUAL_IO_ERR+1);
 		}
 	}
 }
@@ -139,15 +139,15 @@ static struct usb_device_id rtw_usb_id_tbl[] ={
 
 MODULE_DEVICE_TABLE(usb, rtw_usb_id_tbl);
 
-int const rtw_usb_id_len = sizeof(rtw_usb_id_tbl) / sizeof(struct usb_device_id);
+int const rtl8188fu_rtw_usb_id_len = sizeof(rtw_usb_id_tbl) / sizeof(struct usb_device_id);
 
-struct rtw_usb_drv {
+struct rtw_rtl8188fu_usb_drv {
 	struct usb_driver usbdrv;
 	int drv_registered;
 	u8 hw_type;
 };
 
-struct rtw_usb_drv usb_drv = {
+struct rtw_rtl8188fu_usb_drv rtl8188fu_usb_drv = {
 	.usbdrv.name =(char*)DRV_NAME,
 	.usbdrv.probe = rtw_drv_init,
 	.usbdrv.disconnect = rtw_dev_remove,
@@ -213,7 +213,7 @@ static u8 rtw_init_intf_priv(struct dvobj_priv *dvobj)
 	u8 rst = _SUCCESS;
 
 	#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	_rtw_mutex_init(&dvobj->usb_vendor_req_mutex);
+	rtl8188fu__rtw_mutex_init(&dvobj->usb_vendor_req_mutex);
 	#endif
 
 
@@ -243,7 +243,7 @@ static u8 rtw_deinit_intf_priv(struct dvobj_priv *dvobj)
 	#endif
 
 	#ifdef CONFIG_USB_VENDOR_REQ_MUTEX
-	_rtw_mutex_free(&dvobj->usb_vendor_req_mutex);
+	rtl8188fu__rtw_mutex_free(&dvobj->usb_vendor_req_mutex);
 	#endif
 
 	return rst;
@@ -307,7 +307,7 @@ static struct dvobj_priv *usb_dvobj_init(struct usb_interface *usb_intf, const s
 _func_enter_;
 
 
-	if((pdvobjpriv = devobj_init()) == NULL) {
+	if((pdvobjpriv = rtl8188fu_devobj_init()) == NULL) {
 		goto exit;
 	}
 
@@ -462,8 +462,8 @@ _func_enter_;
 	rtw_decide_chip_type_by_usb_info(pdvobjpriv, pdid);
 
 	//.3 misc
-	_rtw_init_sema(&(pdvobjpriv->usb_suspend_sema), 0);
-	rtw_reset_continual_io_error(pdvobjpriv);
+	rtl8188fu__rtw_init_sema(&(pdvobjpriv->usb_suspend_sema), 0);
+	rtl8188fu_rtw_reset_continual_io_error(pdvobjpriv);
 
 	usb_get_dev(pusbd);
 
@@ -473,7 +473,7 @@ free_dvobj:
 	if (status != _SUCCESS && pdvobjpriv) {
 		usb_set_intfdata(usb_intf, NULL);
 		
-		devobj_deinit(pdvobjpriv);
+		rtl8188fu_devobj_deinit(pdvobjpriv);
 		
 		pdvobjpriv = NULL;
 	}
@@ -503,10 +503,10 @@ _func_enter_;
 
 		rtw_deinit_intf_priv(dvobj);
 	
-		devobj_deinit(dvobj);		
+		rtl8188fu_devobj_deinit(dvobj);		
 	}
 
-	//DBG_871X("%s %d\n", __func__, ATOMIC_READ(&usb_intf->dev.kobj.kref.refcount));
+	//DBG_871X("%s %d\n", __func__, rtl8188fu_ATOMIC_READ(&usb_intf->dev.kobj.kref.refcount));
 	usb_put_dev(interface_to_usbdev(usb_intf));
 
 _func_exit_;
@@ -538,10 +538,10 @@ static int usb_reprobe_to_usb3(PADAPTER Adapter)
 	return ret;
 }
 
-u8 rtw_set_hal_ops(_adapter *padapter)
+u8 rtl8188fu_rtw_set_hal_ops(_adapter *padapter)
 {
 	//alloc memory for HAL DATA
-	if (rtw_hal_data_init(padapter) == _FAIL)
+	if (rtl8188fu_rtw_hal_data_init(padapter) == _FAIL)
 		return _FAIL;
 
 	#ifdef CONFIG_RTL8188E
@@ -577,16 +577,16 @@ u8 rtw_set_hal_ops(_adapter *padapter)
 		rtl8703bu_set_hal_ops(padapter);
 	#endif /* CONFIG_RTL8703B */
 
-	if (_FAIL == rtw_hal_ops_check(padapter) )
+	if (_FAIL == rtl8188fu_rtw_hal_ops_check(padapter) )
 		return _FAIL;
 
-	if (hal_spec_init(padapter) == _FAIL)
+	if (rtl8188fu_hal_spec_init(padapter) == _FAIL)
 		return _FAIL;
 
 	return _SUCCESS;
 }
 
-void usb_set_intf_ops(_adapter *padapter,struct _io_ops *pops)
+void rtl8188fu_usb_set_intf_ops(_adapter *padapter,struct _io_ops *pops)
 {
 	#ifdef CONFIG_RTL8188E
 	if (rtw_get_chip_type(padapter) == RTL8188E)
@@ -630,7 +630,7 @@ static void usb_intf_start(_adapter *padapter)
 
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("+usb_intf_start\n"));
 
-	rtw_hal_inirp_init(padapter);
+	rtl8188fu_rtw_hal_inirp_init(padapter);
 
 	RT_TRACE(_module_hci_intfs_c_,_drv_err_,("-usb_intf_start\n"));
 
@@ -649,7 +649,7 @@ static void usb_intf_stop(_adapter *padapter)
 	}
 
 	//cancel in irp
-	rtw_hal_inirp_deinit(padapter);
+	rtl8188fu_rtw_hal_inirp_deinit(padapter);
 
 	//cancel out irp
 	rtw_write_port_cancel(padapter);
@@ -683,7 +683,7 @@ int rtw_hw_suspend(_adapter *padapter )
 	pusb_intf = adapter_to_dvobj(padapter)->pusbintf;
 	pnetdev = padapter->pnetdev;
 	
-	LeaveAllPowerSaveMode(padapter);
+	rtl8188fu_LeaveAllPowerSaveMode(padapter);
 
 	DBG_871X("==> rtw_hw_suspend\n");
 	_enter_pwrlock(&pwrpriv->lock);
@@ -697,10 +697,10 @@ int rtw_hw_suspend(_adapter *padapter )
 	}
 
 	//s2.
-	rtw_disassoc_cmd(padapter, 500, _FALSE);
+	rtl8188fu_rtw_disassoc_cmd(padapter, 500, _FALSE);
 
 	//s2-2.  indicate disconnect to os
-	//rtw_indicate_disconnect(padapter);
+	//rtl8188fu_rtw_indicate_disconnect(padapter);
 	{
 		struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
 		if(check_fwstate(pmlmepriv, _FW_LINKED))
@@ -708,21 +708,21 @@ int rtw_hw_suspend(_adapter *padapter )
 			_clr_fwstate_(pmlmepriv, _FW_LINKED);
 			rtw_led_control(padapter, LED_CTL_NO_LINK);
 
-			rtw_os_indicate_disconnect(padapter, 0, _FALSE);
+			rtl8188fu_rtw_os_indicate_disconnect(padapter, 0, _FALSE);
 
 			#ifdef CONFIG_LPS
 			//donnot enqueue cmd
-			rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_DISCONNECT, 0);
+			rtl8188fu_rtw_lps_ctrl_wk_cmd(padapter, LPS_CTRL_DISCONNECT, 0);
 			#endif
 		}
 	}
 	//s2-3.
-	rtw_free_assoc_resources(padapter, 1);
+	rtl8188fu_rtw_free_assoc_resources(padapter, 1);
 
 	//s2-4.
-	rtw_free_network_queue(padapter,_TRUE);
+	rtl8188furtl8188fu__rtl8188fu_rtw_free_network_queue(padapter,_TRUE);
 	#ifdef CONFIG_IPS
-	rtw_ips_dev_unload(padapter);
+	rtl8188fu_rtw_ips_dev_unload(padapter);
 	#endif
 	pwrpriv->rf_pwrstate = rf_off;
 	pwrpriv->bips_processing = _FALSE;
@@ -747,9 +747,9 @@ int rtw_hw_resume(_adapter *padapter)
 	DBG_871X("==> rtw_hw_resume\n");
 	_enter_pwrlock(&pwrpriv->lock);
 	pwrpriv->bips_processing = _TRUE;
-	rtw_reset_drv_sw(padapter);
+	rtl8188fu_rtw_reset_drv_sw(padapter);
 
-	if(pm_netdev_open(pnetdev,_FALSE) != 0)
+	if(pm_rtl8188furtl8188fu__netdev_open(pnetdev,_FALSE) != 0)
 	{
 		_exit_pwrlock(&pwrpriv->lock);
 		goto error_exit;
@@ -805,20 +805,20 @@ static int rtw_suspend(struct usb_interface *pusb_intf, pm_message_t message)
 			if((padapter->bFWReady) && (pwrpriv->bHWPwrPindetect ) && (padapter->registrypriv.usbss_enable ))
 			{
 				u8 bOpen = _TRUE;
-				rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
+				rtl8188fu_rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
 			}
 			#endif//SUPPORT_HW_RFOFF_DETECTED
 		}
 #endif//CONFIG_AUTOSUSPEND
 	}
 
-	ret =  rtw_suspend_common(padapter);
+	ret =  rtl8188fu_rtw_suspend_common(padapter);
 
 exit:
 	return ret;
 }
 
-int rtw_resume_process(_adapter *padapter)
+int rtl8188fu_rtw_resume_process(_adapter *padapter)
 {
 	int ret,pm_cnt = 0;
 	struct pwrctrl_priv *pwrpriv = adapter_to_pwrctl(padapter);
@@ -833,7 +833,7 @@ int rtw_resume_process(_adapter *padapter)
 		return -1;
 	}
 
-	ret =  rtw_resume_common(padapter);
+	ret =  rtl8188fu_rtw_resume_common(padapter);
 
 	#ifdef CONFIG_AUTOSUSPEND
 	if(pwrpriv->bInternalAutoSuspend )
@@ -843,7 +843,7 @@ int rtw_resume_process(_adapter *padapter)
 		if((padapter->bFWReady) && (pwrpriv->bHWPwrPindetect) && (padapter->registrypriv.usbss_enable ))
 		{
 			u8 bOpen = _FALSE;
-			rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
+			rtl8188fu_rtw_interface_ps_func(padapter,HAL_USB_SELECT_SUSPEND,&bOpen);
 		}	
 		#endif
 		pwrpriv->bInternalAutoSuspend = _FALSE;
@@ -876,15 +876,15 @@ static int rtw_resume(struct usb_interface *pusb_intf)
 
 	if(pwrpriv->bInternalAutoSuspend)
 	{
- 		ret = rtw_resume_process(padapter);
+ 		ret = rtl8188fu_rtw_resume_process(padapter);
 	}
 	else
 	{
 		if(pwrpriv->wowlan_mode || pwrpriv->wowlan_ap_mode)
 		{
-			rtw_resume_lock_suspend();			
-			ret = rtw_resume_process(padapter);
-			rtw_resume_unlock_suspend();
+			rtl8188fu_rtw_resume_lock_suspend();			
+			ret = rtl8188fu_rtw_resume_process(padapter);
+			rtl8188fu_rtw_resume_unlock_suspend();
 		}
 		else
 		{
@@ -898,15 +898,15 @@ static int rtw_resume(struct usb_interface *pusb_intf)
 			}	
 			else
 			{
-				rtw_resume_lock_suspend();			
-				ret = rtw_resume_process(padapter);
-				rtw_resume_unlock_suspend();
+				rtl8188fu_rtw_resume_lock_suspend();			
+				ret = rtl8188fu_rtw_resume_process(padapter);
+				rtl8188fu_rtw_resume_unlock_suspend();
 			}
 #endif
 		}
 	}
 
-	pmlmeext->last_scan_time = rtw_get_current_time();
+	pmlmeext->last_scan_time = rtl8188fu_rtw_get_current_time();
 	DBG_871X("<========  %s return %d\n", __FUNCTION__, ret);
 
 	return ret;
@@ -1000,7 +1000,7 @@ extern void rtd2885_wlan_netlink_sendMsg(char *action_string, char *name);
  *        We accept the new device by returning 0.
 */
 
-_adapter  *rtw_sw_export = NULL;
+_adapter  *rtl8188fu_rtw_sw_export = NULL;
 
 _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	struct usb_interface *pusb_intf)
@@ -1012,7 +1012,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	if (padapter == NULL)
 		goto exit;
 
-	if (loadparam(padapter) != _SUCCESS)
+	if (rtl8188fu_loadparam(padapter) != _SUCCESS)
 		goto free_adapter;
 
 	padapter->dvobj = dvobj;
@@ -1036,7 +1036,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 
 	//step 2. hook HalFunc, allocate HalData
 	//hal_set_hal_ops(padapter);
-	if(rtw_set_hal_ops(padapter) ==_FAIL) 
+	if(rtl8188fu_rtw_set_hal_ops(padapter) ==_FAIL) 
 		goto free_hal_data;
 	
 
@@ -1044,20 +1044,20 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	padapter->intf_stop=&usb_intf_stop;
 
 	//step init_io_priv
-	if( rtw_init_io_priv(padapter,usb_set_intf_ops) ==_FAIL)
+	if( rtl8188fu_rtw_init_io_priv(padapter,rtl8188fu_usb_set_intf_ops) ==_FAIL)
 		goto free_hal_data;
 
 	//step read_chip_version
-	rtw_hal_read_chip_version(padapter);
+	rtl8188fu_rtw_hal_read_chip_version(padapter);
 
 	//step usb endpoint mapping
-	rtw_hal_chip_configure(padapter);
+	rtl8188fu_rtw_hal_chip_configure(padapter);
 
 	//step read efuse/eeprom data and get mac_addr
-	rtw_hal_read_chip_info(padapter);
+	rtl8188fu_rtw_hal_read_chip_info(padapter);
 
 	//step 5.
-	if(rtw_init_drv_sw(padapter) ==_FAIL) {
+	if(rtl8188fu_rtw_init_drv_sw(padapter) ==_FAIL) {
 		RT_TRACE(_module_hci_intfs_c_,_drv_err_,("Initialize driver software resource Failed!\n"));
 		goto free_hal_data;
 	}
@@ -1111,9 +1111,9 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 	#endif
 
 	// set mac addr
-	rtw_macaddr_cfg(adapter_mac_addr(padapter), get_hal_mac_addr(padapter));
+	rtl8188fu_rtw_macaddr_cfg(adapter_mac_addr(padapter), get_hal_mac_addr(padapter));
 #ifdef CONFIG_P2P	
-	rtw_init_wifidirect_addrs(padapter, adapter_mac_addr(padapter), adapter_mac_addr(padapter));
+	rtl8188fu_rtw_init_wifidirect_addrs(padapter, adapter_mac_addr(padapter), adapter_mac_addr(padapter));
 #endif // CONFIG_P2P
 	DBG_871X("bDriverStopped:%s, bSurpriseRemoved:%s, bup:%d, hw_init_completed:%d\n"
 		, rtw_is_drv_stopped(padapter)?"True":"False"
@@ -1126,7 +1126,7 @@ _adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 
 free_hal_data:
 	if (status != _SUCCESS && padapter->HalData)
-		rtw_hal_free_data(padapter);
+		rtl8188fu_rtw_hal_free_data(padapter);
 free_adapter:
 	if (status != _SUCCESS && padapter) {
 		rtw_vmfree((u8 *)padapter, sizeof(*padapter));
@@ -1142,24 +1142,24 @@ static void rtw_usb_if1_deinit(_adapter *if1)
 	struct mlme_priv *pmlmepriv= &if1->mlmepriv;
 
 	if(check_fwstate(pmlmepriv, _FW_LINKED))
-		rtw_disassoc_cmd(if1, 0, _FALSE);
+		rtl8188fu_rtw_disassoc_cmd(if1, 0, _FALSE);
 
 
 #ifdef CONFIG_AP_MODE
-	free_mlme_ap_info(if1);
+	rtl8188fu_free_mlme_ap_info(if1);
 	#ifdef CONFIG_HOSTAPD_MLME
 	hostapd_mode_unload(if1);
 	#endif
 #endif
 
-	rtw_dev_unload(if1);
+	rtl8188fu_rtw_dev_unload(if1);
 
 	DBG_871X("+r871xu_dev_remove, hw_init_completed=%d\n", rtw_get_hw_init_completed(if1));
 
-	rtw_free_drv_sw(if1);
+	rtl8188fu_rtw_free_drv_sw(if1);
 
-	/* TODO: use rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
-	rtw_os_ndev_free(if1);
+	/* TODO: use rtl8188fu_rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
+	rtl8188fu_rtw_os_ndev_free(if1);
 
 	rtw_vmfree((u8 *)if1, sizeof(_adapter));
 
@@ -1197,13 +1197,13 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 		goto free_if1;
 	
 #ifdef CONFIG_CONCURRENT_MODE
-	if((if2 = rtw_drv_if2_init(if1, usb_set_intf_ops)) == NULL) {
+	if((if2 = rtw_drv_if2_init(if1, rtl8188fu_usb_set_intf_ops)) == NULL) {
 		goto free_if1;
 	}
 #ifdef CONFIG_MULTI_VIR_IFACES
 	for(i=0; i<if1->registrypriv.ext_iface_num;i++)
 	{
-		if(rtw_drv_add_vir_if(if1, usb_set_intf_ops) == NULL)
+		if(rtw_drv_add_vir_if(if1, rtl8188fu_usb_set_intf_ops) == NULL)
 		{
 			DBG_871X("rtw_drv_add_iface failed! (%d)\n", i);
 			goto free_if2;
@@ -1213,18 +1213,18 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 #endif
 
 #ifdef CONFIG_INTEL_PROXIM
-	rtw_sw_export=if1;
+	rtl8188fu_rtw_sw_export=if1;
 #endif
 
 #ifdef CONFIG_GLOBAL_UI_PID
-	if(ui_pid[1]!=0) {
-		DBG_871X("ui_pid[1]:%d\n",ui_pid[1]);
-		rtw_signal_process(ui_pid[1], SIGUSR2);
+	if(rtl8188fu_ui_pid[1]!=0) {
+		DBG_871X("rtl8188fu_ui_pid[1]:%d\n",rtl8188fu_ui_pid[1]);
+		rtw_signal_process(rtl8188fu_ui_pid[1], SIGUSR2);
 	}
 #endif
 
 	//dev_alloc_name && register_netdev
-	if (rtw_os_ndevs_init(dvobj) != _SUCCESS)
+	if (rtl8188fu_rtw_os_ndevs_init(dvobj) != _SUCCESS)
 		goto free_if2;
 
 #ifdef CONFIG_HOSTAPD_MLME
@@ -1243,7 +1243,7 @@ static int rtw_drv_init(struct usb_interface *pusb_intf, const struct usb_device
 #if 0 /* not used now */
 os_ndevs_deinit:
 	if (status != _SUCCESS)
-		rtw_os_ndevs_deinit(dvobj);
+		rtl8188fu_rtw_os_ndevs_deinit(dvobj);
 #endif
 free_if2:
 	if(status != _SUCCESS && if2) {
@@ -1282,10 +1282,10 @@ _func_enter_;
 
 	dvobj->processing_dev_remove = _TRUE;
 
-	/* TODO: use rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
-	rtw_os_ndevs_unregister(dvobj);
+	/* TODO: use rtl8188fu_rtw_os_ndevs_deinit instead at the first stage of driver's dev deinit function */
+	rtl8188fu_rtw_os_ndevs_unregister(dvobj);
 
-	if(usb_drv.drv_registered == _TRUE)
+	if(rtl8188fu_usb_drv.drv_registered == _TRUE)
 	{
 		//DBG_871X("r871xu_dev_remove():padapter->bSurpriseRemoved == _TRUE\n");
 		rtw_set_surprise_removed(padapter);
@@ -1302,15 +1302,15 @@ _func_enter_;
 #endif
 
 	if (padapter->bFWReady == _TRUE) {
-		rtw_pm_set_ips(padapter, IPS_NONE);
-		rtw_pm_set_lps(padapter, PS_MODE_ACTIVE);
+		rtl8188fu_rtw_pm_set_ips(padapter, IPS_NONE);
+		rtl8188fu_rtw_pm_set_lps(padapter, PS_MODE_ACTIVE);
 
-		LeaveAllPowerSaveMode(padapter);
+		rtl8188fu_LeaveAllPowerSaveMode(padapter);
 	}
 	rtw_set_drv_stopped(padapter);	/*for stop thread*/
 
 	/* stop cmd thread */
-	rtw_stop_cmd_thread(padapter);
+	rtl8188fu_rtw_stop_cmd_thread(padapter);
 #ifdef CONFIG_CONCURRENT_MODE
 #ifdef CONFIG_MULTI_VIR_IFACES
 	rtw_drv_stop_vir_ifaces(dvobj);
@@ -1334,7 +1334,7 @@ _func_enter_;
 
 
 #ifdef CONFIG_INTEL_PROXIM
-	rtw_sw_export=NULL;
+	rtl8188fu_rtw_sw_export=NULL;
 #endif
 
 _func_exit_;
@@ -1351,7 +1351,7 @@ static int /*__init*/ rtw_drv_entry(void)
 	int ret = 0;
 
 	DBG_871X_LEVEL(_drv_always_, "module init start\n");
-	dump_drv_version(RTW_DBGDUMP);
+	rtl8188fu_dump_drv_version(RTW_DBGDUMP);
 #ifdef BTCOEXVERSION
 	DBG_871X_LEVEL(_drv_always_, DRV_NAME" BT-Coex version = %s\n", BTCOEXVERSION);
 #endif // BTCOEXVERSION
@@ -1366,16 +1366,16 @@ static int /*__init*/ rtw_drv_entry(void)
 	//console_suspend_enabled=0;
 #endif
 
-	usb_drv.drv_registered = _TRUE;
-	rtw_suspend_lock_init();
-	rtw_ndev_notifier_register();
+	rtl8188fu_usb_drv.drv_registered = _TRUE;
+	rtl8188fu_rtw_suspend_lock_init();
+	rtl8188fu_rtw_ndev_notifier_register();
 
-	ret = usb_register(&usb_drv.usbdrv);
+	ret = usb_register(&rtl8188fu_usb_drv.usbdrv);
 
 	if (ret != 0) {
-		usb_drv.drv_registered = _FALSE;
-		rtw_suspend_lock_uninit();
-		rtw_ndev_notifier_unregister();
+		rtl8188fu_usb_drv.drv_registered = _FALSE;
+		rtl8188fu_rtw_suspend_lock_uninit();
+		rtl8188fu_rtw_ndev_notifier_unregister();
 		goto exit;
 	}
 
@@ -1388,12 +1388,12 @@ static void /*__exit*/ rtw_drv_halt(void)
 {
 	DBG_871X_LEVEL(_drv_always_, "module exit start\n");
 
-	usb_drv.drv_registered = _FALSE;
+	rtl8188fu_usb_drv.drv_registered = _FALSE;
 
-	usb_deregister(&usb_drv.usbdrv);
+	usb_deregister(&rtl8188fu_usb_drv.usbdrv);
 
-	rtw_suspend_lock_uninit();
-	rtw_ndev_notifier_unregister();
+	rtl8188fu_rtw_suspend_lock_uninit();
+	rtl8188fu_rtw_ndev_notifier_unregister();
 
 	DBG_871X_LEVEL(_drv_always_, "module exit success\n");
 
@@ -1487,7 +1487,7 @@ EXPORT_SYMBOL(rockchip_wifi_exit_module);
 #ifdef CONFIG_INTEL_PROXIM
 _adapter  *rtw_usb_get_sw_pointer(void)
 {
-	return rtw_sw_export;
+	return rtl8188fu_rtw_sw_export;
 }
 EXPORT_SYMBOL(rtw_usb_get_sw_pointer);
 #endif	//CONFIG_INTEL_PROXIM

@@ -201,7 +201,7 @@
 
 
 VOID 
-PHYDM_InitDebugSetting(IN		PDM_ODM_T		pDM_Odm);
+rtl8188fu_PHYDM_InitDebugSetting(IN		PDM_ODM_T		pDM_Odm);
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 VOID phydm_BB_RxHang_Info(IN PDM_ODM_T pDM_Odm);
@@ -209,7 +209,7 @@ VOID phydm_BB_RxHang_Info(IN PDM_ODM_T pDM_Odm);
 
 #define	BB_TMP_BUF_SIZE		100
 VOID phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm);
-VOID phydm_BasicDbgMessage(	IN		PVOID			pDM_VOID);
+VOID rtl8188fu_phydm_BasicDbgMessage(	IN		PVOID			pDM_VOID);
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 #define	PHYDM_DBGPRINT		0
@@ -256,7 +256,7 @@ VOID phydm_BasicDbgMessage(	IN		PVOID			pDM_VOID);
 #endif
 
 
-VOID phydm_BasicProfile(
+VOID rtl8188fu_phydm_BasicProfile(
 	IN		PVOID			pDM_VOID,
 	IN		u4Byte			*_used,
 	OUT		char				*output,
@@ -264,7 +264,7 @@ VOID phydm_BasicProfile(
 	);
 #if(DM_ODM_SUPPORT_TYPE & (ODM_CE|ODM_AP))
 s4Byte
-phydm_cmd(
+rtl8188fu_phydm_cmd(
 	IN PDM_ODM_T	pDM_Odm,
 	IN char		*input,
 	IN u4Byte	in_len,
@@ -274,7 +274,7 @@ phydm_cmd(
 );
 #endif
 VOID
-phydm_cmd_parser(
+rtl8188fu_phydm_cmd_parser(
 	IN PDM_ODM_T	pDM_Odm,
 	IN char		input[][16],
 	IN u4Byte	input_num,
@@ -298,7 +298,7 @@ void phydm_sbd_workitem_callback(
 #endif
 
 VOID
-phydm_fw_trace_en_h2c(
+rtl8188fu_phydm_fw_trace_en_h2c(
 	IN	PVOID	pDM_VOID,
 	IN	BOOLEAN		enable,
 	IN	u4Byte		monitor_mode,
@@ -306,21 +306,21 @@ phydm_fw_trace_en_h2c(
 );
 
 VOID
-phydm_fw_trace_handler(
+rtl8188fu_phydm_fw_trace_handler(
 	IN		PVOID	pDM_VOID,
 	IN		pu1Byte	CmdBuf,
 	IN		u1Byte	CmdLen
 );
 
 VOID
-phydm_fw_trace_handler_code(
+rtl8188fu_phydm_fw_trace_handler_code(
 	IN	PVOID	pDM_VOID,
 	IN	pu1Byte	Buffer,
 	IN	u1Byte	CmdLen
 );
 
 VOID
-phydm_fw_trace_handler_8051(
+rtl8188fu_phydm_fw_trace_handler_8051(
 	IN	PVOID	pDM_VOID,
 	IN	pu1Byte	CmdBuf,
 	IN	u1Byte	CmdLen

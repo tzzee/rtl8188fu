@@ -74,7 +74,7 @@ void setIqkMatrix_8188F(
 	else if (OFDM_index < 0)
 		OFDM_index = 0;
 
-	ele_D = (OFDMSwingTable_New[OFDM_index] & 0xFFC00000) >> 22;
+	ele_D = (rtl8188fu_OFDMSwingTable_New[OFDM_index] & 0xFFC00000) >> 22;
 
 	//new element A = element D x X
 	if ((IqkResult_X != 0) && (*(pDM_Odm->pBandType) == ODM_BAND_2_4G)) {
@@ -92,24 +92,24 @@ void setIqkMatrix_8188F(
 			case ODM_RF_PATH_A:
 				//wirte new elements A, C, D to regC80 and regC94, element B is always 0
 				value32 = (ele_D << 22) | ((ele_C & 0x3F) << 16) | ele_A;
-				ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord, value32);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord, value32);
 
 				value32 = (ele_C & 0x000003C0) >> 6;
-				ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskH4Bits, value32);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskH4Bits, value32);
 
 				value32 = ((IqkResult_X * ele_D) >> 7) & 0x01;
-				ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, value32);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, value32);
 				break;
 			case ODM_RF_PATH_B:
 				//wirte new elements A, C, D to regC88 and regC9C, element B is always 0
 				value32 = (ele_D << 22) | ((ele_C & 0x3F) << 16) | ele_A;
-				ODM_SetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, bMaskDWord, value32);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, bMaskDWord, value32);
 
 				value32 = (ele_C & 0x000003C0) >> 6;
-				ODM_SetBBReg(pDM_Odm, rOFDM0_XDTxAFE, bMaskH4Bits, value32);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XDTxAFE, bMaskH4Bits, value32);
 
 				value32 = ((IqkResult_X * ele_D) >> 7) & 0x01;
-				ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT28, value32);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT28, value32);
 
 				break;
 			default:
@@ -118,15 +118,15 @@ void setIqkMatrix_8188F(
 	} else {
 		switch (RFPath) {
 		case ODM_RF_PATH_A:
-			ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord, OFDMSwingTable_New[OFDM_index]);
-			ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskH4Bits, 0x00);
-			ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, 0x00);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord, rtl8188fu_OFDMSwingTable_New[OFDM_index]);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskH4Bits, 0x00);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT24, 0x00);
 			break;
 
 		case ODM_RF_PATH_B:
-			ODM_SetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, bMaskDWord, OFDMSwingTable_New[OFDM_index]);
-			ODM_SetBBReg(pDM_Odm, rOFDM0_XDTxAFE, bMaskH4Bits, 0x00);
-			ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT28, 0x00);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, bMaskDWord, rtl8188fu_OFDMSwingTable_New[OFDM_index]);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XDTxAFE, bMaskH4Bits, 0x00);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT28, 0x00);
 			break;
 
 		default:
@@ -156,7 +156,7 @@ void DoIQK_8188F(
 #endif
 #endif
 
-	ODM_ResetIQKResult(pDM_Odm);
+	rtl8188fu_ODM_ResetIQKResult(pDM_Odm);
 
 #if(DM_ODM_SUPPORT_TYPE  & ODM_WIN)
 #if (DEV_BUS_TYPE == RT_PCI_INTERFACE)
@@ -231,13 +231,13 @@ ODM_TxPwrTrackSetPwr_8188F(
 #if (MP_DRIVER==1)
 	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(Adapter);
 	PMPT_CONTEXT pMptCtx = &(Adapter->MptCtx);
-	TxRate = MptToMgntRate(pMptCtx->MptRateIndex);
+	TxRate = rtl8188fu_MptToMgntRate(pMptCtx->MptRateIndex);
 #else
 	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(Adapter);
 	PMGNT_INFO pMgntInfo = &(Adapter->MgntInfo);
 	if (!pMgntInfo->ForcedDataRate) { //auto rate
 		if (pDM_Odm->TxRate != 0xFF)
-			TxRate = HwRateToMRate8812(pDM_Odm->TxRate);
+			TxRate = rtl8188fu_HwRateToMRate8812(pDM_Odm->TxRate);
 	} else   //force rate
 		TxRate = (u1Byte) pMgntInfo->ForcedDataRate;
 #endif
@@ -312,15 +312,15 @@ ODM_TxPwrTrackSetPwr_8188F(
 		} else
 #endif
 		{
-			//PHY_SetTxPowerLevelByPath8188F(Adapter, pHalData->CurrentChannel, ODM_RF_PATH_A);
-			//PHY_SetTxPowerLevel8188F(pDM_Odm->Adapter, *pDM_Odm->pChannel);
+			//rtl8188fu_PHY_rtl8188fu_SetTxPowerLevelByPath8188F(Adapter, pHalData->CurrentChannel, ODM_RF_PATH_A);
+			//PHY_rtl8188fu_SetTxPowerLevel8188F(pDM_Odm->Adapter, *pDM_Odm->pChannel);
 			pRFCalibrateInfo->Modify_TxAGC_Flag_PathA = TRUE;
 			pRFCalibrateInfo->Modify_TxAGC_Flag_PathA_CCK = TRUE;
 
 			if (RFPath == ODM_RF_PATH_A) {
-				PHY_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, CCK);
-				PHY_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, OFDM);
-				PHY_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, HT_MCS0_MCS7);
+				PHY_rtl8188fu_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, CCK);
+				PHY_rtl8188fu_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, OFDM);
+				PHY_rtl8188fu_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, HT_MCS0_MCS7);
 			}
 		}
 
@@ -352,22 +352,22 @@ ODM_TxPwrTrackSetPwr_8188F(
 				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[ChannelMappedIndex].Value[0][0],
 				pDM_Odm->RFCalibrateInfo.IQKMatrixRegSetting[ChannelMappedIndex].Value[0][1]);	
 			
-				ODM_Write1Byte(pDM_Odm, 0xa22, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][0]);
-				ODM_Write1Byte(pDM_Odm, 0xa23, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][1]);
-				ODM_Write1Byte(pDM_Odm, 0xa24, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][2]);
-				ODM_Write1Byte(pDM_Odm, 0xa25, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][3]);
-				ODM_Write1Byte(pDM_Odm, 0xa26, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][4]);
-				ODM_Write1Byte(pDM_Odm, 0xa27, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][5]);
-				ODM_Write1Byte(pDM_Odm, 0xa28, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][6]);
-				ODM_Write1Byte(pDM_Odm, 0xa29, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][7]);		
-				ODM_Write1Byte(pDM_Odm, 0xa9a, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][8]);
-				ODM_Write1Byte(pDM_Odm, 0xa9b, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][9]);
-				ODM_Write1Byte(pDM_Odm, 0xa9c, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][10]);
-				ODM_Write1Byte(pDM_Odm, 0xa9d, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][11]);
-				ODM_Write1Byte(pDM_Odm, 0xaa0, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][12]);
-				ODM_Write1Byte(pDM_Odm, 0xaa1, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][13]);
-				ODM_Write1Byte(pDM_Odm, 0xaa2, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][14]);
-				ODM_Write1Byte(pDM_Odm, 0xaa3, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][15]);	
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa22, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][0]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa23, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][1]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa24, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][2]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa25, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][3]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa26, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][4]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa27, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][5]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa28, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][6]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa29, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][7]);		
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9a, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][8]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9b, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][9]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9c, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][10]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9d, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][11]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa0, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][12]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa1, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][13]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa2, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][14]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa3, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][15]);	
 		}
 		
 	}
@@ -464,8 +464,8 @@ ODM_TxPwrTrackSetPwr_8188F(
 	#endif
 					{
 					//Set TxAGC Page C{};
-						PHY_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, OFDM );
-						PHY_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, HT_MCS0_MCS7 );
+						PHY_rtl8188fu_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, OFDM );
+						PHY_rtl8188fu_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, HT_MCS0_MCS7 );
 					}
 					pRFCalibrateInfo->Modify_TxAGC_Value_OFDM=pRFCalibrateInfo->Remnant_OFDMSwingIdx[ODM_RF_PATH_A] ;        //add by Mingzhi.Guo
 
@@ -476,22 +476,22 @@ ODM_TxPwrTrackSetPwr_8188F(
 					pRFCalibrateInfo->Remnant_CCKSwingIdx = Final_CCK_Swing_Index - PwrTrackingLimit_CCK;
 
 					ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("******Path_A CCK Over Limit , PwrTrackingLimit_CCK = %d , pRFCalibrateInfo->Remnant_CCKSwingIdx  = %d \n", PwrTrackingLimit_CCK, pRFCalibrateInfo->Remnant_CCKSwingIdx));
-					ODM_Write1Byte(pDM_Odm, 0xa22, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][0]);
-					ODM_Write1Byte(pDM_Odm, 0xa23, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][1]);
-					ODM_Write1Byte(pDM_Odm, 0xa24, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][2]);
-					ODM_Write1Byte(pDM_Odm, 0xa25, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][3]);
-					ODM_Write1Byte(pDM_Odm, 0xa26, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][4]);
-					ODM_Write1Byte(pDM_Odm, 0xa27, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][5]);
-					ODM_Write1Byte(pDM_Odm, 0xa28, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][6]);
-					ODM_Write1Byte(pDM_Odm, 0xa29, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][7]);		
-					ODM_Write1Byte(pDM_Odm, 0xa9a, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][8]);				
-					ODM_Write1Byte(pDM_Odm, 0xa9b, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][9]);
-					ODM_Write1Byte(pDM_Odm, 0xa9c, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][10]);
-					ODM_Write1Byte(pDM_Odm, 0xa9d, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][11]);
-					ODM_Write1Byte(pDM_Odm, 0xaa0, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][12]);
-					ODM_Write1Byte(pDM_Odm, 0xaa1, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][13]);
-					ODM_Write1Byte(pDM_Odm, 0xaa2, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][14]);
-					ODM_Write1Byte(pDM_Odm, 0xaa3, CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][15]);	
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa22, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][0]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa23, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][1]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa24, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][2]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa25, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][3]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa26, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][4]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa27, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][5]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa28, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][6]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa29, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][7]);		
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9a, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][8]);				
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9b, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][9]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9c, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][10]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9d, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][11]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa0, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][12]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa1, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][13]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa2, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][14]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa3, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[PwrTrackingLimit_CCK][15]);	
 
 					pRFCalibrateInfo->Modify_TxAGC_Flag_PathA_CCK = TRUE;
 
@@ -501,22 +501,22 @@ ODM_TxPwrTrackSetPwr_8188F(
 					pRFCalibrateInfo->Remnant_CCKSwingIdx = Final_CCK_Swing_Index;
 
 					ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("******Path_A CCK Under Limit , PwrTrackingLimit_CCK = %d , pRFCalibrateInfo->Remnant_CCKSwingIdx  = %d \n", 0, pRFCalibrateInfo->Remnant_CCKSwingIdx));
-					ODM_Write1Byte(pDM_Odm, 0xa22, CCKSwingTable_Ch1_Ch14_88F[0][0]);
-					ODM_Write1Byte(pDM_Odm, 0xa23, CCKSwingTable_Ch1_Ch14_88F[0][1]);
-					ODM_Write1Byte(pDM_Odm, 0xa24, CCKSwingTable_Ch1_Ch14_88F[0][2]);
-					ODM_Write1Byte(pDM_Odm, 0xa25, CCKSwingTable_Ch1_Ch14_88F[0][3]);
-					ODM_Write1Byte(pDM_Odm, 0xa26, CCKSwingTable_Ch1_Ch14_88F[0][4]);
-					ODM_Write1Byte(pDM_Odm, 0xa27, CCKSwingTable_Ch1_Ch14_88F[0][5]);
-					ODM_Write1Byte(pDM_Odm, 0xa28, CCKSwingTable_Ch1_Ch14_88F[0][6]);
-					ODM_Write1Byte(pDM_Odm, 0xa29, CCKSwingTable_Ch1_Ch14_88F[0][7]);		
-					ODM_Write1Byte(pDM_Odm, 0xa9a, CCKSwingTable_Ch1_Ch14_88F[0][8]);				
-					ODM_Write1Byte(pDM_Odm, 0xa9b, CCKSwingTable_Ch1_Ch14_88F[0][9]);
-					ODM_Write1Byte(pDM_Odm, 0xa9c, CCKSwingTable_Ch1_Ch14_88F[0][10]);
-					ODM_Write1Byte(pDM_Odm, 0xa9d, CCKSwingTable_Ch1_Ch14_88F[0][11]);
-					ODM_Write1Byte(pDM_Odm, 0xaa0, CCKSwingTable_Ch1_Ch14_88F[0][12]);
-					ODM_Write1Byte(pDM_Odm, 0xaa1, CCKSwingTable_Ch1_Ch14_88F[0][13]);
-					ODM_Write1Byte(pDM_Odm, 0xaa2, CCKSwingTable_Ch1_Ch14_88F[0][14]);
-					ODM_Write1Byte(pDM_Odm, 0xaa3, CCKSwingTable_Ch1_Ch14_88F[0][15]);	
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa22, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][0]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa23, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][1]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa24, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][2]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa25, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][3]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa26, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][4]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa27, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][5]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa28, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][6]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa29, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][7]);		
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9a, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][8]);				
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9b, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][9]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9c, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][10]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9d, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][11]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa0, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][12]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa1, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][13]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa2, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][14]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa3, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[0][15]);	
 					pRFCalibrateInfo->Modify_TxAGC_Flag_PathA_CCK = TRUE;
 
 				}
@@ -524,22 +524,22 @@ ODM_TxPwrTrackSetPwr_8188F(
 				else
 				{
 					ODM_RT_TRACE(pDM_Odm,ODM_COMP_TX_PWR_TRACK, ODM_DBG_LOUD,("******Path_A CCK Compensate with BBSwing , Final_CCK_Swing_Index = %d \n", Final_CCK_Swing_Index));	
-					ODM_Write1Byte(pDM_Odm, 0xa22, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][0]);
-					ODM_Write1Byte(pDM_Odm, 0xa23, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][1]);
-					ODM_Write1Byte(pDM_Odm, 0xa24, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][2]);
-					ODM_Write1Byte(pDM_Odm, 0xa25, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][3]);
-					ODM_Write1Byte(pDM_Odm, 0xa26, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][4]);
-					ODM_Write1Byte(pDM_Odm, 0xa27, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][5]);
-					ODM_Write1Byte(pDM_Odm, 0xa28, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][6]);
-					ODM_Write1Byte(pDM_Odm, 0xa29, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][7]);		
-					ODM_Write1Byte(pDM_Odm, 0xa9a, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][8]);				
-					ODM_Write1Byte(pDM_Odm, 0xa9b, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][9]);
-					ODM_Write1Byte(pDM_Odm, 0xa9c, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][10]);
-					ODM_Write1Byte(pDM_Odm, 0xa9d, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][11]);
-					ODM_Write1Byte(pDM_Odm, 0xaa0, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][12]);
-					ODM_Write1Byte(pDM_Odm, 0xaa1, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][13]);
-					ODM_Write1Byte(pDM_Odm, 0xaa2, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][14]);
-					ODM_Write1Byte(pDM_Odm, 0xaa3, CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][15]);	
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa22, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][0]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa23, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][1]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa24, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][2]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa25, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][3]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa26, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][4]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa27, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][5]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa28, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][6]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa29, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][7]);		
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9a, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][8]);				
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9b, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][9]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9c, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][10]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xa9d, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][11]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa0, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][12]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa1, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][13]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa2, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][14]);
+					rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xaa3, rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[Final_CCK_Swing_Index][15]);	
 	
 					pRFCalibrateInfo->Modify_TxAGC_Flag_PathA_CCK=FALSE;
 					pRFCalibrateInfo->Remnant_CCKSwingIdx = 0;     
@@ -562,7 +562,7 @@ ODM_TxPwrTrackSetPwr_8188F(
 	#endif
 				{
 					//Set TxAGC Page C{};
-					PHY_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, CCK );
+					PHY_rtl8188fu_SetTxPowerIndexByRateSection(Adapter, ODM_RF_PATH_A, pHalData->CurrentChannel, CCK );
 				}
 				pRFCalibrateInfo->Modify_TxAGC_Value_CCK = pRFCalibrateInfo->Remnant_CCKSwingIdx;
 			
@@ -597,7 +597,7 @@ GetDeltaSwingTable_8188F(
 				#if (DM_ODM_SUPPORT_TYPE & ODM_WIN)
 						TxRate = Adapter->HalFunc.GetHwRateFromMRateHandler(pDM_Odm->TxRate);
 				#elif (DM_ODM_SUPPORT_TYPE & ODM_CE)
-						TxRate = HwRateToMRate(pDM_Odm->TxRate);
+						TxRate = rtl8188fu_HwRateToMRate(pDM_Odm->TxRate);
 				#endif
 			}
 		} else { /*force rate*/
@@ -633,11 +633,11 @@ GetDeltaSwingTable_8188F(
 }
 
 
-void ConfigureTxpowerTrack_8188F(
+void rtl8188fu_ConfigureTxpowerTrack_8188F(
 	PTXPWRTRACK_CFG pConfig
 )
 {
-	RT_TRACE(COMP_CMD, DBG_LOUD, ("ConfigureTxpowerTrack_8188F ====> \n"));
+	RT_TRACE(COMP_CMD, DBG_LOUD, ("rtl8188fu_ConfigureTxpowerTrack_8188F ====> \n"));
 	pConfig->SwingTableSize_CCK = CCK_TABLE_SIZE_88F;
 	pConfig->SwingTableSize_OFDM = OFDM_TABLE_SIZE;
 	pConfig->Threshold_IQK = IQK_THRESHOLD;
@@ -679,58 +679,58 @@ phy_PathA_IQK_8188F(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path A IQK!\n"));
 
 	//  enable path A PA in TXIQK mode
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x1);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x20000);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0x07ff7);   //0x07f77
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x1);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x20000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0x07ff7);   //0x07f77
 	//PA,PAD gain adjust
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x980);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x56, bRFRegOffsetMask, 0x5102a); //0x5111e0
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x980);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x56, bRFRegOffsetMask, 0x5102a); //0x5111e0
 
 
 	//enter IQK mode
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
 
 
 	//1 Tx IQK
 	//path-A IQK setting
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path-A IQK setting!\n"));
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x18008c1c);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x38008c1c);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x821403ff);    //0x821403e0
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x28160000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x18008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x38008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x821403ff);    //0x821403e0
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x28160000);
 
 	//LO calibration setting
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("LO calibration setting!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x00462911);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x00462911);
 
 	//One shot, path A LOK & IQK
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("One shot, path A LOK & IQK!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
 
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_8188F));
 //PlatformStallExecution(IQK_DELAY_TIME_8188F*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8188F);
+	rtl8188fu_ODM_delay_ms(IQK_DELAY_TIME_8188F);
 
 	//reload RF 0xdf
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x180);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x180);
 
 	//save LOK result
-	pDM_Odm->RFCalibrateInfo.LOK_Result = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x8, bRFRegOffsetMask);
+	pDM_Odm->RFCalibrateInfo.LOK_Result = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x8, bRFRegOffsetMask);
 
 	// Check failed
-	regEAC = ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
-	regE94 = ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord);
-	regE9C = ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord);
+	regEAC = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
+	regE94 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord);
+	regE9C = rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xeac = 0x%x\n", regEAC));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe94 = 0x%x, 0xe9c = 0x%x\n", regE94, regE9C));
 	//monitor image power before & after IQK
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe90(before IQK)= 0x%x, 0xe98(afer IQK) = 0x%x\n",
-				 ODM_GetBBReg(pDM_Odm, 0xe90, bMaskDWord), ODM_GetBBReg(pDM_Odm, 0xe98, bMaskDWord)));
+				 rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xe90, bMaskDWord), rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xe98, bMaskDWord)));
 
 	if (!(regEAC & BIT28) &&
 		(((regE94 & 0x03FF0000) >> 16) != 0x142) &&
@@ -768,58 +768,58 @@ phy_PathA_RxIQK8188F(
 	//1 Get TXIMR setting
 	//modify RXIQK mode table
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path-A Rx IQK modify RXIQK mode table!\n"));
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x1);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x30000);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xf1173);   //0xf117b
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x1);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x30000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xf1173);   //0xf117b
 
 	//PA,PAD gain adjust
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x980);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x56, bRFRegOffsetMask, 0x5102a); //0x510f0
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x980);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x56, bRFRegOffsetMask, 0x5102a); //0x510f0
 
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
 
 	//IQK setting
-	ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, 0x01007c00);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, 0x01007c00);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
 
 	//path-A IQK setting
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x10008c1c);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x30008c1c);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x82160fff);    //0x821603e0
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x28160000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x10008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x30008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x82160fff);    //0x821603e0
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x28160000);
 
 	//LO calibration setting
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("LO calibration setting!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x00462911);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x00462911);
 
 	//One shot, path A LOK & IQK
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("One shot, path A LOK & IQK!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
 
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_8188F));
 //PlatformStallExecution(IQK_DELAY_TIME_8188F*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8188F);
+	rtl8188fu_ODM_delay_ms(IQK_DELAY_TIME_8188F);
 
 
 	//reload RF 0xdf
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x180);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x180);
 
 
 
 	// Check failed
-	regEAC = ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
-	regE94 = ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord);
-	regE9C = ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord);
+	regEAC = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
+	regE94 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord);
+	regE9C = rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xeac = 0x%x\n", regEAC));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe94 = 0x%x, 0xe9c = 0x%x\n", regE94, regE9C));
 	//monitor image power before & after IQK
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe90(before IQK)= 0x%x, 0xe98(afer IQK) = 0x%x\n",
-				 ODM_GetBBReg(pDM_Odm, 0xe90, bMaskDWord), ODM_GetBBReg(pDM_Odm, 0xe98, bMaskDWord)));
+				 rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xe90, bMaskDWord), rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xe98, bMaskDWord)));
 
 	if (!(regEAC & BIT28) &&
 		(((regE94 & 0x03FF0000) >> 16) != 0x142) &&
@@ -829,64 +829,64 @@ phy_PathA_RxIQK8188F(
 		return result;
 
 	u4tmp = 0x80007C00 | (regE94 & 0x3FF0000) | ((regE9C & 0x3FF0000) >> 16);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, u4tmp);
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe40 = 0x%x u4tmp = 0x%x\n", ODM_GetBBReg(pDM_Odm, rTx_IQK, bMaskDWord), u4tmp));
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, u4tmp);
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe40 = 0x%x u4tmp = 0x%x\n", rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_IQK, bMaskDWord), u4tmp));
 
 
 	//1 RX IQK
 	//modify RXIQK mode table
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path-A Rx IQK modify RXIQK mode table 2!\n"));
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x1);                 // 0xEF[19]   = 0x1
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x30000);  // 0x30[19:0] = 0x18000
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f); // 0x31[19:0] = 0x0000f
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xf7ff2); // 0x32[19:0] = 0xf7ffa
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x1);                 // 0xEF[19]   = 0x1
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x30000);  // 0x30[19:0] = 0x18000
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f); // 0x31[19:0] = 0x0000f
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xf7ff2); // 0x32[19:0] = 0xf7ffa
 
 	//PA,PAD gain adjust
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x980);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x56, bRFRegOffsetMask, 0x51000); //0x51000
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x980);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x56, bRFRegOffsetMask, 0x51000); //0x51000
 
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
 
 	//IQK setting
-	ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
 
 	//path-A IQK setting
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x30008c1c);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x10008c1c);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x82160000);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x281613ff);    //0x281603e0
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x30008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x10008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x82160000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x281613ff);    //0x281603e0
 
 
 	//LO calibration setting
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("LO calibration setting!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x0046a911);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x0046a911);
 
 	//One shot, path A LOK & IQK
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("One shot, path A LOK & IQK!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
 
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_8188F));
 //PlatformStallExecution(IQK_DELAY_TIME_8188F*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8188F);
+	rtl8188fu_ODM_delay_ms(IQK_DELAY_TIME_8188F);
 
 	//reload RF 0xdf
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x180);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xdf, bRFRegOffsetMask, 0x180);
 
 	//reload LOK value
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x8, bRFRegOffsetMask, pDM_Odm->RFCalibrateInfo.LOK_Result);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x8, bRFRegOffsetMask, pDM_Odm->RFCalibrateInfo.LOK_Result);
 
 	// Check failed
-	regEAC = ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
-	regEA4 = ODM_GetBBReg(pDM_Odm, rRx_Power_Before_IQK_A_2, bMaskDWord);
+	regEAC = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
+	regEA4 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_Before_IQK_A_2, bMaskDWord);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xeac = 0x%x\n", regEAC));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xea4 = 0x%x, 0xeac = 0x%x\n", regEA4, regEAC));
 	//monitor image power before & after IQK
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xea0(before IQK)= 0x%x, 0xea8(afer IQK) = 0x%x\n",
-				 ODM_GetBBReg(pDM_Odm, 0xea0, bMaskDWord), ODM_GetBBReg(pDM_Odm, 0xea8, bMaskDWord)));
+				 rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xea0, bMaskDWord), rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xea8, bMaskDWord)));
 
 
 	if (!(regEAC & BIT27) &&     //if Tx is OK, check whether Rx is OK
@@ -923,58 +923,58 @@ phy_PathB_IQK_8188F(
 #endif
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path B IQK!\n"));
 
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 	//switch to path B
-	ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord, 0x00000080);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, bRFRegOffsetMask, 0xefff0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord, 0x00000080);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, bRFRegOffsetMask, 0xefff0);
 	//  in TXIQK mode
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, bRFRegOffsetMask, 0x800a0 );
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x20000 );
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0003f );
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xc7f87 );
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, bRFRegOffsetMask, 0x800a0 );
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x20000 );
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0003f );
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xc7f87 );
 //  enable path B PA in TXIQK mode
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xed, bRFRegOffsetMask, 0x00020 );
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x43, bRFRegOffsetMask, 0x40fc1 );
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xed, bRFRegOffsetMask, 0x00020 );
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x43, bRFRegOffsetMask, 0x40fc1 );
 
 
 	//1 Tx IQK
 	//path-A IQK setting
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path-B IQK setting!\n"));
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x18008c1c);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x38008c1c);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x82140102);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x28160000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x18008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x38008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x82140102);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x28160000);
 
 	//LO calibration setting
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("LO calibration setting!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x00462911);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x00462911);
 
 
 	//enter IQK mode
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
 
 	//One shot, path B LOK & IQK
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("One shot, path B LOK & IQK!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
 
 	// delay x ms
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path B LOK & IQK.\n", IQK_DELAY_TIME_8188F));
 //PlatformStallExecution(IQK_DELAY_TIME_8188F*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8188F);
+	rtl8188fu_ODM_delay_ms(IQK_DELAY_TIME_8188F);
 
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0x948 = 0x%x\n", ODM_GetBBReg(pDM_Odm, 0x948, bMaskDWord)));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0x948 = 0x%x\n", rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x948, bMaskDWord)));
 
 
 	// Check failed
-	regEAC = ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
-	regE94 = ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord);
-	regE9C = ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord);
+	regEAC = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
+	regE94 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord);
+	regE9C = rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xeac = 0x%x\n", regEAC));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe94 = 0x%x, 0xe9c = 0x%x\n", regE94, regE9C));
 	//monitor image power before & after IQK
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe90(before IQK)= 0x%x, 0xe98(afer IQK) = 0x%x\n",
-				 ODM_GetBBReg(pDM_Odm, 0xe90, bMaskDWord), ODM_GetBBReg(pDM_Odm, 0xe98, bMaskDWord)));
+				 rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xe90, bMaskDWord), rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xe98, bMaskDWord)));
 
 
 	if (!(regEAC & BIT28) &&
@@ -1024,47 +1024,47 @@ phy_PathB_RxIQK8188F(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Get RXIQK TXIMR!\n"));
 	//modify RXIQK mode table
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path-A Rx IQK modify RXIQK mode table!\n"));
-//	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, bRFRegOffsetMask, 0x800a0 );
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x30000 );
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f );
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xf117B );
-//	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, bRFRegOffsetMask, 0x800a0 );
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x30000 );
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f );
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xf117B );
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
 
 	//IQK setting
-	ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, 0x01007c00);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x81004800);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, 0x01007c00);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x81004800);
 
 	//path-B IQK setting
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_B, bMaskDWord, 0x10008c1c);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_B, bMaskDWord, 0x30008c1c);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_B, bMaskDWord, 0x82130804);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_B, bMaskDWord, 0x68130000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_B, bMaskDWord, 0x10008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_B, bMaskDWord, 0x30008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_B, bMaskDWord, 0x82130804);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_B, bMaskDWord, 0x68130000);
 
 	//LO calibration setting
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("LO calibration setting!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x0046a911);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x0046a911);
 
 	//One shot, path B LOK & IQK
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("One shot, path B LOK & IQK!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Cont, bMaskDWord, 0x00000002);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Cont, bMaskDWord, 0x00000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Cont, bMaskDWord, 0x00000002);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Cont, bMaskDWord, 0x00000000);
 
 	// delay x ms
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_8188F));
 	//PlatformStallExecution(IQK_DELAY_TIME_8188F*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8188F);
+	rtl8188fu_ODM_delay_ms(IQK_DELAY_TIME_8188F);
 
 
 	// Check failed
-	regEAC = ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
-	regEB4 = ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_B, bMaskDWord);
-	regEBC = ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_B, bMaskDWord);
+	regEAC = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
+	regEB4 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_B, bMaskDWord);
+	regEBC = rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_B, bMaskDWord);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xeac = 0x%x\n", regEAC));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xeb4 = 0x%x, 0xebc = 0x%x\n", regEB4, regEBC));
 	//monitor image power before & after IQK
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xeb0(before IQK)= 0x%x, 0xeb8(afer IQK) = 0x%x\n",
-				 ODM_GetBBReg(pDM_Odm, 0xeb0, bMaskDWord), ODM_GetBBReg(pDM_Odm, 0xeb8, bMaskDWord)));
+				 rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xeb0, bMaskDWord), rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xeb8, bMaskDWord)));
 
 
 	if (!(regEAC & BIT31) &&
@@ -1075,61 +1075,61 @@ phy_PathB_RxIQK8188F(
 		return result;
 
 	u4tmp = 0x80007C00 | (regEB4 & 0x3FF0000) | ((regEBC & 0x3FF0000) >> 16);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, u4tmp);
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe40 = 0x%x u4tmp = 0x%x\n", ODM_GetBBReg(pDM_Odm, rTx_IQK, bMaskDWord), u4tmp));
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, u4tmp);
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xe40 = 0x%x u4tmp = 0x%x\n", rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_IQK, bMaskDWord), u4tmp));
 
 
 	//1 RX IQK
 	//modify RXIQK mode table
 //	ODM_RT_TRACE(pDM_Odm,ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path-A Rx IQK modify RXIQK mode table 2!\n"));
-//	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, bRFRegOffsetMask, 0x800a0 );
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, bRFRegOffsetMask, 0x800a0 );
 
 	//<20121009, Kordan> RF Mode = 3
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x1);	               // 0xEF[19]   = 0x1
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x18000 );  // 0x30[19:0] = 0x18000
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f ); // 0x31[19:0] = 0x0000f
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xf7ffa ); // 0x32[19:0] = 0xf7ffa
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x0);	               // 0xEF[19]   = 0x0
-//	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x1);	               // 0xEF[19]   = 0x1
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_RCK_OS, bRFRegOffsetMask, 0x18000 );  // 0x30[19:0] = 0x18000
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G1, bRFRegOffsetMask, 0x0000f ); // 0x31[19:0] = 0x0000f
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXPA_G2, bRFRegOffsetMask, 0xf7ffa ); // 0x32[19:0] = 0xf7ffa
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WE_LUT, 0x80000, 0x0);	               // 0xEF[19]   = 0x0
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
 
 	//IQK setting
-	ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
 
 	//path-B IQK setting
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_B, bMaskDWord, 0x30008c1c);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_B, bMaskDWord, 0x10008c1c);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_B, bMaskDWord, 0x82130c05);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_B, bMaskDWord, 0x68130c05);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_B, bMaskDWord, 0x30008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_B, bMaskDWord, 0x10008c1c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_B, bMaskDWord, 0x82130c05);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_B, bMaskDWord, 0x68130c05);
 
 	//LO calibration setting
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("LO calibration setting!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x0046a911);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x0046a911);
 
 	//One shot, path B LOK & IQK
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("One shot, path B LOK & IQK!\n"));
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Cont, bMaskDWord, 0x00000002);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Cont, bMaskDWord, 0x00000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Cont, bMaskDWord, 0x00000002);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Cont, bMaskDWord, 0x00000000);
 
 	// delay x ms
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Delay %d ms for One shot, path A LOK & IQK.\n", IQK_DELAY_TIME_8188F));
 	//PlatformStallExecution(IQK_DELAY_TIME_8188F*1000);
-	ODM_delay_ms(IQK_DELAY_TIME_8188F);
+	rtl8188fu_ODM_delay_ms(IQK_DELAY_TIME_8188F);
 
 	// Check failed
-	regEAC = ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
-	regEC4 = ODM_GetBBReg(pDM_Odm, rRx_Power_Before_IQK_B_2, bMaskDWord);;
-	regECC = ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_B_2, bMaskDWord);
+	regEAC = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord);
+	regEC4 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_Before_IQK_B_2, bMaskDWord);;
+	regECC = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_B_2, bMaskDWord);
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xeac = 0x%x\n", regEAC));
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xec4 = 0x%x, 0xecc = 0x%x\n", regEC4, regECC));
 	//monitor image power before & after IQK
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("0xec0(before IQK)= 0x%x, 0xec8(afer IQK) = 0x%x\n",
-				 ODM_GetBBReg(pDM_Odm, 0xec0, bMaskDWord), ODM_GetBBReg(pDM_Odm, 0xec8, bMaskDWord)));
+				 rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xec0, bMaskDWord), rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xec8, bMaskDWord)));
 
 	//	PA/PAD controlled by 0x0
 	//leave IQK mode
-//	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-//	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0xdf, bRFRegOffsetMask, 0x180 );
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+//	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0xdf, bRFRegOffsetMask, 0x180 );
 
 
 
@@ -1187,16 +1187,16 @@ _PHY_PathAFillIQKMatrix8188F(
 		return;
 
 	else if (bIQKOK) {
-		Oldval_0 = (ODM_GetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord) >> 22) & 0x3FF;
+		Oldval_0 = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord) >> 22) & 0x3FF;
 
 		X = result[final_candidate][0];
 		if ((X & 0x00000200) != 0)
 			X = X | 0xFFFFFC00;
 		TX0_A = (X * Oldval_0) >> 8;
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("X = 0x%x, TX0_A = 0x%x, Oldval_0 0x%x\n", X, TX0_A, Oldval_0));
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, 0x3FF, TX0_A);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, 0x3FF, TX0_A);
 
-		ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT(31), ((X * Oldval_0 >> 7) & 0x1));
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT(31), ((X * Oldval_0 >> 7) & 0x1));
 
 		Y = result[final_candidate][1];
 		if ((Y & 0x00000200) != 0)
@@ -1205,26 +1205,26 @@ _PHY_PathAFillIQKMatrix8188F(
 		//2 Tx IQC
 		TX0_C = (Y * Oldval_0) >> 8;
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Y = 0x%x, TX = 0x%x\n", Y, TX0_C));
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, 0xF0000000, ((TX0_C & 0x3C0) >> 6));
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XCTxAFE, 0xF0000000, ((TX0_C & 0x3C0) >> 6));
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC94][KEY] = rOFDM0_XCTxAFE;
-		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC94][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskDWord);
+		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC94][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XCTxAFE, bMaskDWord);
 
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, 0x003F0000, (TX0_C & 0x3F));
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, 0x003F0000, (TX0_C & 0x3F));
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC80][KEY] = rOFDM0_XATxIQImbalance;
-		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC80][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord);
+		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC80][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XATxIQImbalance, bMaskDWord);
 
-		ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT(29), ((Y * Oldval_0 >> 7) & 0x1));
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT(29), ((Y * Oldval_0 >> 7) & 0x1));
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC4C][KEY] = rOFDM0_ECCAThreshold;
-		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC4C][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, bMaskDWord);
+		pRFCalibrateInfo->TxIQC_8723B[PATH_S1][IDX_0xC4C][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, bMaskDWord);
 
 		if (bTxOnly) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("_PHY_PathAFillIQKMatrix8188F only Tx OK\n"));
 
 			// <20130226, Kordan> Saving RxIQC, otherwise not initialized.
 			pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xCA0][KEY] = rOFDM0_RxIQExtAnta;
-			pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xCA0][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_RxIQExtAnta, bMaskDWord);
+			pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xCA0][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_RxIQExtAnta, bMaskDWord);
 			pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xC14][KEY] = rOFDM0_XARxIQImbalance;
-			pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xC14][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_XARxIQImbalance, bMaskDWord);
+			pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xC14][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XARxIQImbalance, bMaskDWord);
 			return;
 		}
 
@@ -1235,16 +1235,16 @@ _PHY_PathAFillIQKMatrix8188F(
 #endif
 
 		//2 Rx IQC
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XARxIQImbalance, 0x3FF, reg);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XARxIQImbalance, 0x3FF, reg);
 		reg = result[final_candidate][3] & 0x3F;
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XARxIQImbalance, 0xFC00, reg);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XARxIQImbalance, 0xFC00, reg);
 		pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xC14][KEY] = rOFDM0_XARxIQImbalance;
-		pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xC14][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_XARxIQImbalance, bMaskDWord);
+		pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xC14][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XARxIQImbalance, bMaskDWord);
 
 		reg = (result[final_candidate][3] >> 6) & 0xF;
-		ODM_SetBBReg(pDM_Odm, rOFDM0_RxIQExtAnta, 0xF0000000, reg);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_RxIQExtAnta, 0xF0000000, reg);
 		pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xCA0][KEY] = rOFDM0_RxIQExtAnta;
-		pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xCA0][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_RxIQExtAnta, bMaskDWord);
+		pRFCalibrateInfo->RxIQC_8723B[PATH_S1][IDX_0xCA0][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_RxIQExtAnta, bMaskDWord);
 
 	}
 }
@@ -1281,7 +1281,7 @@ _PHY_PathBFillIQKMatrix8188F(
 		return;
 
 	else if (bIQKOK) {
-		Oldval_1 = (ODM_GetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, bMaskDWord) >> 22) & 0x3FF;
+		Oldval_1 = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, bMaskDWord) >> 22) & 0x3FF;
 
 		X = result[final_candidate][4];
 		if ((X & 0x00000200) != 0)
@@ -1289,9 +1289,9 @@ _PHY_PathBFillIQKMatrix8188F(
 		TX1_A = (X * Oldval_1) >> 8;
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("X = 0x%x, TX1_A = 0x%x\n", X, TX1_A));
 
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, 0x3FF, TX1_A);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, 0x3FF, TX1_A);
 
-		ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT(27), ((X * Oldval_1 >> 7) & 0x1));
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT(27), ((X * Oldval_1 >> 7) & 0x1));
 
 		Y = result[final_candidate][5];
 		if ((Y & 0x00000200) != 0)
@@ -1301,40 +1301,40 @@ _PHY_PathBFillIQKMatrix8188F(
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Y = 0x%x, TX1_C = 0x%x\n", Y, TX1_C));
 
 		//2 Tx IQC
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XDTxAFE, 0xF0000000, ((TX1_C & 0x3C0) >> 6));
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XDTxAFE, 0xF0000000, ((TX1_C & 0x3C0) >> 6));
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC9C][KEY] = rOFDM0_XDTxAFE;
-		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC9C][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_XDTxAFE, bMaskDWord);
+		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC9C][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XDTxAFE, bMaskDWord);
 
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, 0x003F0000, (TX1_C & 0x3F));
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, 0x003F0000, (TX1_C & 0x3F));
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC88][KEY] = rOFDM0_XBTxIQImbalance;
-		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC88][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, bMaskDWord);
+		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC88][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XBTxIQImbalance, bMaskDWord);
 
-		ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT(25), ((Y * Oldval_1 >> 7) & 0x1));
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, BIT(25), ((Y * Oldval_1 >> 7) & 0x1));
 		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC4C][KEY] = rOFDM0_ECCAThreshold;
-		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC4C][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, bMaskDWord);
+		pRFCalibrateInfo->TxIQC_8723B[PATH_S0][IDX_0xC4C][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_ECCAThreshold, bMaskDWord);
 
 		if (bTxOnly) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("_PHY_PathBFillIQKMatrix8188F only Tx OK\n"));
 
 			pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC1C][KEY] = rOFDM0_XBRxIQImbalance;
-			pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC1C][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_XBRxIQImbalance, bMaskDWord);
+			pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC1C][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XBRxIQImbalance, bMaskDWord);
 			pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC78][KEY] = rOFDM0_AGCRSSITable;
-			pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC78][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_AGCRSSITable, bMaskDWord);
+			pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC78][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_AGCRSSITable, bMaskDWord);
 			return;
 		}
 
 		//2 Rx IQC
 		reg = result[final_candidate][6];
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XBRxIQImbalance, 0x3FF, reg);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XBRxIQImbalance, 0x3FF, reg);
 		reg = result[final_candidate][7] & 0x3F;
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XBRxIQImbalance, 0xFC00, reg);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XBRxIQImbalance, 0xFC00, reg);
 		pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC1C][KEY] = rOFDM0_XBRxIQImbalance;
-		pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC1C][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_XBRxIQImbalance, bMaskDWord);
+		pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC1C][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XBRxIQImbalance, bMaskDWord);
 
 		reg = (result[final_candidate][7] >> 6) & 0xF;
-		ODM_SetBBReg(pDM_Odm, rOFDM0_AGCRSSITable, 0x0000F000, reg);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_AGCRSSITable, 0x0000F000, reg);
 		pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC78][KEY] = rOFDM0_AGCRSSITable;
-		pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC78][VAL] = ODM_GetBBReg(pDM_Odm, rOFDM0_AGCRSSITable, bMaskDWord);
+		pRFCalibrateInfo->RxIQC_8723B[PATH_S0][IDX_0xC78][VAL] = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_AGCRSSITable, bMaskDWord);
 	}
 }
 
@@ -1363,7 +1363,7 @@ ODM_CheckPowerStatus(
 		//
 		//	2011/07/19 MH We can not execute tx pwoer tracking/ LLC calibrate or IQK.
 		//
-		Adapter->HalFunc.GetHwRegHandler(Adapter, HW_VAR_RF_STATE, (pu1Byte)(&rtState));
+		Adapter->HalFunc.rtl8188fu_GetHwRegHandler(Adapter, HW_VAR_RF_STATE, (pu1Byte)(&rtState));
 		if(Adapter->bDriverStopped || Adapter->bDriverIsGoingToPnpSetPowerSleep || rtState == eRfOff)
 		{
 			ODM_RT_TRACE(pDM_Odm,COMP_INIT, DBG_LOUD, ("ODM_CheckPowerStatus Return FALSE, due to %d/%d/%d\n",
@@ -1403,7 +1403,7 @@ _PHY_SaveADDARegisters8188F(
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Save ADDA parameters.\n"));
 	for (i = 0; i < RegisterNum; i++)
-		ADDABackup[i] = ODM_GetBBReg(pDM_Odm, ADDAReg[i], bMaskDWord);
+		ADDABackup[i] = rtl8188fu_ODM_GetBBReg(pDM_Odm, ADDAReg[i], bMaskDWord);
 }
 
 
@@ -1430,8 +1430,8 @@ _PHY_SaveMACRegisters8188F(
 #endif
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Save MAC parameters.\n"));
 	for (i = 0; i < (IQK_MAC_REG_NUM - 1); i++)
-		MACBackup[i] = ODM_Read1Byte(pDM_Odm, MACReg[i]);
-	MACBackup[i] = ODM_Read4Byte(pDM_Odm, MACReg[i]);
+		MACBackup[i] = rtl8188fu_ODM_Read1Byte(pDM_Odm, MACReg[i]);
+	MACBackup[i] = rtl8188fu_ODM_Read4Byte(pDM_Odm, MACReg[i]);
 
 }
 
@@ -1461,7 +1461,7 @@ _PHY_ReloadADDARegisters8188F(
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Reload ADDA power saving parameters !\n"));
 	for (i = 0; i < RegiesterNum; i++)
-		ODM_SetBBReg(pDM_Odm, ADDAReg[i], bMaskDWord, ADDABackup[i]);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ADDAReg[i], bMaskDWord, ADDABackup[i]);
 }
 
 VOID
@@ -1487,8 +1487,8 @@ _PHY_ReloadMACRegisters8188F(
 #endif
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Reload MAC parameters !\n"));
 	for (i = 0; i < (IQK_MAC_REG_NUM - 1); i++)
-		ODM_Write1Byte(pDM_Odm, MACReg[i], (u1Byte)MACBackup[i]);
-	ODM_Write4Byte(pDM_Odm, MACReg[i], MACBackup[i]);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, MACReg[i], (u1Byte)MACBackup[i]);
+	rtl8188fu_ODM_Write4Byte(pDM_Odm, MACReg[i], MACBackup[i]);
 }
 
 
@@ -1520,12 +1520,12 @@ _PHY_PathADDAOn8188F(
 	pathOn = isPathAOn ? 0x03c00014 : 0x03c00014;
 	if (FALSE == is2T) {
 		pathOn = 0x03c00014;
-		ODM_SetBBReg(pDM_Odm, ADDAReg[0], bMaskDWord, 0x03c00014);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ADDAReg[0], bMaskDWord, 0x03c00014);
 	} else
-		ODM_SetBBReg(pDM_Odm, ADDAReg[0], bMaskDWord, pathOn);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ADDAReg[0], bMaskDWord, pathOn);
 
 	for (i = 1; i < IQK_ADDA_REG_NUM; i++)
-		ODM_SetBBReg(pDM_Odm, ADDAReg[i], bMaskDWord, pathOn);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ADDAReg[i], bMaskDWord, pathOn);
 
 }
 
@@ -1553,14 +1553,14 @@ _PHY_MACSettingCalibration8188F(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("MAC settings for Calibration.\n"));
 
 #if 0
-	ODM_Write1Byte(pDM_Odm, MACReg[i], 0x3F);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, MACReg[i], 0x3F);
 
 	for (i = 1; i < (IQK_MAC_REG_NUM - 1); i++)
-		ODM_Write1Byte(pDM_Odm, MACReg[i], (u1Byte)(MACBackup[i] & (~BIT3)));
-	ODM_Write1Byte(pDM_Odm, MACReg[i], (u1Byte)(MACBackup[i] & (~BIT5)));
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, MACReg[i], (u1Byte)(MACBackup[i] & (~BIT3)));
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, MACReg[i], (u1Byte)(MACBackup[i] & (~BIT5)));
 #else
 
-	ODM_SetBBReg(pDM_Odm, 0x520, 0x00ff0000, 0xff);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x520, 0x00ff0000, 0xff);
 #endif
 }
 
@@ -1584,12 +1584,12 @@ _PHY_PathAStandBy8188F(
 #endif
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path-A standby mode!\n"));
 
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 //Allen
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bMaskDWord, 0x10000);
-	//ODM_SetBBReg(pDM_Odm, 0x840, bMaskDWord, 0x00010000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bMaskDWord, 0x10000);
+	//rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x840, bMaskDWord, 0x00010000);
 //
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
 }
 
 VOID
@@ -1615,8 +1615,8 @@ _PHY_PIModeSwitch8188F(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("BB Switch to %s mode!\n", (PIMode ? "PI" : "SI")));
 
 	mode = PIMode ? 0x01000100 : 0x01000000;
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XA_HSSIParameter1, bMaskDWord, mode);
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XB_HSSIParameter1, bMaskDWord, mode);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XA_HSSIParameter1, bMaskDWord, mode);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XB_HSSIParameter1, bMaskDWord, mode);
 }
 
 BOOLEAN
@@ -1754,8 +1754,8 @@ phy_IQCalibrate_8188F(
 #endif
 	u4Byte i;
 	u1Byte PathAOK, PathBOK;
-	u1Byte tmp0xc50 = (u1Byte)ODM_GetBBReg(pDM_Odm, 0xC50, bMaskByte0);
-	u1Byte tmp0xc58 = (u1Byte)ODM_GetBBReg(pDM_Odm, 0xC58, bMaskByte0);
+	u1Byte tmp0xc50 = (u1Byte)rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xC50, bMaskByte0);
+	u1Byte tmp0xc58 = (u1Byte)rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xC58, bMaskByte0);
 	u4Byte ADDA_REG[IQK_ADDA_REG_NUM] = {
 		rFPGA0_XCD_SwitchControl, rBlue_Tooth,
 		rRx_Wait_CCA, rTx_CCK_RFON,
@@ -1805,7 +1805,7 @@ phy_IQCalibrate_8188F(
 
 
 	if (t == 0) {
-//	 	 bbvalue = ODM_GetBBReg(pDM_Odm, rFPGA0_RFMOD, bMaskDWord);
+//	 	 bbvalue = rtl8188fu_ODM_GetBBReg(pDM_Odm, rFPGA0_RFMOD, bMaskDWord);
 //			RT_DISP(FINIT, INIT_IQK, ("phy_IQCalibrate_8188F()==>0x%08x\n",bbvalue));
 
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQ Calibration for %s for %d times\n", (is2T ? "2T2R" : "1T1R"), t));
@@ -1832,7 +1832,7 @@ phy_IQCalibrate_8188F(
 
 
 	if (t == 0)
-		pDM_Odm->RFCalibrateInfo.bRfPiEnable = (u1Byte)ODM_GetBBReg(pDM_Odm, rFPGA0_XA_HSSIParameter1, BIT(8));
+		pDM_Odm->RFCalibrateInfo.bRfPiEnable = (u1Byte)rtl8188fu_ODM_GetBBReg(pDM_Odm, rFPGA0_XA_HSSIParameter1, BIT(8));
 
 #if 0
 	if (!pDM_Odm->RFCalibrateInfo.bRfPiEnable) {
@@ -1846,28 +1846,28 @@ phy_IQCalibrate_8188F(
 #endif
 
 	//save RF path
-	Path_SEL_BB = ODM_GetBBReg(pDM_Odm, 0x948, bMaskDWord);
-	Path_SEL_RF = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, 0xfffff);
+	Path_SEL_BB = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x948, bMaskDWord);
+	Path_SEL_RF = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, 0xfffff);
 
 
 	//BB setting
-	/*ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 0x00);*/
-	ODM_SetBBReg(pDM_Odm, rOFDM0_TRxPathEnable, bMaskDWord, 0x03a05600);
-	ODM_SetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord, 0x000800e4);
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, 0x25204000);
+	/*rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 0x00);*/
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_TRxPathEnable, bMaskDWord, 0x03a05600);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord, 0x000800e4);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, 0x25204000);
 
 	//external switch control
-//	ODM_SetBBReg(pDM_Odm, rFPGA0_XAB_RFInterfaceSW, BIT10, 0x01);
-//	ODM_SetBBReg(pDM_Odm, rFPGA0_XAB_RFInterfaceSW, BIT26, 0x01);
-//	ODM_SetBBReg(pDM_Odm, rFPGA0_XA_RFInterfaceOE, BIT10, 0x00);
-//	ODM_SetBBReg(pDM_Odm, rFPGA0_XB_RFInterfaceOE, BIT10, 0x00);
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XAB_RFInterfaceSW, BIT10, 0x01);
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XAB_RFInterfaceSW, BIT26, 0x01);
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XA_RFInterfaceOE, BIT10, 0x00);
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XB_RFInterfaceOE, BIT10, 0x00);
 
 
 	if (is2T) {
 		//Allen
-		//	ODM_SetBBReg(pDM_Odm, rFPGA0_XA_LSSIParameter, bMaskDWord, 0x00010000);
-		//	ODM_SetBBReg(pDM_Odm, rFPGA0_XB_LSSIParameter, bMaskDWord, 0x00010000);
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_AC, bMaskDWord, 0x10000);
+		//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XA_LSSIParameter, bMaskDWord, 0x00010000);
+		//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XB_LSSIParameter, bMaskDWord, 0x00010000);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_AC, bMaskDWord, 0x10000);
 	}
 
 	//MAC settings
@@ -1880,17 +1880,17 @@ phy_IQCalibrate_8188F(
 
 	//Page B init
 	//AP or IQK
-//	ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x0f600000);
+//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x0f600000);
 
 	if (is2T) {
-//		ODM_SetBBReg(pDM_Odm, rConfig_AntB, bMaskDWord, 0x0f600000);
+//		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntB, bMaskDWord, 0x0f600000);
 	}
 
 	// IQ calibration setting
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK setting!\n"));
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, 0x01007c00);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x808000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, 0x01007c00);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
 
 	for (i = 0; i < retryCount; i++) {
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
@@ -1900,20 +1900,20 @@ phy_IQCalibrate_8188F(
 #endif
 //		if(PathAOK == 0x03){
 		if (PathAOK == 0x01) { //Path A Tx IQK Success
-			ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-			pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_A] = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x8, bRFRegOffsetMask);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+			pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_A] = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x8, bRFRegOffsetMask);
 
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path A Tx IQK Success!!\n"));
-			result[t][0] = (ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
-			result[t][1] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
+			result[t][0] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
+			result[t][1] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
 			break;
 		}
 #if 0
 		else if (i == (retryCount - 1) && PathAOK == 0x01) { //Tx IQK OK
 			RT_DISP(FINIT, INIT_IQK, ("Path A IQK Only  Tx Success!!\n"));
 
-			result[t][0] = (ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
-			result[t][1] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
+			result[t][0] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
+			result[t][1] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
 		}
 #endif
 	}
@@ -1929,10 +1929,10 @@ phy_IQCalibrate_8188F(
 #endif
 		if (PathAOK == 0x03) {
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path A Rx IQK Success!!\n"));
-//				result[t][0] = (ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord)&0x3FF0000)>>16;
-//				result[t][1] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord)&0x3FF0000)>>16;
-			result[t][2] = (ODM_GetBBReg(pDM_Odm, rRx_Power_Before_IQK_A_2, bMaskDWord) & 0x3FF0000) >> 16;
-			result[t][3] = (ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord) & 0x3FF0000) >> 16;
+//				result[t][0] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord)&0x3FF0000)>>16;
+//				result[t][1] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord)&0x3FF0000)>>16;
+			result[t][2] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_Before_IQK_A_2, bMaskDWord) & 0x3FF0000) >> 16;
+			result[t][3] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_A_2, bMaskDWord) & 0x3FF0000) >> 16;
 			break;
 		} else
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path A Rx IQK Fail!!\n"));
@@ -1964,20 +1964,20 @@ phy_IQCalibrate_8188F(
 #endif
 //		if(PathBOK == 0x03){
 			if (PathBOK == 0x01) { //Path B Tx IQK Success
-				ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-				pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_B] = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x8, bRFRegOffsetMask);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+				pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_B] = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x8, bRFRegOffsetMask);
 
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path B Tx IQK Success!!\n"));
-				result[t][4] = (ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
-				result[t][5] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
+				result[t][4] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
+				result[t][5] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord) & 0x3FF0000) >> 16;
 				break;
 			}
 #if 0
 			else if (i == (retryCount - 1) && PathAOK == 0x01) { //Tx IQK OK
 				RT_DISP(FINIT, INIT_IQK, ("Path B IQK Only  Tx Success!!\n"));
 
-				result[t][0] = (ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_B, bMaskDWord) & 0x3FF0000) >> 16;
-				result[t][1] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_B, bMaskDWord) & 0x3FF0000) >> 16;
+				result[t][0] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_B, bMaskDWord) & 0x3FF0000) >> 16;
+				result[t][1] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_B, bMaskDWord) & 0x3FF0000) >> 16;
 			}
 #endif
 		}
@@ -1993,10 +1993,10 @@ phy_IQCalibrate_8188F(
 #endif
 			if (PathBOK == 0x03) {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path B Rx IQK Success!!\n"));
-//				result[t][0] = (ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord)&0x3FF0000)>>16;
-//				result[t][1] = (ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord)&0x3FF0000)>>16;
-				result[t][6] = (ODM_GetBBReg(pDM_Odm, rRx_Power_Before_IQK_B_2, bMaskDWord) & 0x3FF0000) >> 16;
-				result[t][7] = (ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_B_2, bMaskDWord) & 0x3FF0000) >> 16;
+//				result[t][0] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_Before_IQK_A, bMaskDWord)&0x3FF0000)>>16;
+//				result[t][1] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rTx_Power_After_IQK_A, bMaskDWord)&0x3FF0000)>>16;
+				result[t][6] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_Before_IQK_B_2, bMaskDWord) & 0x3FF0000) >> 16;
+				result[t][7] = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Power_After_IQK_B_2, bMaskDWord) & 0x3FF0000) >> 16;
 				break;
 			} else
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("Path B Rx IQK Fail!!\n"));
@@ -2011,7 +2011,7 @@ phy_IQCalibrate_8188F(
 
 	//Back to BB mode, load original value
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK:Back to BB mode, load original value!\n"));
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0);
 
 	if (t != 0) {
 		if (!pDM_Odm->RFCalibrateInfo.bRfPiEnable) {
@@ -2043,21 +2043,21 @@ phy_IQCalibrate_8188F(
 
 
 		//Reload RF path
-		ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord, Path_SEL_BB);
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, 0xfffff, Path_SEL_RF);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord, Path_SEL_BB);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, 0xfffff, Path_SEL_RF);
 
 		//Allen initial gain 0xc50
 		// Restore RX initial gain
-		ODM_SetBBReg(pDM_Odm, 0xc50, bMaskByte0, 0x50);
-		ODM_SetBBReg(pDM_Odm, 0xc50, bMaskByte0, tmp0xc50);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc50, bMaskByte0, 0x50);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc50, bMaskByte0, tmp0xc50);
 		if (is2T) {
-			ODM_SetBBReg(pDM_Odm, 0xc58, bMaskByte0, 0x50);
-			ODM_SetBBReg(pDM_Odm, 0xc58, bMaskByte0, tmp0xc58);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc58, bMaskByte0, 0x50);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc58, bMaskByte0, tmp0xc58);
 		}
 
 		//load 0xe30 IQC default value
-		ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x01008c00);
-		ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x01008c00);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x01008c00);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x01008c00);
 
 	}
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_IQCalibrate_8188F() <==\n"));
@@ -2078,38 +2078,38 @@ phy_LCCalibrate_8188F(
 #endif
 
 	/*Check continuous TX and Packet TX*/
-	tmpReg = ODM_Read1Byte(pDM_Odm, 0xd03);
+	tmpReg = rtl8188fu_ODM_Read1Byte(pDM_Odm, 0xd03);
 
 	if ((tmpReg & 0x70) != 0)			/*Deal with contisuous TX case*/
-		ODM_Write1Byte(pDM_Odm, 0xd03, tmpReg & 0x8F);	/*disable all continuous TX*/
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xd03, tmpReg & 0x8F);	/*disable all continuous TX*/
 	else							/* Deal with Packet TX case*/
-		ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0xFF);			/* block all queues*/
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0xFF);			/* block all queues*/
 
 
 	/*backup RF0x18*/
-	LC_Cal = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	LC_Cal = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 
 	/*Start LCK*/
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal|0x08000);
 
 	for(cnt=0;cnt<100;cnt++) 
 	{
-		if(ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x8000) != 0x1)
+		if(rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x8000) != 0x1)
 		break;	
-		ODM_delay_ms(10);
+		rtl8188fu_ODM_delay_ms(10);
 	}
 
 	/*Recover channel number*/
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);	
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask, LC_Cal);	
 
 
 	/*Restore original situation*/
 	if ((tmpReg&0x70) != 0) {
 		/*Deal with contisuous TX case*/
-		ODM_Write1Byte(pDM_Odm, 0xd03, tmpReg);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, 0xd03, tmpReg);
 	} else { 
 		/* Deal with Packet TX case*/
-		ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0x00);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0x00);
 	}
 
 }
@@ -2296,7 +2296,7 @@ phy_APCalibrate_8188F(
 	for (index = 0; index < APK_BB_REG_NUM; index++) {
 		if (index == 0)     //skip
 			continue;
-		BB_backup[index] = ODM_GetBBReg(pDM_Odm, BB_REG[index], bMaskDWord);
+		BB_backup[index] = rtl8188fu_ODM_GetBBReg(pDM_Odm, BB_REG[index], bMaskDWord);
 	}
 
 	//save MAC default value
@@ -2321,46 +2321,46 @@ phy_APCalibrate_8188F(
 			//path-A
 			offset = rPdp_AntA;
 			for (index = 0; index < 11; index ++) {
-				ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_1[index]);
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_1[index]);
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, rtl8188fu_ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
 
 				offset += 0x04;
 			}
 
-			ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x12680000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x12680000);
 
 			offset = rConfig_AntA;
 			for (; index < 13; index ++) {
-				ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_1[index]);
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_1[index]);
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, rtl8188fu_ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
 
 				offset += 0x04;
 			}
 
 			//page-B1
-			ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
 
 			//path A
 			offset = rPdp_AntA;
 			for (index = 0; index < 16; index++) {
-				ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_2[index]);
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_2[index]);
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, rtl8188fu_ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
 
 				offset += 0x04;
 			}
-			ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 		} else if (path == ODM_RF_PATH_B) {
 			//path B APK
 			//load APK setting
 			//path-B
 			offset = rPdp_AntB;
 			for (index = 0; index < 10; index ++) {
-				ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_1[index]);
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_1[index]);
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, rtl8188fu_ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
 
 				offset += 0x04;
 			}
-			ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x12680000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x12680000);
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 			PHY_SetBBReg(pAdapter, rConfig_Pmpd_AntB, bMaskDWord, 0x12680000);
 #else
@@ -2370,37 +2370,37 @@ phy_APCalibrate_8188F(
 			offset = rConfig_AntA;
 			index = 11;
 			for (; index < 13; index ++) { //offset 0xb68, 0xb6c
-				ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_1[index]);
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_1[index]);
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, rtl8188fu_ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
 
 				offset += 0x04;
 			}
 
 			//page-B1
-			ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
 
 			//path B
 			offset = 0xb60;
 			for (index = 0; index < 16; index++) {
-				ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_2[index]);
-				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, APK_normal_setting_value_2[index]);
+				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", offset, rtl8188fu_ODM_GetBBReg(pDM_Odm, offset, bMaskDWord)));
 
 				offset += 0x04;
 			}
-			ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0);
 		}
 
 		//save RF default value
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 		regD[path] = PHY_QueryRFReg(pAdapter, path, RF_TXBIAS_A, bMaskDWord);
 #else
-		regD[path] = ODM_GetRFReg(pDM_Odm, path, RF_TXBIAS_A, bMaskDWord);
+		regD[path] = rtl8188fu_ODM_GetRFReg(pDM_Odm, path, RF_TXBIAS_A, bMaskDWord);
 #endif
 
 		//Path A AFE all on, path B AFE All off or vise versa
 		for (index = 0; index < IQK_ADDA_REG_NUM; index++)
-			ODM_SetBBReg(pDM_Odm, AFE_REG[index], bMaskDWord, AFE_on_off[path]);
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0xe70 %x\n", ODM_GetBBReg(pDM_Odm, rRx_Wait_CCA, bMaskDWord)));
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, AFE_REG[index], bMaskDWord, AFE_on_off[path]);
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0xe70 %x\n", rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Wait_CCA, bMaskDWord)));
 
 		//BB to AP mode
 		if (path == 0) {
@@ -2409,22 +2409,22 @@ phy_APCalibrate_8188F(
 				if (index == 0)     //skip
 					continue;
 				else if (index < 5)
-					ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_AP_MODE[index]);
+					rtl8188fu_ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_AP_MODE[index]);
 				else if (BB_REG[index] == 0x870)
-					ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_backup[index] | BIT10 | BIT26);
+					rtl8188fu_ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_backup[index] | BIT10 | BIT26);
 				else
-					ODM_SetBBReg(pDM_Odm, BB_REG[index], BIT10, 0x0);
+					rtl8188fu_ODM_SetBBReg(pDM_Odm, BB_REG[index], BIT10, 0x0);
 			}
 
-			ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x01008c00);
-			ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x01008c00);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x01008c00);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x01008c00);
 		} else {      //path B
-			ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_B, bMaskDWord, 0x01008c00);
-			ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_B, bMaskDWord, 0x01008c00);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_B, bMaskDWord, 0x01008c00);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_B, bMaskDWord, 0x01008c00);
 
 		}
 
-		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x800 %x\n", ODM_GetBBReg(pDM_Odm, 0x800, bMaskDWord)));
+		ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x800 %x\n", rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x800, bMaskDWord)));
 
 		//MAC settings
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
@@ -2434,11 +2434,11 @@ phy_APCalibrate_8188F(
 #endif
 
 		if (path == ODM_RF_PATH_A)  //Path B to standby mode
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_AC, bMaskDWord, 0x10000);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_AC, bMaskDWord, 0x10000);
 		else {          //Path A to standby mode
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bMaskDWord, 0x10000);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE1, bMaskDWord, 0x1000f);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE2, bMaskDWord, 0x20103);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bMaskDWord, 0x10000);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE1, bMaskDWord, 0x1000f);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE2, bMaskDWord, 0x20103);
 		}
 
 		delta_offset = ((delta + 14) / 2);
@@ -2475,40 +2475,40 @@ phy_APCalibrate_8188F(
 			}
 #endif
 
-			ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, RF_IPA_A, bMaskDWord, 0x8992e);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, RF_IPA_A, bMaskDWord, 0x8992e);
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0xc %x\n", PHY_QueryRFReg(pAdapter, path, RF_IPA_A, bMaskDWord)));
-			ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, RF_AC, bMaskDWord, APK_RF_value_0[path][index]);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, RF_AC, bMaskDWord, APK_RF_value_0[path][index]);
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x0 %x\n", PHY_QueryRFReg(pAdapter, path, RF_AC, bMaskDWord)));
-			ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, RF_TXBIAS_A, bMaskDWord, tmpReg);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, RF_TXBIAS_A, bMaskDWord, tmpReg);
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0xd %x\n", PHY_QueryRFReg(pAdapter, path, RF_TXBIAS_A, bMaskDWord)));
 #else
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0xc %x\n", ODM_GetRFReg(pDM_Odm, path, RF_IPA_A, bMaskDWord)));
-			ODM_SetRFReg(pDM_Odm, path, RF_AC, bMaskDWord, APK_RF_value_0[path][index]);
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x0 %x\n", ODM_GetRFReg(pDM_Odm, path, RF_AC, bMaskDWord)));
-			ODM_SetRFReg(pDM_Odm, path, RF_TXBIAS_A, bMaskDWord, tmpReg);
-			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0xd %x\n", ODM_GetRFReg(pDM_Odm, path, RF_TXBIAS_A, bMaskDWord)));
+			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0xc %x\n", rtl8188fu_ODM_GetRFReg(pDM_Odm, path, RF_IPA_A, bMaskDWord)));
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, path, RF_AC, bMaskDWord, APK_RF_value_0[path][index]);
+			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x0 %x\n", rtl8188fu_ODM_GetRFReg(pDM_Odm, path, RF_AC, bMaskDWord)));
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, path, RF_TXBIAS_A, bMaskDWord, tmpReg);
+			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0xd %x\n", rtl8188fu_ODM_GetRFReg(pDM_Odm, path, RF_TXBIAS_A, bMaskDWord)));
 #endif
 
 			// PA11+PAD01111, one shot
 			i = 0;
 			do {
-				ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x800000);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x800000);
 				{
-					ODM_SetBBReg(pDM_Odm, APK_offset[path], bMaskDWord, APK_value[0]);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", APK_offset[path], ODM_GetBBReg(pDM_Odm, APK_offset[path], bMaskDWord)));
-					ODM_delay_ms(3);
-					ODM_SetBBReg(pDM_Odm, APK_offset[path], bMaskDWord, APK_value[1]);
-					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", APK_offset[path], ODM_GetBBReg(pDM_Odm, APK_offset[path], bMaskDWord)));
+					rtl8188fu_ODM_SetBBReg(pDM_Odm, APK_offset[path], bMaskDWord, APK_value[0]);
+					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", APK_offset[path], rtl8188fu_ODM_GetBBReg(pDM_Odm, APK_offset[path], bMaskDWord)));
+					rtl8188fu_ODM_delay_ms(3);
+					rtl8188fu_ODM_SetBBReg(pDM_Odm, APK_offset[path], bMaskDWord, APK_value[1]);
+					ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0x%x value 0x%x\n", APK_offset[path], rtl8188fu_ODM_GetBBReg(pDM_Odm, APK_offset[path], bMaskDWord)));
 
-					ODM_delay_ms(20);
+					rtl8188fu_ODM_delay_ms(20);
 				}
-				ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 
 				if (path == ODM_RF_PATH_A)
-					tmpReg = ODM_GetBBReg(pDM_Odm, rAPK, 0x03E00000);
+					tmpReg = rtl8188fu_ODM_GetBBReg(pDM_Odm, rAPK, 0x03E00000);
 				else
-					tmpReg = ODM_GetBBReg(pDM_Odm, rAPK, 0xF8000000);
+					tmpReg = rtl8188fu_ODM_GetBBReg(pDM_Odm, rAPK, 0xF8000000);
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_APCalibrate_8188F() offset 0xbd8[25:21] %x\n", tmpReg));
 
 
@@ -2531,7 +2531,7 @@ phy_APCalibrate_8188F(
 
 		if (index == 0)     //skip
 			continue;
-		ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_backup[index]);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_backup[index]);
 	}
 
 	//reload AFE default value
@@ -2543,10 +2543,10 @@ phy_APCalibrate_8188F(
 
 	//reload RF path default value
 	for (path = 0; path < pathbound; path++) {
-		ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, 0xd, bMaskDWord, regD[path]);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, 0xd, bMaskDWord, regD[path]);
 		if (path == ODM_RF_PATH_B) {
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE1, bMaskDWord, 0x1000f);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE2, bMaskDWord, 0x20101);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE1, bMaskDWord, 0x1000f);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE2, bMaskDWord, 0x20101);
 		}
 
 		//note no index == 0
@@ -2559,17 +2559,17 @@ phy_APCalibrate_8188F(
 
 
 	for (path = 0; path < pathbound; path++) {
-		ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, 0x3, bMaskDWord,
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, 0x3, bMaskDWord,
 					 ((APK_result[path][1] << 15) | (APK_result[path][1] << 10) | (APK_result[path][1] << 5) | APK_result[path][1]));
 		if (path == ODM_RF_PATH_A)
-			ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, 0x4, bMaskDWord,
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, 0x4, bMaskDWord,
 						 ((APK_result[path][1] << 15) | (APK_result[path][1] << 10) | (0x00 << 5) | 0x05));
 		else
-			ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, 0x4, bMaskDWord,
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, 0x4, bMaskDWord,
 						 ((APK_result[path][1] << 15) | (APK_result[path][1] << 10) | (0x02 << 5) | 0x05));
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 		if (!IS_HARDWARE_TYPE_8723A(pAdapter))
-			ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, RF_BS_PA_APSET_G9_G11, bMaskDWord,
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, (ODM_RF_RADIO_PATH_E)path, RF_BS_PA_APSET_G9_G11, bMaskDWord,
 						 ((0x08 << 15) | (0x08 << 10) | (0x08 << 5) | 0x08));
 #endif
 	}
@@ -2690,7 +2690,7 @@ PHY_IQCalibrate_8188F(
 		//#define 	PATH_S0                         1 // RF_PATH_B
 		//#define 	PATH_S1                         0 // RF_PATH_A
 
-		path = (ODM_GetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskByte0) == 0x00) ? ODM_RF_PATH_A : ODM_RF_PATH_B;
+		path = (rtl8188fu_ODM_GetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskByte0) == 0x00) ? ODM_RF_PATH_A : ODM_RF_PATH_B;
 		//Restore TX IQK
 		for (i = 0; i < 3; ++i) {
 			offset = pRFCalibrateInfo->TxIQC_8723B[path][i][0];
@@ -2701,7 +2701,7 @@ PHY_IQCalibrate_8188F(
 				break;
 			}
 			RT_TRACE(COMP_MP, DBG_TRACE, ("Switch to S1 TxIQC(offset, data) = (0x%X, 0x%X)\n", offset, data));
-			ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, data);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, data);
 		}
 		//Restore RX IQK
 		for (i = 0; i < 2; ++i) {
@@ -2713,15 +2713,15 @@ PHY_IQCalibrate_8188F(
 				break;
 			}
 			RT_TRACE(COMP_MP, DBG_TRACE, ("Switch to S1 RxIQC (offset, data) = (0x%X, 0x%X)\n", offset, data));
-			ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, data);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, offset, bMaskDWord, data);
 		}
 
 		if (pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_A] == 0) {
 			//DBG_871X("%s => Restore Path-A TxLOK result failed\n",__FUNCTION__);
 			bResult = FAIL;
 		} else {
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXM_IDAC, bRFRegOffsetMask, pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_A]);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_TXM_IDAC, bRFRegOffsetMask, pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_B]);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_TXM_IDAC, bRFRegOffsetMask, pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_A]);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_TXM_IDAC, bRFRegOffsetMask, pDM_Odm->RFCalibrateInfo.TxLOK[ODM_RF_PATH_B]);
 		}
 
 		if (bResult == SUCCESS)
@@ -2747,8 +2747,8 @@ PHY_IQCalibrate_8188F(
 
 
 	// Save RF Path
-	Path_SEL_BB = ODM_GetBBReg(pDM_Odm, 0x948, bMaskDWord);
-	Path_SEL_RF = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, 0xfffff);
+	Path_SEL_BB = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x948, bMaskDWord);
+	Path_SEL_RF = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, 0xfffff);
 
 
 	for (i = 0; i < 8; i++) {
@@ -2881,7 +2881,7 @@ PHY_IQCalibrate_8188F(
 #endif
 
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
-	Indexforchannel = ODM_GetRightChnlPlaceforIQK(pHalData->CurrentChannel);
+	Indexforchannel = rtl8188fu_ODM_GetRightChnlPlaceforIQK(pHalData->CurrentChannel);
 #else
 	Indexforchannel = 0;
 #endif
@@ -2902,8 +2902,8 @@ PHY_IQCalibrate_8188F(
 #endif
 
 	// Restore RF Path
-	ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord, Path_SEL_BB);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, 0xfffff, Path_SEL_RF);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x948, bMaskDWord, Path_SEL_BB);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0xb0, 0xfffff, Path_SEL_RF);
 
 
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("IQK finished 8188F\n"));
@@ -2956,7 +2956,7 @@ PHY_LCCalibrate_8188F(
 		return;
 
 	while (*(pDM_Odm->pbScanInProcess) && timecount < timeout) {
-		ODM_delay_ms(50);
+		rtl8188fu_ODM_delay_ms(50);
 		timecount += 50;
 	}
 
@@ -2992,9 +2992,9 @@ VOID phy_SetRFPathSwitch_8188F(
 #endif
 
 	if (bMain)   // Left antenna
-		ODM_SetBBReg(pDM_Odm, 0x92C, bMaskDWord, 0x1);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x92C, bMaskDWord, 0x1);
 	else
-		ODM_SetBBReg(pDM_Odm, 0x92C, bMaskDWord, 0x2);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x92C, bMaskDWord, 0x2);
 }
 
 VOID PHY_SetRFPathSwitch_8188F(
@@ -3095,7 +3095,7 @@ phy_DigitalPredistortion8188F(
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("phy_DigitalPredistortion8188F for %s\n", (is2T ? "2T2R" : "1T1R")));
 
 	//save BB default value
-	for (index = 0; index < DP_BB_REG_NUM; index++) BB_backup[index] = ODM_GetBBReg(pDM_Odm, BB_REG[index], bMaskDWord);
+	for (index = 0; index < DP_BB_REG_NUM; index++) BB_backup[index] = rtl8188fu_ODM_GetBBReg(pDM_Odm, BB_REG[index], bMaskDWord);
 
 	//save MAC default value
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
@@ -3110,7 +3110,7 @@ phy_DigitalPredistortion8188F(
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
 			RF_backup[path][index] = PHY_QueryRFReg(pAdapter, path, RF_REG[index], bMaskDWord);
 #else
-			RF_backup[path][index] = ODM_GetRFReg(pAdapter, path, RF_REG[index], bMaskDWord);
+			RF_backup[path][index] = rtl8188fu_ODM_GetRFReg(pAdapter, path, RF_REG[index], bMaskDWord);
 #endif
 	}
 
@@ -3122,16 +3122,16 @@ phy_DigitalPredistortion8188F(
 #endif
 
 	//Path A/B AFE all on
-	for (index = 0; index < IQK_ADDA_REG_NUM; index++) ODM_SetBBReg(pDM_Odm, AFE_REG[index], bMaskDWord, 0x6fdb25a4);
+	for (index = 0; index < IQK_ADDA_REG_NUM; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, AFE_REG[index], bMaskDWord, 0x6fdb25a4);
 
 	//BB register setting
 	for (index = 0; index < DP_BB_REG_NUM; index++) {
 		if (index < 4)
-			ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_settings[index]);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_settings[index]);
 		else if (index == 4)
-			ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_backup[index] | BIT10 | BIT26);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_backup[index] | BIT10 | BIT26);
 		else
-			ODM_SetBBReg(pDM_Odm, BB_REG[index], BIT10, 0x00);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, BB_REG[index], BIT10, 0x00);
 	}
 
 	//MAC register setting
@@ -3142,92 +3142,92 @@ phy_DigitalPredistortion8188F(
 #endif
 
 	//PAGE-E IQC setting
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x01008c00);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x01008c00);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_B, bMaskDWord, 0x01008c00);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_B, bMaskDWord, 0x01008c00);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x01008c00);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x01008c00);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_B, bMaskDWord, 0x01008c00);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_B, bMaskDWord, 0x01008c00);
 
 	//path_A DPK
 	//Path B to standby mode
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_AC, bMaskDWord, 0x10000);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_AC, bMaskDWord, 0x10000);
 
 	// PA gain = 11 & PAD1 => tx_agc 1f ~11
 	// PA gain = 11 & PAD2 => tx_agc 10~0e
 	// PA gain = 01 => tx_agc 0b~0d
 	// PA gain = 00 => tx_agc 0a~00
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
-	ODM_SetBBReg(pDM_Odm, 0xbc0, bMaskDWord, 0x0005361f);
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xbc0, bMaskDWord, 0x0005361f);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 
 	//do inner loopback DPK 3 times
 	for (i = 0; i < 3; i++) {
 		//PA gain = 11 & PAD2 => tx_agc = 0x0f/0x0c/0x07
-		for (index = 0; index < 3; index++) ODM_SetBBReg(pDM_Odm, 0xe00 + index * 4, bMaskDWord, Tx_AGC[i][0]);
-		ODM_SetBBReg(pDM_Odm, 0xe00 + index * 4, bMaskDWord, Tx_AGC[i][1]);
-		for (index = 0; index < 4; index++) ODM_SetBBReg(pDM_Odm, 0xe10 + index * 4, bMaskDWord, Tx_AGC[i][0]);
+		for (index = 0; index < 3; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xe00 + index * 4, bMaskDWord, Tx_AGC[i][0]);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xe00 + index * 4, bMaskDWord, Tx_AGC[i][1]);
+		for (index = 0; index < 4; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xe10 + index * 4, bMaskDWord, Tx_AGC[i][0]);
 
 		// PAGE_B for Path-A inner loopback DPK setting
-		ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x02097098);
-		ODM_SetBBReg(pDM_Odm, rPdp_AntA_4, bMaskDWord, 0xf76d9f84);
-		ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x0004ab87);
-		ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x00880000);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x02097098);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA_4, bMaskDWord, 0xf76d9f84);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x0004ab87);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x00880000);
 
 		//----send one shot signal----//
 		// Path A
-		ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x80047788);
-		ODM_delay_ms(1);
-		ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x00047788);
-		ODM_delay_ms(50);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x80047788);
+		rtl8188fu_ODM_delay_ms(1);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x00047788);
+		rtl8188fu_ODM_delay_ms(50);
 	}
 
 	//PA gain = 11 => tx_agc = 1a
-	for (index = 0; index < 3; index++) ODM_SetBBReg(pDM_Odm, 0xe00 + index * 4, bMaskDWord, 0x34343434);
-	ODM_SetBBReg(pDM_Odm, 0xe08 + index * 4, bMaskDWord, 0x03903434);
-	for (index = 0; index < 4; index++) ODM_SetBBReg(pDM_Odm, 0xe10 + index * 4, bMaskDWord, 0x34343434);
+	for (index = 0; index < 3; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xe00 + index * 4, bMaskDWord, 0x34343434);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xe08 + index * 4, bMaskDWord, 0x03903434);
+	for (index = 0; index < 4; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xe10 + index * 4, bMaskDWord, 0x34343434);
 
 	//====================================
 	// PAGE_B for Path-A DPK setting
 	//====================================
 	// open inner loopback @ b00[19]:10 od 0xb00 0x01097018
-	ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x02017098);
-	ODM_SetBBReg(pDM_Odm, rPdp_AntA_4, bMaskDWord, 0xf76d9f84);
-	ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x0004ab87);
-	ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x00880000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x02017098);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA_4, bMaskDWord, 0xf76d9f84);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x0004ab87);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x00880000);
 
 	//rf_lpbk_setup
 	//1.rf 00:5205a, rf 0d:0e52c
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x0c, bMaskDWord, 0x8992b);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x0d, bMaskDWord, 0x0e52c);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x00, bMaskDWord, 0x5205a);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x0c, bMaskDWord, 0x8992b);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x0d, bMaskDWord, 0x0e52c);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x00, bMaskDWord, 0x5205a);
 
 	//----send one shot signal----//
 	// Path A
-	ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x800477c0);
-	ODM_delay_ms(1);
-	ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x000477c0);
-	ODM_delay_ms(50);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x800477c0);
+	rtl8188fu_ODM_delay_ms(1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x000477c0);
+	rtl8188fu_ODM_delay_ms(50);
 
 	while (RetryCount < DP_RETRY_LIMIT && !pDM_Odm->RFCalibrateInfo.bDPPathAOK) {
 		//----read back measurement results----//
-		ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x0c297018);
-		tmpReg = ODM_GetBBReg(pDM_Odm, 0xbe0, bMaskDWord);
-		ODM_delay_ms(10);
-		ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x0c29701f);
-		tmpReg2 = ODM_GetBBReg(pDM_Odm, 0xbe8, bMaskDWord);
-		ODM_delay_ms(10);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x0c297018);
+		tmpReg = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xbe0, bMaskDWord);
+		rtl8188fu_ODM_delay_ms(10);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x0c29701f);
+		tmpReg2 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xbe8, bMaskDWord);
+		rtl8188fu_ODM_delay_ms(10);
 
 		tmpReg = (tmpReg & bMaskHWord) >> 16;
 		tmpReg2 = (tmpReg2 & bMaskHWord) >> 16;
 		if (tmpReg < 0xf0 || tmpReg > 0x105 || tmpReg2 > 0xff) {
-			ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x02017098);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x02017098);
 
-			ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x800000);
-			ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-			ODM_delay_ms(1);
-			ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x800477c0);
-			ODM_delay_ms(1);
-			ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x000477c0);
-			ODM_delay_ms(50);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x800000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+			rtl8188fu_ODM_delay_ms(1);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x800477c0);
+			rtl8188fu_ODM_delay_ms(1);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x000477c0);
+			rtl8188fu_ODM_delay_ms(50);
 			RetryCount++;
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("path A DPK RetryCount %d 0xbe0[31:16] %x 0xbe8[31:16] %x\n", RetryCount, tmpReg, tmpReg2));
 		} else {
@@ -3241,114 +3241,114 @@ phy_DigitalPredistortion8188F(
 	//DPP path A
 	if (pDM_Odm->RFCalibrateInfo.bDPPathAOK) {
 		// DP settings
-		ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x01017098);
-		ODM_SetBBReg(pDM_Odm, rPdp_AntA_4, bMaskDWord, 0x776d9f84);
-		ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x0004ab87);
-		ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x00880000);
-		ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x01017098);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA_4, bMaskDWord, 0x776d9f84);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntA, bMaskDWord, 0x0004ab87);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x00880000);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
 
 		for (i = rPdp_AntA; i <= 0xb3c; i += 4) {
-			ODM_SetBBReg(pDM_Odm, i, bMaskDWord, 0x40004000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, i, bMaskDWord, 0x40004000);
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("path A ofsset = 0x%x\n", i));
 		}
 
 		//pwsf
-		ODM_SetBBReg(pDM_Odm, 0xb40, bMaskDWord, 0x40404040);
-		ODM_SetBBReg(pDM_Odm, 0xb44, bMaskDWord, 0x28324040);
-		ODM_SetBBReg(pDM_Odm, 0xb48, bMaskDWord, 0x10141920);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xb40, bMaskDWord, 0x40404040);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xb44, bMaskDWord, 0x28324040);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xb48, bMaskDWord, 0x10141920);
 
 		for (i = 0xb4c; i <= 0xb5c; i += 4)
-			ODM_SetBBReg(pDM_Odm, i, bMaskDWord, 0x0c0c0c0c);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, i, bMaskDWord, 0x0c0c0c0c);
 
 		//TX_AGC boundary
-		ODM_SetBBReg(pDM_Odm, 0xbc0, bMaskDWord, 0x0005361f);
-		ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xbc0, bMaskDWord, 0x0005361f);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 	} else {
-		ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x00000000);
-		ODM_SetBBReg(pDM_Odm, rPdp_AntA_4, bMaskDWord, 0x00000000);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA, bMaskDWord, 0x00000000);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntA_4, bMaskDWord, 0x00000000);
 	}
 
 	//DPK path B
 	if (is2T) {
 		//Path A to standby mode
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bMaskDWord, 0x10000);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bMaskDWord, 0x10000);
 
 		// LUTs => tx_agc
 		// PA gain = 11 & PAD1, => tx_agc 1f ~11
 		// PA gain = 11 & PAD2, => tx_agc 10 ~0e
 		// PA gain = 01 => tx_agc 0b ~0d
 		// PA gain = 00 => tx_agc 0a ~00
-		ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
-		ODM_SetBBReg(pDM_Odm, 0xbc4, bMaskDWord, 0x0005361f);
-		ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xbc4, bMaskDWord, 0x0005361f);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 
 		//do inner loopback DPK 3 times
 		for (i = 0; i < 3; i++) {
 			//PA gain = 11 & PAD2 => tx_agc = 0x0f/0x0c/0x07
-			for (index = 0; index < 4; index++) ODM_SetBBReg(pDM_Odm, 0x830 + index * 4, bMaskDWord, Tx_AGC[i][0]);
-			for (index = 0; index < 2; index++) ODM_SetBBReg(pDM_Odm, 0x848 + index * 4, bMaskDWord, Tx_AGC[i][0]);
-			for (index = 0; index < 2; index++) ODM_SetBBReg(pDM_Odm, 0x868 + index * 4, bMaskDWord, Tx_AGC[i][0]);
+			for (index = 0; index < 4; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x830 + index * 4, bMaskDWord, Tx_AGC[i][0]);
+			for (index = 0; index < 2; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x848 + index * 4, bMaskDWord, Tx_AGC[i][0]);
+			for (index = 0; index < 2; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x868 + index * 4, bMaskDWord, Tx_AGC[i][0]);
 
 			// PAGE_B for Path-A inner loopback DPK setting
-			ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x02097098);
-			ODM_SetBBReg(pDM_Odm, rPdp_AntB_4, bMaskDWord, 0xf76d9f84);
-			ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x0004ab87);
-			ODM_SetBBReg(pDM_Odm, rConfig_AntB, bMaskDWord, 0x00880000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x02097098);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB_4, bMaskDWord, 0xf76d9f84);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x0004ab87);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntB, bMaskDWord, 0x00880000);
 
 			//----send one shot signal----//
 			// Path B
-			ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x80047788);
-			ODM_delay_ms(1);
-			ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x00047788);
-			ODM_delay_ms(50);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x80047788);
+			rtl8188fu_ODM_delay_ms(1);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x00047788);
+			rtl8188fu_ODM_delay_ms(50);
 		}
 
 		// PA gain = 11 => tx_agc = 1a
-		for (index = 0; index < 4; index++) ODM_SetBBReg(pDM_Odm, 0x830 + index * 4, bMaskDWord, 0x34343434);
-		for (index = 0; index < 2; index++) ODM_SetBBReg(pDM_Odm, 0x848 + index * 4, bMaskDWord, 0x34343434);
-		for (index = 0; index < 2; index++) ODM_SetBBReg(pDM_Odm, 0x868 + index * 4, bMaskDWord, 0x34343434);
+		for (index = 0; index < 4; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x830 + index * 4, bMaskDWord, 0x34343434);
+		for (index = 0; index < 2; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x848 + index * 4, bMaskDWord, 0x34343434);
+		for (index = 0; index < 2; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x868 + index * 4, bMaskDWord, 0x34343434);
 
 		// PAGE_B for Path-B DPK setting
-		ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x02017098);
-		ODM_SetBBReg(pDM_Odm, rPdp_AntB_4, bMaskDWord, 0xf76d9f84);
-		ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x0004ab87);
-		ODM_SetBBReg(pDM_Odm, rConfig_AntB, bMaskDWord, 0x00880000);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x02017098);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB_4, bMaskDWord, 0xf76d9f84);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x0004ab87);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntB, bMaskDWord, 0x00880000);
 
 		// RF lpbk switches on
-		ODM_SetBBReg(pDM_Odm, 0x840, bMaskDWord, 0x0101000f);
-		ODM_SetBBReg(pDM_Odm, 0x840, bMaskDWord, 0x01120103);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x840, bMaskDWord, 0x0101000f);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x840, bMaskDWord, 0x01120103);
 
 		//Path-B RF lpbk
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x0c, bMaskDWord, 0x8992b);
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x0d, bMaskDWord, 0x0e52c);
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_AC, bMaskDWord, 0x5205a);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x0c, bMaskDWord, 0x8992b);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x0d, bMaskDWord, 0x0e52c);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_AC, bMaskDWord, 0x5205a);
 
 		//----send one shot signal----//
-		ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x800477c0);
-		ODM_delay_ms(1);
-		ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x000477c0);
-		ODM_delay_ms(50);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x800477c0);
+		rtl8188fu_ODM_delay_ms(1);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x000477c0);
+		rtl8188fu_ODM_delay_ms(50);
 
 		while (RetryCount < DP_RETRY_LIMIT && !pDM_Odm->RFCalibrateInfo.bDPPathBOK) {
 			//----read back measurement results----//
-			ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x0c297018);
-			tmpReg = ODM_GetBBReg(pDM_Odm, 0xbf0, bMaskDWord);
-			ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x0c29701f);
-			tmpReg2 = ODM_GetBBReg(pDM_Odm, 0xbf8, bMaskDWord);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x0c297018);
+			tmpReg = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xbf0, bMaskDWord);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x0c29701f);
+			tmpReg2 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xbf8, bMaskDWord);
 
 			tmpReg = (tmpReg & bMaskHWord) >> 16;
 			tmpReg2 = (tmpReg2 & bMaskHWord) >> 16;
 
 			if (tmpReg < 0xf0 || tmpReg > 0x105 || tmpReg2 > 0xff) {
-				ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x02017098);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x02017098);
 
-				ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x800000);
-				ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
-				ODM_delay_ms(1);
-				ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x800477c0);
-				ODM_delay_ms(1);
-				ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x000477c0);
-				ODM_delay_ms(50);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x800000);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+				rtl8188fu_ODM_delay_ms(1);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x800477c0);
+				rtl8188fu_ODM_delay_ms(1);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x000477c0);
+				rtl8188fu_ODM_delay_ms(50);
 				RetryCount++;
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("path B DPK RetryCount %d 0xbf0[31:16] %x, 0xbf8[31:16] %x\n", RetryCount , tmpReg, tmpReg2));
 			} else {
@@ -3362,45 +3362,45 @@ phy_DigitalPredistortion8188F(
 		if (pDM_Odm->RFCalibrateInfo.bDPPathBOK) {
 			// DP setting
 			// LUT by SRAM
-			ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x01017098);
-			ODM_SetBBReg(pDM_Odm, rPdp_AntB_4, bMaskDWord, 0x776d9f84);
-			ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x0004ab87);
-			ODM_SetBBReg(pDM_Odm, rConfig_AntB, bMaskDWord, 0x00880000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x01017098);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB_4, bMaskDWord, 0x776d9f84);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_Pmpd_AntB, bMaskDWord, 0x0004ab87);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntB, bMaskDWord, 0x00880000);
 
-			ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x400000);
 			for (i = 0xb60; i <= 0xb9c; i += 4) {
-				ODM_SetBBReg(pDM_Odm, i, bMaskDWord, 0x40004000);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, i, bMaskDWord, 0x40004000);
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_CALIBRATION, ODM_DBG_LOUD, ("path B ofsset = 0x%x\n", i));
 			}
 
 			// PWSF
-			ODM_SetBBReg(pDM_Odm, 0xba0, bMaskDWord, 0x40404040);
-			ODM_SetBBReg(pDM_Odm, 0xba4, bMaskDWord, 0x28324050);
-			ODM_SetBBReg(pDM_Odm, 0xba8, bMaskDWord, 0x0c141920);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xba0, bMaskDWord, 0x40404040);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xba4, bMaskDWord, 0x28324050);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xba8, bMaskDWord, 0x0c141920);
 
 			for (i = 0xbac; i <= 0xbbc; i += 4)
-				ODM_SetBBReg(pDM_Odm, i, bMaskDWord, 0x0c0c0c0c);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, i, bMaskDWord, 0x0c0c0c0c);
 
 			// tx_agc boundary
-			ODM_SetBBReg(pDM_Odm, 0xbc4, bMaskDWord, 0x0005361f);
-			ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xbc4, bMaskDWord, 0x0005361f);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, bMaskH3Bytes, 0x000000);
 
 		} else {
-			ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x00000000);
-			ODM_SetBBReg(pDM_Odm, rPdp_AntB_4, bMaskDWord, 0x00000000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB, bMaskDWord, 0x00000000);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rPdp_AntB_4, bMaskDWord, 0x00000000);
 		}
 	}
 
 	//reload BB default value
-	for (index = 0; index < DP_BB_REG_NUM; index++) ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_backup[index]);
+	for (index = 0; index < DP_BB_REG_NUM; index++) rtl8188fu_ODM_SetBBReg(pDM_Odm, BB_REG[index], bMaskDWord, BB_backup[index]);
 
 	//reload RF default value
 	for (path = 0; path < DP_PATH_NUM; path++) {
 		for (i = 0; i < DP_RF_REG_NUM; i++)
-			ODM_SetRFReg(pDM_Odm, path, RF_REG[i], bMaskDWord, RF_backup[path][i]);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, path, RF_REG[i], bMaskDWord, RF_backup[path][i]);
 	}
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE1, bMaskDWord, 0x1000f);    //standby mode
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE2, bMaskDWord, 0x20101);        //RF lpbk switches off
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE1, bMaskDWord, 0x1000f);    //standby mode
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_MODE2, bMaskDWord, 0x20101);        //RF lpbk switches off
 
 	//reload AFE default value
 #if !(DM_ODM_SUPPORT_TYPE & ODM_AP)
@@ -3482,7 +3482,7 @@ BOOLEAN phy_QueryRFPathSwitch_8188F(
 #endif
 
 
-	if (ODM_GetBBReg(pDM_Odm, 0x92C, bMaskDWord) == 0x01)
+	if (rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x92C, bMaskDWord) == 0x01)
 		return TRUE;
 	else
 		return FALSE;

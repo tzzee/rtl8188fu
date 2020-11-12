@@ -124,7 +124,7 @@
 
 #define init_h2fwcmd_w_parm_no_rsp(pcmd, pparm, code) \
 do {\
-	_rtw_init_listhead(&pcmd->list);\
+	rtl8188fu__rtw_init_listhead(&pcmd->list);\
 	pcmd->cmdcode = code;\
 	pcmd->parmbuf = (u8 *)(pparm);\
 	pcmd->cmdsz = sizeof (*pparm);\
@@ -134,7 +134,7 @@ do {\
 
 #define init_h2fwcmd_w_parm_no_parm_rsp(pcmd, code) \
 do {\
-	_rtw_init_listhead(&pcmd->list);\
+	rtl8188fu__rtw_init_listhead(&pcmd->list);\
 	pcmd->cmdcode = code;\
 	pcmd->parmbuf = NULL;\
 	pcmd->cmdsz = 0;\
@@ -184,9 +184,9 @@ struct P2P_WoWlan_Offload_t{
 
 #endif //CONFIG_P2P_WOWLAN
 
-extern u32 rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *obj);
-extern struct cmd_obj *rtw_dequeue_cmd(struct cmd_priv *pcmdpriv);
-extern void rtw_free_cmd_obj(struct cmd_obj *pcmd);
+extern u32 rtl8188fu_rtw_enqueue_cmd(struct cmd_priv *pcmdpriv, struct cmd_obj *obj);
+extern struct cmd_obj *rtl8188fu_rtw_dequeue_cmd(struct cmd_priv *pcmdpriv);
+extern void rtl8188fu_rtw_free_cmd_obj(struct cmd_obj *pcmd);
 
 #ifdef CONFIG_EVENT_THREAD_MODE
 extern u32 rtw_enqueue_evt(struct evt_priv *pevtpriv, struct evt_obj *obj);
@@ -194,18 +194,18 @@ extern struct evt_obj *rtw_dequeue_evt(_queue *queue);
 extern void rtw_free_evt_obj(struct evt_obj *pcmd);
 #endif
 
-void rtw_stop_cmd_thread(_adapter *adapter);
-thread_return rtw_cmd_thread(thread_context context);
+void rtl8188fu_rtw_stop_cmd_thread(_adapter *adapter);
+thread_return rtl8188fu_rtw_cmd_thread(thread_context context);
 
-extern u32 rtw_init_cmd_priv (struct cmd_priv *pcmdpriv);
-extern void rtw_free_cmd_priv (struct cmd_priv *pcmdpriv);
+extern u32 rtl8188furtl8188fu__rtw_init_cmd_priv (struct cmd_priv *pcmdpriv);
+extern void rtl8188fu_rtw_free_cmd_priv (struct cmd_priv *pcmdpriv);
 
-extern u32 rtw_init_evt_priv (struct evt_priv *pevtpriv);
-extern void rtw_free_evt_priv (struct evt_priv *pevtpriv);
-extern void rtw_cmd_clr_isr(struct cmd_priv *pcmdpriv);
+extern u32 rtl8188furtl8188fu__rtw_init_evt_priv (struct evt_priv *pevtpriv);
+extern void rtl8188fu_rtw_free_evt_priv (struct evt_priv *pevtpriv);
+extern void rtl8188fu_rtw_cmd_clr_isr(struct cmd_priv *pcmdpriv);
 extern void rtw_evt_notify_isr(struct evt_priv *pevtpriv);
 #ifdef CONFIG_P2P
-u8 p2p_protocol_wk_cmd(_adapter*padapter, int intCmdType );
+u8 rtl8188fu_p2p_protocol_wk_cmd(_adapter*padapter, int intCmdType );
 #endif //CONFIG_P2P
 
 #else
@@ -917,7 +917,7 @@ struct set_ch_parm {
 
 #ifdef MP_FIRMWARE_OFFLOAD
 /*H2C Handler index: 47 */
-struct SetTxPower_parm
+struct rtl8188fu_SetTxPower_parm
 {
 	u8 TxPower;
 };
@@ -938,27 +938,27 @@ struct SetCrystalCap_parm
 };
 
 /*H2C Handler index: 50 */
-struct SetSingleCarrierTx_parm
+struct rtl8188fu_SetSingleCarrierTx_parm
 {
 	u8 bStart;
 };
 
 /*H2C Handler index: 51 */
-struct SetSingleToneTx_parm
+struct rtl8188fu_SetSingleToneTx_parm
 {
 	u8 bStart;
 	u8 curr_rfpath;
 };
 
 /*H2C Handler index: 52 */
-struct SetCarrierSuppressionTx_parm
+struct rtl8188fu_SetCarrierSuppressionTx_parm
 {
 	u8 bStart;
 	u32 curr_rateidx;
 };
 
 /*H2C Handler index: 53 */
-struct SetContinuousTx_parm
+struct rtl8188fu_SetContinuousTx_parm
 {
 	u8 bStart;
 	u8 CCK_flag; /*1:CCK 2:OFDM*/
@@ -974,7 +974,7 @@ struct SwitchBandwidth_parm
 #endif	/* MP_FIRMWARE_OFFLOAD */
 
 /*H2C Handler index: 59 */ 
-struct SetChannelPlan_param
+struct rtl8188fu_SetChannelPlan_param
 {
 	const struct country_chplan *country_ent;
 	u8 channel_plan;
@@ -987,7 +987,7 @@ struct LedBlink_param
 };
 
 /*H2C Handler index: 61 */ 
-struct SetChannelSwitch_param
+struct rtl8188fu_SetChannelSwitch_param
 {
 	u8 new_ch_no;
 };
@@ -1034,49 +1034,49 @@ Result:
 #define H2C_ENQ_HEAD			0x08
 #define H2C_ENQ_HEAD_FAIL		0x09
 
-extern u8 rtw_setassocsta_cmd(_adapter  *padapter, u8 *mac_addr);
-extern u8 rtw_setstandby_cmd(_adapter *padapter, uint action);
-u8 rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num, struct rtw_ieee80211_channel *ch, int ch_num);
+extern u8 rtl8188fu_rtw_setassocsta_cmd(_adapter  *padapter, u8 *mac_addr);
+extern u8 rtl8188fu_rtw_setstandby_cmd(_adapter *padapter, uint action);
+u8 rtl8188fu_rtw_sitesurvey_cmd(_adapter  *padapter, NDIS_802_11_SSID *ssid, int ssid_num, struct rtw_ieee80211_channel *ch, int ch_num);
 
-u8 rtw_create_ibss_cmd(_adapter *adapter, int flags);
-u8 rtw_startbss_cmd(_adapter *adapter, int flags);
-u8 rtw_change_bss_chbw_cmd(_adapter *adapter, int flags, u8 req_ch, u8 req_bw, u8 req_offset);
+u8 rtl8188fu_rtw_create_ibss_cmd(_adapter *adapter, int flags);
+u8 rtl8188fu_rtw_startbss_cmd(_adapter *adapter, int flags);
+u8 rtl8188fu_rtw_change_bss_chbw_cmd(_adapter *adapter, int flags, u8 req_ch, u8 req_bw, u8 req_offset);
 
-extern u8 rtw_setphy_cmd(_adapter  *padapter, u8 modem, u8 ch);
+extern u8 rtl8188fu_rtw_setphy_cmd(_adapter  *padapter, u8 modem, u8 ch);
 
 struct sta_info;
-extern u8 rtw_setstakey_cmd(_adapter  *padapter, struct sta_info *sta, u8 key_type, bool enqueue);
-extern u8 rtw_clearstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 enqueue);
+extern u8 rtl8188fu_rtw_setstakey_cmd(_adapter  *padapter, struct sta_info *sta, u8 key_type, bool enqueue);
+extern u8 rtl8188fu_rtw_clearstakey_cmd(_adapter *padapter, struct sta_info *sta, u8 enqueue);
 
-extern u8 rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork);
-u8 rtw_disassoc_cmd(_adapter *padapter, u32 deauth_timeout_ms, bool enqueue);
-extern u8 rtw_setopmode_cmd(_adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype, bool enqueue);
-extern u8 rtw_setdatarate_cmd(_adapter  *padapter, u8 *rateset);
-extern u8 rtw_setbasicrate_cmd(_adapter  *padapter, u8 *rateset);
-extern u8 rtw_getmacreg_cmd(_adapter *padapter, u8 len, u32 addr);
-extern void rtw_usb_catc_trigger_cmd(_adapter *padapter, const char *caller);
-extern u8 rtw_setbbreg_cmd(_adapter * padapter, u8 offset, u8 val);
-extern u8 rtw_setrfreg_cmd(_adapter * padapter, u8 offset, u32 val);
-extern u8 rtw_getbbreg_cmd(_adapter * padapter, u8 offset, u8 * pval);
-extern u8 rtw_getrfreg_cmd(_adapter * padapter, u8 offset, u8 * pval);
+extern u8 rtl8188fu_rtw_joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork);
+u8 rtl8188fu_rtw_disassoc_cmd(_adapter *padapter, u32 deauth_timeout_ms, bool enqueue);
+extern u8 rtl8188fu_rtw_setopmode_cmd(_adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype, bool enqueue);
+extern u8 rtl8188fu_rtw_setdatarate_cmd(_adapter  *padapter, u8 *rateset);
+extern u8 rtl8188fu_rtw_setbasicrate_cmd(_adapter  *padapter, u8 *rateset);
+extern u8 rtl8188fu_rtw_getmacreg_cmd(_adapter *padapter, u8 len, u32 addr);
+extern void rtl8188fu_rtw_usb_catc_trigger_cmd(_adapter *padapter, const char *caller);
+extern u8 rtl8188fu_rtw_setbbreg_cmd(_adapter * padapter, u8 offset, u8 val);
+extern u8 rtl8188fu_rtw_setrfreg_cmd(_adapter * padapter, u8 offset, u32 val);
+extern u8 rtl8188fu_rtw_getbbreg_cmd(_adapter * padapter, u8 offset, u8 * pval);
+extern u8 rtl8188fu_rtw_getrfreg_cmd(_adapter * padapter, u8 offset, u8 * pval);
 extern u8 rtw_setrfintfs_cmd(_adapter  *padapter, u8 mode);
-extern u8 rtw_setrttbl_cmd(_adapter  *padapter, struct setratable_parm *prate_table);
-extern u8 rtw_getrttbl_cmd(_adapter  *padapter, struct getratable_rsp *pval);
+extern u8 rtl8188fu_rtw_setrttbl_cmd(_adapter  *padapter, struct setratable_parm *prate_table);
+extern u8 rtl8188fu_rtw_getrttbl_cmd(_adapter  *padapter, struct getratable_rsp *pval);
 
 extern u8 rtw_gettssi_cmd(_adapter  *padapter, u8 offset,u8 *pval);
 extern u8 rtw_setfwdig_cmd(_adapter*padapter, u8 type);
 extern u8 rtw_setfwra_cmd(_adapter*padapter, u8 type);
 
-extern u8 rtw_addbareq_cmd(_adapter*padapter, u8 tid, u8 *addr);
-extern u8 rtw_addbarsp_cmd(_adapter *padapter, u8 *addr, u16 tid, u8 status, u8 size, u16 start_seq);
+extern u8 rtl8188fu_rtw_addbareq_cmd(_adapter*padapter, u8 tid, u8 *addr);
+extern u8 rtl8188fu_rtw_addbarsp_cmd(_adapter *padapter, u8 *addr, u16 tid, u8 status, u8 size, u16 start_seq);
 // add for CONFIG_IEEE80211W, none 11w also can use
-extern u8 rtw_reset_securitypriv_cmd(_adapter*padapter);
-extern u8 rtw_free_assoc_resources_cmd(_adapter *padapter);
-extern u8 rtw_dynamic_chk_wk_cmd(_adapter *adapter);
+extern u8 rtl8188fu_rtw_reset_securitypriv_cmd(_adapter*padapter);
+extern u8 rtl8188fu_rtw_free_assoc_resources_cmd(_adapter *padapter);
+extern u8 rtl8188fu_rtw_dynamic_chk_wk_cmd(_adapter *adapter);
 
-u8 rtw_lps_ctrl_wk_cmd(_adapter*padapter, u8 lps_ctrl_type, u8 enqueue);
-u8 rtw_dm_in_lps_wk_cmd(_adapter*padapter);
-u8 rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim);
+u8 rtl8188fu_rtw_lps_ctrl_wk_cmd(_adapter*padapter, u8 lps_ctrl_type, u8 enqueue);
+u8 rtl8188fu_rtw_dm_in_lps_wk_cmd(_adapter*padapter);
+u8 rtl8188fu_rtw_lps_change_dtim_cmd(_adapter*padapter, u8 dtim);
 
 #if (RATE_ADAPTIVE_SUPPORT==1)
 u8 rtw_rpt_timer_cfg_cmd(_adapter*padapter, u16 minRptTime);
@@ -1086,12 +1086,12 @@ u8 rtw_rpt_timer_cfg_cmd(_adapter*padapter, u16 minRptTime);
 extern  u8 rtw_antenna_select_cmd(_adapter*padapter, u8 antenna,u8 enqueue);
 #endif
 
-u8 rtw_dm_ra_mask_wk_cmd(_adapter*padapter, u8 *psta);
+u8 rtl8188fu_rtw_dm_ra_mask_wk_cmd(_adapter*padapter, u8 *psta);
 
-extern u8 rtw_ps_cmd(_adapter*padapter);
+extern u8 rtl8188fu_rtw_ps_cmd(_adapter*padapter);
 
 #ifdef CONFIG_AP_MODE
-u8 rtw_chk_hi_queue_cmd(_adapter*padapter);
+u8 rtl8188fu_rtw_chk_hi_queue_cmd(_adapter*padapter);
 #ifdef CONFIG_DFS_MASTER
 u8 rtw_dfs_master_cmd(_adapter *adapter, bool enqueue);
 void rtw_dfs_master_timer_hdl(RTW_TIMER_HDL_ARGS);
@@ -1108,16 +1108,16 @@ void rtw_dfs_master_status_apply(_adapter *adapter, u8 self_action);
 #endif /* CONFIG_DFS_MASTER */
 #endif /* CONFIG_AP_MODE */
 
-u8 rtw_enable_hw_update_tsf_cmd(_adapter *padapter);
+u8 rtl8188fu_rtw_enable_hw_update_tsf_cmd(_adapter *padapter);
 
-u8 rtw_set_ch_cmd(_adapter*padapter, u8 ch, u8 bw, u8 ch_offset, u8 enqueue);
+u8 rtl8188fu_rtw_set_ch_cmd(_adapter*padapter, u8 ch, u8 bw, u8 ch_offset, u8 enqueue);
 
-u8 rtw_set_chplan_cmd(_adapter *adapter, int flags, u8 chplan, u8 swconfig);
-u8 rtw_set_country_cmd(_adapter *adapter, int flags, const char *country_code, u8 swconfig);
+u8 rtl8188fu_rtw_set_chplan_cmd(_adapter *adapter, int flags, u8 chplan, u8 swconfig);
+u8 rtl8188fu_rtw_set_country_cmd(_adapter *adapter, int flags, const char *country_code, u8 swconfig);
 
-extern u8 rtw_led_blink_cmd(_adapter*padapter, PVOID pLed);
-extern u8 rtw_set_csa_cmd(_adapter*padapter, u8 new_ch_no);
-extern u8 rtw_tdls_cmd(_adapter *padapter, const u8 *addr, u8 option);
+extern u8 rtl8188fu_rtw_led_blink_cmd(_adapter*padapter, PVOID pLed);
+extern u8 rtl8188fu_rtw_set_csa_cmd(_adapter*padapter, u8 new_ch_no);
+extern u8 rtl8188fu_rtw_tdls_cmd(_adapter *padapter, const u8 *addr, u8 option);
 
 u8 rtw_mp_cmd(_adapter *adapter, u8 mp_cmd_id, u8 flags);
 
@@ -1127,30 +1127,30 @@ u8 rtw_customer_str_write_cmd(_adapter *adapter, const u8 *cstr);
 #endif
 
 //#ifdef CONFIG_C2H_PACKET_EN
-extern u8 rtw_c2h_packet_wk_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
+extern u8 rtl8188fu_rtw_c2h_packet_wk_cmd(PADAPTER padapter, u8 *pbuf, u16 length);
 //#else
-extern u8 rtw_c2h_wk_cmd(PADAPTER padapter, u8 *c2h_evt);
+extern u8 rtl8188fu_rtw_c2h_wk_cmd(PADAPTER padapter, u8 *c2h_evt);
 //#endif
 
-u8 rtw_run_in_thread_cmd(PADAPTER padapter, void (*func)(void*), void* context);
+u8 rtl8188fu_rtw_run_in_thread_cmd(PADAPTER padapter, void (*func)(void*), void* context);
 
-u8 session_tracker_chk_cmd(_adapter *adapter, struct sta_info *sta);
-u8 session_tracker_add_cmd(_adapter *adapter, struct sta_info *sta, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port);
-u8 session_tracker_del_cmd(_adapter *adapter, struct sta_info *sta, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port);
+u8 rtl8188fu_session_tracker_chk_cmd(_adapter *adapter, struct sta_info *sta);
+u8 rtl8188fu_session_tracker_add_cmd(_adapter *adapter, struct sta_info *sta, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port);
+u8 rtl8188fu_session_tracker_del_cmd(_adapter *adapter, struct sta_info *sta, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port);
 
-u8 rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf);
+u8 rtl8188fu_rtw_drvextra_cmd_hdl(_adapter *padapter, unsigned char *pbuf);
 
-extern void rtw_survey_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
-extern void rtw_disassoc_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
-extern void rtw_joinbss_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
-void rtw_create_ibss_post_hdl(_adapter *padapter, int status);
-extern void rtw_getbbrfreg_cmdrsp_callback(_adapter  *padapter, struct cmd_obj *pcmd);
-extern void rtw_readtssi_cmdrsp_callback(_adapter*	padapter,  struct cmd_obj *pcmd);
+extern void rtl8188fu_rtw_survey_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
+extern void rtl8188fu_rtw_disassoc_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
+extern void rtl8188fu_rtw_joinbss_cmd_callback(_adapter  *padapter, struct cmd_obj *pcmd);
+void rtl8188fu_rtw_create_ibss_post_hdl(_adapter *padapter, int status);
+extern void rtl8188fu_rtw_getbbrfreg_cmdrsp_callback(_adapter  *padapter, struct cmd_obj *pcmd);
+extern void rtl8188fu_rtw_readtssi_cmdrsp_callback(_adapter*	padapter,  struct cmd_obj *pcmd);
 
-extern void rtw_setstaKey_cmdrsp_callback(_adapter  *padapter,  struct cmd_obj *pcmd);
-extern void rtw_setassocsta_cmdrsp_callback(_adapter  *padapter,  struct cmd_obj *pcmd);
-extern void rtw_getrttbl_cmdrsp_callback(_adapter  *padapter,  struct cmd_obj *pcmd);
-extern void rtw_getmacreg_cmdrsp_callback(_adapter *padapter,  struct cmd_obj *pcmd);
+extern void rtl8188fu_rtw_setstaKey_cmdrsp_callback(_adapter  *padapter,  struct cmd_obj *pcmd);
+extern void rtl8188fu_rtw_setassocsta_cmdrsp_callback(_adapter  *padapter,  struct cmd_obj *pcmd);
+extern void rtl8188fu_rtw_getrttbl_cmdrsp_callback(_adapter  *padapter,  struct cmd_obj *pcmd);
+extern void rtl8188fu_rtw_getmacreg_cmdrsp_callback(_adapter *padapter,  struct cmd_obj *pcmd);
 
 
 struct _cmd_callback {
@@ -1189,7 +1189,7 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_SetStaPwrState) , 
  	GEN_CMD_CODE(_SetBasicRate) , /*25*/
  	GEN_CMD_CODE(_GetBasicRate) ,
- 	GEN_CMD_CODE(_SetDataRate) ,
+ 	GEN_CMD_CODE(_rtl8188fu_SetDataRate) ,
  	GEN_CMD_CODE(_GetDataRate) ,
 	GEN_CMD_CODE(_SetPhyInfo) ,
 	
@@ -1210,15 +1210,15 @@ enum rtw_h2c_cmd
  	GEN_CMD_CODE(_SetUsbSuspend),
  	GEN_CMD_CODE(_SetH2cLbk),
  	GEN_CMD_CODE(_AddBAReq) , /*45*/
-	GEN_CMD_CODE(_SetChannel), /*46*/
-	GEN_CMD_CODE(_SetTxPower), 
+	GEN_CMD_CODE(_rtl8188fu_SetChannel), /*46*/
+	GEN_CMD_CODE(_rtl8188fu_SetTxPower), 
 	GEN_CMD_CODE(_SwitchAntenna),
 	GEN_CMD_CODE(_SetCrystalCap),
-	GEN_CMD_CODE(_SetSingleCarrierTx), /*50*/
+	GEN_CMD_CODE(_rtl8188fu_SetSingleCarrierTx), /*50*/
 	
-	GEN_CMD_CODE(_SetSingleToneTx),/*51*/
-	GEN_CMD_CODE(_SetCarrierSuppressionTx),
-	GEN_CMD_CODE(_SetContinuousTx),
+	GEN_CMD_CODE(_rtl8188fu_SetSingleToneTx),/*51*/
+	GEN_CMD_CODE(_rtl8188fu_SetCarrierSuppressionTx),
+	GEN_CMD_CODE(_rtl8188fu_SetContinuousTx),
 	GEN_CMD_CODE(_SwitchBandwidth), /*54*/
 	GEN_CMD_CODE(_TX_Beacon), /*55*/
 	
@@ -1226,10 +1226,10 @@ enum rtw_h2c_cmd
 	GEN_CMD_CODE(_Set_Drv_Extra), /*57*/
 	GEN_CMD_CODE(_Set_H2C_MSG), /*58*/
 	
-	GEN_CMD_CODE(_SetChannelPlan), /*59*/
+	GEN_CMD_CODE(_rtl8188fu_SetChannelPlan), /*59*/
 	GEN_CMD_CODE(_LedBlink), /*60*/
 
-	GEN_CMD_CODE(_SetChannelSwitch), /*61*/
+	GEN_CMD_CODE(_rtl8188fu_SetChannelSwitch), /*61*/
 	GEN_CMD_CODE(_TDLS), /*62*/
 	GEN_CMD_CODE(_ChkBMCSleepq), /*63*/
 
@@ -1247,13 +1247,13 @@ enum rtw_h2c_cmd
 #define _SetRFReg_CMD_ 		_Write_RFREG_CMD_
 
 #ifdef _RTW_CMD_C_
-struct _cmd_callback 	rtw_cmd_callback[] = 
+struct _cmd_callback 	rtl8188fu_rtw_cmd_callback[] = 
 {
-	{GEN_CMD_CODE(_Read_MACREG), &rtw_getmacreg_cmdrsp_callback}, /*0*/
+	{GEN_CMD_CODE(_Read_MACREG), &rtl8188fu_rtw_getmacreg_cmdrsp_callback}, /*0*/
 	{GEN_CMD_CODE(_Write_MACREG), NULL}, 
-	{GEN_CMD_CODE(_Read_BBREG), &rtw_getbbrfreg_cmdrsp_callback},
+	{GEN_CMD_CODE(_Read_BBREG), &rtl8188fu_rtw_getbbrfreg_cmdrsp_callback},
 	{GEN_CMD_CODE(_Write_BBREG), NULL},
-	{GEN_CMD_CODE(_Read_RFREG), &rtw_getbbrfreg_cmdrsp_callback},
+	{GEN_CMD_CODE(_Read_RFREG), &rtl8188fu_rtw_getbbrfreg_cmdrsp_callback},
 	{GEN_CMD_CODE(_Write_RFREG), NULL}, /*5*/
 	{GEN_CMD_CODE(_Read_EEPROM), NULL},
 	{GEN_CMD_CODE(_Write_EEPROM), NULL},
@@ -1264,21 +1264,21 @@ struct _cmd_callback 	rtw_cmd_callback[] =
 	{GEN_CMD_CODE(_Write_CAM),	 NULL},	
 	{GEN_CMD_CODE(_setBCNITV), NULL},
  	{GEN_CMD_CODE(_setMBIDCFG), NULL},
-	{GEN_CMD_CODE(_JoinBss), &rtw_joinbss_cmd_callback},  /*14*/
-	{GEN_CMD_CODE(_DisConnect), &rtw_disassoc_cmd_callback}, /*15*/
+	{GEN_CMD_CODE(_JoinBss), &rtl8188fu_rtw_joinbss_cmd_callback},  /*14*/
+	{GEN_CMD_CODE(_DisConnect), &rtl8188fu_rtw_disassoc_cmd_callback}, /*15*/
 	{GEN_CMD_CODE(_CreateBss), NULL},
 	{GEN_CMD_CODE(_SetOpMode), NULL},
-	{GEN_CMD_CODE(_SiteSurvey), &rtw_survey_cmd_callback}, /*18*/
+	{GEN_CMD_CODE(_SiteSurvey), &rtl8188fu_rtw_survey_cmd_callback}, /*18*/
 	{GEN_CMD_CODE(_SetAuth), NULL},
 	
 	{GEN_CMD_CODE(_SetKey), NULL},	/*20*/
-	{GEN_CMD_CODE(_SetStaKey), &rtw_setstaKey_cmdrsp_callback},
-	{GEN_CMD_CODE(_SetAssocSta), &rtw_setassocsta_cmdrsp_callback},
+	{GEN_CMD_CODE(_SetStaKey), &rtl8188fu_rtw_setstaKey_cmdrsp_callback},
+	{GEN_CMD_CODE(_SetAssocSta), &rtl8188fu_rtw_setassocsta_cmdrsp_callback},
 	{GEN_CMD_CODE(_DelAssocSta), NULL},	
 	{GEN_CMD_CODE(_SetStaPwrState), NULL},	
 	{GEN_CMD_CODE(_SetBasicRate), NULL}, /*25*/
 	{GEN_CMD_CODE(_GetBasicRate), NULL},
-	{GEN_CMD_CODE(_SetDataRate), NULL},
+	{GEN_CMD_CODE(_rtl8188fu_SetDataRate), NULL},
 	{GEN_CMD_CODE(_GetDataRate), NULL},
 	{GEN_CMD_CODE(_SetPhyInfo), NULL},
 	
@@ -1299,25 +1299,25 @@ struct _cmd_callback 	rtw_cmd_callback[] =
  	{GEN_CMD_CODE(_SetUsbSuspend), NULL}, 
  	{GEN_CMD_CODE(_SetH2cLbk), NULL},
  	{GEN_CMD_CODE(_AddBAReq), NULL}, /*45*/
-	{GEN_CMD_CODE(_SetChannel), NULL},		/*46*/
-	{GEN_CMD_CODE(_SetTxPower), NULL},
+	{GEN_CMD_CODE(_rtl8188fu_SetChannel), NULL},		/*46*/
+	{GEN_CMD_CODE(_rtl8188fu_SetTxPower), NULL},
 	{GEN_CMD_CODE(_SwitchAntenna), NULL},
 	{GEN_CMD_CODE(_SetCrystalCap), NULL},
-	{GEN_CMD_CODE(_SetSingleCarrierTx), NULL},	/*50*/
+	{GEN_CMD_CODE(_rtl8188fu_SetSingleCarrierTx), NULL},	/*50*/
 	
-	{GEN_CMD_CODE(_SetSingleToneTx), NULL}, /*51*/
-	{GEN_CMD_CODE(_SetCarrierSuppressionTx), NULL},
-	{GEN_CMD_CODE(_SetContinuousTx), NULL},
+	{GEN_CMD_CODE(_rtl8188fu_SetSingleToneTx), NULL}, /*51*/
+	{GEN_CMD_CODE(_rtl8188fu_SetCarrierSuppressionTx), NULL},
+	{GEN_CMD_CODE(_rtl8188fu_SetContinuousTx), NULL},
 	{GEN_CMD_CODE(_SwitchBandwidth), NULL},		/*54*/
 	{GEN_CMD_CODE(_TX_Beacon), NULL},/*55*/
 
 	{GEN_CMD_CODE(_Set_MLME_EVT), NULL},/*56*/
 	{GEN_CMD_CODE(_Set_Drv_Extra), NULL},/*57*/
 	{GEN_CMD_CODE(_Set_H2C_MSG), NULL},/*58*/
-	{GEN_CMD_CODE(_SetChannelPlan), NULL},/*59*/
+	{GEN_CMD_CODE(_rtl8188fu_SetChannelPlan), NULL},/*59*/
 	{GEN_CMD_CODE(_LedBlink), NULL},/*60*/
 	
-	{GEN_CMD_CODE(_SetChannelSwitch), NULL},/*61*/
+	{GEN_CMD_CODE(_rtl8188fu_SetChannelSwitch), NULL},/*61*/
 	{GEN_CMD_CODE(_TDLS), NULL},/*62*/
 	{GEN_CMD_CODE(_ChkBMCSleepq), NULL}, /*63*/
 

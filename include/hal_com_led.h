@@ -271,7 +271,7 @@ typedef struct _LED_USB	LED_DATA, *PLED_DATA;
 typedef enum _LED_STRATEGY_USB	LED_STRATEGY, *PLED_STRATEGY;
 
 VOID
-LedControlUSB(
+rtl8188fu_LedControlUSB(
 	IN	PADAPTER		Adapter,
 	IN	LED_CTL_MODE		LedAction
 	);
@@ -373,25 +373,25 @@ struct led_priv{
 			(adapter)->ledpriv.SwLedOff((adapter), (pLed)); \
 	} while(0)
 
-void BlinkTimerCallback(void *data);
-void BlinkWorkItemCallback(_workitem *work);
+void rtl8188fu_BlinkTimerCallback(void *data);
+void rtl8188fu_BlinkWorkItemCallback(_workitem *work);
 
-void ResetLedStatus(PLED_DATA pLed);
+void rtl8188fu_ResetLedStatus(PLED_DATA pLed);
 
 void
-InitLed(
+rtl8188fu_InitLed(
 	_adapter			*padapter,
 	PLED_DATA		pLed,
 	LED_PIN			LedPin
 	);
 
 void
-DeInitLed(
+Dertl8188fu_InitLed(
 	PLED_DATA		pLed
 	);
 
 //hal...
-extern void BlinkHandler(PLED_DATA	pLed);
+extern void rtl8188fu_BlinkHandler(PLED_DATA	pLed);
 
 #endif //__RTW_LED_H_
 

@@ -132,11 +132,11 @@ u32	rtw_build_vht_op_mode_notify_ie(_adapter *padapter, u8 *pbuf, u8 bw);
 u32	rtw_build_vht_cap_ie(_adapter *padapter, u8 *pbuf);
 void	update_sta_vht_info_apmode(_adapter *padapter, PVOID psta);
 void	update_hw_vht_param(_adapter *padapter);
-void	VHT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
+void	Vrtl8188fu_HT_caps_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
 void	VHT_operation_handler(_adapter *padapter, PNDIS_802_11_VARIABLE_IEs pIE);
 void	rtw_process_vht_op_mode_notify(_adapter *padapter, u8 *pframe, PVOID sta);
 u32	rtw_restructure_vht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, uint in_len, uint *pout_len);
-void	VHTOnAssocRsp(_adapter *padapter);
+void	Vrtl8188fu_HTrtl8188fu_OnAssocRsp(_adapter *padapter);
 u8	rtw_vht_mcsmap_to_nss(u8 *pvht_mcs_map);
 
 #endif	//_RTW_VHT_H_

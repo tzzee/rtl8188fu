@@ -112,24 +112,24 @@ typedef _sema _pwrlock;
 
 __inline static void _init_pwrlock(_pwrlock *plock)
 {
-	_rtw_init_sema(plock, 1);
+	rtl8188fu__rtw_init_sema(plock, 1);
 }
 
 __inline static void _free_pwrlock(_pwrlock *plock)
 {
-	_rtw_free_sema(plock);
+	rtl8188fu__rtw_free_sema(plock);
 }
 
 
 __inline static void _enter_pwrlock(_pwrlock *plock)
 {
-	_rtw_down_sema(plock);
+	rtl8188fu__rtw_down_sema(plock);
 }
 
 
 __inline static void _exit_pwrlock(_pwrlock *plock)
 {
-	_rtw_up_sema(plock);
+	rtl8188fu__rtw_up_sema(plock);
 }
 
 #define LPS_DELAY_TIME	1*HZ // 1 sec
@@ -276,8 +276,8 @@ struct pwrctrl_priv
 	u32	cur_ps_level;
 	u32	reg_rfps_level;
 
-	uint 	ips_enter_cnts;
-	uint 	ips_leave_cnts;
+	uint 	rtl8188fu_ips_enter_cnts;
+	uint 	rtl8188fu_ips_leave_cnts;
 	uint 	lps_enter_cnts;
 	uint 	lps_leave_cnts;
 
@@ -294,7 +294,7 @@ struct pwrctrl_priv
 	// and this variable should be protected by lock.
 	u32 ps_deny;
 
-	u8 ps_processing; /* temporarily used to mark whether in rtw_ps_processor */
+	u8 ps_processing; /* temporarily used to mark whether in rtl8188fu_rtw_ps_processor */
 
 	u8 fw_psmode_iface_id;
 	u8	bLeisurePs;
@@ -357,7 +357,7 @@ struct pwrctrl_priv
 #define rtw_get_ips_mode_req(pwrctl) \
 	(pwrctl)->ips_mode_req
 
-#define rtw_ips_mode_req(pwrctl, ips_mode) \
+#define rtl8188fu_rtw_ips_mode_req(pwrctl, ips_mode) \
 	(pwrctl)->ips_mode_req = (ips_mode)
 
 #define RTW_PWR_STATE_CHK_INTERVAL 2000
@@ -371,8 +371,8 @@ struct pwrctrl_priv
 #define rtw_set_pwr_state_check_timer(pwrctl) \
 	_rtw_set_pwr_state_check_timer((pwrctl), (pwrctl)->pwr_state_check_interval)
 
-extern void rtw_init_pwrctrl_priv(_adapter *adapter);
-extern void rtw_free_pwrctrl_priv(_adapter * adapter);
+extern void rtl8188fu_rtw_init_pwrctrl_priv(_adapter *adapter);
+extern void rtl8188fu_rtw_free_pwrctrl_priv(_adapter * adapter);
 
 #ifdef CONFIG_LPS_LCLK
 s32 rtw_register_task_alive(PADAPTER, u32 task);
@@ -386,38 +386,38 @@ extern void rtw_unregister_cmd_alive(PADAPTER padapter);
 extern s32 rtw_register_evt_alive(PADAPTER padapter);
 extern void rtw_unregister_evt_alive(PADAPTER padapter);
 extern void cpwm_int_hdl(PADAPTER padapter, struct reportpwrstate_parm *preportpwrstate);
-extern void LPS_Leave_check(PADAPTER padapter);
+extern void rtl8188fu_LPS_Leave_check(PADAPTER padapter);
 #endif
 
-extern void LeaveAllPowerSaveMode(PADAPTER Adapter);
-extern void LeaveAllPowerSaveModeDirect(PADAPTER Adapter);
+extern void rtl8188fu_LeaveAllPowerSaveMode(PADAPTER Adapter);
+extern void rtl8188fu_LeaveAllPowerSaveModeDirect(PADAPTER Adapter);
 #ifdef CONFIG_IPS
-void _ips_enter(_adapter * padapter);
-void ips_enter(_adapter * padapter);
-int _ips_leave(_adapter * padapter);
-int ips_leave(_adapter * padapter);
+void rtl8188fu__rtl8188fu_ips_enter(_adapter * padapter);
+void rtl8188fu_ips_enter(_adapter * padapter);
+int rtl8188fu__rtl8188fu_ips_leave(_adapter * padapter);
+int rtl8188fu_ips_leave(_adapter * padapter);
 #endif
 
-void rtw_ps_processor(_adapter*padapter);
+void rtl8188fu_rtw_ps_processor(_adapter*padapter);
 
 #ifdef CONFIG_AUTOSUSPEND
 int autoresume_enter(_adapter* padapter);
 #endif
 #ifdef SUPPORT_HW_RFOFF_DETECTED
-rt_rf_power_state RfOnOffDetect(IN	PADAPTER pAdapter );
+rt_rf_power_state rtl8188fu_RfOnOffDetect(IN	PADAPTER pAdapter );
 #endif
 
 
-int rtw_fw_ps_state(PADAPTER padapter);
+int rtl8188fu_rtw_fw_ps_state(PADAPTER padapter);
 
 #ifdef CONFIG_LPS
-s32 LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms);
-void LPS_Enter(PADAPTER padapter, const char *msg);
-void LPS_Leave(PADAPTER padapter, const char *msg);
-void traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets);
-void rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode, const char *msg);
+s32 rtl8188fu_LPS_RF_ON_check(PADAPTER padapter, u32 delay_ms);
+void rtl8188fu_LPS_Enter(PADAPTER padapter, const char *msg);
+void rtl8188fu_LPS_Leave(PADAPTER padapter, const char *msg);
+void rtl8188fu_traffic_check_for_leave_lps(PADAPTER padapter, u8 tx, u32 tx_packets);
+void rtl8188fu_rtw_set_ps_mode(PADAPTER padapter, u8 ps_mode, u8 smart_ps, u8 bcn_ant_mode, const char *msg);
 void rtw_set_fw_in_ips_mode(PADAPTER padapter, u8 enable);
-void rtw_set_rpwm(_adapter * padapter, u8 val8);
+void rtl8188fu_rtw_set_rpwm(_adapter * padapter, u8 val8);
 #endif
 
 #ifdef CONFIG_RESUME_IN_WORKQUEUE
@@ -438,17 +438,17 @@ void rtw_unregister_early_suspend(struct pwrctrl_priv *pwrpriv);
 #define rtw_unregister_early_suspend(pwrpriv) do {} while (0)
 #endif /* CONFIG_HAS_EARLYSUSPEND || CONFIG_ANDROID_POWER */
 
-u8 rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val);
-void rtw_set_ips_deny(_adapter *padapter, u32 ms);
-int _rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller);
-#define rtw_pwr_wakeup(adapter) _rtw_pwr_wakeup(adapter, RTW_PWR_STATE_CHK_INTERVAL, __FUNCTION__)
-#define rtw_pwr_wakeup_ex(adapter, ips_deffer_ms) _rtw_pwr_wakeup(adapter, ips_deffer_ms, __FUNCTION__)
-int rtw_pm_set_ips(_adapter *padapter, u8 mode);
-int rtw_pm_set_lps(_adapter *padapter, u8 mode);
+u8 rtl8188fu_rtw_interface_ps_func(_adapter *padapter,HAL_INTF_PS_FUNC efunc_id,u8* val);
+void rtl8188fu_rtw_set_ips_deny(_adapter *padapter, u32 ms);
+int rtl8188fu__rtw_pwr_wakeup(_adapter *padapter, u32 ips_deffer_ms, const char *caller);
+#define rtw_pwr_wakeup(adapter) rtl8188fu__rtw_pwr_wakeup(adapter, RTW_PWR_STATE_CHK_INTERVAL, __FUNCTION__)
+#define rtw_pwr_wakeup_ex(adapter, ips_deffer_ms) rtl8188fu__rtw_pwr_wakeup(adapter, ips_deffer_ms, __FUNCTION__)
+int rtl8188fu_rtw_pm_set_ips(_adapter *padapter, u8 mode);
+int rtl8188fu_rtw_pm_set_lps(_adapter *padapter, u8 mode);
 
-void rtw_ps_deny(PADAPTER padapter, PS_DENY_REASON reason);
-void rtw_ps_deny_cancel(PADAPTER padapter, PS_DENY_REASON reason);
-u32 rtw_ps_deny_get(PADAPTER padapter);
+void rtl8188fu_rtw_ps_deny(PADAPTER padapter, PS_DENY_REASON reason);
+void rtl8188fu_rtw_ps_deny_cancel(PADAPTER padapter, PS_DENY_REASON reason);
+u32 rtl8188fu_rtw_ps_deny_get(PADAPTER padapter);
 
 #endif  //__RTL871X_PWRCTRL_H_
 

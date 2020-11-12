@@ -348,7 +348,7 @@ struct rtw_rx_ring {
 
 
 /*
-accesser of recv_priv: rtw_recv_entry(dispatch / passive level); recv_thread(passive) ; returnpkt(dispatch)
+accesser of recv_priv: rtl8188fu_rtw_recv_entry(dispatch / passive level); recv_thread(passive) ; returnpkt(dispatch)
 ; halt(passive) ;
 
 using enter_critical section to protect
@@ -608,7 +608,7 @@ union recv_frame{
 
 };
 
-bool rtw_rframe_del_wfd_ie(union recv_frame *rframe, u8 ies_offset);
+bool rtl8188fu_rtw_rframe_del_wfd_ie(union recv_frame *rframe, u8 ies_offset);
 
 typedef enum _RX_PACKET_TYPE{
 	NORMAL_RX,//Normal rx packet
@@ -618,27 +618,27 @@ typedef enum _RX_PACKET_TYPE{
 	C2H_PACKET
 }RX_PACKET_TYPE, *PRX_PACKET_TYPE;
 
-extern union recv_frame *_rtw_alloc_recvframe (_queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
-extern union recv_frame *rtw_alloc_recvframe (_queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
-extern void rtw_init_recvframe(union recv_frame *precvframe ,struct recv_priv *precvpriv);
-extern int	 rtw_free_recvframe(union recv_frame *precvframe, _queue *pfree_recv_queue);
+extern union recv_frame *_rtl8188furtl8188fu__rtw_alloc_recvframe (_queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
+extern union recv_frame *rtl8188furtl8188fu__rtw_alloc_recvframe (_queue *pfree_recv_queue);  //get a free recv_frame from pfree_recv_queue
+extern void rtl8188fu_rtw_init_recvframe(union recv_frame *precvframe ,struct recv_priv *precvpriv);
+extern int	 rtl8188fu_rtw_free_recvframe(union recv_frame *precvframe, _queue *pfree_recv_queue);
 
-#define rtw_dequeue_recvframe(queue) rtw_alloc_recvframe(queue)
-extern int _rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue);
-extern int rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue);
+#define rtw_dequeue_recvframe(queue) rtl8188furtl8188fu__rtw_alloc_recvframe(queue)
+extern int rtl8188fu__rtl8188fu_rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue);
+extern int rtl8188fu_rtw_enqueue_recvframe(union recv_frame *precvframe, _queue *queue);
 
-extern void rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue);
-u32 rtw_free_uc_swdec_pending_queue(_adapter *adapter);
+extern void rtl8188fu_rtw_free_recvframe_queue(_queue *pframequeue,  _queue *pfree_recv_queue);
+u32 rtl8188fu_rtw_free_uc_swdec_pending_queue(_adapter *adapter);
 
-sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, _queue *queue);
-sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue);
-struct recv_buf *rtw_dequeue_recvbuf (_queue *queue);
+sint rtl8188fu_rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, _queue *queue);
+sint rtl8188fu_rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue);
+struct recv_buf *rtl8188fu_rtw_dequeue_recvbuf (_queue *queue);
 
-void rtw_reordering_ctrl_timeout_handler(void *pcontext);
+void rtl8188fu_rtw_reordering_ctrl_timeout_handler(void *pcontext);
 
-void rx_query_phy_status(union recv_frame *rframe, u8 *phy_stat);
-int rtw_inc_and_chk_continual_no_rx_packet(struct sta_info *sta, int tid_index);
-void rtw_reset_continual_no_rx_packet(struct sta_info *sta, int tid_index);
+void rtl8188fu_rx_query_phy_status(union recv_frame *rframe, u8 *phy_stat);
+int rtl8188fu_rtw_inc_and_chk_continual_no_rx_packet(struct sta_info *sta, int tid_index);
+void rtl8188fu_rtw_reset_continual_no_rx_packet(struct sta_info *sta, int tid_index);
 
 __inline static u8 *get_rxmem(union recv_frame *precvframe)
 {
@@ -864,9 +864,9 @@ __inline static s32 translate_percentage_to_dbm(u32 SignalStrengthIndex)
 
 struct sta_info;
 
-extern void _rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv);
+extern void rtl8188fu__rtw_init_sta_recv_priv(struct sta_recv_priv *psta_recvpriv);
 
-extern void  mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame);
+extern void  rtl8188fu_mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame);
 
 #endif
 

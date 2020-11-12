@@ -70,9 +70,9 @@ odm_PSDMonitorInit(
 	//HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(Adapter);
 	//PSD Monitor Setting
 	//Which path in ADC/DAC is turnned on for PSD: both I/Q
-	ODM_SetBBReg(pDM_Odm, ODM_PSDREG, BIT10|BIT11, 0x3);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_PSDREG, BIT10|BIT11, 0x3);
 	//Ageraged number: 8
-	ODM_SetBBReg(pDM_Odm, ODM_PSDREG, BIT12|BIT13, 0x1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_PSDREG, BIT12|BIT13, 0x1);
 	pDM_Odm->bPSDinProcess = FALSE;
 	pDM_Odm->bUserAssignLevel = FALSE;
 	pDM_Odm->bPSDactive = FALSE;
@@ -101,48 +101,48 @@ PatchDCTone(
 	u4Byte	psd_report;
 
 	//2 Switch to CH11 to patch CH9 and CH13 DC tone
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, 11);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, 11);
 	
 	if(pDM_Odm->SupportICType== ODM_RTL8192D)
 	{
 		if((*(pDM_Odm->pMacPhyMode) == ODM_SMSP)||(*(pDM_Odm->pMacPhyMode) == ODM_DMSP))
 		{
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, 11);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x25, 0xfffff, 0x643BC);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x26, 0xfffff, 0xFC038);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x27, 0xfffff, 0x77C1A);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2B, 0xfffff, 0x41289);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2C, 0xfffff, 0x01840);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, 11);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x25, 0xfffff, 0x643BC);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x26, 0xfffff, 0xFC038);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x27, 0xfffff, 0x77C1A);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2B, 0xfffff, 0x41289);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2C, 0xfffff, 0x01840);
 		}
 		else
 		{
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x25, 0xfffff, 0x643BC);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x26, 0xfffff, 0xFC038);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x27, 0xfffff, 0x77C1A);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2B, 0xfffff, 0x41289);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2C, 0xfffff, 0x01840);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x25, 0xfffff, 0x643BC);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x26, 0xfffff, 0xFC038);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x27, 0xfffff, 0x77C1A);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2B, 0xfffff, 0x41289);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2C, 0xfffff, 0x01840);
 		}
 	}
 	
 	//Ch9 DC tone patch
-	psd_report = GetPSDData(pDM_Odm, 96, initial_gain_psd);
+	psd_report = rtl8188fu_GetPSDData(pDM_Odm, 96, initial_gain_psd);
 	PSD_report[50] = psd_report;
 	//Ch13 DC tone patch
-	psd_report = GetPSDData(pDM_Odm, 32, initial_gain_psd);
+	psd_report = rtl8188fu_GetPSDData(pDM_Odm, 32, initial_gain_psd);
 	PSD_report[70] = psd_report;
 	
 	//2 Switch to CH3 to patch CH1 and CH5 DC tone
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, 3);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, 3);
 
 	
 	if(pDM_Odm->SupportICType==ODM_RTL8192D)
 	{
 		if((*(pDM_Odm->pMacPhyMode) == ODM_SMSP)||(*(pDM_Odm->pMacPhyMode) == ODM_DMSP))
 		{
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, 3);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, 3);
 			//PHY_SetRFReg(Adapter, ODM_RF_PATH_B, 0x25, 0xfffff, 0x643BC);
 			//PHY_SetRFReg(Adapter, ODM_RF_PATH_B, 0x26, 0xfffff, 0xFC038);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x27, 0xfffff, 0x07C1A);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x27, 0xfffff, 0x07C1A);
 			//PHY_SetRFReg(Adapter, ODM_RF_PATH_B, 0x2B, 0xfffff, 0x61289);
 			//PHY_SetRFReg(Adapter, ODM_RF_PATH_B, 0x2C, 0xfffff, 0x01C41);
 		}
@@ -150,17 +150,17 @@ PatchDCTone(
 		{
 			//PHY_SetRFReg(Adapter, ODM_RF_PATH_A, 0x25, 0xfffff, 0x643BC);
 			//PHY_SetRFReg(Adapter, ODM_RF_PATH_A, 0x26, 0xfffff, 0xFC038);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x27, 0xfffff, 0x07C1A);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x27, 0xfffff, 0x07C1A);
 			//PHY_SetRFReg(Adapter, ODM_RF_PATH_A, 0x2B, 0xfffff, 0x61289);
 			//PHY_SetRFReg(Adapter, ODM_RF_PATH_A, 0x2C, 0xfffff, 0x01C41);
 		}
 	}
 	
 	//Ch1 DC tone patch
-	psd_report = GetPSDData(pDM_Odm, 96, initial_gain_psd);
+	psd_report = rtl8188fu_GetPSDData(pDM_Odm, 96, initial_gain_psd);
 	PSD_report[10] = psd_report;
 	//Ch5 DC tone patch
-	psd_report = GetPSDData(pDM_Odm, 32, initial_gain_psd);
+	psd_report = rtl8188fu_GetPSDData(pDM_Odm, 32, initial_gain_psd);
 	PSD_report[30] = psd_report;
 
 }
@@ -413,7 +413,7 @@ odm_PSD_Monitor(
 	{
 		if((pDM_Odm->SupportICType==ODM_RTL8723A)&(pDM_Odm->SupportInterface==ODM_ITRF_PCIE))
 		{
-			ODM_SetTimer( pDM_Odm, &pDM_Odm->PSDTimer, 1500); //ms	
+			rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PSDTimer, 1500); //ms	
 			//psd_cnt=0;
 		}
 		return;
@@ -446,34 +446,34 @@ odm_PSD_Monitor(
 	}
 
 	//1 Backup Current Settings
-	CurrentChannel = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	CurrentChannel = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 /*
 	if(pDM_Odm->SupportICType==ODM_RTL8192D)
 	{
 		//2 Record Current synthesizer parameters based on current channel
 		if((*pDM_Odm->MacPhyMode92D == SINGLEMAC_SINGLEPHY)||(*pDM_Odm->MacPhyMode92D == DUALMAC_SINGLEPHY))
 		{
-			SYN_RF25 = ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x25, bMaskDWord);
-			SYN_RF26 = ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x26, bMaskDWord);
-			SYN_RF27 = ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x27, bMaskDWord);
-			SYN_RF2B = ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x2B, bMaskDWord);
-			SYN_RF2C = ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x2C, bMaskDWord);
+			SYN_RF25 = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x25, bMaskDWord);
+			SYN_RF26 = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x26, bMaskDWord);
+			SYN_RF27 = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x27, bMaskDWord);
+			SYN_RF2B = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x2B, bMaskDWord);
+			SYN_RF2C = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_B, 0x2C, bMaskDWord);
        	}
 		else     // DualMAC_DualPHY 2G
 		{
-			SYN_RF25 = ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x25, bMaskDWord);
-			SYN_RF26 = ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x26, bMaskDWord);
-			SYN_RF27 = ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x27, bMaskDWord);
-			SYN_RF2B = ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x2B, bMaskDWord);
-			SYN_RF2C = ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x2C, bMaskDWord);
+			SYN_RF25 = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x25, bMaskDWord);
+			SYN_RF26 = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x26, bMaskDWord);
+			SYN_RF27 = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x27, bMaskDWord);
+			SYN_RF2B = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x2B, bMaskDWord);
+			SYN_RF2C = rtl8188fu_ODM_GetRFReg(Adapter, ODM_RF_PATH_A, 0x2C, bMaskDWord);
 		}
 	}
 */
 	//RXIQI = PHY_QueryBBReg(Adapter, 0xC14, bMaskDWord);
-	RXIQI = ODM_GetBBReg(pDM_Odm, 0xC14, bMaskDWord);
+	RXIQI = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xC14, bMaskDWord);
 
 	//RxIdleLowPwr = (PHY_QueryBBReg(Adapter, 0x818, bMaskDWord)&BIT28)>>28;
-	RxIdleLowPwr = (ODM_GetBBReg(pDM_Odm, 0x818, bMaskDWord)&BIT28)>>28;
+	RxIdleLowPwr = (rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x818, bMaskDWord)&BIT28)>>28;
 
 	//2???
 	if(CHNL_RUN_ABOVE_40MHZ(pMgntInfo))
@@ -484,44 +484,44 @@ odm_PSD_Monitor(
 	ODM_RT_TRACE(pDM_Odm,	ODM_COMP_PSD, DBG_LOUD,("PSD Scan Start\n"));
 	//1 Turn off CCK
 	//PHY_SetBBReg(Adapter, rFPGA0_RFMOD, BIT24, 0);
-	ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 0);
 	//1 Turn off TX
 	//Pause TX Queue
 	//PlatformEFIOWrite1Byte(Adapter, REG_TXPAUSE, 0xFF);
-	ODM_Write1Byte(pDM_Odm,REG_TXPAUSE, 0xFF);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm,REG_TXPAUSE, 0xFF);
 	
 	//Force RX to stop TX immediately
 	//PHY_SetRFReg(Adapter, ODM_RF_PATH_A, RF_AC, bRFRegOffsetMask, 0x32E13);
 
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bRFRegOffsetMask, 0x32E13);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bRFRegOffsetMask, 0x32E13);
 	//1 Turn off RX
 	//Rx AGC off  RegC70[0]=0, RegC7C[20]=0
 	//PHY_SetBBReg(Adapter, 0xC70, BIT0, 0);
 	//PHY_SetBBReg(Adapter, 0xC7C, BIT20, 0);
 
-	ODM_SetBBReg(pDM_Odm, 0xC70, BIT0, 0);
-	ODM_SetBBReg(pDM_Odm, 0xC7C, BIT20, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC70, BIT0, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC7C, BIT20, 0);
 
 	
 	//Turn off CCA
 	//PHY_SetBBReg(Adapter, 0xC14, bMaskDWord, 0x0);
-	ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, 0x0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, 0x0);
 	
 	//BB Reset
 	//BBReset = PlatformEFIORead1Byte(Adapter, 0x02);
-	BBReset = ODM_Read1Byte(pDM_Odm, 0x02);
+	BBReset = rtl8188fu_ODM_Read1Byte(pDM_Odm, 0x02);
 	
 	//PlatformEFIOWrite1Byte(Adapter, 0x02, BBReset&(~BIT0));
 	//PlatformEFIOWrite1Byte(Adapter, 0x02, BBReset|BIT0);
-	ODM_SetBBReg(pDM_Odm, 0x87C, BIT31, 1); //clock gated to prevent from AGC table mess 
-	ODM_Write1Byte(pDM_Odm,  0x02, BBReset&(~BIT0));
-	ODM_Write1Byte(pDM_Odm,  0x02, BBReset|BIT0);
-	ODM_SetBBReg(pDM_Odm, 0x87C, BIT31, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x87C, BIT31, 1); //clock gated to prevent from AGC table mess 
+	rtl8188fu_ODM_Write1Byte(pDM_Odm,  0x02, BBReset&(~BIT0));
+	rtl8188fu_ODM_Write1Byte(pDM_Odm,  0x02, BBReset|BIT0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x87C, BIT31, 0);
 	
 	//1 Leave RX idle low power
 	//PHY_SetBBReg(Adapter, 0x818, BIT28, 0x0);
 
-	ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 0x0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 0x0);
 	//1 Fix initial gain
 	//if (IS_HARDWARE_TYPE_8723AE(Adapter))
 	//RSSI_BT = pHalData->RSSI_BT;
@@ -602,38 +602,38 @@ odm_PSD_Monitor(
 	//DbgPrint("PSD: SSBT= %d", SSBT);
 	//need to do
 	pDM_Odm->bDMInitialGainEnable = FALSE;
-	initial_gain =(u1Byte) (ODM_GetBBReg(pDM_Odm, 0xc50, bMaskDWord) & 0x7F);
+	initial_gain =(u1Byte) (rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xc50, bMaskDWord) & 0x7F);
 	
         // make sure the initial gain is under the correct range.
 	//initial_gain_psd &= 0x7f;
-	ODM_Write_DIG(pDM_Odm, initial_gain_psd);
+	rtl8188fu_ODM_Write_DIG(pDM_Odm, initial_gain_psd);
 	//1 Turn off 3-wire
-	ODM_SetBBReg(pDM_Odm, 0x88c, BIT20|BIT21|BIT22|BIT23, 0xF);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x88c, BIT20|BIT21|BIT22|BIT23, 0xF);
 
 	//pts value = 128, 256, 512, 1024
 	pts = 128;
 
 	if(pts == 128)
 	{
-		ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x0);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x0);
 		start_point = 64;
 		stop_point = 192;
 	}
 	else if(pts == 256)
 	{
-		ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x1);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x1);
 		start_point = 128;
 		stop_point = 384;
 	}
 	else if(pts == 512)
 	{
-		ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x2);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x2);
 		start_point = 256;
 		stop_point = 768;
 	}
 	else
 	{
-		ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x3);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x3);
 		start_point = 512;
 		stop_point = 1536;
 	}
@@ -719,7 +719,7 @@ odm_PSD_Monitor(
  		{
 			channel = (n/20)*4 + 1;
 					
-					ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, channel);
+					rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, channel);
 				}
 		tone_idx = n%20;
 		if ((n>=PSD_skip_start) && (n<PSD_skip_stop))
@@ -729,7 +729,7 @@ odm_PSD_Monitor(
 		}
 		else
 		{
-			PSD_report_tmp =  GetPSDData(pDM_Odm, idx[tone_idx], initial_gain_psd);
+			PSD_report_tmp =  rtl8188fu_GetPSDData(pDM_Odm, idx[tone_idx], initial_gain_psd);
 
 			if ( PSD_report_tmp > PSD_report[n])
 				PSD_report[n] = PSD_report_tmp;
@@ -742,35 +742,35 @@ odm_PSD_Monitor(
        //----end
 	//1 Turn on RX
 	//Rx AGC on
-	ODM_SetBBReg(pDM_Odm, 0xC70, BIT0, 1);
-	ODM_SetBBReg(pDM_Odm, 0xC7C, BIT20, 1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC70, BIT0, 1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC7C, BIT20, 1);
 	//CCK on
-	ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 1);
 	//1 Turn on TX
 	//Resume TX Queue
 	
-	ODM_Write1Byte(pDM_Odm,REG_TXPAUSE, 0x00);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm,REG_TXPAUSE, 0x00);
 	//Turn on 3-wire
-	ODM_SetBBReg(pDM_Odm, 0x88c, BIT20|BIT21|BIT22|BIT23, 0x0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x88c, BIT20|BIT21|BIT22|BIT23, 0x0);
 	//1 Restore Current Settings
 	//Resume DIG
 	pDM_Odm->bDMInitialGainEnable = TRUE;
 	
-	ODM_Write_DIG(pDM_Odm, initial_gain);
+	rtl8188fu_ODM_Write_DIG(pDM_Odm, initial_gain);
 
 	// restore originl center frequency
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask, CurrentChannel);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask, CurrentChannel);
 
 	//Turn on CCA
-	ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, RXIQI);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, RXIQI);
 	//Restore RX idle low power
 	if(RxIdleLowPwr == TRUE)
-		ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 1);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 1);
 	
 	psd_cnt++;
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_PSD, DBG_LOUD,("PSD:psd_cnt = %d \n",psd_cnt));
 	if (psd_cnt < ReScan)
-		ODM_SetTimer(pDM_Odm, &pDM_Odm->PSDTimer, Interval);		
+		rtl8188fu_ODM_SetTimer(pDM_Odm, &pDM_Odm->PSDTimer, Interval);		
 	else
 	{
 		psd_cnt = 0;
@@ -824,12 +824,12 @@ odm_PSD_Monitor(
 			}
 			if(pDM_Odm->bBtHsOperation)
 			{
-				ODM_SetTimer(pDM_Odm, &pDM_Odm->PSDTimer, 10000);
+				rtl8188fu_ODM_SetTimer(pDM_Odm, &pDM_Odm->PSDTimer, 10000);
 				ODM_RT_TRACE(	pDM_Odm,ODM_COMP_PSD, DBG_LOUD,("Leave dm_PSD_Monitor\n"));		
 			}
 			else
 			{
-				ODM_SetTimer(pDM_Odm, &pDM_Odm->PSDTimer, 1500);
+				rtl8188fu_ODM_SetTimer(pDM_Odm, &pDM_Odm->PSDTimer, 1500);
 				ODM_RT_TRACE(	pDM_Odm,ODM_COMP_PSD, DBG_LOUD,("Leave dm_PSD_Monitor\n"));		
 		}
 	}
@@ -921,11 +921,11 @@ ODM_PSDDbgControl(
 	{
 		pDM_Odm->RSSI_BT = (u1Byte)btRssi;
 		pDM_Odm->bUserAssignLevel = TRUE;
-		ODM_SetTimer( pDM_Odm, &pDM_Odm->PSDTimer, 0); //ms		
+		rtl8188fu_ODM_SetTimer( pDM_Odm, &pDM_Odm->PSDTimer, 0); //ms		
 	}
 	else
 	{
-		ODM_CancelTimer(pDM_Odm, &pDM_Odm->PSDTimer);
+		rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->PSDTimer);
 	}
 #endif
 }
@@ -987,8 +987,8 @@ odm_PSD_RXHP(
 									    {0x643BC, 0xFC038, 0x07C1A, 0x41289, 0x01840},     // For CH3,13,14
 									    {0x243BC, 0xFC438, 0x07C1A, 0x4128B, 0x0FC41}};   // For Ch5,6,7,8
        //--------------------- Add by Gary for Debug setting ----------------------
-  	u1Byte                 RSSI_BT_new = (u1Byte) ODM_GetBBReg(pDM_Odm, 0xB9C, 0xFF);
-       u1Byte                 rssi_ctrl = (u1Byte) ODM_GetBBReg(pDM_Odm, 0xB38, 0xFF);
+  	u1Byte                 RSSI_BT_new = (u1Byte) rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xB9C, 0xFF);
+       u1Byte                 rssi_ctrl = (u1Byte) rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xB38, 0xFF);
        //---------------------------------------------------------------------
 	
 	if(pMgntInfo->bScanInProgress)
@@ -1016,52 +1016,52 @@ odm_PSD_RXHP(
 	}
 
 	//1 Backup Current Settings
-	CurrentChannel = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
+	CurrentChannel = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask);
 	if(pDM_Odm->SupportICType == ODM_RTL8192D)
 	{
 		//2 Record Current synthesizer parameters based on current channel
 		if((*(pDM_Odm->pMacPhyMode)==ODM_SMSP)||(*(pDM_Odm->pMacPhyMode)==ODM_DMSP))
 		{
-			SYN_RF25 = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x25, bMaskDWord);
-			SYN_RF26 = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x26, bMaskDWord);
-			SYN_RF27 = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x27, bMaskDWord);
-			SYN_RF2B = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2B, bMaskDWord);
-			SYN_RF2C = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2C, bMaskDWord);
+			SYN_RF25 = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x25, bMaskDWord);
+			SYN_RF26 = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x26, bMaskDWord);
+			SYN_RF27 = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x27, bMaskDWord);
+			SYN_RF2B = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2B, bMaskDWord);
+			SYN_RF2C = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2C, bMaskDWord);
        	}
 		else     // DualMAC_DualPHY 2G
 		{
-			SYN_RF25 = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x25, bMaskDWord);
-			SYN_RF26 = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x26, bMaskDWord);
-			SYN_RF27 = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x27, bMaskDWord);
-			SYN_RF2B = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2B, bMaskDWord);
-			SYN_RF2C = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2C, bMaskDWord);
+			SYN_RF25 = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x25, bMaskDWord);
+			SYN_RF26 = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x26, bMaskDWord);
+			SYN_RF27 = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x27, bMaskDWord);
+			SYN_RF2B = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2B, bMaskDWord);
+			SYN_RF2C = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2C, bMaskDWord);
 		}
 	}
-	RXIQI = ODM_GetBBReg(pDM_Odm, 0xC14, bMaskDWord);
-	RxIdleLowPwr = (ODM_GetBBReg(pDM_Odm, 0x818, bMaskDWord)&BIT28)>>28;
+	RXIQI = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xC14, bMaskDWord);
+	RxIdleLowPwr = (rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x818, bMaskDWord)&BIT28)>>28;
 	Is40MHz = *(pDM_Odm->pBandWidth);
 	ODM_RT_TRACE(pDM_Odm,	ODM_COMP_PSD, DBG_LOUD,("PSD Scan Start\n"));
 	//1 Turn off CCK
-	ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 0);
 	//1 Turn off TX
 	//Pause TX Queue
-	ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0xFF);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0xFF);
 	//Force RX to stop TX immediately
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bRFRegOffsetMask, 0x32E13);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_AC, bRFRegOffsetMask, 0x32E13);
 	//1 Turn off RX
 	//Rx AGC off  RegC70[0]=0, RegC7C[20]=0
-	ODM_SetBBReg(pDM_Odm, 0xC70, BIT0, 0);
-	ODM_SetBBReg(pDM_Odm, 0xC7C, BIT20, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC70, BIT0, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC7C, BIT20, 0);
 	//Turn off CCA
-	ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, 0x0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, 0x0);
 	//BB Reset
-	ODM_SetBBReg(pDM_Odm, 0x87C, BIT31, 1); //clock gated to prevent from AGC table mess 
-	BBReset = ODM_Read1Byte(pDM_Odm, 0x02);
-	ODM_Write1Byte(pDM_Odm, 0x02, BBReset&(~BIT0));
-	ODM_Write1Byte(pDM_Odm, 0x02, BBReset|BIT0);
-	ODM_SetBBReg(pDM_Odm, 0x87C, BIT31, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x87C, BIT31, 1); //clock gated to prevent from AGC table mess 
+	BBReset = rtl8188fu_ODM_Read1Byte(pDM_Odm, 0x02);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, 0x02, BBReset&(~BIT0));
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, 0x02, BBReset|BIT0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x87C, BIT31, 0);
 	//1 Leave RX idle low power
-	ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 0x0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 0x0);
 	//1 Fix initial gain
       	RSSI_BT = RSSI_BT_new;
 	RT_TRACE(ODM_COMP_PSD, DBG_LOUD,("PSD: RSSI_BT= %d\n", RSSI_BT));
@@ -1082,36 +1082,36 @@ odm_PSD_RXHP(
 	RT_TRACE(	ODM_COMP_PSD, DBG_LOUD,("PSD: initial gain= 0x%x\n", initial_gain_psd));
 	
 	pDM_Odm->bDMInitialGainEnable = FALSE;		
-	initial_gain = ODM_GetBBReg(pDM_Odm, 0xc50, bMaskDWord) & 0x7F;
-	//ODM_SetBBReg(pDM_Odm, 0xc50, 0x7F, initial_gain_psd);	
-	ODM_Write_DIG(pDM_Odm, initial_gain_psd);
+	initial_gain = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xc50, bMaskDWord) & 0x7F;
+	//rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc50, 0x7F, initial_gain_psd);	
+	rtl8188fu_ODM_Write_DIG(pDM_Odm, initial_gain_psd);
 	//1 Turn off 3-wire
-	ODM_SetBBReg(pDM_Odm, 0x88c, BIT20|BIT21|BIT22|BIT23, 0xF);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x88c, BIT20|BIT21|BIT22|BIT23, 0xF);
 
 	//pts value = 128, 256, 512, 1024
 	pts = 128;
 
 	if(pts == 128)
 	{
-		ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x0);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x0);
 		start_point = 64;
 		stop_point = 192;
 	}
 	else if(pts == 256)
 	{
-		ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x1);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x1);
 		start_point = 128;
 		stop_point = 384;
 	}
 	else if(pts == 512)
 	{
-		ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x2);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x2);
 		start_point = 256;
 		stop_point = 768;
 	}
 	else
 	{
-		ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x3);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT14|BIT15, 0x3);
 		start_point = 512;
 		stop_point = 1536;
 	}
@@ -1160,21 +1160,21 @@ odm_PSD_RXHP(
 				if((*(pDM_Odm->pMacPhyMode)==ODM_SMSP)||(*(pDM_Odm->pMacPhyMode)==ODM_DMSP))   
 		{
 					for(i = 0; i < SYN_Length; i++)
-						ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, SYN[i], bMaskDWord, SYN_group[group_idx][i]);
+						rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, SYN[i], bMaskDWord, SYN_group[group_idx][i]);
 
-					ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, channel);
-					ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, channel);
+					rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, channel);
+					rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_CHNLBW, 0x3FF, channel);
 				}
 				else  // DualMAC_DualPHY 2G
 			{
 					for(i = 0; i < SYN_Length; i++)
-						ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, SYN[i], bMaskDWord, SYN_group[group_idx][i]);   
+						rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, SYN[i], bMaskDWord, SYN_group[group_idx][i]);   
 					
-					ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, channel);
+					rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, channel);
 				}
 			}
 			else
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, channel);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x3FF, channel);
 			}	
 		tone_idx = n%20;
 		if ((n>=PSD_skip_start) && (n<PSD_skip_stop))
@@ -1184,7 +1184,7 @@ odm_PSD_RXHP(
 		}
 		else
 		{
-			PSD_report_tmp =  GetPSDData(pDM_Odm, idx[tone_idx], initial_gain_psd);
+			PSD_report_tmp =  rtl8188fu_GetPSDData(pDM_Odm, idx[tone_idx], initial_gain_psd);
 
 			if ( PSD_report_tmp > PSD_report[n])
 				PSD_report[n] = PSD_report_tmp;
@@ -1197,54 +1197,54 @@ odm_PSD_RXHP(
        //----end
 	//1 Turn on RX
 	//Rx AGC on
-	ODM_SetBBReg(pDM_Odm, 0xC70, BIT0, 1);
-	ODM_SetBBReg(pDM_Odm, 0xC7C, BIT20, 1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC70, BIT0, 1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC7C, BIT20, 1);
 	//CCK on
-	ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 1);
 	//1 Turn on TX
 	//Resume TX Queue
-	ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0x00);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0x00);
 	//Turn on 3-wire
-	ODM_SetBBReg(pDM_Odm, 0x88c, BIT20|BIT21|BIT22|BIT23, 0x0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x88c, BIT20|BIT21|BIT22|BIT23, 0x0);
 	//1 Restore Current Settings
 	//Resume DIG
 	pDM_Odm->bDMInitialGainEnable= TRUE;
-	//ODM_SetBBReg(pDM_Odm, 0xc50, 0x7F, initial_gain);
-	ODM_Write_DIG(pDM_Odm,(u1Byte) initial_gain);
+	//rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc50, 0x7F, initial_gain);
+	rtl8188fu_ODM_Write_DIG(pDM_Odm,(u1Byte) initial_gain);
 	// restore originl center frequency
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask, CurrentChannel);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask, CurrentChannel);
 	if(pDM_Odm->SupportICType == ODM_RTL8192D)
 	{
 		if((*(pDM_Odm->pMacPhyMode)==ODM_SMSP)||(*(pDM_Odm->pMacPhyMode)==ODM_DMSP))
 		{
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_CHNLBW, bMaskDWord, CurrentChannel);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x25, bMaskDWord, SYN_RF25);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x26, bMaskDWord, SYN_RF26);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x27, bMaskDWord, SYN_RF27);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2B, bMaskDWord, SYN_RF2B);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2C, bMaskDWord, SYN_RF2C);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_CHNLBW, bMaskDWord, CurrentChannel);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x25, bMaskDWord, SYN_RF25);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x26, bMaskDWord, SYN_RF26);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x27, bMaskDWord, SYN_RF27);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2B, bMaskDWord, SYN_RF2B);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, 0x2C, bMaskDWord, SYN_RF2C);
 		}
 		else     // DualMAC_DualPHY
 		{
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x25, bMaskDWord, SYN_RF25);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x26, bMaskDWord, SYN_RF26);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x27, bMaskDWord, SYN_RF27);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2B, bMaskDWord, SYN_RF2B);
-			ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2C, bMaskDWord, SYN_RF2C);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x25, bMaskDWord, SYN_RF25);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x26, bMaskDWord, SYN_RF26);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x27, bMaskDWord, SYN_RF27);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2B, bMaskDWord, SYN_RF2B);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x2C, bMaskDWord, SYN_RF2C);
 		}
 	}
 	//Turn on CCA
-	ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, RXIQI);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, RXIQI);
 	//Restore RX idle low power
 	if(RxIdleLowPwr == TRUE)
-		ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 1);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 1);
 	
 	psd_cnt++;
 	//gPrint("psd cnt=%d\n", psd_cnt);
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_PSD, DBG_LOUD,("PSD:psd_cnt = %d \n",psd_cnt));
 	if (psd_cnt < ReScan)
 	{
-		ODM_SetTimer(pDM_Odm, &pRX_HP_Table->PSDTimer, Interval);  //ms
+		rtl8188fu_ODM_SetTimer(pDM_Odm, &pRX_HP_Table->PSDTimer, Interval);  //ms
 	}
 	else
 	{	
@@ -1267,13 +1267,13 @@ void odm_Write_RXHP(
 
 	if(pRX_HP_Table->Cur_IGI != pRX_HP_Table->Pre_IGI)
 	{
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskByte0, pRX_HP_Table->Cur_IGI);
-	     	ODM_SetBBReg(pDM_Odm, rOFDM0_XBAGCCore1, bMaskByte0, pRX_HP_Table->Cur_IGI);	
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskByte0, pRX_HP_Table->Cur_IGI);
+	     	rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XBAGCCore1, bMaskByte0, pRX_HP_Table->Cur_IGI);	
 	}
 	
 	if(pRX_HP_Table->Cur_pw_th != pRX_HP_Table->Pre_pw_th)
 {
-		ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore2, BIT8|BIT9, pRX_HP_Table->Cur_pw_th);  // RegC54[9:8]=2'b11:  AGC Flow 3
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore2, BIT8|BIT9, pRX_HP_Table->Cur_pw_th);  // RegC54[9:8]=2'b11:  AGC Flow 3
 	}
 
 	if(pRX_HP_Table->RXHP_flag == 0)
@@ -1282,11 +1282,11 @@ void odm_Write_RXHP(
 	}
 	else
 	{
-		currentIGI = ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskByte0);
+		currentIGI = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskByte0);
 		if(currentIGI<0x50)
 		{
-			ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskByte0, pRX_HP_Table->Cur_IGI);
-	     		ODM_SetBBReg(pDM_Odm, rOFDM0_XBAGCCore1, bMaskByte0, pRX_HP_Table->Cur_IGI);	
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskByte0, pRX_HP_Table->Cur_IGI);
+	     		rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XBAGCCore1, bMaskByte0, pRX_HP_Table->Cur_IGI);	
 		}
 	}
 	pRX_HP_Table->Pre_IGI = pRX_HP_Table->Cur_IGI;
@@ -1305,7 +1305,7 @@ void odm_RXHP(
 	PMGNT_INFO	pMgntInfo = &(Adapter->MgntInfo);
 	pDIG_T		pDM_DigTable = &pDM_Odm->DM_DigTable;
 	pRXHP_T		pRX_HP_Table  = &pDM_Odm->DM_RXHP_Table;
-	PFALSE_ALARM_STATISTICS		FalseAlmCnt = (PFALSE_ALARM_STATISTICS)PhyDM_Get_Structure(pDM_Odm, PHYDM_FALSEALMCNT);
+	PFALSE_ALARM_STATISTICS		FalseAlmCnt = (PFALSE_ALARM_STATISTICS)rtl8188fu_PhyDM_Get_Structure(pDM_Odm, PHYDM_FALSEALMCNT);
 	
 	u1Byte              	i, j, sum;
 	u1Byte			Is40MHz;
@@ -1318,7 +1318,7 @@ void odm_RXHP(
        static s4Byte  		preRssi = 0;                                                                
 	static u1Byte		PSDTriggerCnt = 1;
 	
-	u1Byte			RX_HP_enable = (u1Byte)(ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore2, bMaskDWord)>>31);   // for debug!!
+	u1Byte			RX_HP_enable = (u1Byte)(rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore2, bMaskDWord)>>31);   // for debug!!
 
 #if(DEV_BUS_TYPE == RT_USB_INTERFACE)	
 	static s8Byte  		lastTxOkCnt = 0, lastRxOkCnt = 0;  
@@ -1411,7 +1411,7 @@ void odm_RXHP(
 	{    
 		Is40MHz = *(pDM_Odm->pBandWidth);
 		curRssi = pDM_Odm->RSSI_Min;
-		cur_channel = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x0fff) & 0x0f;
+		cur_channel = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, 0x0fff) & 0x0f;
 
 		/* check illegal channel and bandwidth */
 		if (Is40MHz && ((cur_channel < 3) || (cur_channel > 12))) {
@@ -1664,12 +1664,12 @@ odm_PSD_RXHPCallback(
 	
 #if DEV_BUS_TYPE==RT_PCI_INTERFACE
 	#if USE_WORKITEM
-	ODM_ScheduleWorkItem(&pRX_HP_Table->PSDTimeWorkitem);
+	rtl8188fu_ODM_ScheduleWorkItem(&pRX_HP_Table->PSDTimeWorkitem);
 	#else
 	odm_PSD_RXHP(pDM_Odm);
 	#endif
 #else
-	ODM_ScheduleWorkItem(&pRX_HP_Table->PSDTimeWorkitem);
+	rtl8188fu_ODM_ScheduleWorkItem(&pRX_HP_Table->PSDTimeWorkitem);
 #endif
 	
 	}

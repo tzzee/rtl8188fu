@@ -56,7 +56,7 @@ static	RF_SHADOW_T	RF_Shadow[RF6052_MAX_PATH][RF6052_MAX_REG];
 /*------------------------Define local variable------------------------------*/
 
 /*-----------------------------------------------------------------------------
- * Function:    PHY_RF6052SetBandwidth()
+ * Function:    PHY_RF6052rtl8188fu_SetBandwidth()
  *
  * Overview:    This function is called by SetBWModeCallback8190Pci() only
  *
@@ -70,7 +70,7 @@ static	RF_SHADOW_T	RF_Shadow[RF6052_MAX_PATH][RF6052_MAX_REG];
  * Note:		For RF type 0222D
  *---------------------------------------------------------------------------*/
 VOID
-PHY_RF6052SetBandwidth8188F(
+PHY_RF6052rtl8188fu_SetBandwidth8188F(
 	IN	PADAPTER				Adapter,
 	IN	CHANNEL_WIDTH		Bandwidth)	/*20M or 40M */
 {
@@ -181,25 +181,25 @@ phy_RF6052_Config_ParaFile(
 
 		/*----Set RF_ENV enable----*/
 		PHY_SetBBReg(Adapter, pPhyReg->rfintfe, bRFSI_RFENV << 16, 0x1);
-		rtw_udelay_os(1);/*PlatformStallExecution(1); */
+		rtl8188fu_rtw_udelay_os(1);/*PlatformStallExecution(1); */
 
 		/*----Set RF_ENV output high----*/
 		PHY_SetBBReg(Adapter, pPhyReg->rfintfo, bRFSI_RFENV, 0x1);
-		rtw_udelay_os(1);/*PlatformStallExecution(1); */
+		rtl8188fu_rtw_udelay_os(1);/*PlatformStallExecution(1); */
 
 		/* Set bit number of Address and Data for RF register */
 		PHY_SetBBReg(Adapter, pPhyReg->rfHSSIPara2, b3WireAddressLength, 0x0);	/* Set 1 to 4 bits for 8255 */
-		rtw_udelay_os(1);/*PlatformStallExecution(1); */
+		rtl8188fu_rtw_udelay_os(1);/*PlatformStallExecution(1); */
 
 		PHY_SetBBReg(Adapter, pPhyReg->rfHSSIPara2, b3WireDataLength, 0x0);	/* Set 0 to 12  bits for 8255 */
-		rtw_udelay_os(1);/*PlatformStallExecution(1); */
+		rtl8188fu_rtw_udelay_os(1);/*PlatformStallExecution(1); */
 
 		/*----Initialize RF fom connfiguration file----*/
 		switch (eRFPath) {
 		case RF_PATH_A:
 			{
 #ifdef CONFIG_EMBEDDED_FWIMG
-				if (HAL_STATUS_FAILURE == ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
+				if (HAL_STATUS_FAILURE == rtl8188fu_ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
 					rtStatus = _FAIL;
 #endif
 			}
@@ -207,7 +207,7 @@ phy_RF6052_Config_ParaFile(
 		case RF_PATH_B:
 			{
 #ifdef CONFIG_EMBEDDED_FWIMG
-				if (HAL_STATUS_FAILURE == ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
+				if (HAL_STATUS_FAILURE == rtl8188fu_ODM_ConfigRFWithHeaderFile(&pHalData->odmpriv, CONFIG_RF_RADIO, (ODM_RF_RADIO_PATH_E)eRFPath))
 					rtStatus = _FAIL;
 #endif
 			}
@@ -243,7 +243,7 @@ phy_RF6052_Config_ParaFile(
 
 	{
 #ifdef CONFIG_EMBEDDED_FWIMG
-		ODM_ConfigRFWithTxPwrTrackHeaderFile(&pHalData->odmpriv);
+		rtl8188fu_ODM_ConfigRFWithTxPwrTrackHeaderFile(&pHalData->odmpriv);
 #endif
 	}
 

@@ -22,20 +22,20 @@
 #include <drv_types.h>
 #include <hal_data.h>
 
-int	usb_init_recv_priv(_adapter *padapter, u16 ini_in_buf_sz)
+int	rtl8188fu_usb_init_recv_priv(_adapter *padapter, u16 ini_in_buf_sz)
 {
 	struct recv_priv	*precvpriv = &padapter->recvpriv;
 	int	i, res = _SUCCESS;
 	struct recv_buf *precvbuf;
 
 #ifdef CONFIG_RECV_THREAD_MODE
-	_rtw_init_sema(&precvpriv->recv_sema, 0);//will be removed
-	_rtw_init_sema(&precvpriv->terminate_recvthread_sema, 0);//will be removed
+	rtl8188fu__rtw_init_sema(&precvpriv->recv_sema, 0);//will be removed
+	rtl8188fu__rtw_init_sema(&precvpriv->terminate_recvthread_sema, 0);//will be removed
 #endif /* CONFIG_RECV_THREAD_MODE */
 
 #ifdef PLATFORM_LINUX
 	tasklet_init(&precvpriv->recv_tasklet,
-		(void(*)(unsigned long))usb_recv_tasklet,
+		(void(*)(unsigned long))rtl8188fu_usb_recv_tasklet,
 		(unsigned long)padapter);
 #endif /* PLATFORM_LINUX */
 
@@ -46,8 +46,8 @@ int	usb_init_recv_priv(_adapter *padapter, u16 ini_in_buf_sz)
 #endif /* PLATFORM_FREEBSD */
 
 	/* init recv_buf */
-	_rtw_init_queue(&precvpriv->free_recv_buf_queue);
-	_rtw_init_queue(&precvpriv->recv_buf_pending_queue);
+	rtl8188fu__rtw_init_queue(&precvpriv->free_recv_buf_queue);
+	rtl8188fu__rtw_init_queue(&precvpriv->recv_buf_pending_queue);
 	#ifndef CONFIG_USE_USB_BUFFER_ALLOC_RX
 	/* this is used only when RX_IOBUF is sk_buff */
 	skb_queue_head_init(&precvpriv->free_recv_skb_queue);
@@ -68,20 +68,20 @@ int	usb_init_recv_priv(_adapter *padapter, u16 ini_in_buf_sz)
 
 	for(i=0; i < NR_RECVBUFF ; i++)
 	{
-		_rtw_init_listhead(&precvbuf->list);
+		rtl8188fu__rtw_init_listhead(&precvbuf->list);
 
-		_rtw_spinlock_init(&precvbuf->recvbuf_lock);
+		rtl8188fu__rtw_spinlock_init(&precvbuf->recvbuf_lock);
 
 		precvbuf->alloc_sz = MAX_RECVBUF_SZ;
 
-		res = rtw_os_recvbuf_resource_alloc(padapter, precvbuf);
+		res = rtl8188fu_rtw_os_recvbuf_resource_alloc(padapter, precvbuf);
 		if(res==_FAIL)
 			break;
 
 		precvbuf->ref_cnt = 0;
 		precvbuf->adapter =padapter;
 
-		//rtw_list_insert_tail(&precvbuf->list, &(precvpriv->free_recv_buf_queue.queue));
+		//rtl8188fu_rtw_list_insert_tail(&precvbuf->list, &(precvpriv->free_recv_buf_queue.queue));
 
 		precvbuf++;
 	}
@@ -143,7 +143,7 @@ exit:
 	return res;
 }
 
-void usb_free_recv_priv (_adapter *padapter, u16 ini_in_buf_sz)
+void rtl8188fu_usb_free_recv_priv (_adapter *padapter, u16 ini_in_buf_sz)
 {
 	int i;
 	struct recv_buf *precvbuf;
@@ -153,7 +153,7 @@ void usb_free_recv_priv (_adapter *padapter, u16 ini_in_buf_sz)
 
 	for(i=0; i < NR_RECVBUFF ; i++)
 	{
-		rtw_os_recvbuf_resource_free(padapter, precvbuf);
+		rtl8188fu_rtw_os_recvbuf_resource_free(padapter, precvbuf);
 		precvbuf++;
 	}
 
@@ -230,7 +230,7 @@ int usb_write_async(struct usb_device *udev, u32 addr, void *pdata, u16 len)
 
 	wvalue = (u16)(addr&0x0000ffff);
 
-	ret = _usbctrl_vendorreq_async_write(udev, request, wvalue, index, pdata, len, requesttype);
+	ret = _rtl8188fu_usbctrl_vendorreq_async_write(udev, request, wvalue, index, pdata, len, requesttype);
 
 	return ret;
 }
@@ -281,7 +281,7 @@ int usb_async_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 }
 #endif /* CONFIG_USB_SUPPORT_ASYNC_VDN_REQ */
 
-u8 usb_read8(struct intf_hdl *pintfhdl, u32 addr)
+u8 rtl8188fu_usb_read8(struct intf_hdl *pintfhdl, u32 addr)
 {
 	u8 request;
 	u8 requesttype;
@@ -298,7 +298,7 @@ u8 usb_read8(struct intf_hdl *pintfhdl, u32 addr)
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 1;	
-	usbctrl_vendorreq(pintfhdl, request, wvalue, index,
+	rtl8188fu_usbctrl_vendorreq(pintfhdl, request, wvalue, index,
 					&data, len, requesttype);
 
 	_func_exit_;
@@ -306,7 +306,7 @@ u8 usb_read8(struct intf_hdl *pintfhdl, u32 addr)
 	return data;	
 }
 
-u16 usb_read16(struct intf_hdl *pintfhdl, u32 addr)
+u16 rtl8188fu_usb_read16(struct intf_hdl *pintfhdl, u32 addr)
 {       
 	u8 request;
 	u8 requesttype;
@@ -323,7 +323,7 @@ u16 usb_read16(struct intf_hdl *pintfhdl, u32 addr)
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 2;	
-	usbctrl_vendorreq(pintfhdl, request, wvalue, index,
+	rtl8188fu_usbctrl_vendorreq(pintfhdl, request, wvalue, index,
 					&data, len, requesttype);
 
 	_func_exit_;
@@ -332,7 +332,7 @@ u16 usb_read16(struct intf_hdl *pintfhdl, u32 addr)
 	
 }
 
-u32 usb_read32(struct intf_hdl *pintfhdl, u32 addr)
+u32 rtl8188fu_usb_read32(struct intf_hdl *pintfhdl, u32 addr)
 {
 	u8 request;
 	u8 requesttype;
@@ -349,7 +349,7 @@ u32 usb_read32(struct intf_hdl *pintfhdl, u32 addr)
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 4;
-	usbctrl_vendorreq(pintfhdl, request, wvalue, index,
+	rtl8188fu_usbctrl_vendorreq(pintfhdl, request, wvalue, index,
 						&data, len, requesttype);
 	
 	_func_exit_;
@@ -357,7 +357,7 @@ u32 usb_read32(struct intf_hdl *pintfhdl, u32 addr)
 	return data;
 }
 
-int usb_write8(struct intf_hdl *pintfhdl, u32 addr, u8 val)
+int rtl8188fu_usb_write8(struct intf_hdl *pintfhdl, u32 addr, u8 val)
 {
 	u8 request;
 	u8 requesttype;
@@ -377,7 +377,7 @@ int usb_write8(struct intf_hdl *pintfhdl, u32 addr, u8 val)
 	len = 1;
 	
 	data = val;
-	ret = usbctrl_vendorreq(pintfhdl, request, wvalue, index,
+	ret = rtl8188fu_usbctrl_vendorreq(pintfhdl, request, wvalue, index,
 						&data, len, requesttype);
 	
 	_func_exit_;
@@ -385,7 +385,7 @@ int usb_write8(struct intf_hdl *pintfhdl, u32 addr, u8 val)
 	return ret;
 }
 
-int usb_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
+int rtl8188fu_usb_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 {	
 	u8 request;
 	u8 requesttype;
@@ -405,7 +405,7 @@ int usb_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 	len = 2;
 	
 	data = val;
-	ret = usbctrl_vendorreq(pintfhdl, request, wvalue, index,
+	ret = rtl8188fu_usbctrl_vendorreq(pintfhdl, request, wvalue, index,
 						&data, len, requesttype);
 	
 	_func_exit_;
@@ -414,7 +414,7 @@ int usb_write16(struct intf_hdl *pintfhdl, u32 addr, u16 val)
 	
 }
 
-int usb_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
+int rtl8188fu_usb_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 {
 	u8 request;
 	u8 requesttype;
@@ -433,7 +433,7 @@ int usb_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 	wvalue = (u16)(addr&0x0000ffff);
 	len = 4;
 	data =val;
-	ret = usbctrl_vendorreq(pintfhdl, request, wvalue, index,
+	ret = rtl8188fu_usbctrl_vendorreq(pintfhdl, request, wvalue, index,
 						&data, len, requesttype);
 
 	_func_exit_;
@@ -442,7 +442,7 @@ int usb_write32(struct intf_hdl *pintfhdl, u32 addr, u32 val)
 	
 }
 
-int usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, u8 *pdata)
+int rtl8188fu_usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, u8 *pdata)
 {
 	u8 request;
 	u8 requesttype;
@@ -460,8 +460,8 @@ int usb_writeN(struct intf_hdl *pintfhdl, u32 addr, u32 length, u8 *pdata)
 
 	wvalue = (u16)(addr&0x0000ffff);
 	len = length;
-	 _rtw_memcpy(buf, pdata, len );
-	ret = usbctrl_vendorreq(pintfhdl, request, wvalue, index,
+	 rtl8188fu__rtw_memcpy(buf, pdata, len );
+	ret = rtl8188fu_usbctrl_vendorreq(pintfhdl, request, wvalue, index,
 						buf, len, requesttype);
 	
 	_func_exit_;

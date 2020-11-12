@@ -50,17 +50,17 @@ typedef enum _EXTEND_C2H_EVT {
 
 /* C2H_MAC_HIDDEN_RPT, 0x19 */
 #define MAC_HIDDEN_RPT_LEN 8
-int c2h_mac_hidden_rpt_hdl(_adapter *adapter, u8 *data, u8 len);
+int rtl8188fu_c2h_mac_hidden_rpt_hdl(_adapter *adapter, u8 *data, u8 len);
 
 /* C2H_MAC_HIDDEN_RPT_2, 0x1A */
 #define MAC_HIDDEN_RPT_2_LEN 5
-int c2h_mac_hidden_rpt_2_hdl(_adapter *adapter, u8 *data, u8 len);
+int rtl8188fu_c2h_mac_hidden_rpt_2_hdl(_adapter *adapter, u8 *data, u8 len);
 
-int hal_read_mac_hidden_rpt(_adapter *adapter);
+int rtl8188fu_hal_read_mac_hidden_rpt(_adapter *adapter);
 
 /* C2H_DEFEATURE_DBG, 0x22 */
 #define DEFEATURE_DBG_LEN 1
-int c2h_defeature_dbg_hdl(_adapter *adapter, u8 *data, u8 len);
+int rtl8188fu_c2h_defeature_dbg_hdl(_adapter *adapter, u8 *data, u8 len);
 
 #ifdef CONFIG_RTW_CUSTOMER_STR
 /* C2H_CUSTOMER_STR_RPT, 0x24 */

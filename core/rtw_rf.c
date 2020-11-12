@@ -22,7 +22,7 @@
 #include <drv_types.h>
 #include <hal_data.h>
 
-u8 center_ch_5g_all[CENTER_CH_5G_ALL_NUM] = {
+u8 rtl8188fu_center_ch_5g_all[CENTER_CH_5G_ALL_NUM] = {
 		36, 38, 40, 42, 44, 46, 48,			/* Band 1 */
 		52, 54, 56, 58, 60, 62, 64,			/* Band 2 */
 		100, 102, 104, 106, 108, 110, 112,	/* Band 3 */
@@ -31,48 +31,48 @@ u8 center_ch_5g_all[CENTER_CH_5G_ALL_NUM] = {
 		149, 151, 153, 155, 157, 159, 161,	/* Band 4 */
 		165, 167, 169, 171, 173, 175, 177};	/* Band 4 */
 
-u8 center_ch_5g_20m[CENTER_CH_5G_20M_NUM] = {
+u8 rtl8188fu_center_ch_5g_20m[CENTER_CH_5G_20M_NUM] = {
 	36, 40, 44, 48,
 	52, 56, 60, 64,
 	100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 144,
 	149, 153, 157, 161, 165, 169, 173, 177
 };
 
-u8 center_ch_5g_40m[CENTER_CH_5G_40M_NUM] = {38, 46, 54, 62, 102, 110, 118, 126, 134, 142, 151, 159, 167, 175};
+u8 rtl8188fu_center_ch_5g_40m[CENTER_CH_5G_40M_NUM] = {38, 46, 54, 62, 102, 110, 118, 126, 134, 142, 151, 159, 167, 175};
 
-u8 center_ch_5g_80m[CENTER_CH_5G_80M_NUM] = {42, 58, 106, 122, 138, 155, 171};
+u8 rtl8188fu_center_ch_5g_80m[CENTER_CH_5G_80M_NUM] = {42, 58, 106, 122, 138, 155, 171};
 
 struct center_chs_ent {
 	u8 ch_num;
 	u8 *chs;
 };
 
-struct center_chs_ent center_chs_5g_by_bw[] = {
-	{CENTER_CH_5G_20M_NUM, center_ch_5g_20m},
-	{CENTER_CH_5G_40M_NUM, center_ch_5g_40m},
-	{CENTER_CH_5G_80M_NUM, center_ch_5g_80m},
+struct center_chs_ent rtl8188fu_center_chs_5g_by_bw[] = {
+	{CENTER_CH_5G_20M_NUM, rtl8188fu_center_ch_5g_20m},
+	{CENTER_CH_5G_40M_NUM, rtl8188fu_center_ch_5g_40m},
+	{CENTER_CH_5G_80M_NUM, rtl8188fu_center_ch_5g_80m},
 };
 
-inline u8 center_chs_5g_num(u8 bw)
+inline u8 rtl8188fu_center_chs_5g_num(u8 bw)
 {
 	if (bw >= CHANNEL_WIDTH_160)
 		return 0;
 	
-	return center_chs_5g_by_bw[bw].ch_num;
+	return rtl8188fu_center_chs_5g_by_bw[bw].ch_num;
 }
 
-inline u8 center_chs_5g(u8 bw, u8 id)
+inline u8 rtl8188fu_center_chs_5g(u8 bw, u8 id)
 {
 	if (bw >= CHANNEL_WIDTH_160)
 		return 0;
 
-	if (id >= center_chs_5g_num(bw))
+	if (id >= rtl8188fu_center_chs_5g_num(bw))
 		return 0;
 		
-	return center_chs_5g_by_bw[bw].chs[id];
+	return rtl8188fu_center_chs_5g_by_bw[bw].chs[id];
 }
 
-int rtw_ch2freq(int chan)
+int rtl8188fu_rtw_ch2freq(int chan)
 {
 	/* see 802.11 17.3.8.3.2 and Annex J
 	* there are overlapping channel numbers in 5GHz and 2GHz bands */
@@ -94,7 +94,7 @@ int rtw_ch2freq(int chan)
 	return 0; /* not supported */
 }
 
-int rtw_freq2ch(int freq)
+int rtl8188fu_rtw_freq2ch(int freq)
 {
 	/* see 802.11 17.3.8.3.2 and Annex J */
 	if (freq == 2484)
@@ -111,7 +111,7 @@ int rtw_freq2ch(int freq)
 		return 0;
 }
 
-bool rtw_chbw_to_freq_range(u8 ch, u8 bw, u8 offset, u32 *hi, u32 *lo)
+bool rtl8188fu_rtw_chbw_to_freq_range(u8 ch, u8 bw, u8 offset, u32 *hi, u32 *lo)
 {
 	u8 c_ch;
 	u32 freq;
@@ -124,8 +124,8 @@ bool rtw_chbw_to_freq_range(u8 ch, u8 bw, u8 offset, u32 *hi, u32 *lo)
 	if (lo)
 		*lo = 0;
 
-	c_ch = rtw_get_center_ch(ch, bw, offset);
-	freq = rtw_ch2freq(c_ch);
+	c_ch = rtl8188fu_rtw_get_center_ch(ch, bw, offset);
+	freq = rtl8188fu_rtw_ch2freq(c_ch);
 
 	if (!freq) {
 		rtw_warn_on(1);
@@ -156,7 +156,7 @@ exit:
 	return valid;
 }
 
-const char * const _ch_width_str[] = {
+const char * const rtl8188fu__ch_width_str[] = {
 	"20MHz",
 	"40MHz",
 	"80MHz",
@@ -165,7 +165,7 @@ const char * const _ch_width_str[] = {
 	"CHANNEL_WIDTH_MAX",
 };
 
-const u8 _ch_width_to_bw_cap[] = {
+const u8 rtl8188fu__ch_width_to_bw_cap[] = {
 	BW_CAP_20M,
 	BW_CAP_40M,
 	BW_CAP_80M,
@@ -174,14 +174,14 @@ const u8 _ch_width_to_bw_cap[] = {
 	0,
 };
 
-const char * const _band_str[] = {
+const char * const rtl8188fu__band_str[] = {
 	"2.4G",
 	"5G",
 	"BOTH",
 	"BAND_MAX",
 };
 
-const u8 _band_to_band_cap[] = {
+const u8 rtl8188fu__band_to_band_cap[] = {
 	BAND_CAP_2G,
 	BAND_CAP_5G,
 	0,
@@ -219,7 +219,7 @@ static const struct country_chplan RTL8821AE_HMC_M2_country_chplan_map[] = {
 	COUNTRY_CHPLAN_ENT("RU", 0x59, 0, 0xFB), /* Russia(fac/gost), Kaliningrad */
 	COUNTRY_CHPLAN_ENT("UA", 0x26, 0, 0xFB), /* Ukraine */
 };
-static const u16 RTL8821AE_HMC_M2_country_chplan_map_sz = sizeof(RTL8821AE_HMC_M2_country_chplan_map)/sizeof(struct country_chplan);
+static const u16 RTL8821AE_HMC_M2_rtl8188fu_country_chplan_map_sz = sizeof(RTL8821AE_HMC_M2_country_chplan_map)/sizeof(struct country_chplan);
 #endif
 
 #if (RTW_DEF_MODULE_REGULATORY_CERT & RTW_MODULE_RTL8821AU)
@@ -227,43 +227,43 @@ static const struct country_chplan RTL8821AU_country_chplan_map[] = {
 	COUNTRY_CHPLAN_ENT("RU", 0x59, 0, 0xFB), /* Russia(fac/gost), Kaliningrad */
 	COUNTRY_CHPLAN_ENT("UA", 0x26, 0, 0xFB), /* Ukraine */
 };
-static const u16 RTL8821AU_country_chplan_map_sz = sizeof(RTL8821AU_country_chplan_map)/sizeof(struct country_chplan);
+static const u16 RTL8821AU_rtl8188fu_country_chplan_map_sz = sizeof(RTL8821AU_country_chplan_map)/sizeof(struct country_chplan);
 #endif
 
 #if (RTW_DEF_MODULE_REGULATORY_CERT & RTW_MODULE_RTL8812AENF_NGFF)
 static const struct country_chplan RTL8812AENF_NGFF_country_chplan_map[] = {
 };
-static const u16 RTL8812AENF_NGFF_country_chplan_map_sz = sizeof(RTL8812AENF_NGFF_country_chplan_map)/sizeof(struct country_chplan);
+static const u16 RTL8812AENF_NGFF_rtl8188fu_country_chplan_map_sz = sizeof(RTL8812AENF_NGFF_country_chplan_map)/sizeof(struct country_chplan);
 #endif
 
 #if (RTW_DEF_MODULE_REGULATORY_CERT & RTW_MODULE_RTL8812AEBT_HMC)
 static const struct country_chplan RTL8812AEBT_HMC_country_chplan_map[] = {
 };
-static const u16 RTL8812AEBT_HMC_country_chplan_map_sz = sizeof(RTL8812AEBT_HMC_country_chplan_map)/sizeof(struct country_chplan);
+static const u16 RTL8812AEBT_HMC_rtl8188fu_country_chplan_map_sz = sizeof(RTL8812AEBT_HMC_country_chplan_map)/sizeof(struct country_chplan);
 #endif
 
 #if (RTW_DEF_MODULE_REGULATORY_CERT & RTW_MODULE_RTL8188EE_HMC_M2)
 static const struct country_chplan RTL8188EE_HMC_M2_country_chplan_map[] = {
 };
-static const u16 RTL8188EE_HMC_M2_country_chplan_map_sz = sizeof(RTL8188EE_HMC_M2_country_chplan_map)/sizeof(struct country_chplan);
+static const u16 RTL8188EE_HMC_M2_rtl8188fu_country_chplan_map_sz = sizeof(RTL8188EE_HMC_M2_country_chplan_map)/sizeof(struct country_chplan);
 #endif
 
 #if (RTW_DEF_MODULE_REGULATORY_CERT & RTW_MODULE_RTL8723BE_HMC_M2)
 static const struct country_chplan RTL8723BE_HMC_M2_country_chplan_map[] = {
 };
-static const u16 RTL8723BE_HMC_M2_country_chplan_map_sz = sizeof(RTL8723BE_HMC_M2_country_chplan_map)/sizeof(struct country_chplan);
+static const u16 RTL8723BE_HMC_M2_rtl8188fu_country_chplan_map_sz = sizeof(RTL8723BE_HMC_M2_country_chplan_map)/sizeof(struct country_chplan);
 #endif
 
 #if (RTW_DEF_MODULE_REGULATORY_CERT & RTW_MODULE_RTL8723BS_NGFF1216)
 static const struct country_chplan RTL8723BS_NGFF1216_country_chplan_map[] = {
 };
-static const u16 RTL8723BS_NGFF1216_country_chplan_map_sz = sizeof(RTL8723BS_NGFF1216_country_chplan_map)/sizeof(struct country_chplan);
+static const u16 RTL8723BS_NGFF1216_rtl8188fu_country_chplan_map_sz = sizeof(RTL8723BS_NGFF1216_country_chplan_map)/sizeof(struct country_chplan);
 #endif
 
 #if (RTW_DEF_MODULE_REGULATORY_CERT & RTW_MODULE_RTL8192EEBT_HMC_M2)
 static const struct country_chplan RTL8192EEBT_HMC_M2_country_chplan_map[] = {
 };
-static const u16 RTL8192EEBT_HMC_M2_country_chplan_map_sz = sizeof(RTL8192EEBT_HMC_M2_country_chplan_map)/sizeof(struct country_chplan);
+static const u16 RTL8192EEBT_HMC_M2_rtl8188fu_country_chplan_map_sz = sizeof(RTL8192EEBT_HMC_M2_country_chplan_map)/sizeof(struct country_chplan);
 #endif
 
 /**
@@ -282,28 +282,28 @@ static const struct country_chplan *rtw_def_module_get_chplan_from_country(const
 	/* TODO: runtime selection for multi driver */
 #if (RTW_DEF_MODULE_REGULATORY_CERT == RTW_MODULE_RTL8821AE_HMC_M2)
 	hal_map = RTL8821AE_HMC_M2_country_chplan_map;
-	hal_map_sz = RTL8821AE_HMC_M2_country_chplan_map_sz;
+	hal_map_sz = RTL8821AE_HMC_M2_rtl8188fu_country_chplan_map_sz;
 #elif (RTW_DEF_MODULE_REGULATORY_CERT == RTW_MODULE_RTL8821AU)
 	hal_map = RTL8821AU_country_chplan_map;
-	hal_map_sz = RTL8821AU_country_chplan_map_sz;
+	hal_map_sz = RTL8821AU_rtl8188fu_country_chplan_map_sz;
 #elif (RTW_DEF_MODULE_REGULATORY_CERT == RTW_MODULE_RTL8812AENF_NGFF)
 	hal_map = RTL8812AENF_NGFF_country_chplan_map;
-	hal_map_sz = RTL8812AENF_NGFF_country_chplan_map_sz;
+	hal_map_sz = RTL8812AENF_NGFF_rtl8188fu_country_chplan_map_sz;
 #elif (RTW_DEF_MODULE_REGULATORY_CERT == RTW_MODULE_RTL8812AEBT_HMC)
 	hal_map = RTL8812AEBT_HMC_country_chplan_map;
-	hal_map_sz = RTL8812AEBT_HMC_country_chplan_map_sz;
+	hal_map_sz = RTL8812AEBT_HMC_rtl8188fu_country_chplan_map_sz;
 #elif (RTW_DEF_MODULE_REGULATORY_CERT == RTW_MODULE_RTL8188EE_HMC_M2)
 	hal_map = RTL8188EE_HMC_M2_country_chplan_map;
-	hal_map_sz = RTL8188EE_HMC_M2_country_chplan_map_sz;
+	hal_map_sz = RTL8188EE_HMC_M2_rtl8188fu_country_chplan_map_sz;
 #elif (RTW_DEF_MODULE_REGULATORY_CERT == RTW_MODULE_RTL8723BE_HMC_M2)
 	hal_map = RTL8723BE_HMC_M2_country_chplan_map;
-	hal_map_sz = RTL8723BE_HMC_M2_country_chplan_map_sz;
+	hal_map_sz = RTL8723BE_HMC_M2_rtl8188fu_country_chplan_map_sz;
 #elif (RTW_DEF_MODULE_REGULATORY_CERT == RTW_MODULE_RTL8723BS_NGFF1216)
 	hal_map = RTL8723BS_NGFF1216_country_chplan_map;
-	hal_map_sz = RTL8723BS_NGFF1216_country_chplan_map_sz;
+	hal_map_sz = RTL8723BS_NGFF1216_rtl8188fu_country_chplan_map_sz;
 #elif (RTW_DEF_MODULE_REGULATORY_CERT == RTW_MODULE_RTL8192EEBT_HMC_M2)
 	hal_map = RTL8192EEBT_HMC_M2_country_chplan_map;
-	hal_map_sz = RTL8192EEBT_HMC_M2_country_chplan_map_sz;
+	hal_map_sz = RTL8192EEBT_HMC_M2_rtl8188fu_country_chplan_map_sz;
 #endif
 
 	if (hal_map == NULL || hal_map_sz == 0)
@@ -553,15 +553,15 @@ static const struct country_chplan country_chplan_map[] = {
 	COUNTRY_CHPLAN_ENT("ZW", 0x26, 1, 0xF1), /* Zimbabwe */
 };
 
-u16 const country_chplan_map_sz = sizeof(country_chplan_map)/sizeof(struct country_chplan);
+u16 const rtl8188fu_country_chplan_map_sz = sizeof(country_chplan_map)/sizeof(struct country_chplan);
 
 /*
-* rtw_get_chplan_from_country -
+* rtl8188fu_rtw_get_chplan_from_country -
 * @country_code: string of country code
 *
 * Return pointer of struct country_chplan entry or NULL when unsupported country_code is given
 */
-const struct country_chplan *rtw_get_chplan_from_country(const char *country_code)
+const struct country_chplan *rtl8188fu_rtw_get_chplan_from_country(const char *country_code)
 {
 	const struct country_chplan *ent = NULL;
 	const struct country_chplan *map = NULL;
@@ -569,8 +569,8 @@ const struct country_chplan *rtw_get_chplan_from_country(const char *country_cod
 	char code[2];
 	int i;
 
-	code[0] = alpha_to_upper(country_code[0]);
-	code[1] = alpha_to_upper(country_code[1]);
+	code[0] = rtl8188fu_alpha_to_upper(country_code[0]);
+	code[1] = rtl8188fu_alpha_to_upper(country_code[1]);
 
 #if !defined(CONFIG_CUSTOMIZED_COUNTRY_CHPLAN_MAP) && RTW_DEF_MODULE_REGULATORY_CERT
 	ent = rtw_def_module_get_chplan_from_country(code);
@@ -580,10 +580,10 @@ const struct country_chplan *rtw_get_chplan_from_country(const char *country_cod
 
 #ifdef CONFIG_CUSTOMIZED_COUNTRY_CHPLAN_MAP
 	map = CUSTOMIZED_country_chplan_map;
-	map_sz = CUSTOMIZED_country_chplan_map_sz;
+	map_sz = CUSTOMIZED_rtl8188fu_country_chplan_map_sz;
 #else
 	map = country_chplan_map;
-	map_sz = country_chplan_map_sz;
+	map_sz = rtl8188fu_country_chplan_map_sz;
 #endif
 
 	for (i = 0; i < map_sz; i++) {
@@ -602,7 +602,7 @@ exit:
 	return ent;
 }
 
-int rtw_ch_to_bb_gain_sel(int ch)
+int rtl8188fu_rtw_ch_to_bb_gain_sel(int ch)
 {
 	int sel = -1;
 
@@ -624,14 +624,14 @@ int rtw_ch_to_bb_gain_sel(int ch)
 	return sel;
 }
 
-s8 rtw_rf_get_kfree_tx_gain_offset(_adapter *padapter, u8 path, u8 ch)
+s8 rtl8188fu_rtw_rf_get_kfree_tx_gain_offset(_adapter *padapter, u8 path, u8 ch)
 {
 	s8 kfree_offset = 0;
 
 #ifdef CONFIG_RF_POWER_TRIM
 	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(padapter);
 	struct kfree_data_t *kfree_data = GET_KFREE_DATA(padapter);
-	s8 bb_gain_sel = rtw_ch_to_bb_gain_sel(ch);
+	s8 bb_gain_sel = rtl8188fu_rtw_ch_to_bb_gain_sel(ch);
 
 	if (bb_gain_sel < BB_GAIN_2G || bb_gain_sel >= BB_GAIN_NUM) {
 		rtw_warn_on(1);
@@ -649,35 +649,35 @@ exit:
 	return kfree_offset;
 }
 
-void rtw_rf_set_tx_gain_offset(_adapter *adapter, u8 path, s8 offset)
+void rtl8188fu_rtw_rf_set_tx_gain_offset(_adapter *adapter, u8 path, s8 offset)
 {
 	u8 write_value;
 
-	DBG_871X("kfree gain_offset 0x55:0x%x ", rtw_hal_read_rfreg(adapter, path, 0x55, 0xffffffff));
+	DBG_871X("kfree gain_offset 0x55:0x%x ", rtl8188fu_rtw_halrtl8188fu__rtl8188fu_read_rfreg(adapter, path, 0x55, 0xffffffff));
 	switch (rtw_get_chip_type(adapter)) {
 #ifdef CONFIG_RTL8703B
 	case RTL8703B:
 		write_value = RF_TX_GAIN_OFFSET_8703B(offset);
-		rtw_hal_write_rfreg(adapter, path, 0x55, 0x0fc000, write_value);
+		rtl8188fu_rtw_hal_rtl8188furtl8188fu__write_rfreg(adapter, path, 0x55, 0x0fc000, write_value);
 		break;
 #endif /* CONFIG_RTL8703B */
 #ifdef CONFIG_RTL8188F
 	case RTL8188F:
 		write_value = RF_TX_GAIN_OFFSET_8188F(offset);
-		rtw_hal_write_rfreg(adapter, path, 0x55, 0x0fc000, write_value);
+		rtl8188fu_rtw_hal_rtl8188furtl8188fu__write_rfreg(adapter, path, 0x55, 0x0fc000, write_value);
 		break;
 #endif /* CONFIG_RTL8188F */
 #ifdef CONFIG_RTL8192E
 	case RTL8192E:
 		write_value = RF_TX_GAIN_OFFSET_8192E(offset);
-		rtw_hal_write_rfreg(adapter, path, 0x55, 0x0f8000, write_value);
+		rtl8188fu_rtw_hal_rtl8188furtl8188fu__write_rfreg(adapter, path, 0x55, 0x0f8000, write_value);
 		break;
 #endif /* CONFIG_RTL8188F */
 
 #ifdef CONFIG_RTL8821A
 	case RTL8821:
 		write_value = RF_TX_GAIN_OFFSET_8821A(offset);
-		rtw_hal_write_rfreg(adapter, path, 0x55, 0x0f8000, write_value);
+		rtl8188fu_rtw_hal_rtl8188furtl8188fu__write_rfreg(adapter, path, 0x55, 0x0f8000, write_value);
 		break;
 #endif /* CONFIG_RTL8821A */
 #ifdef CONFIG_RTL8814A
@@ -691,10 +691,10 @@ void rtw_rf_set_tx_gain_offset(_adapter *adapter, u8 path, s8 offset)
 		break;
 	}
 
-	DBG_871X(" after :0x%x\n", rtw_hal_read_rfreg(adapter, path, 0x55, 0xffffffff));
+	DBG_871X(" after :0x%x\n", rtl8188fu_rtw_halrtl8188fu__rtl8188fu_read_rfreg(adapter, path, 0x55, 0xffffffff));
 }
 
-void rtw_rf_apply_tx_gain_offset(_adapter *adapter, u8 ch)
+void rtl8188fu_rtw_rf_apply_tx_gain_offset(_adapter *adapter, u8 ch)
 {
 	HAL_DATA_TYPE *hal_data = GET_HAL_DATA(adapter);
 	s8 kfree_offset = 0;
@@ -703,39 +703,39 @@ void rtw_rf_apply_tx_gain_offset(_adapter *adapter, u8 ch)
 	int i;
 
 	for (i = 0; i < hal_data->NumTotalRFPath; i++) {
-		kfree_offset = rtw_rf_get_kfree_tx_gain_offset(adapter, i, ch);
+		kfree_offset = rtl8188fu_rtw_rf_get_kfree_tx_gain_offset(adapter, i, ch);
 		total_offset = kfree_offset + tx_pwr_track_offset;
-		rtw_rf_set_tx_gain_offset(adapter, i, total_offset);
+		rtl8188fu_rtw_rf_set_tx_gain_offset(adapter, i, total_offset);
 	}
 }
 
-bool rtw_is_dfs_range(u32 hi, u32 lo)
+bool rtl8188fu_rtw_is_dfs_range(u32 hi, u32 lo)
 {
 	return rtw_is_range_overlap(hi, lo, 5720 + 10, 5260 - 10)?_TRUE:_FALSE;
 }
 
-bool rtw_is_dfs_ch(u8 ch, u8 bw, u8 offset)
+bool rtl8188fu_rtw_is_dfs_ch(u8 ch, u8 bw, u8 offset)
 {
 	u32 hi, lo;
 
-	if (rtw_chbw_to_freq_range(ch, bw, offset, &hi, &lo) == _FALSE)
+	if (rtl8188fu_rtw_chbw_to_freq_range(ch, bw, offset, &hi, &lo) == _FALSE)
 		return _FALSE;
 
-	return rtw_is_dfs_range(hi, lo)?_TRUE:_FALSE;
+	return rtl8188fu_rtw_is_dfs_range(hi, lo)?_TRUE:_FALSE;
 }
 
-bool rtw_is_long_cac_range(u32 hi, u32 lo)
+bool rtl8188fu_rtw_is_long_cac_range(u32 hi, u32 lo)
 {
 	return rtw_is_range_overlap(hi, lo, 5660 + 10, 5600 - 10)?_TRUE:_FALSE;
 }
 
-bool rtw_is_long_cac_ch(u8 ch, u8 bw, u8 offset)
+bool rtl8188fu_rtw_is_long_cac_ch(u8 ch, u8 bw, u8 offset)
 {
 	u32 hi, lo;
 
-	if (rtw_chbw_to_freq_range(ch, bw, offset, &hi, &lo) == _FALSE)
+	if (rtl8188fu_rtw_chbw_to_freq_range(ch, bw, offset, &hi, &lo) == _FALSE)
 		return _FALSE;
 
-	return rtw_is_long_cac_range(hi, lo)?_TRUE:_FALSE;
+	return rtl8188fu_rtw_is_long_cac_range(hi, lo)?_TRUE:_FALSE;
 }
 

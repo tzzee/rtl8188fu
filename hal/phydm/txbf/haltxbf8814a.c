@@ -21,8 +21,8 @@ HalTxbf8814A_setNDPArate(
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	
-	ODM_Write1Byte(pDM_Odm, REG_NDPA_OPT_CTRL_8814A, BW);
-	ODM_Write1Byte(pDM_Odm, REG_NDPA_RATE_8814A, (u1Byte) Rate);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_NDPA_OPT_CTRL_8814A, BW);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_NDPA_RATE_8814A, (u1Byte) Rate);
 
 }
 
@@ -40,7 +40,7 @@ phydm_DataRate_8814A(
 	u1Byte	i = 0;
 	u2Byte	XReadDataAddr = 0;
 
-	ODM_Write2Byte(pDM_Odm, REG_PKTBUF_DBG_CTRL_8814A, PHYDM_CTRL_INFO_PAGE);
+	rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_PKTBUF_DBG_CTRL_8814A, PHYDM_CTRL_INFO_PAGE);
 	XReadDataAddr = PHYDM_MEMORY_MAP_BUF_READ + macId*32; /*Ctrl Info: 32Bytes for each macid(n)*/
 	
 	if ((XReadDataAddr < PHYDM_MEMORY_MAP_BUF_READ) || (XReadDataAddr > 0x8FFF)) {
@@ -50,7 +50,7 @@ phydm_DataRate_8814A(
 	
 	/* Read data */
 	for (i = 0; i < dataLen; i++)
-		*(data+i) = ODM_Read2Byte(pDM_Odm, XReadDataAddr+i);	
+		*(data+i) = rtl8188fu_ODM_Read2Byte(pDM_Odm, XReadDataAddr+i);	
 	
 }
 
@@ -103,21 +103,21 @@ HalTxbf8814A_ResetTxPath(
 			break;
 
 			case 1:			/*Nsts = 2	BC*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x9366);		/*tx2path, BC*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskL3Bytes, 0x936);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskLWord, 0x9360);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x9366);		/*tx2path, BC*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskL3Bytes, 0x936);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskLWord, 0x9360);
 			break;
 
 			case 2:			/*Nsts = 3	BCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x93e93ee);	/*tx3path, BCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93e);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e93e0);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x93e93ee);	/*tx3path, BCD*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93e);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e93e0);
 			break;
 
 			default:			/*Nr>3, same as Case 3*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x93f93ff);	/*tx4path, ABCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93f);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskDWord, 0x93f93f0);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x93f93ff);	/*tx4path, ABCD*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93f);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskDWord, 0x93f93f0);
 			break;
 			}
 		} else	{
@@ -126,21 +126,21 @@ HalTxbf8814A_ResetTxPath(
 				break;
 
 			case 1:			/*Nsts = 2	BC*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x9366);		/*tx2path, BC*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x936);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskLWord, 0x9360);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x9366);		/*tx2path, BC*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x936);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskLWord, 0x9360);
 			break;
 
 			case 2:			/*Nsts = 3	BCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x93e93ee);	/*tx3path, BCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93e);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e93e0);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x93e93ee);	/*tx3path, BCD*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93e);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e93e0);
 			break;
 
 			default:			/*Nr>3, same as Case 3*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x93f93ff);	/*tx4path, ABCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93f);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93f93f0);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x93f93ff);	/*tx4path, ABCD*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93f);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93f93f0);
 			break;
 			}
 		}
@@ -239,25 +239,25 @@ halTxbf8814A_RfMode(
 		return;
 
 	for (i = ODM_RF_PATH_A; i < MAX_RF_PATH; i++) {
-		ODM_SetRFReg(pDM_Odm, i, RF_WeLut_Jaguar, 0x80000, 0x1);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, i, RF_WeLut_Jaguar, 0x80000, 0x1);
 		/*RF Mode table write enable*/
 	}
 
 	if (pBeamformingInfo->beamformee_su_cnt > 0) {
 		for (i = ODM_RF_PATH_A; i < MAX_RF_PATH; i++) {
-			ODM_SetRFReg(pDM_Odm, i, RF_ModeTableAddr, 0xfffff, 0x18000);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, i, RF_ModeTableAddr, 0xfffff, 0x18000);
 			/*Select RX mode*/
-			ODM_SetRFReg(pDM_Odm, i, RF_ModeTableData0, 0xfffff, 0xBE77F);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, i, RF_ModeTableData0, 0xfffff, 0xBE77F);
 			/*Set Table data*/
-			ODM_SetRFReg(pDM_Odm, i, RF_ModeTableData1, 0xfffff, 0x226BF);
+			rtl8188fu_ODM_SetRFReg(pDM_Odm, i, RF_ModeTableData1, 0xfffff, 0x226BF);
 			/*Enable TXIQGEN in RX mode*/
 		}
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData1, 0xfffff, 0xE26BF);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData1, 0xfffff, 0xE26BF);
 		/*Enable TXIQGEN in RX mode*/
 	}
 
 	for (i = ODM_RF_PATH_A; i < MAX_RF_PATH; i++) {
-		ODM_SetRFReg(pDM_Odm, i, RF_WeLut_Jaguar, 0x80000, 0x0);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, i, RF_WeLut_Jaguar, 0x80000, 0x0);
 		/*RF Mode table write disable*/
 	}
 
@@ -267,7 +267,7 @@ halTxbf8814A_RfMode(
 #endif
 
 		/*for 8814 19ac(idx 1), 19b4(idx 0), different Tx ant setting*/
-		ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, BIT28 | BIT29, 0x2);			/*enable BB TxBF ant mapping register*/
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, BIT28 | BIT29, 0x2);			/*enable BB TxBF ant mapping register*/
 
 		if (idx == 0) {
 			switch (Nr_index) {
@@ -275,21 +275,21 @@ halTxbf8814A_RfMode(
 				break;
 
 			case 1:			/*Nsts = 2	BC*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x9366);		/*tx2path, BC*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskL3Bytes, 0x936);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskLWord, 0x9360);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x9366);		/*tx2path, BC*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskL3Bytes, 0x936);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskLWord, 0x9360);
 			break;
 
 			case 2:			/*Nsts = 3	BCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x93e93ee);	/*tx3path, BCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93e);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e93e0);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x93e93ee);	/*tx3path, BCD*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93e);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e93e0);
 			break;
 
 			default:			/*Nr>3, same as Case 3*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x93f93ff);	/*tx4path, ABCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93f);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskDWord, 0x93f93f0);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF0, bMaskByte3LowNibble | bMaskL3Bytes, 0x93f93ff);	/*tx4path, ABCD*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93f);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskDWord, 0x93f93f0);
 			break;
 			}
 		} else {
@@ -298,29 +298,29 @@ halTxbf8814A_RfMode(
 			break;
 
 			case 1:			/*Nsts = 2	BC*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x9366);		/*tx2path, BC*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x936);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskLWord, 0x9360);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x9366);		/*tx2path, BC*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x936);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskLWord, 0x9360);
 			break;
 
 			case 2:			/*Nsts = 3	BCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x93e93ee);	/*tx3path, BCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93e);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e93e0);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x93e93ee);	/*tx3path, BCD*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93e);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e93e0);
 			break;
 
 			default:			/*Nr>3, same as Case 3*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x93f93ff);	/*tx4path, ABCD*/
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93f);
-			ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93f93f0);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TXBF_ANT_SET_BF1, bMaskByte3LowNibble | bMaskL3Bytes, 0x93f93ff);	/*tx4path, ABCD*/
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x93f);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93f93f0);
 			break;
 			}
 		}
 	}
 
 	if ((pBeamformingInfo->beamformee_su_cnt == 0) && (pBeamformingInfo->beamformer_su_cnt == 0)) {
-		ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x932);	/*set TxPath selection for 8814a BFer bug refine*/
-		ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e9360);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_1, bMaskByte3 | bMaskByte2HighNibble, 0x932);	/*set TxPath selection for 8814a BFer bug refine*/
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, REG_BB_TX_PATH_SEL_2, bMaskDWord, 0x93e9360);
 	}
 }
 #if 0
@@ -340,7 +340,7 @@ halTxbf8814A_DownloadNDPA(
 	PRT_BEAMFORMEE_ENTRY	pBeamEntry = pBeamInfo->BeamformeeEntry + Idx;
 
 	pHalData->bFwDwRsvdPageInProgress = TRUE;
-	Adapter->HalFunc.GetHalDefVarHandler(Adapter, HAL_DEF_TX_PAGE_BOUNDARY, (pu2Byte)&TxPageBndy);
+	Adapter->HalFunc.rtl8188fu_GetHalDefVarHandler(Adapter, HAL_DEF_TX_PAGE_BOUNDARY, (pu2Byte)&TxPageBndy);
 
 	/*Set REG_CR bit 8. DMA beacon by SW.*/
 	u1bTmp = PlatformEFIORead1Byte(Adapter, REG_CR_8814A + 1);
@@ -455,20 +455,20 @@ HalTxbf8814A_Enter(
 	u1Byte					Nc_index = 0, Nr_index = 0, grouping = 0, codebookinfo = 0, coefficientsize = 0;
 
 	ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("[%s] BFerIdx=%d, BFeeIdx=%d\n", __func__, BFerIdx, BFeeIdx));
-	ODM_SetMACReg(pDM_Odm, REG_SND_PTCL_CTRL_8814A, bMaskByte1 | bMaskByte2, 0x0202);
+	rtl8188fu_ODM_SetMACReg(pDM_Odm, REG_SND_PTCL_CTRL_8814A, bMaskByte1 | bMaskByte2, 0x0202);
 
 	if ((pBeamformingInfo->beamformer_su_cnt > 0) && (BFerIdx < BEAMFORMER_ENTRY_NUM)) {
 		BeamformerEntry = pBeamformingInfo->BeamformerEntry[BFerIdx];
 		/*Sounding protocol control*/
-		ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8814A, 0xDB);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8814A, 0xDB);
 
 		/*MAC address/Partial AID of Beamformer*/
 		if (BFerIdx == 0) {
 			for (i = 0; i < 6 ; i++)
-				ODM_Write1Byte(pDM_Odm, (REG_ASSOCIATED_BFMER0_INFO_8814A + i), BeamformerEntry.MacAddr[i]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, (REG_ASSOCIATED_BFMER0_INFO_8814A + i), BeamformerEntry.MacAddr[i]);
 		} else {
 			for (i = 0; i < 6 ; i++)
-				ODM_Write1Byte(pDM_Odm, (REG_ASSOCIATED_BFMER1_INFO_8814A + i), BeamformerEntry.MacAddr[i]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, (REG_ASSOCIATED_BFMER1_INFO_8814A + i), BeamformerEntry.MacAddr[i]);
 		}
 
 		/*CSI report parameters of Beamformer*/
@@ -488,11 +488,11 @@ HalTxbf8814A_Enter(
 		CSI_Param = (u2Byte)((coefficientsize << 10) | (codebookinfo << 8) | (grouping << 6) | (Nr_index << 3) | (Nc_index));
 
 		if (BFerIdx == 0)
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8814A, CSI_Param);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8814A, CSI_Param);
 		else
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8814A + 2, CSI_Param);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8814A + 2, CSI_Param);
 		/*ndp_rx_standby_timer, 8814 need > 0x56, suggest from Dvaid*/
-		ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8814A + 3, 0x40);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8814A + 3, 0x40);
 
 	}
 
@@ -501,27 +501,27 @@ HalTxbf8814A_Enter(
 
 		halTxbf8814A_RfMode(pDM_Odm, pBeamformingInfo, BFeeIdx);
 
-		if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS))
+		if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS))
 			STAid = BeamformeeEntry.MacId;
 		else
 			STAid = BeamformeeEntry.P_AID;
 
 		/*P_AID of Beamformee & enable NDPA transmission & enable NDPA interrupt*/
 		if (BFeeIdx == 0) {
-			ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A, STAid);
-			ODM_Write1Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 3, ODM_Read1Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 3) | BIT4 | BIT6 | BIT7);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A, STAid);
+			rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 3, rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 3) | BIT4 | BIT6 | BIT7);
 		} else
-			ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 2, STAid | BIT14 | BIT15 | BIT12);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 2, STAid | BIT14 | BIT15 | BIT12);
 
 		/*CSI report parameters of Beamformee*/
 		if (BFeeIdx == 0) {
 			/*Get BIT24 & BIT25*/
-			u1Byte	tmp = ODM_Read1Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 3) & 0x3;
+			u1Byte	tmp = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 3) & 0x3;
 
-			ODM_Write1Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 3, tmp | 0x60);
-			ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A, STAid | BIT9);
+			rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 3, tmp | 0x60);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A, STAid | BIT9);
 		} else
-			ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 2, STAid | 0xE200);	/*Set BIT25*/
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 2, STAid | 0xE200);	/*Set BIT25*/
 
 		phydm_Beamforming_Notify(pDM_Odm);
 	}
@@ -551,28 +551,28 @@ HalTxbf8814A_Leave(
 	/*Clear Associated Bfmee Sel*/
 
 	if (BeamformerEntry.BeamformEntryCap == BEAMFORMING_CAP_NONE) {
-		ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8814A, 0xD8);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8814A, 0xD8);
 		if (Idx == 0) {
-			ODM_Write4Byte(pDM_Odm, REG_ASSOCIATED_BFMER0_INFO_8814A, 0);
-			ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMER0_INFO_8814A + 4, 0);
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8814A, 0);
+			rtl8188fu_ODM_Write4Byte(pDM_Odm, REG_ASSOCIATED_BFMER0_INFO_8814A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMER0_INFO_8814A + 4, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8814A, 0);
 		} else {
-			ODM_Write4Byte(pDM_Odm, REG_ASSOCIATED_BFMER1_INFO_8814A, 0);
-			ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMER1_INFO_8814A + 4, 0);
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8814A + 2, 0);
+			rtl8188fu_ODM_Write4Byte(pDM_Odm, REG_ASSOCIATED_BFMER1_INFO_8814A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMER1_INFO_8814A + 4, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8814A + 2, 0);
 		}
 	}
 
 	if (BeamformeeEntry.BeamformEntryCap == BEAMFORMING_CAP_NONE) {
 		halTxbf8814A_RfMode(pDM_Odm, pBeamformingInfo, Idx);
 		if (Idx == 0) {
-			ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A, 0x0);
-			ODM_Write1Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 3, ODM_Read1Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 3) | BIT4 | BIT6 | BIT7);
-			ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A, 0x0);
+			rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 3, rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 3) | BIT4 | BIT6 | BIT7);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A, 0);
 		} else {
-			ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 2, 0x0 | BIT14 | BIT15 | BIT12);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A + 2, 0x0 | BIT14 | BIT15 | BIT12);
 
-			ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 2, ODM_Read2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 2) & 0x60);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 2, rtl8188fu_ODM_Read2Byte(pDM_Odm, REG_ASSOCIATED_BFMEE_SEL_8814A + 2) & 0x60);
 		}
 	}
 }
@@ -594,7 +594,7 @@ HalTxbf8814A_Status(
 	else
 		return;
 
-	if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS))
+	if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS))
 		BeamCtrlVal = BeamformEntry.MacId;
 	else
 		BeamCtrlVal = BeamformEntry.P_AID;
@@ -620,10 +620,10 @@ HalTxbf8814A_Status(
 		BeamCtrlVal &= ~(BIT9 | BIT10 | BIT11);
 	}
 
-	ODM_Write2Byte(pDM_Odm, BeamCtrlReg, BeamCtrlVal);
+	rtl8188fu_ODM_Write2Byte(pDM_Odm, BeamCtrlReg, BeamCtrlVal);
 	/*disable NDP packet use beamforming */
-	tmpVal = ODM_Read2Byte(pDM_Odm, REG_TXBF_CTRL_8814A);
-	ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A, tmpVal | BIT15);
+	tmpVal = rtl8188fu_ODM_Read2Byte(pDM_Odm, REG_TXBF_CTRL_8814A);
+	rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8814A, tmpVal | BIT15);
 
 }
 

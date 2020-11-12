@@ -21,7 +21,7 @@
 
 #include <drv_types.h>
 
-int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 *pdata, _pkt *pskb)
+int rtl8188fu_rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 *pdata, _pkt *pskb)
 {
 	int res = _SUCCESS;
 	u8	shift_sz = 0;
@@ -69,7 +69,7 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 
 		precvframe->u.hdr.rx_end = pkt_copy->data + alloc_sz;
 		skb_reserve(pkt_copy, 8 - ((SIZE_PTR)( pkt_copy->data) & 7 ));//force pkt_copy->data at 8-byte alignment address
 		skb_reserve(pkt_copy, shift_sz);//force ip_hdr at 8-byte alignment address according to shift_sz.
-		_rtw_memcpy(pkt_copy->data, pdata, skb_len);
+		rtl8188fu__rtw_memcpy(pkt_copy->data, pdata, skb_len);
 		precvframe->u.hdr.rx_data = precvframe->u.hdr.rx_tail = pkt_copy->data;
 	}
 	else
@@ -79,23 +79,23 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 
 
 		precvframe->u.hdr.pkt = NULL;
 
-		//rtw_free_recvframe(precvframe, pfree_recv_queue);
-		//goto _exit_recvbuf2recvframe;
+		//rtl8188fu_rtw_free_recvframe(precvframe, pfree_recv_queue);
+		//goto _exit_rtl8188fu_recvbuf2recvframe;
 
 		res = _FAIL;	
 #else
 		if((pattrib->mfrag == 1)&&(pattrib->frag_num == 0))
 		{				
 			DBG_871X("%s: alloc_skb fail , drop frag frame \n", __FUNCTION__);
-			//rtw_free_recvframe(precvframe, pfree_recv_queue);
+			//rtl8188fu_rtw_free_recvframe(precvframe, pfree_recv_queue);
 			res = _FAIL;
-			goto exit_rtw_os_recv_resource_alloc;
+			goto exit_rtl8188fu_rtw_os_recv_resource_alloc;
 		}
 
 		if(pskb == NULL)
 		{
 			res = _FAIL;
-			goto exit_rtw_os_recv_resource_alloc;
+			goto exit_rtl8188fu_rtw_os_recv_resource_alloc;
 		}
 			
 		precvframe->u.hdr.pkt = rtw_skb_clone(pskb);
@@ -107,20 +107,20 @@ int rtw_os_alloc_recvframe(_adapter *padapter, union recv_frame *precvframe, u8 
 		else
 		{
 			DBG_871X("%s: rtw_skb_clone fail\n", __FUNCTION__);
-			//rtw_free_recvframe(precvframe, pfree_recv_queue);
-			//goto _exit_recvbuf2recvframe;
+			//rtl8188fu_rtw_free_recvframe(precvframe, pfree_recv_queue);
+			//goto _exit_rtl8188fu_recvbuf2recvframe;
 			res = _FAIL;
 		}
 #endif			
 	}		
 
-exit_rtw_os_recv_resource_alloc:
+exit_rtl8188fu_rtw_os_recv_resource_alloc:
 
 	return res;
 
 }
 
-void rtw_os_free_recvframe(union recv_frame *precvframe)
+void rtl8188fu_rtw_os_free_recvframe(union recv_frame *precvframe)
 {
 	if(precvframe->u.hdr.pkt)
 	{
@@ -131,7 +131,7 @@ void rtw_os_free_recvframe(union recv_frame *precvframe)
 }
 
 //init os related resource in struct recv_priv
-int rtw_os_recv_resource_init(struct recv_priv *precvpriv, _adapter *padapter)
+int rtl8188fu_rtw_os_recv_resource_init(struct recv_priv *precvpriv, _adapter *padapter)
 {
 	int	res=_SUCCESS;
 
@@ -139,7 +139,7 @@ int rtw_os_recv_resource_init(struct recv_priv *precvpriv, _adapter *padapter)
 }
 
 //alloc os related resource in union recv_frame
-int rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe)
+int rtl8188fu_rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe)
 {
 	int	res=_SUCCESS;
 	
@@ -149,7 +149,7 @@ int rtw_os_recv_resource_alloc(_adapter *padapter, union recv_frame *precvframe)
 }
 
 //free os related resource in union recv_frame
-void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
+void rtl8188fu_rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 {
 	sint i;
 	union recv_frame *precvframe;
@@ -167,7 +167,7 @@ void rtw_os_recv_resource_free(struct recv_priv *precvpriv)
 }
 
 //alloc os related resource in struct recv_buf
-int rtw_os_recvbuf_resource_alloc(_adapter *padapter, struct recv_buf *precvbuf)
+int rtl8188fu_rtw_os_recvbuf_resource_alloc(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	int res=_SUCCESS;
 
@@ -204,7 +204,7 @@ int rtw_os_recvbuf_resource_alloc(_adapter *padapter, struct recv_buf *precvbuf)
 }
 
 //free os related resource in struct recv_buf
-int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
+int rtl8188fu_rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	int ret = _SUCCESS;
 
@@ -241,7 +241,7 @@ int rtw_os_recvbuf_resource_free(_adapter *padapter, struct recv_buf *precvbuf)
 
 }
 
-_pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 *pdata)
+_pkt *rtl8188fu_rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 *pdata)
 {
 	u16	eth_type;
 	u8	*data_ptr;
@@ -256,7 +256,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 	{
 		skb_reserve(sub_skb, 12);
 		data_ptr = (u8 *)skb_put(sub_skb, nSubframe_Length);
-		_rtw_memcpy(data_ptr, (pdata + ETH_HLEN), nSubframe_Length);
+		rtl8188fu__rtw_memcpy(data_ptr, (pdata + ETH_HLEN), nSubframe_Length);
 	}
 	else
 #endif // CONFIG_SKB_COPY
@@ -278,20 +278,20 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 	eth_type = RTW_GET_BE16(&sub_skb->data[6]);
 
 	if (sub_skb->len >= 8 &&
-		((_rtw_memcmp(sub_skb->data, rtw_rfc1042_header, SNAP_SIZE) &&
+		((rtl8188fu__rtw_memcmp(sub_skb->data, rtw_rfc1042_header, SNAP_SIZE) &&
 		  eth_type != ETH_P_AARP && eth_type != ETH_P_IPX) ||
-		 _rtw_memcmp(sub_skb->data, rtw_bridge_tunnel_header, SNAP_SIZE) )) {
+		 rtl8188fu__rtw_memcmp(sub_skb->data, rtw_bridge_tunnel_header, SNAP_SIZE) )) {
 		/* remove RFC1042 or Bridge-Tunnel encapsulation and replace EtherType */
 		skb_pull(sub_skb, SNAP_SIZE);
-		_rtw_memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->src, ETH_ALEN);
-		_rtw_memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->dst, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->src, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->dst, ETH_ALEN);
 	} else {
 		u16 len;
 		/* Leave Ethernet header part of hdr and full payload */
 		len = htons(sub_skb->len);
-		_rtw_memcpy(skb_push(sub_skb, 2), &len, 2);
-		_rtw_memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->src, ETH_ALEN);
-		_rtw_memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->dst, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(skb_push(sub_skb, 2), &len, 2);
+		rtl8188fu__rtw_memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->src, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(skb_push(sub_skb, ETH_ALEN), pattrib->dst, ETH_ALEN);
 	}
 
 	return sub_skb;
@@ -301,7 +301,7 @@ _pkt *rtw_os_alloc_msdu_pkt(union recv_frame *prframe, u16 nSubframe_Length, u8 
 #define PAYLOAD_LEN_LOC_OF_IP_HDR 0x10 /*ethernet payload length location of ip header (DA+SA+eth_type+(version&hdr_len)) */	
 #endif
 
-void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib)
+void rtl8188fu_rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attrib *pattrib)
 {
 	struct mlme_priv*pmlmepriv = &padapter->mlmepriv;
 	struct recv_priv *precvpriv = &(padapter->recvpriv);
@@ -321,31 +321,31 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 			//DBG_871X("bmcast=%d\n", bmcast);
 
-			if (_rtw_memcmp(pattrib->dst, adapter_mac_addr(padapter), ETH_ALEN) == _FALSE)
+			if (rtl8188fu__rtw_memcmp(pattrib->dst, adapter_mac_addr(padapter), ETH_ALEN) == _FALSE)
 			{
 				//DBG_871X("not ap psta=%p, addr=%pM\n", psta, pattrib->dst);
 
 				if(bmcast)
 				{
-					psta = rtw_get_bcmc_stainfo(padapter);
+					psta = rtl8188fu_rtw_get_bcmc_stainfo(padapter);
 					pskb2 = rtw_skb_clone(pkt);
 				} else {
-					psta = rtw_get_stainfo(pstapriv, pattrib->dst);
+					psta = rtl8188fu_rtw_get_stainfo(pstapriv, pattrib->dst);
 				}
 
 				if(psta)
 				{
 					struct net_device *pnetdev= (struct net_device*)padapter->pnetdev;			
 
-					//DBG_871X("directly forwarding to the rtw_xmit_entry\n");
+					//DBG_871X("directly forwarding to the rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry\n");
 
 					//skb->ip_summed = CHECKSUM_NONE;
 					pkt->dev = pnetdev;				
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
-					skb_set_queue_mapping(pkt, rtw_recv_select_queue(pkt));
+					skb_set_queue_mapping(pkt, rtl8188fu_rtw_recv_select_queue(pkt));
 #endif //LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35)
 
-					_rtw_xmit_entry(pkt, pnetdev);
+					_rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry(pkt, pnetdev);
 
 					if(bmcast && (pskb2 != NULL) ) {
 						pkt = pskb2;
@@ -376,10 +376,10 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 
 		if( br_port && (check_fwstate(pmlmepriv, WIFI_STATION_STATE|WIFI_ADHOC_STATE) == _TRUE) )
 		{
-			int nat25_handle_frame(_adapter *priv, struct sk_buff *skb);
-			if (nat25_handle_frame(padapter, pkt) == -1) {
+			int rtl8188fu_nat25_handle_frame(_adapter *priv, struct sk_buff *skb);
+			if (rtl8188fu_nat25_handle_frame(padapter, pkt) == -1) {
 				//priv->ext_stats.rx_data_drops++;
-				//DEBUG_ERR("RX DROP: nat25_handle_frame fail!\n");
+				//DEBUG_ERR("RX DROP: rtl8188fu_nat25_handle_frame fail!\n");
 				//return FAIL;
 				
 #if 1
@@ -392,7 +392,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 		}
 #endif	// CONFIG_BR_EXT
 		if( precvpriv->sink_udpport > 0)
-			rtw_sink_rtp_seq_dbg(padapter,pkt);
+			rtl8188fu_rtw_sink_rtp_seq_dbg(padapter,pkt);
 #ifdef DBG_UDP_PKT_LOSE_11AC
 		/* After eth_type_trans process , pkt->data pointer will move from ethrnet header to ip header ,  
 		*	we have to check ethernet type , so this debug must be print before eth_type_trans
@@ -431,7 +431,7 @@ void rtw_os_recv_indicate_pkt(_adapter *padapter, _pkt *pkt, struct rx_pkt_attri
 	}
 }
 
-void rtw_handle_tkip_mic_err(_adapter *padapter, struct sta_info *sta, u8 bgroup)
+void rtl8188fu_rtw_handle_tkip_mic_err(_adapter *padapter, struct sta_info *sta, u8 bgroup)
 {
 #ifdef CONFIG_IOCTL_CFG80211
 	enum nl80211_key_type key_type = 0;
@@ -444,11 +444,11 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, struct sta_info *sta, u8 bgroup
 
 	if( psecuritypriv->last_mic_err_time == 0 )
 	{
-		psecuritypriv->last_mic_err_time = rtw_get_current_time();
+		psecuritypriv->last_mic_err_time = rtl8188fu_rtw_get_current_time();
 	}
 	else
 	{
-		cur_time = rtw_get_current_time();
+		cur_time = rtl8188fu_rtw_get_current_time();
 
 		if( cur_time - psecuritypriv->last_mic_err_time < 60*HZ )
 		{
@@ -458,7 +458,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, struct sta_info *sta, u8 bgroup
 		}
 		else
 		{
-			psecuritypriv->last_mic_err_time = rtw_get_current_time();
+			psecuritypriv->last_mic_err_time = rtl8188fu_rtw_get_current_time();
 		}
 	}
 
@@ -475,7 +475,7 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, struct sta_info *sta, u8 bgroup
 	cfg80211_michael_mic_failure(padapter->pnetdev, sta->hwaddr, key_type, -1, NULL, GFP_ATOMIC);
 #endif
 
-	_rtw_memset( &ev, 0x00, sizeof( ev ) );
+	rtl8188fu__rtw_memset( &ev, 0x00, sizeof( ev ) );
 	if ( bgroup )
 	{
 	    ev.flags |= IW_MICFAILURE_GROUP;
@@ -486,9 +486,9 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, struct sta_info *sta, u8 bgroup
 	}
 
 	ev.src_addr.sa_family = ARPHRD_ETHER;
-	_rtw_memcpy(ev.src_addr.sa_data, sta->hwaddr, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(ev.src_addr.sa_data, sta->hwaddr, ETH_ALEN);
 
-	_rtw_memset( &wrqu, 0x00, sizeof( wrqu ) );
+	rtl8188fu__rtw_memset( &wrqu, 0x00, sizeof( wrqu ) );
 	wrqu.data.length = sizeof( ev );
 
 #ifndef CONFIG_IOCTL_CFG80211
@@ -496,14 +496,14 @@ void rtw_handle_tkip_mic_err(_adapter *padapter, struct sta_info *sta, u8 bgroup
 #endif
 }
 
-void rtw_hostapd_mlme_rx(_adapter *padapter, union recv_frame *precv_frame)
+void rtl8188fu_rtw_hostapd_mlme_rx(_adapter *padapter, union recv_frame *precv_frame)
 {
 #ifdef CONFIG_HOSTAPD_MLME
 	_pkt *skb;
 	struct hostapd_priv *phostapdpriv  = padapter->phostapdpriv;
 	struct net_device *pmgnt_netdev = phostapdpriv->pmgnt_netdev;
 
-	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("+rtw_hostapd_mlme_rx\n"));
+	RT_TRACE(_module_recv_osdep_c_, _drv_info_, ("+rtl8188fu_rtw_hostapd_mlme_rx\n"));
 
 	skb = precv_frame->u.hdr.pkt;
 
@@ -529,11 +529,11 @@ void rtw_hostapd_mlme_rx(_adapter *padapter, union recv_frame *precv_frame)
 	skb_reset_mac_header(skb);
 
        //skb_pull(skb, 24);
-       _rtw_memset(skb->cb, 0, sizeof(skb->cb));
+       rtl8188fu__rtw_memset(skb->cb, 0, sizeof(skb->cb));
 
 	rtw_netif_rx(pmgnt_netdev, skb);
 
-	precv_frame->u.hdr.pkt = NULL; // set pointer to NULL before rtw_free_recvframe() if call rtw_netif_rx()
+	precv_frame->u.hdr.pkt = NULL; // set pointer to NULL before rtl8188fu_rtw_free_recvframe() if call rtw_netif_rx()
 #endif
 }
 
@@ -583,7 +583,7 @@ static void rtw_os_ksocket_send(_adapter *padapter, union recv_frame *precv_fram
 }
 #endif //CONFIG_AUTO_AP_MODE
 
-int rtw_recv_monitor(_adapter *padapter, union recv_frame *precv_frame)
+int rtl8188fu_rtw_recv_monitor(_adapter *padapter, union recv_frame *precv_frame)
 {
 	int ret = _FAIL;
 	struct recv_priv *precvpriv;
@@ -614,7 +614,7 @@ int rtw_recv_monitor(_adapter *padapter, union recv_frame *precv_frame)
 
 	rtw_netif_rx(padapter->pnetdev, skb);
 
-	/* pointers to NULL before rtw_free_recvframe() */
+	/* pointers to NULL before rtl8188fu_rtw_free_recvframe() */
 	precv_frame->u.hdr.pkt = NULL;
 
 	ret = _SUCCESS;
@@ -623,13 +623,13 @@ _recv_drop:
 
 	/* enqueue back to free_recv_queue */
 	if (precv_frame)
-		rtw_free_recvframe(precv_frame, pfree_recv_queue);
+		rtl8188fu_rtw_free_recvframe(precv_frame, pfree_recv_queue);
 
 	return ret;
 
 }
 
-int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
+int rtl8188fu_rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 {
 	struct recv_priv *precvpriv;
 	_queue	*pfree_recv_queue;
@@ -663,12 +663,12 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 	skb = precv_frame->u.hdr.pkt;
 	if(skb == NULL)
 	{
-		RT_TRACE(_module_recv_osdep_c_,_drv_err_,("rtw_recv_indicatepkt():skb==NULL something wrong!!!!\n"));
+		RT_TRACE(_module_recv_osdep_c_,_drv_err_,("rtl8188fu_rtw_recv_indicatepkt():skb==NULL something wrong!!!!\n"));
 		goto _recv_indicatepkt_drop;
 	}
 
-	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("rtw_recv_indicatepkt():skb != NULL !!!\n"));		
-	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("rtw_recv_indicatepkt():precv_frame->u.hdr.rx_head=%p  precv_frame->hdr.rx_data=%p\n", precv_frame->u.hdr.rx_head, precv_frame->u.hdr.rx_data));
+	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("rtl8188fu_rtw_recv_indicatepkt():skb != NULL !!!\n"));		
+	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("rtl8188fu_rtw_recv_indicatepkt():precv_frame->u.hdr.rx_head=%p  precv_frame->hdr.rx_data=%p\n", precv_frame->u.hdr.rx_head, precv_frame->u.hdr.rx_data));
 	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("precv_frame->hdr.rx_tail=%p precv_frame->u.hdr.rx_end=%p precv_frame->hdr.len=%d \n", precv_frame->u.hdr.rx_tail, precv_frame->u.hdr.rx_end, precv_frame->u.hdr.len));
 
 	skb->data = precv_frame->u.hdr.rx_data;
@@ -715,13 +715,13 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 			u8 *ip = pkt->data + 14;
 
 			if (GET_IPV4_PROTOCOL(ip) == 0x06  /* TCP */
-				&& rtw_st_ctl_chk_reg_s_proto(&sta->st_ctl, 0x06) == _TRUE
+				&& rtl8188fu_rtw_st_ctl_chk_reg_s_proto(&sta->st_ctl, 0x06) == _TRUE
 			) {
 				u8 *tcp = ip + GET_IPV4_IHL(ip) * 4;
 
-				if (rtw_st_ctl_chk_reg_rule(&sta->st_ctl, padapter, IPV4_DST(ip), TCP_DST(tcp), IPV4_SRC(ip), TCP_SRC(tcp)) == _TRUE) {
+				if (rtl8188fu_rtw_st_ctl_chk_reg_rule(&sta->st_ctl, padapter, IPV4_DST(ip), TCP_DST(tcp), IPV4_SRC(ip), TCP_SRC(tcp)) == _TRUE) {
 					if (GET_TCP_SYN(tcp) && GET_TCP_ACK(tcp)) {
-						session_tracker_add_cmd(padapter, sta
+						rtl8188fu_session_tracker_add_cmd(padapter, sta
 							, IPV4_DST(ip), TCP_DST(tcp)
 							, IPV4_SRC(ip), TCP_SRC(tcp));
 						if (DBG_SESSION_TRACKER)
@@ -731,7 +731,7 @@ int rtw_recv_indicatepkt(_adapter *padapter, union recv_frame *precv_frame)
 								, IP_ARG(IPV4_SRC(ip)), PORT_ARG(TCP_SRC(tcp)));
 					}
 					if (GET_TCP_FIN(tcp)) {
-						session_tracker_del_cmd(padapter, sta
+						rtl8188fu_session_tracker_del_cmd(padapter, sta
 							, IPV4_DST(ip), TCP_DST(tcp)
 							, IPV4_SRC(ip), TCP_SRC(tcp));
 						if (DBG_SESSION_TRACKER)
@@ -748,15 +748,15 @@ bypass_session_tracker:
 		;
 	}
 
-	rtw_os_recv_indicate_pkt(padapter, skb, pattrib);
+	rtl8188fu_rtw_os_recv_indicate_pkt(padapter, skb, pattrib);
 
 _recv_indicatepkt_end:
 
-	precv_frame->u.hdr.pkt = NULL; // pointers to NULL before rtw_free_recvframe()
+	precv_frame->u.hdr.pkt = NULL; // pointers to NULL before rtl8188fu_rtw_free_recvframe()
 
-	rtw_free_recvframe(precv_frame, pfree_recv_queue);
+	rtl8188fu_rtw_free_recvframe(precv_frame, pfree_recv_queue);
 
-	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("\n rtw_recv_indicatepkt :after rtw_os_recv_indicate_pkt!!!!\n"));
+	RT_TRACE(_module_recv_osdep_c_,_drv_info_,("\n rtl8188fu_rtw_recv_indicatepkt :after rtl8188fu_rtw_os_recv_indicate_pkt!!!!\n"));
 
 
         return _SUCCESS;
@@ -765,7 +765,7 @@ _recv_indicatepkt_drop:
 
 	 //enqueue back to free_recv_queue
 	 if(precv_frame)
-		 rtw_free_recvframe(precv_frame, pfree_recv_queue);
+		 rtl8188fu_rtw_free_recvframe(precv_frame, pfree_recv_queue);
 
 	 DBG_COUNTER(padapter->rx_logs.os_indicate_err);
 
@@ -773,7 +773,7 @@ _recv_indicatepkt_drop:
 
 }
 
-void rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf)
+void rtl8188fu_rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf)
 {
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 
@@ -798,18 +798,18 @@ void rtw_os_read_port(_adapter *padapter, struct recv_buf *precvbuf)
 #endif
 
 }
-void _rtw_reordering_ctrl_timeout_handler (void *FunctionContext);
-void _rtw_reordering_ctrl_timeout_handler (void *FunctionContext)
+void rtl8188fu__rtl8188fu_rtw_reordering_ctrl_timeout_handler (void *FunctionContext);
+void rtl8188fu__rtl8188fu_rtw_reordering_ctrl_timeout_handler (void *FunctionContext)
 {
 	struct recv_reorder_ctrl *preorder_ctrl = (struct recv_reorder_ctrl *)FunctionContext;
-	rtw_reordering_ctrl_timeout_handler(preorder_ctrl);
+	rtl8188fu_rtw_reordering_ctrl_timeout_handler(preorder_ctrl);
 }
 
-void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
+void rtl8188fu_rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
 {
 	_adapter *padapter = preorder_ctrl->padapter;
 
-	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter->pnetdev, _rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
+	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter->pnetdev, rtl8188fu__rtl8188fu_rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
 
 }
 

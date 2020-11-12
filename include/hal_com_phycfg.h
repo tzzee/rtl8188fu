@@ -75,7 +75,7 @@ typedef struct _BB_REGISTER_DEFINITION{
 
 //----------------------------------------------------------------------
 u8
-PHY_GetTxPowerByRateBase(
+rtl8188fu_PHY_GetTxPowerByRateBase(
 	IN	PADAPTER		Adapter,
 	IN	u8				Band,
 	IN	u8				RfPath,
@@ -93,7 +93,7 @@ PHY_GetRateSectionIndexOfTxPowerByRate(
 #endif /* TX_POWER_BY_RATE_OLD */
 
 VOID
-PHY_GetRateValuesOfTxPowerByRate(
+rtl8188fu_PHY_GetRateValuesOfTxPowerByRate(
 	IN	PADAPTER pAdapter,
 	IN	u32 RegAddr,
 	IN	u32 BitMask,
@@ -104,12 +104,12 @@ PHY_GetRateValuesOfTxPowerByRate(
 	);
 
 u8
-PHY_GetRateIndexOfTxPowerByRate(
+rtl8188fu_PHY_GetRateIndexOfTxPowerByRate(
 	IN	u8	Rate
 	);
 
 VOID 
-PHY_SetTxPowerIndexByRateSection(
+PHY_rtl8188fu_SetTxPowerIndexByRateSection(
 	IN	PADAPTER		pAdapter,
 	IN	u8				RFPath,	
 	IN	u8				Channel,
@@ -117,7 +117,7 @@ PHY_SetTxPowerIndexByRateSection(
 	);
 
 s8
-_PHY_GetTxPowerByRate(
+rtl8188fu__rtl8188fu_PHY_GetTxPowerByRate(
 	IN	PADAPTER	pAdapter,
 	IN	u8			Band,
 	IN	u8			RFPath,
@@ -126,7 +126,7 @@ _PHY_GetTxPowerByRate(
 	);
 
 s8
-PHY_GetTxPowerByRate( 
+rtl8188fu_PHY_GetTxPowerByRate( 
 	IN	PADAPTER	pAdapter, 
 	IN	u8			Band, 
 	IN	u8			RFPath, 
@@ -135,7 +135,7 @@ PHY_GetTxPowerByRate(
 	);
 
 VOID
-PHY_SetTxPowerByRate( 
+PHY_rtl8188fu_SetTxPowerByRate( 
 	IN	PADAPTER	pAdapter, 
 	IN	u8			Band, 
 	IN	u8			RFPath, 
@@ -145,14 +145,14 @@ PHY_SetTxPowerByRate(
 	);
 
 VOID
-PHY_SetTxPowerLevelByPath(
+rtl8188fu_PHY_rtl8188fu_SetTxPowerLevelByPath(
 	IN	PADAPTER	Adapter,
 	IN	u8			channel,
 	IN	u8			path
 	);
 
 VOID 
-PHY_SetTxPowerIndexByRateArray(
+PHY_rtl8188fu_SetTxPowerIndexByRateArray(
 	IN	PADAPTER		pAdapter,
 	IN	u8				RFPath,
 	IN	CHANNEL_WIDTH	BandWidth,	
@@ -162,12 +162,12 @@ PHY_SetTxPowerIndexByRateArray(
 	);
 
 VOID
-PHY_InitTxPowerByRate(
+rtl8188fu_PHY_InitTxPowerByRate(
 	IN	PADAPTER	pAdapter
 	);
 
 VOID
-PHY_StoreTxPowerByRate(
+rtl8188fu_PHY_StoreTxPowerByRate(
 	IN	PADAPTER	pAdapter,
 	IN	u32			Band,
 	IN	u32			RfPath,
@@ -178,12 +178,12 @@ PHY_StoreTxPowerByRate(
 	);
 
 VOID
-PHY_TxPowerByRateConfiguration(
+rtl8188fu_PHY_TxPowerByRateConfiguration(
 	IN  PADAPTER			pAdapter
 	);
 
 u8
-PHY_GetTxPowerIndexBase(
+rtl8188fu_PHY_GetTxPowerIndexBase(
 	IN	PADAPTER		pAdapter,
 	IN	u8				RFPath,
 	IN	u8				Rate,	
@@ -193,7 +193,7 @@ PHY_GetTxPowerIndexBase(
 	);
 
 s8
-PHY_GetTxPowerLimit(
+rtl8188fu_PHY_GetTxPowerLimit(
 	IN	PADAPTER		Adapter,
 	IN	u32				RegPwrTblSel,
 	IN	BAND_TYPE		Band,
@@ -204,24 +204,24 @@ PHY_GetTxPowerLimit(
 	);
 
 VOID 
-PHY_ConvertTxPowerLimitToPowerIndex(
+rtl8188fu_PHY_ConvertTxPowerLimitToPowerIndex(
 	IN	PADAPTER			Adapter
 	);
 
 VOID
-PHY_InitTxPowerLimit(
+rtl8188fu_PHY_InitTxPowerLimit(
 	IN	PADAPTER			Adapter
 	);
 
 s8
-PHY_GetTxPowerTrackingOffset( 
+rtl8188fu_PHY_GetTxPowerTrackingOffset( 
 	PADAPTER	pAdapter,
 	u8			Rate,
 	u8			RFPath
 	);
 
 u8
-PHY_GetTxPowerIndex(
+rtl8188fu_PHY_GetTxPowerIndex(
 	IN	PADAPTER			pAdapter,
 	IN	u8					RFPath,
 	IN	u8					Rate,	
@@ -230,25 +230,25 @@ PHY_GetTxPowerIndex(
 	);
 
 VOID
-PHY_SetTxPowerIndex(
+PHY_rtl8188fu_SetTxPowerIndex(
 	IN	PADAPTER		pAdapter,
 	IN	u32				PowerIndex,
 	IN	u8				RFPath,	
 	IN	u8				Rate
 	);
 
-bool phy_is_tx_power_limit_needed(_adapter *adapter);
-bool phy_is_tx_power_by_rate_needed(_adapter *adapter);
-int phy_load_tx_power_by_rate(_adapter *adapter, u8 chk_file);
-int phy_load_tx_power_limit(_adapter *adapter, u8 chk_file);
-void phy_load_tx_power_ext_info(_adapter *adapter, u8 chk_file);
-void phy_reload_tx_power_ext_info(_adapter *adapter);
-void phy_reload_default_tx_power_ext_info(_adapter *adapter);
+bool rtl8188fu_phy_is_tx_power_limit_needed(_adapter *adapter);
+bool rtl8188fu_phy_is_tx_power_by_rate_needed(_adapter *adapter);
+int rtl8188fu_phy_load_tx_power_by_rate(_adapter *adapter, u8 chk_file);
+int rtl8188fu_phy_load_tx_power_limit(_adapter *adapter, u8 chk_file);
+void rtl8188fu_phy_load_tx_power_ext_info(_adapter *adapter, u8 chk_file);
+void rtl8188fu_phy_reload_tx_power_ext_info(_adapter *adapter);
+void rtl8188fu_phy_reload_default_tx_power_ext_info(_adapter *adapter);
 
-void dump_tx_power_ext_info(void *sel, _adapter *adapter);
-void dump_target_tx_power(void *sel, _adapter *adapter);
-void dump_tx_power_by_rate(void *sel, _adapter *adapter);
-void dump_tx_power_limit(void *sel, _adapter *adapter);
+void rtl8188fu_dump_tx_power_ext_info(void *sel, _adapter *adapter);
+void rtl8188fu_dump_target_tx_power(void *sel, _adapter *adapter);
+void rtl8188fu_dump_tx_power_by_rate(void *sel, _adapter *adapter);
+void rtl8188fu_dump_tx_power_limit(void *sel, _adapter *adapter);
 
 int rtw_get_phy_file_path(_adapter *adapter, const char *file_name);
 

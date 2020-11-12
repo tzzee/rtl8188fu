@@ -44,22 +44,22 @@ typedef struct _CFO_TRACKING_
 }CFO_TRACKING, *PCFO_TRACKING;
 
 VOID
-ODM_CfoTrackingReset(
+rtl8188fu_ODM_CfoTrackingReset(
 	IN		PVOID					pDM_VOID
 );
 
 VOID
-ODM_CfoTrackingInit(
+rtl8188fu_ODM_CfoTrackingInit(
 	IN		PVOID					pDM_VOID
 );
 
 VOID
-ODM_CfoTracking(
+rtl8188fu_ODM_CfoTracking(
 	IN		PVOID					pDM_VOID
 );
 
 VOID
-ODM_ParsingCFO(
+rtl8188fu_ODM_ParsingCFO(
 	IN		PVOID					pDM_VOID,
 	IN		PVOID					pPktinfo_VOID,
 	IN     	s1Byte* 					pcfotail

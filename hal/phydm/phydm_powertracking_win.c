@@ -28,7 +28,7 @@
 // Global var
 //============================================================
 
-u4Byte	OFDMSwingTable[OFDM_TABLE_SIZE] = {
+u4Byte	rtl8188fu_OFDMSwingTable[OFDM_TABLE_SIZE] = {
 	0x7f8001fe,	// 0, +6.0dB
 	0x788001e2,	// 1, +5.5dB
 	0x71c001c7,	// 2, +5.0dB
@@ -68,7 +68,7 @@ u4Byte	OFDMSwingTable[OFDM_TABLE_SIZE] = {
 	0x10000040,	// 36, -12.0dB
 };
 
-u1Byte	CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
+u1Byte	rtl8188fu_CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
 	{0x36, 0x35, 0x2e, 0x25, 0x1c, 0x12, 0x09, 0x04},	// 0, +0dB
 	{0x33, 0x32, 0x2b, 0x23, 0x1a, 0x11, 0x08, 0x04},	// 1, -0.5dB
 	{0x30, 0x2f, 0x29, 0x21, 0x19, 0x10, 0x08, 0x03},	// 2, -1.0dB
@@ -105,7 +105,7 @@ u1Byte	CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
 };
 
 
-u1Byte	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
+u1Byte	rtl8188fu_CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
 	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00},	// 0, +0dB  
 	{0x33, 0x32, 0x2b, 0x19, 0x00, 0x00, 0x00, 0x00},	// 1, -0.5dB 
 	{0x30, 0x2f, 0x29, 0x18, 0x00, 0x00, 0x00, 0x00},	// 2, -1.0dB  
@@ -142,7 +142,7 @@ u1Byte	CCKSwingTable_Ch14[CCK_TABLE_SIZE][8] = {
 };
 
 
-u4Byte OFDMSwingTable_New[OFDM_TABLE_SIZE] = {
+u4Byte rtl8188fu_OFDMSwingTable_New[OFDM_TABLE_SIZE] = {
 	0x0b40002d, // 0,  -15.0dB	
 	0x0c000030, // 1,  -14.5dB
 	0x0cc00033, // 2,  -14.0dB
@@ -189,7 +189,7 @@ u4Byte OFDMSwingTable_New[OFDM_TABLE_SIZE] = {
 };               
 
 
-u1Byte CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16] = {
+u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16] = {
 {0x44, 0x42, 0x3C, 0x33, 0x28, 0x1C, 0x13, 0x0B, 0x05, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},    /*-16dB*/
 {0x48, 0x46, 0x3F, 0x36, 0x2A, 0x1E, 0x14, 0x0B, 0x05, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},    /*-15.5dB*/
 {0x4D, 0x4A, 0x43, 0x39, 0x2C, 0x20, 0x15, 0x0C, 0x06, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},    /*-15dB*/
@@ -214,7 +214,7 @@ u1Byte CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16] = {
 };
 
 
-u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
+u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01},	//  0, -16.0dB
 	{0x09, 0x09, 0x08, 0x06, 0x05, 0x03, 0x01, 0x01},	//  1, -15.5dB
 	{0x0a, 0x09, 0x08, 0x07, 0x05, 0x03, 0x02, 0x01},	//  2, -15.0dB
@@ -251,7 +251,7 @@ u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 };                                                                  
 
 
-u1Byte CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8]= {
+u1Byte rtl8188fu_CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8]= {
 	{0x09, 0x08, 0x07, 0x04, 0x00, 0x00, 0x00, 0x00},	//  0, -16.0dB
 	{0x09, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00},	//  1, -15.5dB
 	{0x0a, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00},	//  2, -15.0dB
@@ -287,7 +287,7 @@ u1Byte CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8]= {
 	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00} 	// 32, +0dB	
 };
 
-u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE] =
+u4Byte rtl8188fu_TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE] =
 {
 	0x081, // 0,  -12.0dB
 	0x088, // 1,  -11.5dB
@@ -373,7 +373,7 @@ unsigned int TxPwrTrk_OFDM_SwingTbl[TxPwrTrk_OFDM_SwingTbl_Len] = {
 #endif
 
 VOID
-odm_TXPowerTrackingInit(
+rtl8188fu_odm_TXPowerTrackingInit(
 	IN	PVOID		pDM_VOID
 	)
 {
@@ -383,11 +383,11 @@ odm_TXPowerTrackingInit(
 		return;
 #endif
 
-	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
+	rtl8188fu_odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
 }	
 
 u1Byte 
-getSwingIndex(
+rtl8188fu_getSwingIndex(
 	IN	PVOID		pDM_VOID
 	)
 {
@@ -404,11 +404,11 @@ getSwingIndex(
 	{
 		bbSwing = PHY_QueryBBReg(Adapter, rOFDM0_XATxIQImbalance, 0xFFC00000);
 
-		pSwingTable = OFDMSwingTable_New;
+		pSwingTable = rtl8188fu_OFDMSwingTable_New;
 		swingTableSize = OFDM_TABLE_SIZE;
 	} else {
 		bbSwing = PHY_GetTxBBSwing_8812A(Adapter, pHalData->CurrentBandType, ODM_RF_PATH_A);
-		pSwingTable = TxScalingTable_Jaguar;
+		pSwingTable = rtl8188fu_TxScalingTable_Jaguar;
 		swingTableSize = TXSCALE_TABLE_SIZE;		
 	}
 
@@ -424,12 +424,12 @@ getSwingIndex(
 }
 
 VOID
-odm_TXPowerTrackingThermalMeterInit(
+rtl8188fu_odm_TXPowerTrackingThermalMeterInit(
 	IN	PVOID		pDM_VOID
 	)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	u1Byte defaultSwingIndex = getSwingIndex(pDM_Odm);
+	u1Byte defaultSwingIndex = rtl8188fu_getSwingIndex(pDM_Odm);
 	PODM_RF_CAL_T	pRFCalibrateInfo = &(pDM_Odm->RFCalibrateInfo);
 	
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
@@ -521,7 +521,7 @@ odm_TXPowerTrackingThermalMeterInit(
 
 
 VOID
-ODM_TXPowerTrackingCheck(
+rtl8188fu_ODM_TXPowerTrackingCheck(
 	IN	PVOID		pDM_VOID
 	)
 {
@@ -534,15 +534,15 @@ ODM_TXPowerTrackingCheck(
 	switch	(pDM_Odm->SupportPlatform)
 	{
 		case	ODM_WIN:
-			odm_TXPowerTrackingCheckMP(pDM_Odm);
+			rtl8188fu_odm_TXPowerTrackingCheckMP(pDM_Odm);
 			break;
 
 		case	ODM_CE:
-			odm_TXPowerTrackingCheckCE(pDM_Odm);
+			rtl8188fu_odm_TXPowerTrackingCheckCE(pDM_Odm);
 			break;
 
 		case	ODM_AP:
-			odm_TXPowerTrackingCheckAP(pDM_Odm);		
+			rtl8188fu_odm_TXPowerTrackingCheckAP(pDM_Odm);		
 			break;		
 
 		default:
@@ -552,7 +552,7 @@ ODM_TXPowerTrackingCheck(
 }
 
 VOID
-odm_TXPowerTrackingCheckCE(
+rtl8188fu_odm_TXPowerTrackingCheckCE(
 	IN	PVOID		pDM_VOID
 	)
 {
@@ -572,7 +572,7 @@ odm_TXPowerTrackingCheckCE(
 
 	if(!pRFCalibrateInfo->TM_Trigger)		//at least delay 1 sec
 	{
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER, bRFRegOffsetMask, 0x60);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_T_METER, bRFRegOffsetMask, 0x60);
 		//DBG_8192C("Trigger 92C Thermal Meter!!\n");
 		
 		pRFCalibrateInfo->TM_Trigger = 1;
@@ -590,7 +590,7 @@ odm_TXPowerTrackingCheckCE(
 }
 
 VOID
-odm_TXPowerTrackingCheckMP(
+rtl8188fu_odm_TXPowerTrackingCheckMP(
 	IN	PVOID		pDM_VOID
 	)
 {
@@ -624,7 +624,7 @@ odm_TXPowerTrackingCheckMP(
 
 
 VOID
-odm_TXPowerTrackingCheckAP(
+rtl8188fu_odm_TXPowerTrackingCheckAP(
 	IN	PVOID		pDM_VOID
 	)
 {
@@ -642,7 +642,7 @@ odm_TXPowerTrackingDirectCall(
 	HAL_DATA_TYPE		*pHalData	= GET_HAL_DATA(Adapter);
 	PDM_ODM_T			pDM_Odm = &pHalData->DM_OutSrc;
 	
-	ODM_TXPowerTrackingCallback_ThermalMeter(Adapter);
+	rtl8188fu_ODM_TXPowerTrackingCallback_ThermalMeter(Adapter);
 }
 
 VOID

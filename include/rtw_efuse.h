@@ -106,24 +106,24 @@ typedef enum
 
 /*------------------------------Define structure----------------------------*/ 
 typedef struct _EFUSE_HAL{
-	u8	fakeEfuseBank;
-	u32	fakeEfuseUsedBytes;
-	u8	fakeEfuseContent[EFUSE_MAX_HW_SIZE];
-	u8	fakeEfuseInitMap[EFUSE_MAX_MAP_LEN];
-	u8	fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN];
+	u8	rtl8188fu_fakeEfuseBank;
+	u32	rtl8188fu_fakeEfuseUsedBytes;
+	u8	rtl8188fu_fakeEfuseContent[EFUSE_MAX_HW_SIZE];
+	u8	rtl8188fu_fakeEfuseInitMap[EFUSE_MAX_MAP_LEN];
+	u8	rtl8188fu_fakeEfuseModifiedMap[EFUSE_MAX_MAP_LEN];
 	u32	EfuseUsedBytes;
 	u8	EfuseUsedPercentage;
 	
-	u16	BTEfuseUsedBytes;
+	u16	rtl8188fu_BTEfuseUsedBytes;
 	u8	BTEfuseUsedPercentage;
-	u8	BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-	u8	BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
-	u8	BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
+	u8	rtl8188fu_BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
+	u8	rtl8188fu_BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
+	u8	rtl8188fu_BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
 
-	u16	fakeBTEfuseUsedBytes;
-	u8	fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-	u8	fakeBTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
-	u8	fakeBTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
+	u16	fakertl8188fu_BTEfuseUsedBytes;
+	u8	rtl8188fu_fakertl8188fu_BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
+	u8	fakertl8188fu_BTEfuseInitMap[EFUSE_BT_MAX_MAP_LEN];
+	u8	fakertl8188fu_BTEfuseModifiedMap[EFUSE_BT_MAX_MAP_LEN];
 
 	// EFUSE Configuration, initialized in HAL_CmnInitPGData().
 	const u16  MaxSecNum_WiFi;
@@ -149,65 +149,65 @@ typedef struct _EFUSE_HAL{
 	
 }EFUSE_HAL, *PEFUSE_HAL;
 
-extern u8 maskfileBuffer[32];
+extern u8 rtl8188fu_maskfileBuffer[32];
 
 /*------------------------Export global variable----------------------------*/
-extern u8 fakeEfuseBank;
-extern u32 fakeEfuseUsedBytes;
-extern u8 fakeEfuseContent[];
-extern u8 fakeEfuseInitMap[];
-extern u8 fakeEfuseModifiedMap[];
+extern u8 rtl8188fu_fakeEfuseBank;
+extern u32 rtl8188fu_fakeEfuseUsedBytes;
+extern u8 rtl8188fu_fakeEfuseContent[];
+extern u8 rtl8188fu_fakeEfuseInitMap[];
+extern u8 rtl8188fu_fakeEfuseModifiedMap[];
 
-extern u32 BTEfuseUsedBytes;
-extern u8 BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-extern u8 BTEfuseInitMap[];
-extern u8 BTEfuseModifiedMap[];
+extern u32 rtl8188fu_BTEfuseUsedBytes;
+extern u8 rtl8188fu_BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
+extern u8 rtl8188fu_BTEfuseInitMap[];
+extern u8 rtl8188fu_BTEfuseModifiedMap[];
 
-extern u32 fakeBTEfuseUsedBytes;
-extern u8 fakeBTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
-extern u8 fakeBTEfuseInitMap[];
-extern u8 fakeBTEfuseModifiedMap[];
+extern u32 fakertl8188fu_BTEfuseUsedBytes;
+extern u8 rtl8188fu_fakertl8188fu_BTEfuseContent[EFUSE_MAX_BT_BANK][EFUSE_MAX_HW_SIZE];
+extern u8 fakertl8188fu_BTEfuseInitMap[];
+extern u8 fakertl8188fu_BTEfuseModifiedMap[];
 /*------------------------Export global variable----------------------------*/
-u8	efuse_bt_GetCurrentSize(PADAPTER padapter, u16 *size);
-u16	efuse_bt_GetMaxSize(PADAPTER padapter);
+u8	rtl8188fu_efuse_bt_GetCurrentSize(PADAPTER padapter, u16 *size);
+u16	rtl8188fu_efuse_bt_GetMaxSize(PADAPTER padapter);
 
-u8	efuse_GetCurrentSize(PADAPTER padapter, u16 *size);
-u16	efuse_GetMaxSize(PADAPTER padapter);
-u8	rtw_efuse_access(PADAPTER padapter, u8 bRead, u16 start_addr, u16 cnts, u8 *data);
-u8	rtw_efuse_mask_map_read(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
-u8	rtw_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
-u8	rtw_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
-u8	rtw_BT_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
-u8 	rtw_BT_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
+u8	rtl8188fu_efuse_GetCurrentSize(PADAPTER padapter, u16 *size);
+u16	rtl8188fu_efuse_GetMaxSize(PADAPTER padapter);
+u8	rtl8188fu_rtw_efuse_access(PADAPTER padapter, u8 bRead, u16 start_addr, u16 cnts, u8 *data);
+u8	rtl8188fu_rtw_efuse_mask_map_read(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
+u8	rtl8188fu_rtw_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
+u8	rtl8188fu_rtw_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
+u8	rtl8188fu_rtw_BT_efuse_map_read(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
+u8 	rtl8188fu_rtw_BT_efuse_map_write(PADAPTER padapter, u16 addr, u16 cnts, u8 *data);
 
-u16	Efuse_GetCurrentSize(PADAPTER pAdapter, u8 efuseType, BOOLEAN bPseudoTest);
-u8	Efuse_CalculateWordCnts(u8 word_en);
-void	ReadEFuseByte(PADAPTER Adapter, u16 _offset, u8 *pbuf, BOOLEAN bPseudoTest) ;
-void	EFUSE_GetEfuseDefinition(PADAPTER pAdapter, u8 efuseType, u8 type, void *pOut, BOOLEAN bPseudoTest);
-u8	efuse_OneByteRead(PADAPTER pAdapter, u16 addr, u8 *data, BOOLEAN	 bPseudoTest);
-u8	efuse_OneByteWrite(PADAPTER pAdapter, u16 addr, u8 data, BOOLEAN	 bPseudoTest);
+u16	rtl8188fu_Efuse_GetCurrentSize(PADAPTER pAdapter, u8 efuseType, BOOLEAN bPseudoTest);
+u8	rtl8188fu_Efuse_CalculateWordCnts(u8 word_en);
+void	rtl8188fu_ReadEFuseByte(PADAPTER Adapter, u16 _offset, u8 *pbuf, BOOLEAN bPseudoTest) ;
+void	rtl8188fu_EFUSE_GetEfuseDefinition(PADAPTER pAdapter, u8 efuseType, u8 type, void *pOut, BOOLEAN bPseudoTest);
+u8	rtl8188fu_efuse_OneByteRead(PADAPTER pAdapter, u16 addr, u8 *data, BOOLEAN	 bPseudoTest);
+u8	rtl8188fu_efuse_OneByteWrite(PADAPTER pAdapter, u16 addr, u8 data, BOOLEAN	 bPseudoTest);
 
-void	BTEfuse_PowerSwitch(PADAPTER pAdapter,u8	bWrite,u8	 PwrState);
-void	Efuse_PowerSwitch(PADAPTER pAdapter,u8	bWrite,u8	 PwrState);
-int 	Efuse_PgPacketRead(PADAPTER pAdapter, u8 offset, u8 *data, BOOLEAN bPseudoTest);
-int 	Efuse_PgPacketWrite(PADAPTER pAdapter, u8 offset, u8 word_en, u8 *data, BOOLEAN bPseudoTest);
-void	efuse_WordEnableDataRead(u8 word_en, u8 *sourdata, u8 *targetdata);
-u8	Efuse_WordEnableDataWrite(PADAPTER pAdapter, u16 efuse_addr, u8 word_en, u8 *data, BOOLEAN bPseudoTest);
+void	rtl8188fu_BTrtl8188fu_Efuse_PowerSwitch(PADAPTER pAdapter,u8	bWrite,u8	 PwrState);
+void	rtl8188fu_Efuse_PowerSwitch(PADAPTER pAdapter,u8	bWrite,u8	 PwrState);
+int 	rtl8188fu_Efuse_PgPacketRead(PADAPTER pAdapter, u8 offset, u8 *data, BOOLEAN bPseudoTest);
+int 	rtl8188fu_Efuse_PgPacketWrite(PADAPTER pAdapter, u8 offset, u8 word_en, u8 *data, BOOLEAN bPseudoTest);
+void	rtl8188fu_efuse_WordEnableDataRead(u8 word_en, u8 *sourdata, u8 *targetdata);
+u8	rtl8188fu_Efuse_WordEnableDataWrite(PADAPTER pAdapter, u16 efuse_addr, u8 word_en, u8 *data, BOOLEAN bPseudoTest);
 
-u8	EFUSE_Read1Byte(PADAPTER pAdapter, u16 Address);
-void	EFUSE_ShadowMapUpdate(PADAPTER pAdapter, u8 efuseType, BOOLEAN bPseudoTest);
-void	EFUSE_ShadowRead(PADAPTER pAdapter, u8 Type, u16 Offset, u32 *Value);
-u8 rtw_efuse_file_read(PADAPTER padapter,u8 *filepatch,u8 *buf, u32 len);
+u8	rtl8188fu_EFUSE_Read1Byte(PADAPTER pAdapter, u16 Address);
+void	rtl8188fu_EFUSE_ShadowMapUpdate(PADAPTER pAdapter, u8 efuseType, BOOLEAN bPseudoTest);
+void	rtl8188fu_EFUSE_ShadowRead(PADAPTER pAdapter, u8 Type, u16 Offset, u32 *Value);
+u8 rtl8188fu_rtw_efuse_file_read(PADAPTER padapter,u8 *filepatch,u8 *buf, u32 len);
 
 #define MAC_HIDDEN_MAX_BW_NUM 8
-extern const u8 _mac_hidden_max_bw_to_hal_bw_cap[];
-#define mac_hidden_max_bw_to_hal_bw_cap(max_bw) (((max_bw) >= MAC_HIDDEN_MAX_BW_NUM) ? 0 : _mac_hidden_max_bw_to_hal_bw_cap[(max_bw)])
+extern const u8 rtl8188fu__mac_hidden_max_bw_to_hal_bw_cap[];
+#define mac_hidden_max_bw_to_hal_bw_cap(max_bw) (((max_bw) >= MAC_HIDDEN_MAX_BW_NUM) ? 0 : rtl8188fu__mac_hidden_max_bw_to_hal_bw_cap[(max_bw)])
 
 #define MAC_HIDDEN_PROTOCOL_NUM 4
-extern const u8 _mac_hidden_proto_to_hal_proto_cap[];
-#define mac_hidden_proto_to_hal_proto_cap(proto) (((proto) >= MAC_HIDDEN_PROTOCOL_NUM) ? 0 : _mac_hidden_proto_to_hal_proto_cap[(proto)])
+extern const u8 rtl8188fu__mac_hidden_proto_to_hal_proto_cap[];
+#define mac_hidden_proto_to_hal_proto_cap(proto) (((proto) >= MAC_HIDDEN_PROTOCOL_NUM) ? 0 : rtl8188fu__mac_hidden_proto_to_hal_proto_cap[(proto)])
 
-u8 mac_hidden_wl_func_to_hal_wl_func(u8 func);
+u8 rtl8188fu_mac_hidden_wl_func_to_hal_wl_func(u8 func);
 
 #ifdef PLATFORM_LINUX
 #ifdef CONFIG_EFUSE_CONFIG_FILE

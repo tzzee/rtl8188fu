@@ -195,7 +195,7 @@ void rtl8188f_download_rsvd_page(PADAPTER padapter, u8 mstatus);
 void rtl8188f_set_p2p_ps_offload_cmd(PADAPTER padapter, u8 p2p_ps_state);
 #endif //CONFIG_P2P
 
-void CheckFwRsvdPageContent(PADAPTER padapter);
+void rtl8188fu_CheckFwRsvdPageContent(PADAPTER padapter);
 
 #ifdef CONFIG_TDLS
 #ifdef CONFIG_TDLS_CH_SW

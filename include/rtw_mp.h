@@ -417,7 +417,7 @@ struct mp_priv
 	
 	u8 check_mp_pkt;
 
-	u8 bSetTxPower;
+	u8 brtl8188fu_SetTxPower;
 //	uint ForcedDataRate;
 	u8 mp_dm;
 	u8 mac_filter[ETH_ALEN];
@@ -752,77 +752,77 @@ typedef enum	_MPT_TXPWR_DEF{
 //extern struct mp_xmit_frame *alloc_mp_xmitframe(struct mp_priv *pmp_priv);
 //extern int free_mp_xmitframe(struct xmit_priv *pxmitpriv, struct mp_xmit_frame *pmp_xmitframe);
 
-extern s32 init_mp_priv(PADAPTER padapter);
-extern void free_mp_priv(struct mp_priv *pmp_priv);
-extern s32 MPT_InitializeAdapter(PADAPTER padapter, u8 Channel);
-extern void MPT_DeInitAdapter(PADAPTER padapter);
+extern s32 rtl8188fu_init_mp_priv(PADAPTER padapter);
+extern void rtl8188fu_free_mp_priv(struct mp_priv *pmp_priv);
+extern s32 rtl8188fu_MPT_InitializeAdapter(PADAPTER padapter, u8 Channel);
+extern void rtl8188fu_MPT_DeInitAdapter(PADAPTER padapter);
 extern s32 mp_start_test(PADAPTER padapter);
 extern void mp_stop_test(PADAPTER padapter);
 
-extern u32 _read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask);
-extern void _write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask, u32 val);
+extern u32 rtl8188fu__rtl8188fu_read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask);
+extern void _rtl8188furtl8188fu__write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask, u32 val);
 
-extern u32 read_macreg(_adapter *padapter, u32 addr, u32 sz);
-extern void write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz);
-extern u32 read_bbreg(_adapter *padapter, u32 addr, u32 bitmask);
-extern void write_bbreg(_adapter *padapter, u32 addr, u32 bitmask, u32 val);
-extern u32 read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr);
-extern void write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 val);
+extern u32 rtl8188fu_read_macreg(_adapter *padapter, u32 addr, u32 sz);
+extern void rtl8188fu_write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz);
+extern u32 rtl8188fu_read_bbreg(_adapter *padapter, u32 addr, u32 bitmask);
+extern void rtl8188fu_write_bbreg(_adapter *padapter, u32 addr, u32 bitmask, u32 val);
+extern u32 rtl8188fu_read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr);
+extern void rtl8188furtl8188fu__write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 val);
 
-void	SetChannel(PADAPTER pAdapter);
-void	SetBandwidth(PADAPTER pAdapter);
-int	SetTxPower(PADAPTER pAdapter);
-void	SetAntenna(PADAPTER pAdapter);
-void	SetDataRate(PADAPTER pAdapter);
-void	SetAntenna(PADAPTER pAdapter);
-s32	SetThermalMeter(PADAPTER pAdapter, u8 target_ther);
-void	GetThermalMeter(PADAPTER pAdapter, u8 *value);
-void	SetContinuousTx(PADAPTER pAdapter, u8 bStart);
-void	SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart);
-void	SetSingleToneTx(PADAPTER pAdapter, u8 bStart);
-void	SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart);
-void	PhySetTxPowerLevel(PADAPTER pAdapter);
-void	fill_txdesc_for_mp(PADAPTER padapter, u8 *ptxdesc);
-void	SetPacketTx(PADAPTER padapter);
-void	SetPacketRx(PADAPTER pAdapter, u8 bStartRx, u8 bAB);
-void	ResetPhyRxPktCount(PADAPTER pAdapter);
-u32	GetPhyRxPktReceived(PADAPTER pAdapter);
-u32	GetPhyRxPktCRC32Error(PADAPTER pAdapter);
-s32	SetPowerTracking(PADAPTER padapter, u8 enable);
-void	GetPowerTracking(PADAPTER padapter, u8 *enable);
-u32	mp_query_psd(PADAPTER pAdapter, u8 *data);
+void	rtl8188fu_SetChannel(PADAPTER pAdapter);
+void	rtl8188fu_SetBandwidth(PADAPTER pAdapter);
+int	rtl8188fu_SetTxPower(PADAPTER pAdapter);
+void	rtl8188fu_SetAntenna(PADAPTER pAdapter);
+void	rtl8188fu_SetDataRate(PADAPTER pAdapter);
+void	rtl8188fu_SetAntenna(PADAPTER pAdapter);
+s32	rtl8188fu_SetThermalMeter(PADAPTER pAdapter, u8 target_ther);
+void	rtl8188fu_GetThermalMeter(PADAPTER pAdapter, u8 *value);
+void	rtl8188fu_SetContinuousTx(PADAPTER pAdapter, u8 bStart);
+void	rtl8188fu_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart);
+void	rtl8188fu_SetSingleToneTx(PADAPTER pAdapter, u8 bStart);
+void	rtl8188fu_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart);
+void	Phyrtl8188fu_SetTxPowerLevel(PADAPTER pAdapter);
+void	rtl8188fu_fill_txdesc_for_mp(PADAPTER padapter, u8 *ptxdesc);
+void	rtl8188fu_SetPacketTx(PADAPTER padapter);
+void	rtl8188fu_SetPacketRx(PADAPTER pAdapter, u8 bStartRx, u8 bAB);
+void	rtl8188fu_ResetPhyRxPktCount(PADAPTER pAdapter);
+u32	rtl8188fu_GetPhyRxPktReceived(PADAPTER pAdapter);
+u32	rtl8188fu_GetPhyRxPktCRC32Error(PADAPTER pAdapter);
+s32	rtl8188fu_SetPowerTracking(PADAPTER padapter, u8 enable);
+void	rtl8188fu_GetPowerTracking(PADAPTER padapter, u8 *enable);
+u32	rtl8188fu_mp_query_psd(PADAPTER pAdapter, u8 *data);
 
 
 
-void hal_mpt_SwitchRfSetting(PADAPTER pAdapter);
-s32 hal_mpt_SetPowerTracking(PADAPTER padapter, u8 enable);
-void hal_mpt_GetPowerTracking(PADAPTER padapter, u8 *enable);
-void hal_mpt_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14);
-void hal_mpt_SetChannel(PADAPTER pAdapter);
-void hal_mpt_SetBandwidth(PADAPTER pAdapter);
-void hal_mpt_SetTxPower(PADAPTER pAdapter);
-void hal_mpt_SetDataRate(PADAPTER pAdapter);
-void hal_mpt_SetAntenna(PADAPTER pAdapter);
-s32 hal_mpt_SetThermalMeter(PADAPTER pAdapter, u8 target_ther);
-void hal_mpt_TriggerRFThermalMeter(PADAPTER pAdapter);
-u8 hal_mpt_ReadRFThermalMeter(PADAPTER pAdapter);
-void hal_mpt_GetThermalMeter(PADAPTER pAdapter, u8 *value);
-void hal_mpt_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven);
-void hal_mpt_SetContinuousTx(PADAPTER pAdapter, u8 bStart);
-void hal_mpt_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart);
-void hal_mpt_SetSingleToneTx(PADAPTER pAdapter, u8 bStart);
-void hal_mpt_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart);
-void hal_mpt_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart);
-void hal_mpt_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart);
+void rtl8188fu_hal_mpt_SwitchRfSetting(PADAPTER pAdapter);
+s32 hal_mpt_rtl8188fu_SetPowerTracking(PADAPTER padapter, u8 enable);
+void hal_mpt_rtl8188fu_GetPowerTracking(PADAPTER padapter, u8 *enable);
+void rtl8188fu_hal_mpt_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14);
+void rtl8188fu_hal_mpt_rtl8188fu_SetChannel(PADAPTER pAdapter);
+void rtl8188fu_hal_mpt_rtl8188fu_SetBandwidth(PADAPTER pAdapter);
+void hal_mpt_rtl8188fu_SetTxPower(PADAPTER pAdapter);
+void hal_mpt_rtl8188fu_SetDataRate(PADAPTER pAdapter);
+void hal_mpt_rtl8188fu_SetAntenna(PADAPTER pAdapter);
+s32 rtl8188fu_hal_mpt_rtl8188fu_SetThermalMeter(PADAPTER pAdapter, u8 target_ther);
+void rtl8188fu_hal_mpt_TriggerRFThermalMeter(PADAPTER pAdapter);
+u8 rtl8188fu_hal_mpt_ReadRFThermalMeter(PADAPTER pAdapter);
+void rtl8188fu_hal_mpt_rtl8188fu_GetThermalMeter(PADAPTER pAdapter, u8 *value);
+void rtl8188fu_hal_mpt_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven);
+void hal_mpt_rtl8188fu_SetContinuousTx(PADAPTER pAdapter, u8 bStart);
+void rtl8188fu_hal_mpt_rtl8188fu_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart);
+void hal_mpt_rtl8188fu_SetSingleToneTx(PADAPTER pAdapter, u8 bStart);
+void hal_mpt_rtl8188fu_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart);
+void rtl8188fu_hal_mpt_rtl8188fu_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart);
+void rtl8188fu_hal_mpt_rtl8188fu_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart);
 void mpt_ProSetPMacTx(PADAPTER	Adapter);
 
-void MP_PHY_SetRFPathSwitch(PADAPTER pAdapter , BOOLEAN bMain);
-ULONG mpt_ProQueryCalTxPower(PADAPTER	pAdapter, u8 RfPath);
-void MPT_PwrCtlDM(PADAPTER padapter, u32 bstart);
-u8 MptToMgntRate(u32	MptRateIdx);
-u8 rtw_mpRateParseFunc(PADAPTER pAdapter, u8 *targetStr);
-u32 mp_join(PADAPTER padapter, u8 mode);
-u32 hal_mpt_query_phytxok(PADAPTER	pAdapter);
+void rtl8188fu_MP_PHY_SetRFPathSwitch(PADAPTER pAdapter , BOOLEAN bMain);
+ULONG rtl8188fu_mpt_ProQueryCalTxPower(PADAPTER	pAdapter, u8 RfPath);
+void rtl8188fu_MPT_PwrCtlDM(PADAPTER padapter, u32 bstart);
+u8 rtl8188fu_MptToMgntRate(u32	MptRateIdx);
+u8 rtl8188fu_rtw_mpRateParseFunc(PADAPTER pAdapter, u8 *targetStr);
+u32 rtl8188fu_mp_join(PADAPTER padapter, u8 mode);
+u32 rtl8188fu_hal_mpt_query_phytxok(PADAPTER	pAdapter);
 
 void
 PMAC_Get_Pkt_Param(
@@ -973,7 +973,7 @@ int rtw_mp_rx(struct net_device *dev,
 int rtw_mp_hwtx(struct net_device *dev,
 			struct iw_request_info *info,
 			union iwreq_data *wrqu, char *extra);
-u8 HwRateToMPTRate(u8 rate);
+u8 rtl8188fu_HwRateToMPTRate(u8 rate);
 
 #endif //_RTW_MP_H_
 

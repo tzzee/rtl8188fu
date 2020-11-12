@@ -25,7 +25,7 @@
 #include "phydm_precomp.h"
 
 VOID
-ODM_EdcaTurboInit(
+rtl8188fu_ODM_EdcaTurboInit(
 	IN 	PVOID	 	pDM_VOID)
 {
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
@@ -53,16 +53,16 @@ ODM_EdcaTurboInit(
 	Adapter->recvpriv.bIsAnyNonBEPkts =FALSE;
 
 #endif	
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial VO PARAM: 0x%x\n",ODM_Read4Byte(pDM_Odm,ODM_EDCA_VO_PARAM)));
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial VI PARAM: 0x%x\n",ODM_Read4Byte(pDM_Odm,ODM_EDCA_VI_PARAM)));
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial BE PARAM: 0x%x\n",ODM_Read4Byte(pDM_Odm,ODM_EDCA_BE_PARAM)));
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial BK PARAM: 0x%x\n",ODM_Read4Byte(pDM_Odm,ODM_EDCA_BK_PARAM)));
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial VO PARAM: 0x%x\n",rtl8188fu_ODM_Read4Byte(pDM_Odm,ODM_EDCA_VO_PARAM)));
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial VI PARAM: 0x%x\n",rtl8188fu_ODM_Read4Byte(pDM_Odm,ODM_EDCA_VI_PARAM)));
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial BE PARAM: 0x%x\n",rtl8188fu_ODM_Read4Byte(pDM_Odm,ODM_EDCA_BE_PARAM)));
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial BK PARAM: 0x%x\n",rtl8188fu_ODM_Read4Byte(pDM_Odm,ODM_EDCA_BK_PARAM)));
 
 	
 }	// ODM_InitEdcaTurbo
 
 VOID
-odm_EdcaTurboCheck(
+rtl8188fu_odm_EdcaTurboCheck(
 	IN 	PVOID	 	pDM_VOID
 	)
 {
@@ -77,7 +77,7 @@ odm_EdcaTurboCheck(
 	// HW dynamic mechanism.
 	//
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("odm_EdcaTurboCheck========================>\n"));
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("rtl8188fu_odm_EdcaTurboCheck========================>\n"));
 
 	if(!(pDM_Odm->SupportAbility& ODM_MAC_EDCA_TURBO ))
 		return;
@@ -87,17 +87,17 @@ odm_EdcaTurboCheck(
 		case	ODM_WIN:
 
 #if(DM_ODM_SUPPORT_TYPE==ODM_WIN)
-			odm_EdcaTurboCheckMP(pDM_Odm);
+			rtl8188fu_odm_EdcaTurboCheckMP(pDM_Odm);
 #endif
 			break;
 
 		case	ODM_CE:
 #if(DM_ODM_SUPPORT_TYPE==ODM_CE)
-			odm_EdcaTurboCheckCE(pDM_Odm);
+			rtl8188fu_odm_EdcaTurboCheckCE(pDM_Odm);
 #endif
 			break;
 	}
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("<========================odm_EdcaTurboCheck\n"));
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("<========================rtl8188fu_odm_EdcaTurboCheck\n"));
 
 }	// odm_CheckEdcaTurbo
 
@@ -105,7 +105,7 @@ odm_EdcaTurboCheck(
 
 
 VOID
-odm_EdcaTurboCheckCE(
+rtl8188fu_odm_EdcaTurboCheckCE(
 	IN 	PVOID	 	pDM_VOID
 	)
 {
@@ -271,7 +271,7 @@ odm_EdcaTurboCheckCE(
 
 #elif(DM_ODM_SUPPORT_TYPE==ODM_WIN)
 VOID
-odm_EdcaTurboCheckMP(
+rtl8188fu_odm_EdcaTurboCheckMP(
 	IN 	PVOID	 	pDM_VOID
 	)
 {
@@ -304,8 +304,8 @@ odm_EdcaTurboCheckMP(
 	u1Byte				TxRate = 0xFF;
 	u8Byte				value64;	
 
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("odm_EdcaTurboCheckMP========================>"));
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial BE PARAM: 0x%x\n",ODM_Read4Byte(pDM_Odm,ODM_EDCA_BE_PARAM)));
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("rtl8188fu_odm_EdcaTurboCheckMP========================>"));
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Orginial BE PARAM: 0x%x\n",rtl8188fu_ODM_Read4Byte(pDM_Odm,ODM_EDCA_BE_PARAM)));
 
 ////===============================
 ////list paramter for different platform
@@ -397,13 +397,13 @@ odm_EdcaTurboCheckMP(
 
 					value64 = (curRxOkCnt<<2);
 					if(curTxOkCnt < value64) //Downlink
-						ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
+						rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
 					else //Uplink
 					{
 						/*DbgPrint("pRFCalibrateInfo->ThermalValue = 0x%X\n", pRFCalibrateInfo->ThermalValue);*/
 						/*if(pRFCalibrateInfo->ThermalValue < pHalData->EEPROMThermalMeter)*/
 						if((pDM_Odm->RFCalibrateInfo.ThermalValue < 0x2c) || (*pDM_Odm->pBandType == BAND_ON_2_4G))
-							ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
+							rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
 						else
 						{
 							switch (TxRate)
@@ -414,36 +414,36 @@ odm_EdcaTurboCheckMP(
 								case MGN_MCS5:
 								case MGN_48M:
 								case MGN_54M:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0x1ea42b);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0x1ea42b);
 								break;
 								case MGN_VHT1SS_MCS4:
 								case MGN_MCS4:
 								case MGN_36M:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa42b);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa42b);
 								break;
 								case MGN_VHT1SS_MCS3:
 								case MGN_MCS3:
 								case MGN_24M:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa47f);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa47f);
 								break;
 								case MGN_VHT1SS_MCS2:
 								case MGN_MCS2:
 								case MGN_18M:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa57f);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa57f);
 								break;
 								case MGN_VHT1SS_MCS1:
 								case MGN_MCS1:
 								case MGN_9M:
 								case MGN_12M:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa77f);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa77f);
 								break;
 								case MGN_VHT1SS_MCS0:
 								case MGN_MCS0:
 								case MGN_6M:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa87f);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa87f);
 								break;
 								default:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
 								break;
 							}
 						}
@@ -451,7 +451,7 @@ odm_EdcaTurboCheckMP(
 				}
 				else
 				{
-					ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
+					rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
 				}
 
 			}
@@ -472,13 +472,13 @@ odm_EdcaTurboCheckMP(
 
 					value64 = (curRxOkCnt<<2);
 					if(curTxOkCnt < value64) //Downlink
-						ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
+						rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
 					else //Uplink
 					{
 						/*DbgPrint("pRFCalibrateInfo->ThermalValue = 0x%X\n", pRFCalibrateInfo->ThermalValue);*/
 						/*if(pRFCalibrateInfo->ThermalValue < pHalData->EEPROMThermalMeter)*/
 						if((pDM_Odm->RFCalibrateInfo.ThermalValue < 0x2c) || (*pDM_Odm->pBandType == BAND_ON_2_4G))
-							ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
+							rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
 						else
 						{
 							switch (TxRate)
@@ -488,13 +488,13 @@ odm_EdcaTurboCheckMP(
 								case MGN_VHT1SS_MCS8:
 								case MGN_MCS15:
 								case MGN_MCS7:									
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0x1ea44f);							
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0x1ea44f);							
 								case MGN_VHT2SS_MCS8:
 								case MGN_VHT1SS_MCS7:
 								case MGN_MCS14:
 								case MGN_MCS6:
 								case MGN_54M:									
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa44f);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa44f);
 								case MGN_VHT2SS_MCS7:
 								case MGN_VHT2SS_MCS6:
 								case MGN_VHT1SS_MCS6:
@@ -502,7 +502,7 @@ odm_EdcaTurboCheckMP(
 								case MGN_MCS13:
 								case MGN_MCS5:
 								case MGN_48M:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa630);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa630);
 								break;
 								case MGN_VHT2SS_MCS5:
 								case MGN_VHT2SS_MCS4:
@@ -513,7 +513,7 @@ odm_EdcaTurboCheckMP(
 								case MGN_MCS3:	
 								case MGN_36M:
 								case MGN_24M:	
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa730);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa730);
 								break;
 								case MGN_VHT2SS_MCS3:
 								case MGN_VHT2SS_MCS2:
@@ -527,7 +527,7 @@ odm_EdcaTurboCheckMP(
 								case MGN_MCS1:
 								case MGN_18M:	
 								case MGN_12M:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa830);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa830);
 								break;
 								case MGN_VHT2SS_MCS0:
 								case MGN_VHT1SS_MCS0:
@@ -535,10 +535,10 @@ odm_EdcaTurboCheckMP(
 								case MGN_MCS8:
 								case MGN_9M:	
 								case MGN_6M:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa87f);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,0xa87f);
 								break;
 								default:
-									ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
+									rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
 								break;
 							}
 						}
@@ -546,11 +546,11 @@ odm_EdcaTurboCheckMP(
 				}
 				else
 				{
-					ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
+					rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
 				}
 			}
 			else
-				ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
+				rtl8188fu_ODM_Write4Byte(pDM_Odm,ODM_EDCA_BE_PARAM,EDCA_BE);
 
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("EDCA Turbo on: EDCA_BE:0x%lx\n",EDCA_BE));
 
@@ -565,7 +565,7 @@ odm_EdcaTurboCheckMP(
 		// Restore original EDCA according to the declaration of AP.
 		 if(pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA)
 		{
-			Adapter->HalFunc.SetHwRegHandler(Adapter, HW_VAR_AC_PARAM, GET_WMM_PARAM_ELE_SINGLE_AC_PARAM(pStaQos->WMMParamEle, AC0_BE) );
+			Adapter->HalFunc.rtl8188fu_SetHwRegHandler(Adapter, HW_VAR_AC_PARAM, GET_WMM_PARAM_ELE_SINGLE_AC_PARAM(pStaQos->WMMParamEle, AC0_BE) );
 
 			pDM_Odm->DM_EDCA_Table.bCurrentTurboEDCA = FALSE;
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_EDCA_TURBO,ODM_DBG_LOUD,("Restore EDCA BE: 0x%lx  \n",pDM_Odm->WMMEDCA_BE));

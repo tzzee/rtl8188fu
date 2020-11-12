@@ -43,7 +43,7 @@
 #endif
 
 
-u8 MgntQuery_NssTxRate(u16 Rate)
+u8 rtl8188fu_MgntQuery_NssTxRate(u16 Rate)
 {
 	u8	NssNum = RF_TX_NUM_NONIMPLEMENT;
 	
@@ -62,7 +62,7 @@ u8 MgntQuery_NssTxRate(u16 Rate)
 	return NssNum;
 }
 
-void hal_mpt_SwitchRfSetting(PADAPTER	pAdapter)
+void rtl8188fu_hal_mpt_SwitchRfSetting(PADAPTER	pAdapter)
 {
 	HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(pAdapter);
 	PMPT_CONTEXT		pMptCtx = &(pAdapter->mppriv.MptCtx);
@@ -99,19 +99,19 @@ void hal_mpt_SwitchRfSetting(PADAPTER	pAdapter)
 	}
 }
 
-s32 hal_mpt_SetPowerTracking(PADAPTER padapter, u8 enable)
+s32 hal_mpt_rtl8188fu_SetPowerTracking(PADAPTER padapter, u8 enable)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 
 
 	if (!netif_running(padapter->pnetdev)) {
-		RT_TRACE(_module_mp_, _drv_warning_, ("SetPowerTracking! Fail: interface not opened!\n"));
+		RT_TRACE(_module_mp_, _drv_warning_, ("rtl8188fu_SetPowerTracking! Fail: interface not opened!\n"));
 		return _FAIL;
 	}
 
 	if (check_fwstate(&padapter->mlmepriv, WIFI_MP_STATE) == _FALSE) {
-		RT_TRACE(_module_mp_, _drv_warning_, ("SetPowerTracking! Fail: not in MP mode!\n"));
+		RT_TRACE(_module_mp_, _drv_warning_, ("rtl8188fu_SetPowerTracking! Fail: not in MP mode!\n"));
 		return _FAIL;
 	}
 	if (enable)
@@ -122,7 +122,7 @@ s32 hal_mpt_SetPowerTracking(PADAPTER padapter, u8 enable)
 	return _SUCCESS;
 }
 
-void hal_mpt_GetPowerTracking(PADAPTER padapter, u8 *enable)
+void hal_mpt_rtl8188fu_GetPowerTracking(PADAPTER padapter, u8 *enable)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
@@ -132,7 +132,7 @@ void hal_mpt_GetPowerTracking(PADAPTER padapter, u8 *enable)
 }
 
 
-void hal_mpt_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
+void rtl8188fu_hal_mpt_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 {
 	u32		TempVal = 0, TempVal2 = 0, TempVal3 = 0;
 	u32		CurrCCKSwingVal = 0, CCKSwingIndex = 12;
@@ -148,7 +148,7 @@ void hal_mpt_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 	if(IS_HARDWARE_TYPE_8188F(Adapter))
 		return;
 
-	DataRate = MptToMgntRate(ulRateIdx);
+	DataRate = rtl8188fu_MptToMgntRate(ulRateIdx);
 	
 	if (u1Channel == 14 && IS_CCK_RATE(DataRate))
 		pHalData->bCCKinCH14 = TRUE;
@@ -173,14 +173,14 @@ void hal_mpt_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 	} else {
 
 		/* get current cck swing value and check 0xa22 & 0xa23 later to match the table.*/
-		CurrCCKSwingVal = read_bbreg(Adapter, rCCK0_TxFilter1, bMaskHWord);
+		CurrCCKSwingVal = rtl8188fu_read_bbreg(Adapter, rCCK0_TxFilter1, bMaskHWord);
 
 		if (!pHalData->bCCKinCH14) {
 			/* Readback the current bb cck swing value and compare with the table to */
 			/* get the current swing index */
 			for (i = 0; i < CCK_TABLE_SIZE; i++) {
-				if (((CurrCCKSwingVal&0xff) == (u32)CCKSwingTable_Ch1_Ch13[i][0]) &&
-					(((CurrCCKSwingVal&0xff00)>>8) == (u32)CCKSwingTable_Ch1_Ch13[i][1])) {
+				if (((CurrCCKSwingVal&0xff) == (u32)rtl8188fu_CCKSwingTable_Ch1_Ch13[i][0]) &&
+					(((CurrCCKSwingVal&0xff00)>>8) == (u32)rtl8188fu_CCKSwingTable_Ch1_Ch13[i][1])) {
 					CCKSwingIndex = i;
 					RT_TRACE(_module_mp_, DBG_LOUD, ("Ch1~13, Current reg0x%x = 0x%lx, CCKSwingIndex=0x%x\n",
 						(rCCK0_TxFilter1+2), CurrCCKSwingVal, CCKSwingIndex));
@@ -189,25 +189,25 @@ void hal_mpt_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 			}
 
 		/*Write 0xa22 0xa23*/
-		TempVal = CCKSwingTable_Ch1_Ch13[CCKSwingIndex][0] +
-				(CCKSwingTable_Ch1_Ch13[CCKSwingIndex][1]<<8);
+		TempVal = rtl8188fu_CCKSwingTable_Ch1_Ch13[CCKSwingIndex][0] +
+				(rtl8188fu_CCKSwingTable_Ch1_Ch13[CCKSwingIndex][1]<<8);
 
 
 		/*Write 0xa24 ~ 0xa27*/
 		TempVal2 = 0;
-		TempVal2 = CCKSwingTable_Ch1_Ch13[CCKSwingIndex][2] +
-				(CCKSwingTable_Ch1_Ch13[CCKSwingIndex][3]<<8) +
-				(CCKSwingTable_Ch1_Ch13[CCKSwingIndex][4]<<16) +
-				(CCKSwingTable_Ch1_Ch13[CCKSwingIndex][5]<<24);
+		TempVal2 = rtl8188fu_CCKSwingTable_Ch1_Ch13[CCKSwingIndex][2] +
+				(rtl8188fu_CCKSwingTable_Ch1_Ch13[CCKSwingIndex][3]<<8) +
+				(rtl8188fu_CCKSwingTable_Ch1_Ch13[CCKSwingIndex][4]<<16) +
+				(rtl8188fu_CCKSwingTable_Ch1_Ch13[CCKSwingIndex][5]<<24);
 
 		/*Write 0xa28  0xa29*/
 		TempVal3 = 0;
-		TempVal3 = CCKSwingTable_Ch1_Ch13[CCKSwingIndex][6] +
-				(CCKSwingTable_Ch1_Ch13[CCKSwingIndex][7]<<8);
+		TempVal3 = rtl8188fu_CCKSwingTable_Ch1_Ch13[CCKSwingIndex][6] +
+				(rtl8188fu_CCKSwingTable_Ch1_Ch13[CCKSwingIndex][7]<<8);
 	}  else {
 		for (i = 0; i < CCK_TABLE_SIZE; i++) {
-			if (((CurrCCKSwingVal&0xff) == (u32)CCKSwingTable_Ch14[i][0]) &&
-				(((CurrCCKSwingVal&0xff00)>>8) == (u32)CCKSwingTable_Ch14[i][1])) {
+			if (((CurrCCKSwingVal&0xff) == (u32)rtl8188fu_CCKSwingTable_Ch14[i][0]) &&
+				(((CurrCCKSwingVal&0xff00)>>8) == (u32)rtl8188fu_CCKSwingTable_Ch14[i][1])) {
 				CCKSwingIndex = i;
 				RT_TRACE(_module_mp_, DBG_LOUD, ("Ch14, Current reg0x%x = 0x%lx, CCKSwingIndex=0x%x\n",
 					(rCCK0_TxFilter1+2), CurrCCKSwingVal, CCKSwingIndex));
@@ -216,31 +216,31 @@ void hal_mpt_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 		}
 
 		/*Write 0xa22 0xa23*/
-		TempVal = CCKSwingTable_Ch14[CCKSwingIndex][0] +
-				(CCKSwingTable_Ch14[CCKSwingIndex][1]<<8);
+		TempVal = rtl8188fu_CCKSwingTable_Ch14[CCKSwingIndex][0] +
+				(rtl8188fu_CCKSwingTable_Ch14[CCKSwingIndex][1]<<8);
 
 		/*Write 0xa24 ~ 0xa27*/
 		TempVal2 = 0;
-		TempVal2 = CCKSwingTable_Ch14[CCKSwingIndex][2] +
-				(CCKSwingTable_Ch14[CCKSwingIndex][3]<<8) +
-				(CCKSwingTable_Ch14[CCKSwingIndex][4]<<16) +
-				(CCKSwingTable_Ch14[CCKSwingIndex][5]<<24);
+		TempVal2 = rtl8188fu_CCKSwingTable_Ch14[CCKSwingIndex][2] +
+				(rtl8188fu_CCKSwingTable_Ch14[CCKSwingIndex][3]<<8) +
+				(rtl8188fu_CCKSwingTable_Ch14[CCKSwingIndex][4]<<16) +
+				(rtl8188fu_CCKSwingTable_Ch14[CCKSwingIndex][5]<<24);
 
 		/*Write 0xa28  0xa29*/
 		TempVal3 = 0;
-		TempVal3 = CCKSwingTable_Ch14[CCKSwingIndex][6] +
-				(CCKSwingTable_Ch14[CCKSwingIndex][7]<<8);
+		TempVal3 = rtl8188fu_CCKSwingTable_Ch14[CCKSwingIndex][6] +
+				(rtl8188fu_CCKSwingTable_Ch14[CCKSwingIndex][7]<<8);
 	}
 
-	write_bbreg(Adapter, rCCK0_TxFilter1, bMaskHWord, TempVal);
-	write_bbreg(Adapter, rCCK0_TxFilter2, bMaskDWord, TempVal2);
-	write_bbreg(Adapter, rCCK0_DebugPort, bMaskLWord, TempVal3);
+	rtl8188fu_write_bbreg(Adapter, rCCK0_TxFilter1, bMaskHWord, TempVal);
+	rtl8188fu_write_bbreg(Adapter, rCCK0_TxFilter2, bMaskDWord, TempVal2);
+	rtl8188fu_write_bbreg(Adapter, rCCK0_DebugPort, bMaskLWord, TempVal3);
 
 	}
 
 }
 
-void hal_mpt_SetChannel(PADAPTER pAdapter)
+void rtl8188fu_hal_mpt_rtl8188fu_SetChannel(PADAPTER pAdapter)
 {
 	u8 eRFPath;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -249,15 +249,15 @@ void hal_mpt_SetChannel(PADAPTER pAdapter)
 	u8		channel = pmp->channel;
 	u8		bandwidth = pmp->bandwidth;
 
-	hal_mpt_SwitchRfSetting(pAdapter);
+	rtl8188fu_hal_mpt_SwitchRfSetting(pAdapter);
 	
 	SelectChannel(pAdapter, channel);
 	
 	pHalData->bSwChnl = _TRUE;
 	pHalData->bSetChnlBW = _TRUE;
-	rtw_hal_set_chnl_bw(pAdapter, channel, bandwidth, 0, 0);
+	rtl8188fu_rtw_hal_set_chnl_bw(pAdapter, channel, bandwidth, 0, 0);
 
-	hal_mpt_CCKTxPowerAdjust(pAdapter, pHalData->bCCKinCH14);
+	rtl8188fu_hal_mpt_CCKTxPowerAdjust(pAdapter, pHalData->bCCKinCH14);
 
 }
 
@@ -265,7 +265,7 @@ void hal_mpt_SetChannel(PADAPTER pAdapter)
  * Notice
  *	Switch bandwitdth may change center frequency(channel)
  */
-void hal_mpt_SetBandwidth(PADAPTER pAdapter)
+void rtl8188fu_hal_mpt_rtl8188fu_SetBandwidth(PADAPTER pAdapter)
 {
 	struct mp_priv *pmp = &pAdapter->mppriv;
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
@@ -276,14 +276,14 @@ void hal_mpt_SetBandwidth(PADAPTER pAdapter)
 	SetBWMode(pAdapter, pmp->bandwidth, pmp->prime_channel_offset);
 	pHalData->bSwChnl = _TRUE;
 	pHalData->bSetChnlBW = _TRUE;
-	rtw_hal_set_chnl_bw(pAdapter, channel, bandwidth, 0, 0);
+	rtl8188fu_rtw_hal_set_chnl_bw(pAdapter, channel, bandwidth, 0, 0);
 	
-	hal_mpt_SwitchRfSetting(pAdapter);
+	rtl8188fu_hal_mpt_SwitchRfSetting(pAdapter);
 }
 
-void mpt_SetTxPower_Old(PADAPTER pAdapter, MPT_TXPWR_DEF Rate, u8 *pTxPower)
+void mpt_rtl8188fu_SetTxPower_Old(PADAPTER pAdapter, MPT_TXPWR_DEF Rate, u8 *pTxPower)
 {
-	RT_TRACE(_module_mp_, DBG_LOUD, ("===>mpt_SetTxPower_Old(): Case = %d\n", Rate));
+	RT_TRACE(_module_mp_, DBG_LOUD, ("===>mpt_rtl8188fu_SetTxPower_Old(): Case = %d\n", Rate));
 	switch (Rate) {
 	case MPT_CCK:
 			{
@@ -340,13 +340,13 @@ void mpt_SetTxPower_Old(PADAPTER pAdapter, MPT_TXPWR_DEF Rate, u8 *pTxPower)
 	default:
 		break;
 	}	
-		DBG_871X("<===mpt_SetTxPower_Old()\n");
+		DBG_871X("<===mpt_rtl8188fu_SetTxPower_Old()\n");
 }
 
 
 
 void 
-mpt_SetTxPower(
+mpt_rtl8188fu_SetTxPower(
 		PADAPTER		pAdapter,
 		MPT_TXPWR_DEF	Rate,
 		pu1Byte	pTxPower
@@ -369,7 +369,7 @@ mpt_SetTxPower(
 
 			for (path = StartPath; path <= EndPath; path++)
 				for (i = 0; i < sizeof(rate); ++i)
-					PHY_SetTxPowerIndex(pAdapter, pTxPower[path], path, rate[i]);	
+					PHY_rtl8188fu_SetTxPowerIndex(pAdapter, pTxPower[path], path, rate[i]);	
 			}
 			break;
 		
@@ -382,7 +382,7 @@ mpt_SetTxPower(
 
 			for (path = StartPath; path <= EndPath; path++)
 				for (i = 0; i < sizeof(rate); ++i)
-					PHY_SetTxPowerIndex(pAdapter, pTxPower[path], path, rate[i]);	
+					PHY_rtl8188fu_SetTxPowerIndex(pAdapter, pTxPower[path], path, rate[i]);	
 			} break;
 		
 	case MPT_HT:
@@ -407,7 +407,7 @@ mpt_SetTxPower(
 				for (i = 0; i < sizeof(rate); ++i) {
 					if (rate[i] > MaxRate)
 						break;					
-				    PHY_SetTxPowerIndex(pAdapter, pTxPower[path], path, rate[i]);
+				    PHY_rtl8188fu_SetTxPowerIndex(pAdapter, pTxPower[path], path, rate[i]);
 				}
 			}
 			} break;
@@ -436,20 +436,20 @@ mpt_SetTxPower(
 				for (i = 0; i < sizeof(rate); ++i) {
 					if (rate[i] > MaxRate)
 						break;	
-					PHY_SetTxPowerIndex(pAdapter, pTxPower[path], path, rate[i]);
+					PHY_rtl8188fu_SetTxPowerIndex(pAdapter, pTxPower[path], path, rate[i]);
 				}
 			}
 			} break;
 			
 	default:
-			DBG_871X("<===mpt_SetTxPower: Illegal channel!!\n");
+			DBG_871X("<===mpt_rtl8188fu_SetTxPower: Illegal channel!!\n");
 			break;
 	}
 
 }
 
 
-void hal_mpt_SetTxPower(PADAPTER pAdapter)
+void hal_mpt_rtl8188fu_SetTxPower(PADAPTER pAdapter)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 	PMPT_CONTEXT		pMptCtx = &(pAdapter->mppriv.MptCtx);
@@ -463,39 +463,39 @@ void hal_mpt_SetTxPower(PADAPTER pAdapter)
 		    IS_HARDWARE_TYPE_8188F(pAdapter)) {
 			u8 path = (pHalData->AntennaTxPath == ANTENNA_A) ? (ODM_RF_PATH_A) : (ODM_RF_PATH_B);
 
-			DBG_8192C("===> MPT_ProSetTxPower: Old\n");
+			DBG_8192C("===> MPT_Prortl8188fu_SetTxPower: Old\n");
 
-			RT_TRACE(_module_mp_, DBG_LOUD, ("===> MPT_ProSetTxPower[Old]:\n"));
-			mpt_SetTxPower_Old(pAdapter, MPT_CCK, pMptCtx->TxPwrLevel);		
-			mpt_SetTxPower_Old(pAdapter, MPT_OFDM_AND_HT, pMptCtx->TxPwrLevel);
+			RT_TRACE(_module_mp_, DBG_LOUD, ("===> MPT_Prortl8188fu_SetTxPower[Old]:\n"));
+			mpt_rtl8188fu_SetTxPower_Old(pAdapter, MPT_CCK, pMptCtx->TxPwrLevel);		
+			mpt_rtl8188fu_SetTxPower_Old(pAdapter, MPT_OFDM_AND_HT, pMptCtx->TxPwrLevel);
 
 		} else {
-			DBG_871X("===> MPT_ProSetTxPower: Jaguar\n");
-			mpt_SetTxPower(pAdapter, MPT_CCK, pMptCtx->TxPwrLevel);
-			mpt_SetTxPower(pAdapter, MPT_OFDM, pMptCtx->TxPwrLevel);
-			mpt_SetTxPower(pAdapter, MPT_HT, pMptCtx->TxPwrLevel);
-			mpt_SetTxPower(pAdapter, MPT_VHT, pMptCtx->TxPwrLevel);
+			DBG_871X("===> MPT_Prortl8188fu_SetTxPower: Jaguar\n");
+			mpt_rtl8188fu_SetTxPower(pAdapter, MPT_CCK, pMptCtx->TxPwrLevel);
+			mpt_rtl8188fu_SetTxPower(pAdapter, MPT_OFDM, pMptCtx->TxPwrLevel);
+			mpt_rtl8188fu_SetTxPower(pAdapter, MPT_HT, pMptCtx->TxPwrLevel);
+			mpt_rtl8188fu_SetTxPower(pAdapter, MPT_VHT, pMptCtx->TxPwrLevel);
 
 			}
 	} else
 		DBG_8192C("RFChipID < RF_TYPE_MAX, the RF chip is not supported - %d\n", pHalData->rf_chip);
 
-	ODM_ClearTxPowerTrackingState(pDM_Odm);
+	rtl8188fu_ODM_ClearTxPowerTrackingState(pDM_Odm);
 
 }
 
 
-void hal_mpt_SetDataRate(PADAPTER pAdapter)
+void hal_mpt_rtl8188fu_SetDataRate(PADAPTER pAdapter)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	PMPT_CONTEXT		pMptCtx = &(pAdapter->mppriv.MptCtx);
 	u32 DataRate;
 
-	DataRate = MptToMgntRate(pMptCtx->MptRateIndex);
+	DataRate = rtl8188fu_MptToMgntRate(pMptCtx->MptRateIndex);
 	
-	hal_mpt_SwitchRfSetting(pAdapter);
+	rtl8188fu_hal_mpt_SwitchRfSetting(pAdapter);
 
-	hal_mpt_CCKTxPowerAdjust(pAdapter, pHalData->bCCKinCH14);
+	rtl8188fu_hal_mpt_CCKTxPowerAdjust(pAdapter, pHalData->bCCKinCH14);
 #ifdef CONFIG_RTL8723B
 	if (IS_HARDWARE_TYPE_8723B(pAdapter) || IS_HARDWARE_TYPE_8188F(pAdapter)) {
 		if (IS_CCK_RATE(DataRate)) {
@@ -559,17 +559,17 @@ VOID mpt_SetRFPath_8814A(PADAPTER	pAdapter)
 	PMPT_CONTEXT	pMptCtx = &pAdapter->mppriv.MptCtx;
 	R_ANTENNA_SELECT_OFDM	*p_ofdm_tx;	/* OFDM Tx register */
 	R_ANTENNA_SELECT_CCK	*p_cck_txrx;
-	u8	ForcedDataRate = MptToMgntRate(pMptCtx->MptRateIndex);
+	u8	ForcedDataRate = rtl8188fu_MptToMgntRate(pMptCtx->MptRateIndex);
 	u8	HtStbcCap = pAdapter->registrypriv.stbc_cap;
 	/*/PRT_HIGH_THROUGHPUT		pHTInfo = GET_HT_INFO(pMgntInfo);*/
 	/*/PRT_VERY_HIGH_THROUGHPUT	pVHTInfo = GET_VHT_INFO(pMgntInfo);*/
 
 	u32	ulAntennaTx = pHalData->AntennaTxPath;
 	u32	ulAntennaRx = pHalData->AntennaRxPath;
-	u8	NssforRate = MgntQuery_NssTxRate(ForcedDataRate);
+	u8	NssforRate = rtl8188fu_MgntQuery_NssTxRate(ForcedDataRate);
 
 	if (NssforRate == RF_2TX) {	
-		DBG_871X("===> SetAntenna 2T ForcedDataRate %d NssforRate %d AntennaTx %d\n", ForcedDataRate, NssforRate, ulAntennaTx);
+		DBG_871X("===> rtl8188fu_SetAntenna 2T ForcedDataRate %d NssforRate %d AntennaTx %d\n", ForcedDataRate, NssforRate, ulAntennaTx);
 
 		switch (ulAntennaTx) {
 		case ANTENNA_BC:
@@ -591,7 +591,7 @@ VOID mpt_SetRFPath_8814A(PADAPTER	pAdapter)
 		}
 
 	} else if (NssforRate == RF_3TX) {
-				DBG_871X("===> SetAntenna 3T ForcedDataRate %d NssforRate %d AntennaTx %d\n", ForcedDataRate, NssforRate, ulAntennaTx);
+				DBG_871X("===> rtl8188fu_SetAntenna 3T ForcedDataRate %d NssforRate %d AntennaTx %d\n", ForcedDataRate, NssforRate, ulAntennaTx);
 
 		switch (ulAntennaTx) {
 		case ANTENNA_BCD:
@@ -608,7 +608,7 @@ VOID mpt_SetRFPath_8814A(PADAPTER	pAdapter)
 		}
 
 	} else { /*/if(NssforRate == RF_1TX)*/
-		DBG_871X("===> SetAntenna 1T ForcedDataRate %d NssforRate %d AntennaTx %d\n", ForcedDataRate, NssforRate, ulAntennaTx);
+		DBG_871X("===> rtl8188fu_SetAntenna 1T ForcedDataRate %d NssforRate %d AntennaTx %d\n", ForcedDataRate, NssforRate, ulAntennaTx);
 		switch (ulAntennaTx) {
 		case ANTENNA_B:
 				pMptCtx->MptRfPath = ODM_RF_PATH_B;
@@ -819,8 +819,8 @@ mpt_SetSingleTone_8814A(
 		}
 
 		if (bEnPMacTx == FALSE) {
-			hal_mpt_SetOFDMContinuousTx(pAdapter, _TRUE);
-			issue_nulldata(pAdapter, NULL, 1, 3, 500);
+			rtl8188fu_hal_mpt_rtl8188fu_SetOFDMContinuousTx(pAdapter, _TRUE);
+			rtl8188fu_issue_nulldata(pAdapter, NULL, 1, 3, 500);
 		}
 
 		PHY_SetBBReg(pAdapter, rCCAonSec_Jaguar, BIT1, 0x1); /*/ Disable CCA*/
@@ -871,7 +871,7 @@ mpt_SetSingleTone_8814A(
 		PHY_SetBBReg(pAdapter, rCCAonSec_Jaguar, BIT1, 0x0); /* Enable CCA*/
 
 		if (bEnPMacTx == FALSE)
-			hal_mpt_SetOFDMContinuousTx(pAdapter, _FALSE);
+			rtl8188fu_hal_mpt_rtl8188fu_SetOFDMContinuousTx(pAdapter, _FALSE);
 
 		PHY_SetBBReg(pAdapter, rA_TxScale_Jaguar, bMaskDWord, regIG0); /* 0xC1C[31:21]*/
 		PHY_SetBBReg(pAdapter, rB_TxScale_Jaguar, bMaskDWord, regIG1); /* 0xE1C[31:21]*/
@@ -1137,7 +1137,7 @@ void mpt_SetRFPath_8703B(PADAPTER pAdapter)
 #endif
 
 
-VOID mpt_SetRFPath_819X(PADAPTER	pAdapter)
+VOID rtl8188fu_mpt_SetRFPath_819X(PADAPTER	pAdapter)
 {
 	HAL_DATA_TYPE			*pHalData	= GET_HAL_DATA(pAdapter);
 	PMPT_CONTEXT		pMptCtx = &(pAdapter->mppriv.MptCtx);
@@ -1298,7 +1298,7 @@ VOID mpt_SetRFPath_819X(PADAPTER	pAdapter)
 }	/* MPT_ProSetRFPath */
 
 
-void hal_mpt_SetAntenna(PADAPTER	pAdapter)
+void hal_mpt_rtl8188fu_SetAntenna(PADAPTER	pAdapter)
 
 {
 	DBG_871X("Do %s\n", __func__);
@@ -1333,24 +1333,24 @@ void hal_mpt_SetAntenna(PADAPTER	pAdapter)
 	else if (IS_HARDWARE_TYPE_8822B(Context))
 		mpt_SetRFPath_8822B(Context);
 */	
-	mpt_SetRFPath_819X(pAdapter);
-	DBG_871X("mpt_SetRFPath_819X Do %s\n", __func__);
+	rtl8188fu_mpt_SetRFPath_819X(pAdapter);
+	DBG_871X("rtl8188fu_mpt_SetRFPath_819X Do %s\n", __func__);
 
 }
 
 
-s32 hal_mpt_SetThermalMeter(PADAPTER pAdapter, u8 target_ther)
+s32 rtl8188fu_hal_mpt_rtl8188fu_SetThermalMeter(PADAPTER pAdapter, u8 target_ther)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 
 	if (!netif_running(pAdapter->pnetdev)) {
-		RT_TRACE(_module_mp_, _drv_warning_, ("SetThermalMeter! Fail: interface not opened!\n"));
+		RT_TRACE(_module_mp_, _drv_warning_, ("rtl8188fu_SetThermalMeter! Fail: interface not opened!\n"));
 		return _FAIL;
 	}
 
 
 	if (check_fwstate(&pAdapter->mlmepriv, WIFI_MP_STATE) == _FALSE) {
-		RT_TRACE(_module_mp_, _drv_warning_, ("SetThermalMeter: Fail! not in MP mode!\n"));
+		RT_TRACE(_module_mp_, _drv_warning_, ("rtl8188fu_SetThermalMeter: Fail! not in MP mode!\n"));
 		return _FAIL;
 	}
 
@@ -1367,14 +1367,14 @@ s32 hal_mpt_SetThermalMeter(PADAPTER pAdapter, u8 target_ther)
 }
 
 
-void hal_mpt_TriggerRFThermalMeter(PADAPTER pAdapter)
+void rtl8188fu_hal_mpt_TriggerRFThermalMeter(PADAPTER pAdapter)
 {
 	PHY_SetRFReg(pAdapter, ODM_RF_PATH_A, 0x42, BIT17 | BIT16, 0x03);
 
 }
 
 
-u8 hal_mpt_ReadRFThermalMeter(PADAPTER pAdapter)
+u8 rtl8188fu_hal_mpt_ReadRFThermalMeter(PADAPTER pAdapter)
 
 {
 	u32 ThermalValue = 0;
@@ -1385,30 +1385,30 @@ u8 hal_mpt_ReadRFThermalMeter(PADAPTER pAdapter)
 }
 
 
-void hal_mpt_GetThermalMeter(PADAPTER pAdapter, u8 *value)
+void rtl8188fu_hal_mpt_rtl8188fu_GetThermalMeter(PADAPTER pAdapter, u8 *value)
 {
 #if 0
 	fw_cmd(pAdapter, IOCMD_GET_THERMAL_METER);
-	rtw_msleep_os(1000);
+	rtl8188fu_rtw_msleep_os(1000);
 	fw_cmd_data(pAdapter, value, 1);
 	*value &= 0xFF;
 #else
-	hal_mpt_TriggerRFThermalMeter(pAdapter);
-	rtw_msleep_os(1000);
-	*value = hal_mpt_ReadRFThermalMeter(pAdapter);
+	rtl8188fu_hal_mpt_TriggerRFThermalMeter(pAdapter);
+	rtl8188fu_rtw_msleep_os(1000);
+	*value = rtl8188fu_hal_mpt_ReadRFThermalMeter(pAdapter);
 #endif
 
 }
 
 
-void hal_mpt_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart)
+void rtl8188fu_hal_mpt_rtl8188fu_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 	
 	pAdapter->mppriv.MptCtx.bSingleCarrier = bStart;
 	
 	if (bStart) {/*/ Start Single Carrier.*/
-		RT_TRACE(_module_mp_, _drv_alert_, ("SetSingleCarrierTx: test start\n"));
+		RT_TRACE(_module_mp_, _drv_alert_, ("rtl8188fu_SetSingleCarrierTx: test start\n"));
 		/*/ Start Single Carrier.*/
 		/*/ 1. if OFDM block on?*/
 		if (!PHY_QueryBBReg(pAdapter, rFPGA0_RFMOD, bOFDMEn))
@@ -1440,7 +1440,7 @@ void hal_mpt_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart)
 		
 			PHY_SetBBReg(pAdapter, rOFDM1_LSTF, BIT30|BIT29|BIT28, OFDM_ALL_OFF);
 
-		rtw_msleep_os(10);
+		rtl8188fu_rtw_msleep_os(10);
 		/*/BB Reset*/
 	    PHY_SetBBReg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
 	    PHY_SetBBReg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
@@ -1448,7 +1448,7 @@ void hal_mpt_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart)
 }
 
 
-void hal_mpt_SetSingleToneTx(PADAPTER pAdapter, u8 bStart)
+void hal_mpt_rtl8188fu_SetSingleToneTx(PADAPTER pAdapter, u8 bStart)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(pAdapter);
 	PMPT_CONTEXT		pMptCtx = &(pAdapter->mppriv.MptCtx);
@@ -1549,8 +1549,8 @@ void hal_mpt_SetSingleToneTx(PADAPTER pAdapter, u8 bStart)
 		else	/*/ Turn On SingleTone and turn off the other test modes.*/
 			PHY_SetBBReg(pAdapter, rOFDM1_LSTF, BIT30|BIT29|BIT28, OFDM_SingleTone);			
 
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
 
 	} else {/*/ Stop Single Ton e.*/
 
@@ -1613,25 +1613,25 @@ void hal_mpt_SetSingleToneTx(PADAPTER pAdapter, u8 bStart)
 		 else/*/ Turn off all test modes.*/			
 			PHY_SetBBReg(pAdapter, rSingleTone_ContTx_Jaguar, BIT18|BIT17|BIT16, OFDM_ALL_OFF);				   
 #endif
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
 
 	}
 }
 
 
-void hal_mpt_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart)
+void hal_mpt_rtl8188fu_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart)
 {
 	u8 Rate;
 	pAdapter->mppriv.MptCtx.bCarrierSuppression = bStart;
 
-	Rate = HwRateToMPTRate(pAdapter->mppriv.rateidx);
+	Rate = rtl8188fu_HwRateToMPTRate(pAdapter->mppriv.rateidx);
 	if (bStart) {/* Start Carrier Suppression.*/
-		RT_TRACE(_module_mp_, _drv_alert_, ("SetCarrierSuppressionTx: test start\n"));
+		RT_TRACE(_module_mp_, _drv_alert_, ("rtl8188fu_SetCarrierSuppressionTx: test start\n"));
 		if (Rate <= MPT_RATE_11M) {
 			/*/ 1. if CCK block on?*/
-			if (!read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
-				write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);/*set CCK block on*/
+			if (!rtl8188fu_read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
+				rtl8188fu_write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);/*set CCK block on*/
 
 			/*/Turn Off All Test Mode*/
 			if (IS_HARDWARE_TYPE_JAGUAR(pAdapter) || IS_HARDWARE_TYPE_8814A(pAdapter) /*|| IS_HARDWARE_TYPE_8822B(pAdapter)*/)
@@ -1639,46 +1639,46 @@ void hal_mpt_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart)
 			else
 				PHY_SetBBReg(pAdapter, rOFDM1_LSTF, BIT30|BIT29|BIT28, OFDM_ALL_OFF);
 
-			write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, 0x2);    /*/transmit mode*/
-			write_bbreg(pAdapter, rCCK0_System, bCCKScramble, 0x0);  /*/turn off scramble setting*/
+			rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, 0x2);    /*/transmit mode*/
+			rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKScramble, 0x0);  /*/turn off scramble setting*/
 
 			/*/Set CCK Tx Test Rate*/
-			write_bbreg(pAdapter, rCCK0_System, bCCKTxRate, 0x0);    /*/Set FTxRate to 1Mbps*/
+			rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKTxRate, 0x0);    /*/Set FTxRate to 1Mbps*/
 		}
 
 		 /*Set for dynamic set Power index*/
-		 write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
-		 write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
+		 rtl8188fu_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
+		 rtl8188fu_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
 
 	} else {/* Stop Carrier Suppression.*/	
-		RT_TRACE(_module_mp_, _drv_alert_, ("SetCarrierSuppressionTx: test stop\n"));
+		RT_TRACE(_module_mp_, _drv_alert_, ("rtl8188fu_SetCarrierSuppressionTx: test stop\n"));
 
 		if (Rate <= MPT_RATE_11M) {
-			write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, 0x0);    /*normal mode*/
-			write_bbreg(pAdapter, rCCK0_System, bCCKScramble, 0x1);  /*turn on scramble setting*/
+			rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, 0x0);    /*normal mode*/
+			rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKScramble, 0x1);  /*turn on scramble setting*/
 
 			/*BB Reset*/
-			write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
-			write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
+			rtl8188fu_write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
+			rtl8188fu_write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
 		}
 		/*Stop for dynamic set Power index*/
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
 	}
 	DBG_871X("\n MPT_ProSetCarrierSupp() is finished.\n");
 }
 
-void hal_mpt_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
+void rtl8188fu_hal_mpt_rtl8188fu_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
 {
 	u32 cckrate;
 
 	if (bStart) {
 		RT_TRACE(_module_mp_, _drv_alert_,
-			 ("SetCCKContinuousTx: test start\n"));
+			 ("rtl8188fu_SetCCKContinuousTx: test start\n"));
 
 		/*/ 1. if CCK block on?*/
-		if (!read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
-			write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);/*set CCK block on*/
+		if (!rtl8188fu_read_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn))
+			rtl8188fu_write_bbreg(pAdapter, rFPGA0_RFMOD, bCCKEn, bEnable);/*set CCK block on*/
 
 		/*/Turn Off All Test Mode*/
 		if (IS_HARDWARE_TYPE_JAGUAR_AND_JAGUAR2(pAdapter))
@@ -1690,9 +1690,9 @@ void hal_mpt_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
 
 		cckrate  = pAdapter->mppriv.rateidx;
 
-		write_bbreg(pAdapter, rCCK0_System, bCCKTxRate, cckrate);
-		write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, 0x2);	/*/transmit mode*/
-		write_bbreg(pAdapter, rCCK0_System, bCCKScramble, bEnable);	/*/turn on scramble setting*/
+		rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKTxRate, cckrate);
+		rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, 0x2);	/*/transmit mode*/
+		rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKScramble, bEnable);	/*/turn on scramble setting*/
 
 		if (!IS_HARDWARE_TYPE_JAGUAR_AND_JAGUAR2(pAdapter)) {
 			PHY_SetBBReg(pAdapter, 0xa14, 0x300, 0x3);  /* rCCK0_RxHP 0xa15[1:0] = 11 force cck rxiq = 0*/
@@ -1701,15 +1701,15 @@ void hal_mpt_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
 			PHY_SetBBReg(pAdapter, 0x0B34, BIT14, 1);
 		}
 
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
 
 	} else {
 		RT_TRACE(_module_mp_, _drv_info_,
-			 ("SetCCKContinuousTx: test stop\n"));
+			 ("rtl8188fu_SetCCKContinuousTx: test stop\n"));
 
-		write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, 0x0);	/*/normal mode*/
-		write_bbreg(pAdapter, rCCK0_System, bCCKScramble, bEnable);	/*/turn on scramble setting*/
+		rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKBBMode, 0x0);	/*/normal mode*/
+		rtl8188fu_write_bbreg(pAdapter, rCCK0_System, bCCKScramble, bEnable);	/*/turn on scramble setting*/
 
 		if (!IS_HARDWARE_TYPE_JAGUAR(pAdapter)  && !IS_HARDWARE_TYPE_8814A(pAdapter) /* && !IS_HARDWARE_TYPE_8822B(pAdapter) */) {
 			PHY_SetBBReg(pAdapter, 0xa14, 0x300, 0x0);/* rCCK0_RxHP 0xa15[1:0] = 2b00*/
@@ -1720,23 +1720,23 @@ void hal_mpt_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
 		}
 		
 		/*/BB Reset*/
-		write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
-		write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
+		rtl8188fu_write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
+		rtl8188fu_write_bbreg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
 
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
 	}
 
 	pAdapter->mppriv.MptCtx.bCckContTx = bStart;
 	pAdapter->mppriv.MptCtx.bOfdmContTx = _FALSE;
 }
 
-void hal_mpt_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart)
+void rtl8188fu_hal_mpt_rtl8188fu_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart)
 {
 	HAL_DATA_TYPE *pHalData = GET_HAL_DATA(pAdapter);
 
 	if (bStart) {
-		RT_TRACE(_module_mp_, _drv_info_, ("SetOFDMContinuousTx: test start\n"));/*/ 1. if OFDM block on?*/
+		RT_TRACE(_module_mp_, _drv_info_, ("rtl8188fu_SetOFDMContinuousTx: test start\n"));/*/ 1. if OFDM block on?*/
 		if (!PHY_QueryBBReg(pAdapter, rFPGA0_RFMOD, bOFDMEn))
 			PHY_SetBBReg(pAdapter, rFPGA0_RFMOD, bOFDMEn, 1);/*/set OFDM block on*/
 
@@ -1757,17 +1757,17 @@ void hal_mpt_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart)
 		else
 			PHY_SetBBReg(pAdapter, rOFDM1_LSTF, BIT30|BIT29|BIT28, OFDM_ContinuousTx);
 
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000500);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000500);
 
 	} else {
-		RT_TRACE(_module_mp_, _drv_info_, ("SetOFDMContinuousTx: test stop\n"));
+		RT_TRACE(_module_mp_, _drv_info_, ("rtl8188fu_SetOFDMContinuousTx: test stop\n"));
 		if (IS_HARDWARE_TYPE_JAGUAR(pAdapter) || IS_HARDWARE_TYPE_8814A(pAdapter) /*|| IS_HARDWARE_TYPE_8822B(pAdapter)*/)
 			PHY_SetBBReg(pAdapter, 0x914, BIT18|BIT17|BIT16, OFDM_ALL_OFF);
 		else
 			PHY_SetBBReg(pAdapter, rOFDM1_LSTF, BIT30|BIT29|BIT28, OFDM_ALL_OFF);
 		/*/Delay 10 ms*/
-		rtw_msleep_os(10);
+		rtl8188fu_rtw_msleep_os(10);
 		
 		if (!IS_HARDWARE_TYPE_JAGUAR(pAdapter) && !IS_HARDWARE_TYPE_8814A(pAdapter) /*&&! IS_HARDWARE_TYPE_8822B(pAdapter)*/) {
 			PHY_SetBBReg(pAdapter, 0xa14, 0x300, 0x0);/*/ 0xa15[1:0] = 0*/
@@ -1778,30 +1778,30 @@ void hal_mpt_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart)
 		PHY_SetBBReg(pAdapter, rPMAC_Reset, bBBResetB, 0x0);
 		PHY_SetBBReg(pAdapter, rPMAC_Reset, bBBResetB, 0x1);
 
-		write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
-		write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XA_HSSIParameter1, bMaskDWord, 0x01000100);
+		rtl8188fu_write_bbreg(pAdapter, rFPGA0_XB_HSSIParameter1, bMaskDWord, 0x01000100);
 	}
 
 	pAdapter->mppriv.MptCtx.bCckContTx = _FALSE;
 	pAdapter->mppriv.MptCtx.bOfdmContTx = bStart;
 }
 
-void hal_mpt_SetContinuousTx(PADAPTER pAdapter, u8 bStart)
+void hal_mpt_rtl8188fu_SetContinuousTx(PADAPTER pAdapter, u8 bStart)
 {
 	u8 Rate;
 	RT_TRACE(_module_mp_, _drv_info_,
-		 ("SetContinuousTx: rate:%d\n", pAdapter->mppriv.rateidx));
+		 ("rtl8188fu_SetContinuousTx: rate:%d\n", pAdapter->mppriv.rateidx));
 
-	Rate = HwRateToMPTRate(pAdapter->mppriv.rateidx);
+	Rate = rtl8188fu_HwRateToMPTRate(pAdapter->mppriv.rateidx);
 	pAdapter->mppriv.MptCtx.bStartContTx = bStart;
 
 	if (Rate <= MPT_RATE_11M)
-		hal_mpt_SetCCKContinuousTx(pAdapter, bStart);
+		rtl8188fu_hal_mpt_rtl8188fu_SetCCKContinuousTx(pAdapter, bStart);
 	else if (Rate >= MPT_RATE_6M) 
-		hal_mpt_SetOFDMContinuousTx(pAdapter, bStart);
+		rtl8188fu_hal_mpt_rtl8188fu_SetOFDMContinuousTx(pAdapter, bStart);
 }
 
-u32 hal_mpt_query_phytxok(PADAPTER	pAdapter)
+u32 rtl8188fu_hal_mpt_query_phytxok(PADAPTER	pAdapter)
 {
 	PMPT_CONTEXT pMptCtx = &(pAdapter->mppriv.MptCtx);
 	RT_PMAC_TX_INFO PMacTxInfo = pMptCtx->PMacTxInfo;
@@ -1813,7 +1813,7 @@ u32 hal_mpt_query_phytxok(PADAPTER	pAdapter)
 		count = PHY_QueryBBReg(pAdapter, 0xF50, bMaskHWord); /* [31:16]*/
 
 	if (count > 50000) {
-		rtw_reset_phy_trx_ok_counters(pAdapter);
+		rtl8188fu_rtw_reset_phy_trx_ok_counters(pAdapter);
 		pAdapter->mppriv.tx.sended += count;
 		count = 0;
 	}
@@ -1873,7 +1873,7 @@ static	VOID mpt_StopOfdmContTx(
 	else
 		PHY_SetBBReg(pAdapter, rOFDM1_LSTF, BIT30|BIT29|BIT28, OFDM_ALL_OFF);
 
-	rtw_mdelay_os(10);
+	rtl8188fu_rtw_mdelay_os(10);
 
 	if (!IS_HARDWARE_TYPE_JAGUAR(pAdapter) && !IS_HARDWARE_TYPE_JAGUAR2(pAdapter)) {
 		PHY_SetBBReg(pAdapter, 0xa14, 0x300, 0x0);			/* 0xa15[1:0] = 0*/
@@ -2070,7 +2070,7 @@ void mpt_ProSetPMacTx(PADAPTER	Adapter)
 		u4bTmp = PMacTxInfo.VHT_SIG_A[3]|((PMacTxInfo.VHT_SIG_A[4]) << 8)|((PMacTxInfo.VHT_SIG_A[5]) << 16);
 		PHY_SetBBReg(Adapter, 0xb10, 0xffffff, u4bTmp);
 
-		_rtw_memcpy(&u4bTmp, PMacTxInfo.VHT_SIG_B, 4);
+		rtl8188fu__rtw_memcpy(&u4bTmp, PMacTxInfo.VHT_SIG_B, 4);
 		PHY_SetBBReg(Adapter, 0xb14, bMaskDWord, u4bTmp);
 	}
 
@@ -2078,7 +2078,7 @@ void mpt_ProSetPMacTx(PADAPTER	Adapter)
 		u4bTmp = (PMacTxInfo.VHT_SIG_B_CRC << 24)|PMacTxInfo.PacketPeriod;	/* for TX interval */
 		PHY_SetBBReg(Adapter, 0xb20, bMaskDWord, u4bTmp);
 
-		_rtw_memcpy(&u4bTmp, PMacTxInfo.VHT_Delimiter, 4);
+		rtl8188fu__rtw_memcpy(&u4bTmp, PMacTxInfo.VHT_Delimiter, 4);
 		PHY_SetBBReg(Adapter, 0xb24, bMaskDWord, u4bTmp);
 
 		/* 0xb28 - 0xb34 24 byte Probe Request MAC Header*/

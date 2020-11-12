@@ -50,13 +50,13 @@
 #define CENTER_CH_5G_80M_NUM	7	/* 80M center channels */
 #define CENTER_CH_5G_ALL_NUM	(CENTER_CH_5G_20M_NUM + CENTER_CH_5G_40M_NUM + CENTER_CH_5G_80M_NUM)
 
-extern u8 center_ch_5g_20m[CENTER_CH_5G_20M_NUM];
-extern u8 center_ch_5g_40m[CENTER_CH_5G_40M_NUM];
-extern u8 center_ch_5g_80m[CENTER_CH_5G_80M_NUM];
-extern u8 center_ch_5g_all[CENTER_CH_5G_ALL_NUM];
+extern u8 rtl8188fu_center_ch_5g_20m[CENTER_CH_5G_20M_NUM];
+extern u8 rtl8188fu_center_ch_5g_40m[CENTER_CH_5G_40M_NUM];
+extern u8 rtl8188fu_center_ch_5g_80m[CENTER_CH_5G_80M_NUM];
+extern u8 rtl8188fu_center_ch_5g_all[CENTER_CH_5G_ALL_NUM];
 
-u8 center_chs_5g_num(u8 bw);
-u8 center_chs_5g(u8 bw, u8 id);
+u8 rtl8188fu_center_chs_5g_num(u8 bw);
+u8 rtl8188fu_center_chs_5g(u8 bw, u8 id);
 
 //#define NUM_REGULATORYS	21
 #define NUM_REGULATORYS	1
@@ -134,11 +134,11 @@ typedef enum _BAND_TYPE {
 	BAND_MAX = 3,
 } BAND_TYPE, *PBAND_TYPE;
 
-extern const char * const _band_str[];
-#define band_str(band) (((band) >= BAND_MAX) ? _band_str[BAND_MAX] : _band_str[(band)])
+extern const char * const rtl8188fu__band_str[];
+#define band_str(band) (((band) >= BAND_MAX) ? rtl8188fu__band_str[BAND_MAX] : rtl8188fu__band_str[(band)])
 
-extern const u8 _band_to_band_cap[];
-#define band_to_band_cap(band) (((band) >= BAND_MAX) ? _band_to_band_cap[BAND_MAX] : _band_to_band_cap[(band)])
+extern const u8 rtl8188fu__band_to_band_cap[];
+#define band_to_band_cap(band) (((band) >= BAND_MAX) ? rtl8188fu__band_to_band_cap[BAND_MAX] : rtl8188fu__band_to_band_cap[(band)])
 
 // Represent Channel Width in HT Capabilities
 //
@@ -151,11 +151,11 @@ typedef enum _CHANNEL_WIDTH{
 	CHANNEL_WIDTH_MAX = 5,
 }CHANNEL_WIDTH, *PCHANNEL_WIDTH;
 
-extern const char * const _ch_width_str[];
-#define ch_width_str(bw) (((bw) >= CHANNEL_WIDTH_MAX) ? _ch_width_str[CHANNEL_WIDTH_MAX] : _ch_width_str[(bw)])
+extern const char * const rtl8188fu__ch_width_str[];
+#define ch_width_str(bw) (((bw) >= CHANNEL_WIDTH_MAX) ? rtl8188fu__ch_width_str[CHANNEL_WIDTH_MAX] : rtl8188fu__ch_width_str[(bw)])
 
-extern const u8 _ch_width_to_bw_cap[];
-#define ch_width_to_bw_cap(bw) (((bw) >= CHANNEL_WIDTH_MAX) ? _ch_width_to_bw_cap[CHANNEL_WIDTH_MAX] : _ch_width_to_bw_cap[(bw)])
+extern const u8 rtl8188fu__ch_width_to_bw_cap[];
+#define ch_width_to_bw_cap(bw) (((bw) >= CHANNEL_WIDTH_MAX) ? rtl8188fu__ch_width_to_bw_cap[CHANNEL_WIDTH_MAX] : rtl8188fu__ch_width_to_bw_cap[(bw)])
 
 //
 // Represent Extention Channel Offset in HT Capabilities
@@ -203,9 +203,9 @@ typedef	enum _RT_RF_TYPE_DEFINITION
 	RF_MAX_TYPE = 0xF, /* u1Byte */
 }RT_RF_TYPE_DEF_E;
 
-int rtw_ch2freq(int chan);
-int rtw_freq2ch(int freq);
-bool rtw_chbw_to_freq_range(u8 ch, u8 bw, u8 offset, u32 *hi, u32 *lo);
+int rtl8188fu_rtw_ch2freq(int chan);
+int rtl8188fu_rtw_freq2ch(int freq);
+bool rtl8188fu_rtw_chbw_to_freq_range(u8 ch, u8 bw, u8 offset, u32 *hi, u32 *lo);
 
 #define RTW_MODULE_RTL8821AE_HMC_M2		BIT0 /* RTL8821AE(HMC+M.2) */
 #define RTW_MODULE_RTL8821AU			BIT1 /* RTL8821AU */
@@ -241,7 +241,7 @@ struct country_chplan {
 #define COUNTRY_CHPLAN_DEF_MODULE_FALGS(_ent) 0
 #endif
 
-const struct country_chplan *rtw_get_chplan_from_country(const char *country_code);
+const struct country_chplan *rtl8188fu_rtw_get_chplan_from_country(const char *country_code);
 
 #define BB_GAIN_2G 0
 #ifdef CONFIG_IEEE80211_BAND_5GHZ
@@ -258,14 +258,14 @@ const struct country_chplan *rtw_get_chplan_from_country(const char *country_cod
 #define BB_GAIN_NUM 1
 #endif
 
-int rtw_ch_to_bb_gain_sel(int ch);
-void rtw_rf_set_tx_gain_offset(_adapter *adapter, u8 path, s8 offset);
-void rtw_rf_apply_tx_gain_offset(_adapter *adapter, u8 ch);
+int rtl8188fu_rtw_ch_to_bb_gain_sel(int ch);
+void rtl8188fu_rtw_rf_set_tx_gain_offset(_adapter *adapter, u8 path, s8 offset);
+void rtl8188fu_rtw_rf_apply_tx_gain_offset(_adapter *adapter, u8 ch);
 
-bool rtw_is_dfs_range(u32 hi, u32 lo);
-bool rtw_is_dfs_ch(u8 ch, u8 bw, u8 offset);
-bool rtw_is_long_cac_range(u32 hi, u32 lo);
-bool rtw_is_long_cac_ch(u8 ch, u8 bw, u8 offset);
+bool rtl8188fu_rtw_is_dfs_range(u32 hi, u32 lo);
+bool rtl8188fu_rtw_is_dfs_ch(u8 ch, u8 bw, u8 offset);
+bool rtl8188fu_rtw_is_long_cac_range(u32 hi, u32 lo);
+bool rtl8188fu_rtw_is_long_cac_ch(u8 ch, u8 bw, u8 offset);
 
 #endif //_RTL8711_RF_H_
 

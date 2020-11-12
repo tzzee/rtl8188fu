@@ -20,8 +20,8 @@ enum country_code_type_t {
 	COUNTRY_CODE_MAX
 }; 
 
-int rtw_regd_init(_adapter *padapter);
-void rtw_reg_notify_by_driver(_adapter *adapter);
+int rtl8188fu_rtw_regd_init(_adapter *padapter);
+void rtl8188fu_rtw_reg_notify_by_driver(_adapter *adapter);
 
 #endif /* __RTW_WIFI_REGD_H__ */
 

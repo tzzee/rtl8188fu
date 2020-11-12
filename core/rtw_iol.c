@@ -29,16 +29,16 @@ struct xmit_frame	*rtw_IOL_accquire_xmit_frame(ADAPTER *adapter)
 	struct xmit_priv	*pxmitpriv = &(adapter->xmitpriv);
 
 #if 1
-	if ((xmit_frame = rtw_alloc_xmitframe(pxmitpriv)) == NULL)
+	if ((xmit_frame = rtl8188fu_rtw_alloc_xmitframe(pxmitpriv)) == NULL)
 	{
-		DBG_871X("%s rtw_alloc_xmitframe return null\n", __FUNCTION__);
+		DBG_871X("%s rtl8188fu_rtw_alloc_xmitframe return null\n", __FUNCTION__);
 		goto exit;
 	}
 	
-	if ((xmitbuf = rtw_alloc_xmitbuf(pxmitpriv)) == NULL)
+	if ((xmitbuf = rtl8188fu_rtw_alloc_xmitbuf(pxmitpriv)) == NULL)
 	{
-		DBG_871X("%s rtw_alloc_xmitbuf return null\n", __FUNCTION__);
-		rtw_free_xmitframe(pxmitpriv, xmit_frame);
+		DBG_871X("%s rtl8188fu_rtw_alloc_xmitbuf return null\n", __FUNCTION__);
+		rtl8188fu_rtw_free_xmitframe(pxmitpriv, xmit_frame);
 		xmit_frame=NULL;
 		goto exit;
 	}
@@ -49,19 +49,19 @@ struct xmit_frame	*rtw_IOL_accquire_xmit_frame(ADAPTER *adapter)
 	xmitbuf->priv_data = xmit_frame;
 
 	pattrib = &xmit_frame->attrib;
-	update_mgntframe_attrib(adapter, pattrib);
+	rtl8188fu_update_mgntframe_attrib(adapter, pattrib);
 	pattrib->qsel = QSLT_BEACON;//Beacon	
 	pattrib->subtype = WIFI_BEACON;	
 	pattrib->pktlen = pattrib->last_txcmdsz = 0;
 
 #else
-	if ((xmit_frame = alloc_mgtxmitframe(pxmitpriv)) == NULL)
+	if ((xmit_frame = rtl8188furtl8188fu__alloc_mgtxmitframe(pxmitpriv)) == NULL)
 	{
-		DBG_871X("%s alloc_mgtxmitframe return null\n", __FUNCTION__);
+		DBG_871X("%s rtl8188furtl8188fu__alloc_mgtxmitframe return null\n", __FUNCTION__);
 	}
 	else {
 		pattrib = &xmit_frame->attrib;
-		update_mgntframe_attrib(adapter, pattrib);
+		rtl8188fu_update_mgntframe_attrib(adapter, pattrib);
 		pattrib->qsel = QSLT_BEACON;
 		pattrib->pktlen = pattrib->last_txcmdsz = 0;
 	}
@@ -88,7 +88,7 @@ int rtw_IOL_append_cmds(struct xmit_frame *xmit_frame, u8 *IOL_cmds, u32 cmd_len
 		return _FAIL;
 	}
 
-	_rtw_memcpy(xmit_frame->buf_addr + buf_offset + pattrib->pktlen, IOL_cmds, cmd_len);
+	rtl8188fu__rtw_memcpy(xmit_frame->buf_addr + buf_offset + pattrib->pktlen, IOL_cmds, cmd_len);
 	pattrib->pktlen += cmd_len;
 	pattrib->last_txcmdsz += cmd_len;
 

@@ -216,13 +216,13 @@ void rtl8188f_set_pll_ref_clk_sel(_adapter *adapter, u8 sel);
 
 void rtl8188f_set_hal_ops(struct hal_ops *pHalFunc);
 void init_hal_spec_8188f(_adapter *adapter);
-void SetHwReg8188F(PADAPTER padapter, u8 variable, u8 *val);
-void GetHwReg8188F(PADAPTER padapter, u8 variable, u8 *val);
+void rtl8188fu_SetHwReg8188F(PADAPTER padapter, u8 variable, u8 *val);
+void rtl8188fu_GetHwReg8188F(PADAPTER padapter, u8 variable, u8 *val);
 #ifdef CONFIG_C2H_PACKET_EN
-void SetHwRegWithBuf8188F(PADAPTER padapter, u8 variable, u8 *pbuf, int len);
+void rtl8188fu_SetHwRegWithBuf8188F(PADAPTER padapter, u8 variable, u8 *pbuf, int len);
 #endif // CONFIG_C2H_PACKET_EN
-u8 SetHalDefVar8188F(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
-u8 GetHalDefVar8188F(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
+u8 rtl8188fu_SetHalDefVar8188F(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
+u8 rtl8188fu_GetHalDefVar8188F(PADAPTER padapter, HAL_DEF_VARIABLE variable, void *pval);
 
 // register
 void rtl8188f_InitBeaconParameters(PADAPTER padapter);
@@ -245,8 +245,8 @@ void Debug_FwC2H_8188f(PADAPTER padapter, u8 *pdata, u8 len);
 #endif //CONFIG_FW_C2H_DEBUG
 s32 c2h_id_filter_ccx_8188f(u8 *buf);
 s32 c2h_handler_8188f(PADAPTER padapter, u8 *pC2hEvent);
-u8 MRateToHwRate8188F(u8  rate);
-u8 HwRateToMRate8188F(u8	 rate);
+u8 rtl8188fu_MRateToHwRate8188F(u8  rate);
+u8 rtl8188fu_HwRateToMRate8188F(u8	 rate);
 
 #ifdef CONFIG_PCI_HCI
 BOOLEAN	InterruptRecognized8188FE(PADAPTER Adapter);

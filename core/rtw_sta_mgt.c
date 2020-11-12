@@ -28,25 +28,25 @@
 #endif
 
 
-bool test_st_match_rule(_adapter *adapter, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port)
+bool rtl8188fu_test_st_match_rule(_adapter *adapter, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port)
 {
 	if (ntohs(*((u16 *)local_port)) == 5001 || ntohs(*((u16 *)remote_port)) == 5001)
 		return _TRUE;
 	return _FALSE;
 }
 
-struct st_register test_st_reg = {
+struct st_register rtl8188fu_test_st_reg = {
 	.s_proto = 0x06,
-	.rule = test_st_match_rule,
+	.rule = rtl8188fu_test_st_match_rule,
 };
 
-inline void rtw_st_ctl_init(struct st_ctl_t *st_ctl)
+inline void rtl8188fu_rtw_st_ctl_init(struct st_ctl_t *st_ctl)
 {
-	_rtw_memset(st_ctl->reg, 0 , sizeof(struct st_register) * SESSION_TRACKER_REG_ID_NUM);
-	_rtw_init_queue(&st_ctl->tracker_q);
+	rtl8188fu__rtw_memset(st_ctl->reg, 0 , sizeof(struct st_register) * SESSION_TRACKER_REG_ID_NUM);
+	rtl8188fu__rtw_init_queue(&st_ctl->tracker_q);
 }
 
-inline void rtw_st_ctl_clear_tracker_q(struct st_ctl_t *st_ctl)
+inline void rtl8188fu_rtw_st_ctl_clear_tracker_q(struct st_ctl_t *st_ctl)
 {
 	_irqL irqL;
 	_list *plist, *phead;
@@ -55,7 +55,7 @@ inline void rtw_st_ctl_clear_tracker_q(struct st_ctl_t *st_ctl)
 	_enter_critical_bh(&st_ctl->tracker_q.lock, &irqL);
 	phead = &st_ctl->tracker_q.queue;
 	plist = get_next(phead);
-	while (rtw_end_of_queue_search(phead, plist) == _FALSE) {
+	while (rtl8188fu_rtw_end_of_queue_search(phead, plist) == _FALSE) {
 		st = LIST_CONTAINOR(plist, struct session_tracker, list);
 		plist = get_next(plist);
 		rtw_list_delete(&st->list);
@@ -64,13 +64,13 @@ inline void rtw_st_ctl_clear_tracker_q(struct st_ctl_t *st_ctl)
 	_exit_critical_bh(&st_ctl->tracker_q.lock, &irqL);
 }
 
-inline void rtw_st_ctl_deinit(struct st_ctl_t *st_ctl)
+inline void rtl8188fu_rtw_st_ctl_deinit(struct st_ctl_t *st_ctl)
 {
-	rtw_st_ctl_clear_tracker_q(st_ctl);
-	_rtw_deinit_queue(&st_ctl->tracker_q);
+	rtl8188fu_rtw_st_ctl_clear_tracker_q(st_ctl);
+	rtl8188fu__rtw_deinit_queue(&st_ctl->tracker_q);
 }
 
-inline void rtw_st_ctl_register(struct st_ctl_t *st_ctl, u8 st_reg_id, struct st_register *reg)
+inline void rtl8188fu_rtw_st_ctl_register(struct st_ctl_t *st_ctl, u8 st_reg_id, struct st_register *reg)
 {
 	if (st_reg_id >= SESSION_TRACKER_REG_ID_NUM) {
 		rtw_warn_on(1);
@@ -81,7 +81,7 @@ inline void rtw_st_ctl_register(struct st_ctl_t *st_ctl, u8 st_reg_id, struct st
 	st_ctl->reg[st_reg_id].rule = reg->rule;
 }
 
-inline void rtw_st_ctl_unregister(struct st_ctl_t *st_ctl, u8 st_reg_id)
+inline void rtl8188fu_rtw_st_ctl_unregister(struct st_ctl_t *st_ctl, u8 st_reg_id)
 {
 	int i;
 
@@ -98,10 +98,10 @@ inline void rtw_st_ctl_unregister(struct st_ctl_t *st_ctl, u8 st_reg_id)
 		if (st_ctl->reg[i].s_proto != 0)
 			break;
 	if (i >= SESSION_TRACKER_REG_ID_NUM)
-		rtw_st_ctl_clear_tracker_q(st_ctl);
+		rtl8188fu_rtw_st_ctl_clear_tracker_q(st_ctl);
 }
 
-inline bool rtw_st_ctl_chk_reg_s_proto(struct st_ctl_t *st_ctl, u8 s_proto)
+inline bool rtl8188fu_rtw_st_ctl_chk_reg_s_proto(struct st_ctl_t *st_ctl, u8 s_proto)
 {
 	bool ret = _FALSE;
 	int i;
@@ -116,7 +116,7 @@ inline bool rtw_st_ctl_chk_reg_s_proto(struct st_ctl_t *st_ctl, u8 s_proto)
 	return ret;
 }
 
-inline bool rtw_st_ctl_chk_reg_rule(struct st_ctl_t *st_ctl, _adapter *adapter, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port)
+inline bool rtl8188fu_rtw_st_ctl_chk_reg_rule(struct st_ctl_t *st_ctl, _adapter *adapter, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port)
 {
 	bool ret = _FALSE;
 	int i;
@@ -134,9 +134,9 @@ inline bool rtw_st_ctl_chk_reg_rule(struct st_ctl_t *st_ctl, _adapter *adapter, 
 }
 
 #define SESSION_TRACKER_FMT IP_FMT":"PORT_FMT" "IP_FMT":"PORT_FMT" %u %d"
-#define SESSION_TRACKER_ARG(st) IP_ARG(&(st)->local_naddr), PORT_ARG(&(st)->local_port), IP_ARG(&(st)->remote_naddr), PORT_ARG(&(st)->remote_port), (st)->status, rtw_get_passing_time_ms((st)->set_time)
+#define SESSION_TRACKER_ARG(st) IP_ARG(&(st)->local_naddr), PORT_ARG(&(st)->local_port), IP_ARG(&(st)->remote_naddr), PORT_ARG(&(st)->remote_port), (st)->status, rtl8188fu_rtw_get_passing_time_ms((st)->set_time)
 
-void dump_st_ctl(void *sel, struct st_ctl_t *st_ctl)
+void rtl8188fu_dump_st_ctl(void *sel, struct st_ctl_t *st_ctl)
 {
 	int i;
 	_irqL irqL;
@@ -152,7 +152,7 @@ void dump_st_ctl(void *sel, struct st_ctl_t *st_ctl)
 	_enter_critical_bh(&st_ctl->tracker_q.lock, &irqL);
 	phead = &st_ctl->tracker_q.queue;
 	plist = get_next(phead);
-	while (rtw_end_of_queue_search(phead, plist) == _FALSE) {
+	while (rtl8188fu_rtw_end_of_queue_search(phead, plist) == _FALSE) {
 		st = LIST_CONTAINOR(plist, struct session_tracker, list);
 		plist = get_next(plist);
 
@@ -162,32 +162,32 @@ void dump_st_ctl(void *sel, struct st_ctl_t *st_ctl)
 
 }
 
-void _rtw_init_stainfo(struct sta_info *psta);
-void _rtw_init_stainfo(struct sta_info *psta)
+void rtl8188fu__rtw_init_stainfo(struct sta_info *psta);
+void rtl8188fu__rtw_init_stainfo(struct sta_info *psta)
 {
 
 _func_enter_;
 
-	_rtw_memset((u8 *)psta, 0, sizeof (struct sta_info));
+	rtl8188fu__rtw_memset((u8 *)psta, 0, sizeof (struct sta_info));
 
-	 _rtw_spinlock_init(&psta->lock);
-	_rtw_init_listhead(&psta->list);
-	_rtw_init_listhead(&psta->hash_list);
-	//_rtw_init_listhead(&psta->asoc_list);
-	//_rtw_init_listhead(&psta->sleep_list);
-	//_rtw_init_listhead(&psta->wakeup_list);	
+	 rtl8188fu__rtw_spinlock_init(&psta->lock);
+	rtl8188fu__rtw_init_listhead(&psta->list);
+	rtl8188fu__rtw_init_listhead(&psta->hash_list);
+	//rtl8188fu__rtw_init_listhead(&psta->asoc_list);
+	//rtl8188fu__rtw_init_listhead(&psta->sleep_list);
+	//rtl8188fu__rtw_init_listhead(&psta->wakeup_list);	
 
-	_rtw_init_queue(&psta->sleep_q);
+	rtl8188fu__rtw_init_queue(&psta->sleep_q);
 	psta->sleepq_len = 0;
 
-	_rtw_init_sta_xmit_priv(&psta->sta_xmitpriv);
-	_rtw_init_sta_recv_priv(&psta->sta_recvpriv);
+	rtl8188fu__rtw_init_sta_xmit_priv(&psta->sta_xmitpriv);
+	rtl8188fu__rtw_init_sta_recv_priv(&psta->sta_recvpriv);
 	
 #ifdef CONFIG_AP_MODE
 
-	_rtw_init_listhead(&psta->asoc_list);
+	rtl8188fu__rtw_init_listhead(&psta->asoc_list);
 
-	_rtw_init_listhead(&psta->auth_list);
+	rtl8188fu__rtw_init_listhead(&psta->auth_list);
 	
 	psta->expire_to = 0;
 	
@@ -216,13 +216,13 @@ _func_enter_;
 
 #endif	// CONFIG_AP_MODE	
 
-	rtw_st_ctl_init(&psta->st_ctl);
+	rtl8188fu_rtw_st_ctl_init(&psta->st_ctl);
 
 _func_exit_;	
 
 }
 
-u32	_rtw_init_sta_priv(struct	sta_priv *pstapriv)
+u32	rtl8188fu__rtw_init_sta_priv(struct	sta_priv *pstapriv)
 {
 	struct sta_info *psta;
 	s32 i;
@@ -237,25 +237,25 @@ _func_enter_;
 	pstapriv->pstainfo_buf = pstapriv->pallocated_stainfo_buf + 4 - 
 		((SIZE_PTR)(pstapriv->pallocated_stainfo_buf ) & 3);
 
-	_rtw_init_queue(&pstapriv->free_sta_queue);
+	rtl8188fu__rtw_init_queue(&pstapriv->free_sta_queue);
 
-	_rtw_spinlock_init(&pstapriv->sta_hash_lock);
+	rtl8188fu__rtw_spinlock_init(&pstapriv->sta_hash_lock);
 	
-	//_rtw_init_queue(&pstapriv->asoc_q);
+	//rtl8188fu__rtw_init_queue(&pstapriv->asoc_q);
 	pstapriv->asoc_sta_count = 0;
-	_rtw_init_queue(&pstapriv->sleep_q);
-	_rtw_init_queue(&pstapriv->wakeup_q);
+	rtl8188fu__rtw_init_queue(&pstapriv->sleep_q);
+	rtl8188fu__rtw_init_queue(&pstapriv->wakeup_q);
 
 	psta = (struct sta_info *)(pstapriv->pstainfo_buf);
 
 		
 	for(i = 0; i < NUM_STA; i++)
 	{
-		_rtw_init_stainfo(psta);
+		rtl8188fu__rtw_init_stainfo(psta);
 
-		_rtw_init_listhead(&(pstapriv->sta_hash[i]));
+		rtl8188fu__rtw_init_listhead(&(pstapriv->sta_hash[i]));
 
-		rtw_list_insert_tail(&psta->list, get_list_head(&pstapriv->free_sta_queue));
+		rtl8188fu_rtw_list_insert_tail(&psta->list, get_list_head(&pstapriv->free_sta_queue));
 
 		psta++;
 	}
@@ -267,10 +267,10 @@ _func_enter_;
 	pstapriv->sta_dz_bitmap = 0;
 	pstapriv->tim_bitmap = 0;
 
-	_rtw_init_listhead(&pstapriv->asoc_list);
-	_rtw_init_listhead(&pstapriv->auth_list);
-	_rtw_spinlock_init(&pstapriv->asoc_list_lock);
-	_rtw_spinlock_init(&pstapriv->auth_list_lock);
+	rtl8188fu__rtw_init_listhead(&pstapriv->asoc_list);
+	rtl8188fu__rtw_init_listhead(&pstapriv->auth_list);
+	rtl8188fu__rtw_spinlock_init(&pstapriv->asoc_list_lock);
+	rtl8188fu__rtw_spinlock_init(&pstapriv->auth_list_lock);
 	pstapriv->asoc_list_cnt = 0;
 	pstapriv->auth_list_cnt = 0;
 
@@ -284,7 +284,7 @@ _func_enter_;
 	pstapriv->expire_to = 60;// 60*2 = 120 sec = 2 min, expire after no any traffic.
 #endif	
 #ifdef CONFIG_ATMEL_RC_PATCH
-	_rtw_memset(  pstapriv->atmel_rc_pattern, 0, ETH_ALEN);
+	rtl8188fu__rtw_memset(  pstapriv->atmel_rc_pattern, 0, ETH_ALEN);
 #endif	
 	pstapriv->max_num_sta = NUM_STA;
 		
@@ -296,7 +296,7 @@ _func_exit_;
 	
 }
 
-inline int rtw_stainfo_offset(struct sta_priv *stapriv, struct sta_info *sta)
+inline int rtl8188fu_rtw_stainfo_offset(struct sta_priv *stapriv, struct sta_info *sta)
 {
 	int offset = (((u8 *)sta) - stapriv->pstainfo_buf)/sizeof(struct sta_info);
 
@@ -306,7 +306,7 @@ inline int rtw_stainfo_offset(struct sta_priv *stapriv, struct sta_info *sta)
 	return offset;
 }
 
-inline struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int offset)
+inline struct sta_info *rtl8188fu_rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int offset)
 {
 	if (!stainfo_offset_valid(offset))
 		DBG_871X("%s invalid offset(%d), out of range!!!", __func__, offset);
@@ -314,17 +314,17 @@ inline struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int 
 	return (struct sta_info *)(stapriv->pstainfo_buf + offset * sizeof(struct sta_info));
 }
 
-void	_rtw_free_sta_xmit_priv_lock(struct sta_xmit_priv *psta_xmitpriv);
-void	_rtw_free_sta_xmit_priv_lock(struct sta_xmit_priv *psta_xmitpriv)
+void	rtl8188fu__rtw_free_sta_xmit_priv_lock(struct sta_xmit_priv *psta_xmitpriv);
+void	rtl8188fu__rtw_free_sta_xmit_priv_lock(struct sta_xmit_priv *psta_xmitpriv)
 {
 _func_enter_;
 
-	_rtw_spinlock_free(&psta_xmitpriv->lock);
+	rtl8188fu__rtw_spinlock_free(&psta_xmitpriv->lock);
 
-	_rtw_spinlock_free(&(psta_xmitpriv->be_q.sta_pending.lock));
-	_rtw_spinlock_free(&(psta_xmitpriv->bk_q.sta_pending.lock));
-	_rtw_spinlock_free(&(psta_xmitpriv->vi_q.sta_pending.lock));
-	_rtw_spinlock_free(&(psta_xmitpriv->vo_q.sta_pending.lock));
+	rtl8188fu__rtw_spinlock_free(&(psta_xmitpriv->be_q.sta_pending.lock));
+	rtl8188fu__rtw_spinlock_free(&(psta_xmitpriv->bk_q.sta_pending.lock));
+	rtl8188fu__rtw_spinlock_free(&(psta_xmitpriv->vi_q.sta_pending.lock));
+	rtl8188fu__rtw_spinlock_free(&(psta_xmitpriv->vo_q.sta_pending.lock));
 _func_exit_;	
 }
 
@@ -332,23 +332,23 @@ static void	_rtw_free_sta_recv_priv_lock(struct sta_recv_priv *psta_recvpriv)
 {
 _func_enter_;	
 
-	_rtw_spinlock_free(&psta_recvpriv->lock);
+	rtl8188fu__rtw_spinlock_free(&psta_recvpriv->lock);
 
-	_rtw_spinlock_free(&(psta_recvpriv->defrag_q.lock));
+	rtl8188fu__rtw_spinlock_free(&(psta_recvpriv->defrag_q.lock));
 
 _func_exit_;
 
 }
 
-void rtw_mfree_stainfo(struct sta_info *psta);
-void rtw_mfree_stainfo(struct sta_info *psta)
+void rtl8188fu_rtw_mfree_stainfo(struct sta_info *psta);
+void rtl8188fu_rtw_mfree_stainfo(struct sta_info *psta)
 {
 _func_enter_;
 
 	if(&psta->lock != NULL)
-		 _rtw_spinlock_free(&psta->lock);
+		 rtl8188fu__rtw_spinlock_free(&psta->lock);
 
-	_rtw_free_sta_xmit_priv_lock(&psta->sta_xmitpriv);
+	rtl8188fu__rtw_free_sta_xmit_priv_lock(&psta->sta_xmitpriv);
 	_rtw_free_sta_recv_priv_lock(&psta->sta_recvpriv);
 	
 _func_exit_;	
@@ -356,8 +356,8 @@ _func_exit_;
 
 
 // this function is used to free the memory of lock || sema for all stainfos
-void rtw_mfree_all_stainfo(struct sta_priv *pstapriv );
-void rtw_mfree_all_stainfo(struct sta_priv *pstapriv )
+void rtl8188fu_rtw_mfree_all_stainfo(struct sta_priv *pstapriv );
+void rtl8188fu_rtw_mfree_all_stainfo(struct sta_priv *pstapriv )
 {
 	_irqL	 irqL;
 	_list	*plist, *phead;
@@ -370,12 +370,12 @@ _func_enter_;
 	phead = get_list_head(&pstapriv->free_sta_queue);
 	plist = get_next(phead);
 		
-	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE)
+	while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE)
 	{
 		psta = LIST_CONTAINOR(plist, struct sta_info ,list);
 		plist = get_next(plist);
 
-		rtw_mfree_stainfo(psta);
+		rtl8188fu_rtw_mfree_stainfo(psta);
 	}
 	
 	_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
@@ -384,30 +384,30 @@ _func_exit_;
 
 }
 
-void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv);
-void rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv)
+void rtl8188fu_rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv);
+void rtl8188fu_rtw_mfree_sta_priv_lock(struct	sta_priv *pstapriv)
 {
 #ifdef CONFIG_AP_MODE
 	struct wlan_acl_pool *pacl_list = &pstapriv->acl_list;
 #endif
 
-	 rtw_mfree_all_stainfo(pstapriv); //be done before free sta_hash_lock
+	 rtl8188fu_rtw_mfree_all_stainfo(pstapriv); //be done before free sta_hash_lock
 
-	_rtw_spinlock_free(&pstapriv->free_sta_queue.lock);
+	rtl8188fu__rtw_spinlock_free(&pstapriv->free_sta_queue.lock);
 
-	_rtw_spinlock_free(&pstapriv->sta_hash_lock);
-	_rtw_spinlock_free(&pstapriv->wakeup_q.lock);
-	_rtw_spinlock_free(&pstapriv->sleep_q.lock);
+	rtl8188fu__rtw_spinlock_free(&pstapriv->sta_hash_lock);
+	rtl8188fu__rtw_spinlock_free(&pstapriv->wakeup_q.lock);
+	rtl8188fu__rtw_spinlock_free(&pstapriv->sleep_q.lock);
 
 #ifdef CONFIG_AP_MODE
-	_rtw_spinlock_free(&pstapriv->asoc_list_lock);
-	_rtw_spinlock_free(&pstapriv->auth_list_lock);
-	_rtw_spinlock_free(&pacl_list->acl_node_q.lock);
+	rtl8188fu__rtw_spinlock_free(&pstapriv->asoc_list_lock);
+	rtl8188fu__rtw_spinlock_free(&pstapriv->auth_list_lock);
+	rtl8188fu__rtw_spinlock_free(&pacl_list->acl_node_q.lock);
 #endif
 
 }
 
-u32	_rtw_free_sta_priv(struct	sta_priv *pstapriv)
+u32	rtl8188fu__rtw_free_sta_priv(struct	sta_priv *pstapriv)
 {
 	_irqL 	irqL;
 	_list	*phead, *plist;
@@ -425,7 +425,7 @@ _func_enter_;
 			phead = &(pstapriv->sta_hash[index]);
 			plist = get_next(phead);
 			
-			while ((rtw_end_of_queue_search(phead, plist)) == _FALSE)
+			while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE)
 			{
 				int i;	
 				psta = LIST_CONTAINOR(plist, struct sta_info ,hash_list);
@@ -441,7 +441,7 @@ _func_enter_;
 		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
 		/*===============================*/
 		
-		rtw_mfree_sta_priv_lock(pstapriv);
+		rtl8188fu_rtw_mfree_sta_priv_lock(pstapriv);
 
 		if(pstapriv->pallocated_stainfo_buf) {
 			rtw_vmfree(pstapriv->pallocated_stainfo_buf, sizeof(struct sta_info)*NUM_STA+4);
@@ -453,8 +453,8 @@ _func_exit_;
 }
 
 
-//struct	sta_info *rtw_alloc_stainfo(_queue *pfree_sta_queue, unsigned char *hwaddr)
-struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, const u8 *hwaddr)
+//struct	sta_info *rtl8188fu_rtw_alloc_stainfo(_queue *pfree_sta_queue, unsigned char *hwaddr)
+struct	sta_info *rtl8188fu_rtw_alloc_stainfo(struct	sta_priv *pstapriv, const u8 *hwaddr)
 {	
 	_irqL irqL, irqL2;
 	uint tmp_aid;
@@ -472,7 +472,7 @@ _func_enter_;
 
 	//_enter_critical_bh(&(pfree_sta_queue->lock), &irqL);
 	_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
-	if (_rtw_queue_empty(pfree_sta_queue) == _TRUE)
+	if (rtl8188fu__rtw_queue_empty(pfree_sta_queue) == _TRUE)
 	{
 		//_exit_critical_bh(&(pfree_sta_queue->lock), &irqL);
 		_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
@@ -488,18 +488,18 @@ _func_enter_;
 		
 		tmp_aid = psta->aid;	
 	
-		_rtw_init_stainfo(psta);
+		rtl8188fu__rtw_init_stainfo(psta);
 
 		psta->padapter = pstapriv->padapter;
 
-		_rtw_memcpy(psta->hwaddr, hwaddr, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(psta->hwaddr, hwaddr, ETH_ALEN);
 
 		index = wifi_mac_hash(hwaddr);
 
-		RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_info_,("rtw_alloc_stainfo: index  = %x", index));
+		RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_info_,("rtl8188fu_rtw_alloc_stainfo: index  = %x", index));
 
 		if(index >= NUM_STA){
-			RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_err_,("ERROR=> rtw_alloc_stainfo: index >= NUM_STA"));
+			RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_err_,("ERROR=> rtl8188fu_rtw_alloc_stainfo: index >= NUM_STA"));
 			psta= NULL;	
 			goto exit;
 		}
@@ -507,7 +507,7 @@ _func_enter_;
 
 		//_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL2);
 
-		rtw_list_insert_tail(&psta->hash_list, phash_list);
+		rtl8188fu_rtw_list_insert_tail(&psta->hash_list, phash_list);
 
 		pstapriv->asoc_sta_count ++ ;
 
@@ -515,18 +515,18 @@ _func_enter_;
 
 // Commented by Albert 2009/08/13
 // For the SMC router, the sequence number of first packet of WPS handshake will be 0.
-// In this case, this packet will be dropped by recv_decache function if we use the 0x00 as the default value for tid_rxseq variable.
+// In this case, this packet will be dropped by rtl8188fu_recv_decache function if we use the 0x00 as the default value for tid_rxseq variable.
 // So, we initialize the tid_rxseq variable as the 0xffff.
 
 		for( i = 0; i < 16; i++ )
 		{
-                     _rtw_memcpy( &psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2 );
+                     rtl8188fu__rtw_memcpy( &psta->sta_recvpriv.rxcache.tid_rxseq[ i ], &wRxSeqInitialValue, 2 );
 		}
 
 		RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_info_,("alloc number_%d stainfo  with hwaddr = %x %x %x %x %x %x  \n", 
 		pstapriv->asoc_sta_count , hwaddr[0], hwaddr[1], hwaddr[2],hwaddr[3],hwaddr[4],hwaddr[5]));
 
-		init_addba_retry_timer(pstapriv->padapter, psta);
+		rtl8188fu_init_addba_retry_timer(pstapriv->padapter, psta);
 #ifdef CONFIG_IEEE80211W
 		init_dot11w_expire_timer(pstapriv->padapter, psta);
 #endif /* CONFIG_IEEE80211W */
@@ -553,9 +553,9 @@ _func_enter_;
 			preorder_ctrl->wsize_b = 64;//64;
 			preorder_ctrl->ampdu_size = RX_AMPDU_SIZE_INVALID;
 
-			_rtw_init_queue(&preorder_ctrl->pending_recvframe_queue);
+			rtl8188fu__rtw_init_queue(&preorder_ctrl->pending_recvframe_queue);
 
-			rtw_init_recv_timer(preorder_ctrl);
+			rtl8188fu_rtw_init_recv_timer(preorder_ctrl);
 		}
 
 
@@ -570,7 +570,7 @@ _func_enter_;
 		psta->ra_rpt_linked = _FALSE;
 
 		//alloc mac id for non-bc/mc station,
-		rtw_alloc_macid(pstapriv->padapter, psta);
+		rtl8188fu_rtw_alloc_macid(pstapriv->padapter, psta);
 
 	}
 	
@@ -587,7 +587,7 @@ _func_exit_;
 
 
 // using pstapriv->sta_hash_lock to protect
-u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
+u32	rtl8188fu_rtw_free_stainfo(_adapter *padapter , struct sta_info *psta)
 {	
 	int i;
 	_irqL irqL0;
@@ -626,12 +626,12 @@ _func_enter_;
 	
 	_enter_critical_bh(&pxmitpriv->lock, &irqL0);
 	
-	rtw_free_xmitframe_queue(pxmitpriv, &psta->sleep_q);
+	rtl8188fu_rtw_free_xmitframe_queue(pxmitpriv, &psta->sleep_q);
 	psta->sleepq_len = 0;
 	
 	//vo
 	//_enter_critical_bh(&(pxmitpriv->vo_pending.lock), &irqL0);
-	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->vo_q.sta_pending);
+	rtl8188fu_rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->vo_q.sta_pending);
 	rtw_list_delete(&(pstaxmitpriv->vo_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits;
 	phwxmit->accnt -= pstaxmitpriv->vo_q.qcnt;
@@ -641,7 +641,7 @@ _func_enter_;
 
 	//vi
 	//_enter_critical_bh(&(pxmitpriv->vi_pending.lock), &irqL0);
-	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->vi_q.sta_pending);
+	rtl8188fu_rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->vi_q.sta_pending);
 	rtw_list_delete(&(pstaxmitpriv->vi_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits+1;
 	phwxmit->accnt -= pstaxmitpriv->vi_q.qcnt;
@@ -651,7 +651,7 @@ _func_enter_;
 
 	//be
 	//_enter_critical_bh(&(pxmitpriv->be_pending.lock), &irqL0);
-	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->be_q.sta_pending);
+	rtl8188fu_rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->be_q.sta_pending);
 	rtw_list_delete(&(pstaxmitpriv->be_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits+2;
 	phwxmit->accnt -= pstaxmitpriv->be_q.qcnt;
@@ -661,7 +661,7 @@ _func_enter_;
 	
 	//bk
 	//_enter_critical_bh(&(pxmitpriv->bk_pending.lock), &irqL0);
-	rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->bk_q.sta_pending);
+	rtl8188fu_rtw_free_xmitframe_queue( pxmitpriv, &pstaxmitpriv->bk_q.sta_pending);
 	rtw_list_delete(&(pstaxmitpriv->bk_q.tx_pending));
 	phwxmit = pxmitpriv->hwxmits+3;
 	phwxmit->accnt -= pstaxmitpriv->bk_q.qcnt;
@@ -669,14 +669,14 @@ _func_enter_;
 	pstaxmitpriv->bk_q.qcnt = 0;
 	//_exit_critical_bh(&(pxmitpriv->bk_pending.lock), &irqL0);
 
-	rtw_os_wake_queue_at_free_stainfo(padapter, pending_qcnt);
+	rtl8188fu_rtw_os_wake_queue_at_free_stainfo(padapter, pending_qcnt);
 
 	_exit_critical_bh(&pxmitpriv->lock, &irqL0);
 	
 	
 	// re-init sta_info; 20061114 // will be init in alloc_stainfo
-	//_rtw_init_sta_xmit_priv(&psta->sta_xmitpriv);
-	//_rtw_init_sta_recv_priv(&psta->sta_recvpriv);
+	//rtl8188fu__rtw_init_sta_xmit_priv(&psta->sta_xmitpriv);
+	//rtl8188fu__rtw_init_sta_recv_priv(&psta->sta_recvpriv);
 #ifdef CONFIG_IEEE80211W
 	_cancel_timer_ex(&psta->dot11w_expire_timer);
 #endif /* CONFIG_IEEE80211W */
@@ -708,7 +708,7 @@ _func_enter_;
 		phead = 	get_list_head(ppending_recvframe_queue);
 		plist = get_next(phead);
 		
-		while(!rtw_is_list_empty(phead))
+		while(!rtl8188fu_rtw_is_list_empty(phead))
 		{	
 			prframe = LIST_CONTAINOR(plist, union recv_frame, u);
 			
@@ -716,7 +716,7 @@ _func_enter_;
 			
 			rtw_list_delete(&(prframe->u.hdr.list));
 
-			rtw_free_recvframe(prframe, pfree_recv_queue);
+			rtl8188fu_rtw_free_recvframe(prframe, pfree_recv_queue);
 		}
 
 		_exit_critical_bh(&ppending_recvframe_queue->lock, &irqL);
@@ -724,11 +724,11 @@ _func_enter_;
 	}
 
 	if (!(psta->state & WIFI_AP_STATE))
-		rtw_hal_set_odm_var(padapter, HAL_ODM_STA_INFO, psta, _FALSE);
+		rtl8188fu_rtw_hal_set_odm_var(padapter, HAL_ODM_STA_INFO, psta, _FALSE);
 			
 
 	//release mac id for non-bc/mc station,
-	rtw_release_macid(pstapriv->padapter, psta);
+	rtl8188fu_rtw_release_macid(pstapriv->padapter, psta);
 
 #ifdef CONFIG_AP_MODE
 
@@ -738,7 +738,7 @@ _func_enter_;
 	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL0);
 */
 	_enter_critical_bh(&pstapriv->auth_list_lock, &irqL0);
-	if (!rtw_is_list_empty(&psta->auth_list)) {
+	if (!rtl8188fu_rtw_is_list_empty(&psta->auth_list)) {
 		rtw_list_delete(&psta->auth_list);
 		pstapriv->auth_list_cnt--;
 	}
@@ -764,7 +764,7 @@ _func_enter_;
 	pstapriv->sta_dz_bitmap &=~BIT(psta->aid);
 	pstapriv->tim_bitmap &=~BIT(psta->aid);	
 
-	//rtw_indicate_sta_disassoc_event(padapter, psta);
+	//rtl8188fu_rtw_indicate_sta_disassoc_event(padapter, psta);
 
 	if ((psta->aid >0)&&(pstapriv->sta_aid[psta->aid - 1] == psta))
 	{
@@ -780,13 +780,13 @@ _func_enter_;
 
 #endif	// CONFIG_AP_MODE	
 
-	rtw_st_ctl_deinit(&psta->st_ctl);
+	rtl8188fu_rtw_st_ctl_deinit(&psta->st_ctl);
 
-	 _rtw_spinlock_free(&psta->lock);
+	 rtl8188fu__rtw_spinlock_free(&psta->lock);
 
 	//_enter_critical_bh(&(pfree_sta_queue->lock), &irqL0);
 	_enter_critical_bh(&(pstapriv->sta_hash_lock), &irqL0);	
-	rtw_list_insert_tail(&psta->list, get_list_head(pfree_sta_queue));
+	rtl8188fu_rtw_list_insert_tail(&psta->list, get_list_head(pfree_sta_queue));
 	_exit_critical_bh(&(pstapriv->sta_hash_lock), &irqL0);
 	//_exit_critical_bh(&(pfree_sta_queue->lock), &irqL0);
 
@@ -799,14 +799,14 @@ _func_exit_;
 }
 
 // free all stainfo which in sta_hash[all]
-void rtw_free_all_stainfo(_adapter *padapter)
+void rtl8188fu_rtw_free_all_stainfo(_adapter *padapter)
 {
 	_irqL	 irqL;
 	_list	*plist, *phead;
 	s32	index;
 	struct sta_info *psta = NULL;
 	struct	sta_priv *pstapriv = &padapter->stapriv;
-	struct sta_info* pbcmc_stainfo =rtw_get_bcmc_stainfo( padapter);
+	struct sta_info* pbcmc_stainfo =rtl8188fu_rtw_get_bcmc_stainfo( padapter);
 	u8 free_sta_num = 0;
 	char free_sta_list[NUM_STA];
 	int stainfo_offset;
@@ -823,7 +823,7 @@ _func_enter_;
 		phead = &(pstapriv->sta_hash[index]);
 		plist = get_next(phead);
 		
-		while ((rtw_end_of_queue_search(phead, plist)) == _FALSE)
+		while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE)
 		{
 			psta = LIST_CONTAINOR(plist, struct sta_info ,hash_list);
 
@@ -832,8 +832,8 @@ _func_enter_;
 			if(pbcmc_stainfo!=psta)
 			{
 				rtw_list_delete(&psta->hash_list);
-				//rtw_free_stainfo(padapter , psta);
-				stainfo_offset = rtw_stainfo_offset(pstapriv, psta);
+				//rtl8188fu_rtw_free_stainfo(padapter , psta);
+				stainfo_offset = rtl8188fu_rtw_stainfo_offset(pstapriv, psta);
 				if (stainfo_offset_valid(stainfo_offset)) {
 					free_sta_list[free_sta_num++] = stainfo_offset;
 				}
@@ -847,8 +847,8 @@ _func_enter_;
 
 	for (index = 0; index < free_sta_num; index++) 
 	{
-		psta = rtw_get_stainfo_by_offset(pstapriv, free_sta_list[index]);
-		rtw_free_stainfo(padapter , psta);
+		psta = rtl8188fu_rtw_get_stainfo_by_offset(pstapriv, free_sta_list[index]);
+		rtl8188fu_rtw_free_stainfo(padapter , psta);
 	}
 	
 exit:	
@@ -858,7 +858,7 @@ _func_exit_;
 }
 
 /* any station allocated can be searched by hash list */
-struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, const u8 *hwaddr)
+struct sta_info *rtl8188fu_rtw_get_stainfo(struct sta_priv *pstapriv, const u8 *hwaddr)
 {
 
 	_irqL	 irqL;
@@ -891,12 +891,12 @@ _func_enter_;
 	plist = get_next(phead);
 
 
-	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE)
+	while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE)
 	{
 	
 		psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 		
-		if ((_rtw_memcmp(psta->hwaddr, addr, ETH_ALEN))== _TRUE) 
+		if ((rtl8188fu__rtw_memcmp(psta->hwaddr, addr, ETH_ALEN))== _TRUE) 
 		{ // if found the matched address
 			break;
 		}
@@ -910,7 +910,7 @@ _func_exit_;
 	
 }
 
-u32 rtw_init_bcmc_stainfo(_adapter* padapter)
+u32 rtl8188fu_rtw_init_bcmc_stainfo(_adapter* padapter)
 {
 
 	struct sta_info 	*psta;
@@ -923,11 +923,11 @@ u32 rtw_init_bcmc_stainfo(_adapter* padapter)
 	
 _func_enter_;
 
-	psta = rtw_alloc_stainfo(pstapriv, bcast_addr);
+	psta = rtl8188fu_rtw_alloc_stainfo(pstapriv, bcast_addr);
 	
 	if(psta==NULL){
 		res=_FAIL;
-		RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_err_,("rtw_alloc_stainfo fail"));
+		RT_TRACE(_module_rtl871x_sta_mgt_c_,_drv_err_,("rtl8188fu_rtw_alloc_stainfo fail"));
 		goto exit;
 	}
 #ifdef CONFIG_BEAMFORMING
@@ -939,8 +939,8 @@ _func_enter_;
 /*
 	_enter_critical(&pstapending->lock, &irqL0);
 
-	if (rtw_is_list_empty(&ptxservq->tx_pending))
-		rtw_list_insert_tail(&ptxservq->tx_pending, get_list_head(pstapending));
+	if (rtl8188fu_rtw_is_list_empty(&ptxservq->tx_pending))
+		rtl8188fu_rtw_list_insert_tail(&ptxservq->tx_pending, get_list_head(pstapending));
 
 	_exit_critical(&pstapending->lock, &irqL0);
 */
@@ -952,19 +952,19 @@ _func_exit_;
 }
 
 
-struct sta_info* rtw_get_bcmc_stainfo(_adapter* padapter)
+struct sta_info* rtl8188fu_rtw_get_bcmc_stainfo(_adapter* padapter)
 {
 	struct sta_info 	*psta;
 	struct sta_priv 	*pstapriv = &padapter->stapriv;
 	u8 bc_addr[ETH_ALEN] = {0xff,0xff,0xff,0xff,0xff,0xff};
 _func_enter_;
-	 psta = rtw_get_stainfo(pstapriv, bc_addr);
+	 psta = rtl8188fu_rtw_get_stainfo(pstapriv, bc_addr);
 _func_exit_;		 
 	return psta;
 
 }
 
-u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr)
+u8 rtl8188fu_rtw_access_ctrl(_adapter *padapter, u8 *mac_addr)
 {
 	u8 res = _TRUE;
 #ifdef  CONFIG_AP_MODE
@@ -979,12 +979,12 @@ u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr)
 	_enter_critical_bh(&(pacl_node_q->lock), &irqL);
 	phead = get_list_head(pacl_node_q);
 	plist = get_next(phead);		
-	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE)
+	while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE)
 	{
 		paclnode = LIST_CONTAINOR(plist, struct rtw_wlan_acl_node, list);
 		plist = get_next(plist);
 
-		if(_rtw_memcmp(paclnode->addr, mac_addr, ETH_ALEN))
+		if(rtl8188fu__rtw_memcmp(paclnode->addr, mac_addr, ETH_ALEN))
 		{
 			if(paclnode->valid == _TRUE)
 			{

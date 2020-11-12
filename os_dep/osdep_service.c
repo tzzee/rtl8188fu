@@ -35,10 +35,10 @@ atomic_t _malloc_size = ATOMIC_INIT(0);
 
 #if defined(PLATFORM_LINUX)
 /*
-* Translate the OS dependent @param error_code to OS independent RTW_STATUS_CODE
-* @return: one of RTW_STATUS_CODE
+* Translate the OS dependent @param error_code to OS independent rtl8188fu_RTW_STATUS_CODE
+* @return: one of rtl8188fu_RTW_STATUS_CODE
 */
-inline int RTW_STATUS_CODE(int error_code){
+inline int rtl8188fu_RTW_STATUS_CODE(int error_code){
 	if(error_code >=0)
 		return _SUCCESS;
 
@@ -50,12 +50,12 @@ inline int RTW_STATUS_CODE(int error_code){
 	}
 }
 #else
-inline int RTW_STATUS_CODE(int error_code){
+inline int rtl8188fu_RTW_STATUS_CODE(int error_code){
 	return error_code;
 }
 #endif
 
-u32 rtw_atoi(u8* s)
+u32 rtl8188fu_rtw_atoi(u8* s)
 {
 
 	int num=0,flag=0;
@@ -77,7 +77,7 @@ u32 rtw_atoi(u8* s)
 
 }
 
-inline u8* _rtw_vmalloc(u32 sz)
+inline u8* rtl8188fu__rtw_vmalloc(u32 sz)
 {
 	u8 	*pbuf;
 #ifdef PLATFORM_LINUX	
@@ -103,11 +103,11 @@ inline u8* _rtw_vmalloc(u32 sz)
 	return pbuf;	
 }
 
-inline u8* _rtw_zvmalloc(u32 sz)
+inline u8* rtl8188fu__rtw_zvmalloc(u32 sz)
 {
 	u8 	*pbuf;
 #ifdef PLATFORM_LINUX
-	pbuf = _rtw_vmalloc(sz);
+	pbuf = rtl8188fu__rtw_vmalloc(sz);
 	if (pbuf != NULL)
 		memset(pbuf, 0, sz);
 #endif	
@@ -123,7 +123,7 @@ inline u8* _rtw_zvmalloc(u32 sz)
 	return pbuf;	
 }
 
-inline void _rtw_vmfree(u8 *pbuf, u32 sz)
+inline void rtl8188fu__rtw_vmfree(u8 *pbuf, u32 sz)
 {
 #ifdef	PLATFORM_LINUX
 	vfree(pbuf);
@@ -143,7 +143,7 @@ inline void _rtw_vmfree(u8 *pbuf, u32 sz)
 #endif /* DBG_MEMORY_LEAK */
 }
 
-u8* _rtw_malloc(u32 sz)
+u8* rtl8188fu__rtw_malloc(u32 sz)
 {
 
 	u8 	*pbuf=NULL;
@@ -180,12 +180,12 @@ u8* _rtw_malloc(u32 sz)
 }
 
 
-u8* _rtw_zmalloc(u32 sz)
+u8* rtl8188fu__rtw_zmalloc(u32 sz)
 {
 #ifdef PLATFORM_FREEBSD
 	return malloc(sz,M_DEVBUF,M_ZERO|M_NOWAIT);
 #else // PLATFORM_FREEBSD
-	u8 	*pbuf = _rtw_malloc(sz);
+	u8 	*pbuf = rtl8188fu__rtw_malloc(sz);
 
 	if (pbuf != NULL) {
 
@@ -203,7 +203,7 @@ u8* _rtw_zmalloc(u32 sz)
 #endif // PLATFORM_FREEBSD
 }
 
-void	_rtw_mfree(u8 *pbuf, u32 sz)
+void	rtl8188fu__rtw_mfree(u8 *pbuf, u32 sz)
 {
 
 #ifdef	PLATFORM_LINUX
@@ -240,11 +240,11 @@ struct sk_buff * dev_alloc_skb(unsigned int size)
 	struct sk_buff *skb=NULL;
     	u8 *data=NULL;
 	
-	//skb = (struct sk_buff *)_rtw_zmalloc(sizeof(struct sk_buff)); // for skb->len, etc.
-	skb = (struct sk_buff *)_rtw_malloc(sizeof(struct sk_buff));
+	//skb = (struct sk_buff *)rtl8188fu__rtw_zmalloc(sizeof(struct sk_buff)); // for skb->len, etc.
+	skb = (struct sk_buff *)rtl8188fu__rtw_malloc(sizeof(struct sk_buff));
 	if(!skb)
 		goto out;
-	data = _rtw_malloc(size);
+	data = rtl8188fu__rtw_malloc(size);
 	if(!data)
 		goto nodata;
 
@@ -258,7 +258,7 @@ struct sk_buff * dev_alloc_skb(unsigned int size)
 out:
 	return skb;
 nodata:
-	_rtw_mfree((u8 *)skb, sizeof(struct sk_buff));
+	rtl8188fu__rtw_mfree((u8 *)skb, sizeof(struct sk_buff));
 	skb = NULL;
 goto out;
 	
@@ -268,10 +268,10 @@ void dev_kfree_skb_any(struct sk_buff *skb)
 {
 	//printf("%s()-%d: skb->head = %p\n", __FUNCTION__, __LINE__, skb->head);
 	if(skb->head)
-		_rtw_mfree(skb->head, 0);
+		rtl8188fu__rtw_mfree(skb->head, 0);
 	//printf("%s()-%d: skb = %p\n", __FUNCTION__, __LINE__, skb);
 	if(skb)
-		_rtw_mfree((u8 *)skb, 0);
+		rtl8188fu__rtw_mfree((u8 *)skb, 0);
 }
 struct sk_buff *skb_clone(const struct sk_buff *skb)
 {
@@ -280,7 +280,7 @@ struct sk_buff *skb_clone(const struct sk_buff *skb)
 
 #endif /* PLATFORM_FREEBSD */
 
-inline struct sk_buff *_rtw_skb_alloc(u32 sz)
+inline struct sk_buff *rtl8188fu__rtw_skb_alloc(u32 sz)
 {
 #ifdef PLATFORM_LINUX
 	return __dev_alloc_skb(sz, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
@@ -291,12 +291,12 @@ inline struct sk_buff *_rtw_skb_alloc(u32 sz)
 #endif /* PLATFORM_FREEBSD */
 }
 
-inline void _rtw_skb_free(struct sk_buff *skb)
+inline void rtl8188fu__rtw_skb_free(struct sk_buff *skb)
 {
 	dev_kfree_skb_any(skb);
 }
 
-inline struct sk_buff *_rtw_skb_copy(const struct sk_buff *skb)
+inline struct sk_buff *rtl8188fu__rtw_skb_copy(const struct sk_buff *skb)
 {
 #ifdef PLATFORM_LINUX
 	return skb_copy(skb, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
@@ -307,7 +307,7 @@ inline struct sk_buff *_rtw_skb_copy(const struct sk_buff *skb)
 #endif /* PLATFORM_FREEBSD */
 }
 
-inline struct sk_buff *_rtw_skb_clone(struct sk_buff *skb)
+inline struct sk_buff *rtl8188fu__rtw_skb_clone(struct sk_buff *skb)
 {
 #ifdef PLATFORM_LINUX
 	return skb_clone(skb, in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
@@ -318,7 +318,7 @@ inline struct sk_buff *_rtw_skb_clone(struct sk_buff *skb)
 #endif /* PLATFORM_FREEBSD */
 }
 
-inline int _rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb)
+inline int rtl8188fu__rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb)
 {
 #ifdef PLATFORM_LINUX
 	skb->dev = ndev;
@@ -330,16 +330,16 @@ inline int _rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb)
 #endif /* PLATFORM_FREEBSD */
 }
 
-void _rtw_skb_queue_purge(struct sk_buff_head *list)
+void rtl8188fu__rtw_skb_queue_purge(struct sk_buff_head *list)
 {
 	struct sk_buff *skb;
 
 	while ((skb = skb_dequeue(list)) != NULL)
-		_rtw_skb_free(skb);
+		rtl8188fu__rtw_skb_free(skb);
 }
 
 #ifdef CONFIG_USB_HCI
-inline void *_rtw_usb_buffer_alloc(struct usb_device *dev, size_t size, dma_addr_t *dma)
+inline void *rtl8188fu__rtw_usb_buffer_alloc(struct usb_device *dev, size_t size, dma_addr_t *dma)
 {
 #ifdef PLATFORM_LINUX
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
@@ -353,7 +353,7 @@ inline void *_rtw_usb_buffer_alloc(struct usb_device *dev, size_t size, dma_addr
 	return (malloc(size, M_USBDEV, M_NOWAIT | M_ZERO));
 #endif /* PLATFORM_FREEBSD */
 }
-inline void _rtw_usb_buffer_free(struct usb_device *dev, size_t size, void *addr, dma_addr_t dma)
+inline void rtl8188fu__rtw_usb_buffer_free(struct usb_device *dev, size_t size, void *addr, dma_addr_t dma)
 {
 #ifdef PLATFORM_LINUX
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
@@ -413,18 +413,18 @@ void rtw_mstat_dump(void *sel)
 	int tx_alloc, tx_peak, tx_alloc_err, rx_alloc, rx_peak, rx_alloc_err;
 
 	for(i=0;i<mstat_tf_idx(MSTAT_TYPE_MAX);i++) {
-		value_t[0][i] = ATOMIC_READ(&(rtw_mem_type_stat[i].alloc));
-		value_t[1][i] = ATOMIC_READ(&(rtw_mem_type_stat[i].peak));
-		value_t[2][i] = ATOMIC_READ(&(rtw_mem_type_stat[i].alloc_cnt));
-		value_t[3][i] = ATOMIC_READ(&(rtw_mem_type_stat[i].alloc_err_cnt));
+		value_t[0][i] = rtl8188fu_ATOMIC_READ(&(rtw_mem_type_stat[i].alloc));
+		value_t[1][i] = rtl8188fu_ATOMIC_READ(&(rtw_mem_type_stat[i].peak));
+		value_t[2][i] = rtl8188fu_ATOMIC_READ(&(rtw_mem_type_stat[i].alloc_cnt));
+		value_t[3][i] = rtl8188fu_ATOMIC_READ(&(rtw_mem_type_stat[i].alloc_err_cnt));
 	}
 
 	#ifdef RTW_MEM_FUNC_STAT
 	for(i=0;i<mstat_ff_idx(MSTAT_FUNC_MAX);i++) {
-		value_f[0][i] = ATOMIC_READ(&(rtw_mem_func_stat[i].alloc));
-		value_f[1][i] = ATOMIC_READ(&(rtw_mem_func_stat[i].peak));
-		value_f[2][i] = ATOMIC_READ(&(rtw_mem_func_stat[i].alloc_cnt));
-		value_f[3][i] = ATOMIC_READ(&(rtw_mem_func_stat[i].alloc_err_cnt));
+		value_f[0][i] = rtl8188fu_ATOMIC_READ(&(rtw_mem_func_stat[i].alloc));
+		value_f[1][i] = rtl8188fu_ATOMIC_READ(&(rtw_mem_func_stat[i].peak));
+		value_f[2][i] = rtl8188fu_ATOMIC_READ(&(rtw_mem_func_stat[i].alloc_cnt));
+		value_f[3][i] = rtl8188fu_ATOMIC_READ(&(rtw_mem_func_stat[i].alloc_err_cnt));
 	}
 	#endif
 
@@ -451,58 +451,58 @@ void rtw_mstat_update(const enum mstat_f flags, const MSTAT_STATUS status, u32 s
 	/* initialization */
 	if(!update_time) {
 		for(i=0;i<mstat_tf_idx(MSTAT_TYPE_MAX);i++) {
-			ATOMIC_SET(&(rtw_mem_type_stat[i].alloc), 0);
-			ATOMIC_SET(&(rtw_mem_type_stat[i].peak), 0);
-			ATOMIC_SET(&(rtw_mem_type_stat[i].alloc_cnt), 0);
-			ATOMIC_SET(&(rtw_mem_type_stat[i].alloc_err_cnt), 0);
+			rtl8188fu_ATOMIC_SET(&(rtw_mem_type_stat[i].alloc), 0);
+			rtl8188fu_ATOMIC_SET(&(rtw_mem_type_stat[i].peak), 0);
+			rtl8188fu_ATOMIC_SET(&(rtw_mem_type_stat[i].alloc_cnt), 0);
+			rtl8188fu_ATOMIC_SET(&(rtw_mem_type_stat[i].alloc_err_cnt), 0);
 		}
 		#ifdef RTW_MEM_FUNC_STAT
 		for(i=0;i<mstat_ff_idx(MSTAT_FUNC_MAX);i++) {
-			ATOMIC_SET(&(rtw_mem_func_stat[i].alloc), 0);
-			ATOMIC_SET(&(rtw_mem_func_stat[i].peak), 0);
-			ATOMIC_SET(&(rtw_mem_func_stat[i].alloc_cnt), 0);
-			ATOMIC_SET(&(rtw_mem_func_stat[i].alloc_err_cnt), 0);
+			rtl8188fu_ATOMIC_SET(&(rtw_mem_func_stat[i].alloc), 0);
+			rtl8188fu_ATOMIC_SET(&(rtw_mem_func_stat[i].peak), 0);
+			rtl8188fu_ATOMIC_SET(&(rtw_mem_func_stat[i].alloc_cnt), 0);
+			rtl8188fu_ATOMIC_SET(&(rtw_mem_func_stat[i].alloc_err_cnt), 0);
 		}
 		#endif
 	}
 
 	switch(status) {
 		case MSTAT_ALLOC_SUCCESS:
-			ATOMIC_INC(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc_cnt));
-			alloc = ATOMIC_ADD_RETURN(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc), sz);
-			peak=ATOMIC_READ(&(rtw_mem_type_stat[mstat_tf_idx(flags)].peak));
+			rtl8188fu_ATOMIC_INC(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc_cnt));
+			alloc = rtl8188fu_ATOMIC_ADD_RETURN(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc), sz);
+			peak=rtl8188fu_ATOMIC_READ(&(rtw_mem_type_stat[mstat_tf_idx(flags)].peak));
 			if (peak<alloc)
-				ATOMIC_SET(&(rtw_mem_type_stat[mstat_tf_idx(flags)].peak), alloc);
+				rtl8188fu_ATOMIC_SET(&(rtw_mem_type_stat[mstat_tf_idx(flags)].peak), alloc);
 
 			#ifdef RTW_MEM_FUNC_STAT
-			ATOMIC_INC(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc_cnt));
-			alloc = ATOMIC_ADD_RETURN(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc), sz);
-			peak=ATOMIC_READ(&(rtw_mem_func_stat[mstat_ff_idx(flags)].peak));
+			rtl8188fu_ATOMIC_INC(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc_cnt));
+			alloc = rtl8188fu_ATOMIC_ADD_RETURN(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc), sz);
+			peak=rtl8188fu_ATOMIC_READ(&(rtw_mem_func_stat[mstat_ff_idx(flags)].peak));
 			if (peak<alloc)
-				ATOMIC_SET(&(rtw_mem_func_stat[mstat_ff_idx(flags)].peak), alloc);
+				rtl8188fu_ATOMIC_SET(&(rtw_mem_func_stat[mstat_ff_idx(flags)].peak), alloc);
 			#endif
 			break;
 
 		case MSTAT_ALLOC_FAIL:
-			ATOMIC_INC(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc_err_cnt));
+			rtl8188fu_ATOMIC_INC(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc_err_cnt));
 			#ifdef RTW_MEM_FUNC_STAT
-			ATOMIC_INC(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc_err_cnt));
+			rtl8188fu_ATOMIC_INC(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc_err_cnt));
 			#endif
 			break;
 
 		case MSTAT_FREE:
-			ATOMIC_DEC(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc_cnt));
-			ATOMIC_SUB(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc), sz);
+			rtl8188fu_ATOMIC_DEC(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc_cnt));
+			rtl8188fu_ATOMIC_SUB(&(rtw_mem_type_stat[mstat_tf_idx(flags)].alloc), sz);
 			#ifdef RTW_MEM_FUNC_STAT
-			ATOMIC_DEC(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc_cnt));
-			ATOMIC_SUB(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc), sz);
+			rtl8188fu_ATOMIC_DEC(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc_cnt));
+			rtl8188fu_ATOMIC_SUB(&(rtw_mem_func_stat[mstat_ff_idx(flags)].alloc), sz);
 			#endif
 			break;
 	};
 
-	//if (rtw_get_passing_time_ms(update_time) > 5000) {
+	//if (rtl8188fu_rtw_get_passing_time_ms(update_time) > 5000) {
 	//	rtw_mstat_dump(RTW_DBGDUMP);
-		update_time=rtw_get_current_time();
+		update_time=rtl8188fu_rtw_get_current_time();
 	//}
 }
 
@@ -535,14 +535,14 @@ bool match_mstat_sniff_rules(const enum mstat_f flags, const size_t size)
 	return _FALSE;
 }
 
-inline u8* dbg_rtw_vmalloc(u32 sz, const enum mstat_f flags, const char *func, const int line)
+inline u8* dbgrtl8188fu__rtw_vmalloc(u32 sz, const enum mstat_f flags, const char *func, const int line)
 {
 	u8  *p;
 
 	if (match_mstat_sniff_rules(flags, sz))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz));
 	
-	p=_rtw_vmalloc((sz));
+	p=rtl8188fu__rtw_vmalloc((sz));
 
 	rtw_mstat_update(
 		flags
@@ -553,14 +553,14 @@ inline u8* dbg_rtw_vmalloc(u32 sz, const enum mstat_f flags, const char *func, c
 	return p;
 }
 
-inline u8* dbg_rtw_zvmalloc(u32 sz, const enum mstat_f flags, const char *func, const int line)
+inline u8* dbgrtl8188fu__rtw_zvmalloc(u32 sz, const enum mstat_f flags, const char *func, const int line)
 {
 	u8 *p;
 
 	if (match_mstat_sniff_rules(flags, sz))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz));
 
-	p=_rtw_zvmalloc((sz)); 
+	p=rtl8188fu__rtw_zvmalloc((sz)); 
 
 	rtw_mstat_update(
 		flags
@@ -571,13 +571,13 @@ inline u8* dbg_rtw_zvmalloc(u32 sz, const enum mstat_f flags, const char *func, 
 	return p;
 }
 
-inline void dbg_rtw_vmfree(u8 *pbuf, u32 sz, const enum mstat_f flags, const char *func, const int line)
+inline void dbgrtl8188fu__rtw_vmfree(u8 *pbuf, u32 sz, const enum mstat_f flags, const char *func, const int line)
 {
 
 	if (match_mstat_sniff_rules(flags, sz))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz));
 
-	_rtw_vmfree((pbuf), (sz)); 
+	rtl8188fu__rtw_vmfree((pbuf), (sz)); 
 
 	rtw_mstat_update(
 		flags
@@ -586,14 +586,14 @@ inline void dbg_rtw_vmfree(u8 *pbuf, u32 sz, const enum mstat_f flags, const cha
 	);
 }
 
-inline u8* dbg_rtw_malloc(u32 sz, const enum mstat_f flags, const char *func, const int line) 
+inline u8* dbgrtl8188fu__rtw_malloc(u32 sz, const enum mstat_f flags, const char *func, const int line) 
 {
 	u8 *p;
 
 	if (match_mstat_sniff_rules(flags, sz))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz));
 
-	p=_rtw_malloc((sz));
+	p=rtl8188fu__rtw_malloc((sz));
 
 	rtw_mstat_update(
 		flags
@@ -604,14 +604,14 @@ inline u8* dbg_rtw_malloc(u32 sz, const enum mstat_f flags, const char *func, co
 	return p;
 }
 
-inline u8* dbg_rtw_zmalloc(u32 sz, const enum mstat_f flags, const char *func, const int line)
+inline u8* dbgrtl8188fu__rtw_zmalloc(u32 sz, const enum mstat_f flags, const char *func, const int line)
 {
 	u8 *p;
 
 	if (match_mstat_sniff_rules(flags, sz))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz));
 
-	p = _rtw_zmalloc((sz));
+	p = rtl8188fu__rtw_zmalloc((sz));
 
 	rtw_mstat_update(
 		flags
@@ -622,12 +622,12 @@ inline u8* dbg_rtw_zmalloc(u32 sz, const enum mstat_f flags, const char *func, c
 	return p;
 }
 
-inline void dbg_rtw_mfree(u8 *pbuf, u32 sz, const enum mstat_f flags, const char *func, const int line)
+inline void dbgrtl8188fu__rtw_mfree(u8 *pbuf, u32 sz, const enum mstat_f flags, const char *func, const int line)
 {
 	if (match_mstat_sniff_rules(flags, sz))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s(%d)\n", func, line, __FUNCTION__, (sz));
 
-	_rtw_mfree((pbuf), (sz));
+	rtl8188fu__rtw_mfree((pbuf), (sz));
 
 	rtw_mstat_update(
 		flags
@@ -636,12 +636,12 @@ inline void dbg_rtw_mfree(u8 *pbuf, u32 sz, const enum mstat_f flags, const char
 	);
 }
 
-inline struct sk_buff * dbg_rtw_skb_alloc(unsigned int size, const enum mstat_f flags, const char *func, int line)
+inline struct sk_buff * dbgrtl8188fu__rtw_skb_alloc(unsigned int size, const enum mstat_f flags, const char *func, int line)
 {
 	struct sk_buff *skb;
 	unsigned int truesize = 0;
 
-	skb = _rtw_skb_alloc(size);
+	skb = rtl8188fu__rtw_skb_alloc(size);
 
 	if(skb)
 		truesize = skb->truesize;
@@ -658,14 +658,14 @@ inline struct sk_buff * dbg_rtw_skb_alloc(unsigned int size, const enum mstat_f 
 	return skb;
 }
 
-inline void dbg_rtw_skb_free(struct sk_buff *skb, const enum mstat_f flags, const char *func, int line)
+inline void dbgrtl8188fu__rtw_skb_free(struct sk_buff *skb, const enum mstat_f flags, const char *func, int line)
 {
 	unsigned int truesize = skb->truesize;
 
 	if(match_mstat_sniff_rules(flags, truesize))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s, truesize=%u\n", func, line, __FUNCTION__, truesize);
 
-	_rtw_skb_free(skb);
+	rtl8188fu__rtw_skb_free(skb);
 
 	rtw_mstat_update(
 		flags
@@ -674,13 +674,13 @@ inline void dbg_rtw_skb_free(struct sk_buff *skb, const enum mstat_f flags, cons
 	);
 }
 
-inline struct sk_buff *dbg_rtw_skb_copy(const struct sk_buff *skb, const enum mstat_f flags, const char *func, const int line)
+inline struct sk_buff *dbgrtl8188fu__rtw_skb_copy(const struct sk_buff *skb, const enum mstat_f flags, const char *func, const int line)
 {
 	struct sk_buff *skb_cp;
 	unsigned int truesize = skb->truesize;
 	unsigned int cp_truesize = 0;
 	
-	skb_cp = _rtw_skb_copy(skb);
+	skb_cp = rtl8188fu__rtw_skb_copy(skb);
 	if(skb_cp)
 		cp_truesize = skb_cp->truesize;
 
@@ -696,13 +696,13 @@ inline struct sk_buff *dbg_rtw_skb_copy(const struct sk_buff *skb, const enum ms
 	return skb_cp;
 }
 
-inline struct sk_buff *dbg_rtw_skb_clone(struct sk_buff *skb, const enum mstat_f flags, const char *func, const int line)
+inline struct sk_buff *dbgrtl8188fu__rtw_skb_clone(struct sk_buff *skb, const enum mstat_f flags, const char *func, const int line)
 {
 	struct sk_buff *skb_cl;
 	unsigned int truesize = skb->truesize;
 	unsigned int cl_truesize = 0;
 
-	skb_cl = _rtw_skb_clone(skb);
+	skb_cl = rtl8188fu__rtw_skb_clone(skb);
 	if(skb_cl)
 		cl_truesize = skb_cl->truesize;
 
@@ -718,7 +718,7 @@ inline struct sk_buff *dbg_rtw_skb_clone(struct sk_buff *skb, const enum mstat_f
 	return skb_cl;
 }
 
-inline int dbg_rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb, const enum mstat_f flags, const char *func, int line)
+inline int dbgrtl8188fu__rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb, const enum mstat_f flags, const char *func, int line)
 {
 	int ret;
 	unsigned int truesize = skb->truesize;
@@ -726,7 +726,7 @@ inline int dbg_rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb, const enum mstat
 	if(match_mstat_sniff_rules(flags, truesize))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s, truesize=%u\n", func, line, __FUNCTION__, truesize);
 
-	ret = _rtw_netif_rx(ndev, skb);
+	ret = rtl8188fu__rtw_netif_rx(ndev, skb);
 	
 	rtw_mstat_update(
 		flags
@@ -737,23 +737,23 @@ inline int dbg_rtw_netif_rx(_nic_hdl ndev, struct sk_buff *skb, const enum mstat
 	return ret;
 }
 
-inline void dbg_rtw_skb_queue_purge(struct sk_buff_head *list, enum mstat_f flags, const char *func, int line)
+inline void dbgrtl8188fu__rtw_skb_queue_purge(struct sk_buff_head *list, enum mstat_f flags, const char *func, int line)
 {
 	struct sk_buff *skb;
 
 	while ((skb = skb_dequeue(list)) != NULL)
-		dbg_rtw_skb_free(skb, flags, func, line);
+		dbgrtl8188fu__rtw_skb_free(skb, flags, func, line);
 }
 
 #ifdef CONFIG_USB_HCI
-inline void *dbg_rtw_usb_buffer_alloc(struct usb_device *dev, size_t size, dma_addr_t *dma, const enum mstat_f flags, const char *func, int line)
+inline void *dbgrtl8188fu__rtw_usb_buffer_alloc(struct usb_device *dev, size_t size, dma_addr_t *dma, const enum mstat_f flags, const char *func, int line)
 {
 	void *p;
 
 	if(match_mstat_sniff_rules(flags, size))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s(%zu)\n", func, line, __FUNCTION__, size);
 
-	p = _rtw_usb_buffer_alloc(dev, size, dma);
+	p = rtl8188fu__rtw_usb_buffer_alloc(dev, size, dma);
 	
 	rtw_mstat_update(
 		flags
@@ -764,13 +764,13 @@ inline void *dbg_rtw_usb_buffer_alloc(struct usb_device *dev, size_t size, dma_a
 	return p;
 }
 
-inline void dbg_rtw_usb_buffer_free(struct usb_device *dev, size_t size, void *addr, dma_addr_t dma, const enum mstat_f flags, const char *func, int line)
+inline void dbgrtl8188fu__rtw_usb_buffer_free(struct usb_device *dev, size_t size, void *addr, dma_addr_t dma, const enum mstat_f flags, const char *func, int line)
 {
 
 	if(match_mstat_sniff_rules(flags, size))
 		DBG_871X("DBG_MEM_ALLOC %s:%d %s(%zu)\n", func, line, __FUNCTION__, size);
 
-	_rtw_usb_buffer_free(dev, size, addr, dma);
+	rtl8188fu__rtw_usb_buffer_free(dev, size, addr, dma);
 
 	rtw_mstat_update(
 		flags
@@ -782,7 +782,7 @@ inline void dbg_rtw_usb_buffer_free(struct usb_device *dev, size_t size, void *a
 
 #endif /* defined(DBG_MEM_ALLOC) */
 
-void* rtw_malloc2d(int h, int w, size_t size)
+void* rtl8188fu_rtw_malloc2d(int h, int w, size_t size)
 {
 	int j;
 
@@ -799,12 +799,12 @@ void* rtw_malloc2d(int h, int w, size_t size)
 	return a;
 }
 
-void rtw_mfree2d(void *pbuf, int h, int w, int size)
+void rtl8188fu_rtw_mfree2d(void *pbuf, int h, int w, int size)
 {
 	rtw_mfree((u8 *)pbuf, h*sizeof(void*) + w*h*size);
 }
 
-void _rtw_memcpy(void *dst, const void *src, u32 sz)
+void rtl8188fu__rtw_memcpy(void *dst, const void *src, u32 sz)
 {
 
 #if defined (PLATFORM_LINUX)|| defined (PLATFORM_FREEBSD)
@@ -821,7 +821,7 @@ void _rtw_memcpy(void *dst, const void *src, u32 sz)
 
 }
 
-inline void _rtw_memmove(void *dst, const void *src, u32 sz)
+inline void rtl8188fu__rtw_memmove(void *dst, const void *src, u32 sz)
 {
 #if defined(PLATFORM_LINUX)
 	memmove(dst, src, sz);
@@ -830,7 +830,7 @@ inline void _rtw_memmove(void *dst, const void *src, u32 sz)
 #endif
 }
 
-int	_rtw_memcmp(const void *dst, const void *src, u32 sz)
+int	rtl8188fu__rtw_memcmp(const void *dst, const void *src, u32 sz)
 {
 
 #if defined (PLATFORM_LINUX)|| defined (PLATFORM_FREEBSD)
@@ -857,7 +857,7 @@ int	_rtw_memcmp(const void *dst, const void *src, u32 sz)
 	
 }
 
-void _rtw_memset(void *pbuf, int c, u32 sz)
+void rtl8188fu__rtw_memset(void *pbuf, int c, u32 sz)
 {
 
 #if defined (PLATFORM_LINUX)|| defined (PLATFORM_FREEBSD)
@@ -888,7 +888,7 @@ static inline void __list_add(_list *pnew, _list *pprev, _list *pnext)
 #endif /* PLATFORM_FREEBSD */
 
 
-void _rtw_init_listhead(_list *list)
+void rtl8188fu__rtw_init_listhead(_list *list)
 {
 
 #ifdef PLATFORM_LINUX
@@ -915,7 +915,7 @@ For the following list_xxx operations,
 caller must guarantee the atomic context.
 Otherwise, there will be racing condition.
 */
-u32	rtw_is_list_empty(_list *phead)
+u32	rtl8188fu_rtw_is_list_empty(_list *phead)
 {
 
 #ifdef PLATFORM_LINUX
@@ -948,7 +948,7 @@ u32	rtw_is_list_empty(_list *phead)
 	
 }
 
-void rtw_list_insert_head(_list *plist, _list *phead)
+void rtl8188fu_rtw_list_insert_head(_list *plist, _list *phead)
 {
 
 #ifdef PLATFORM_LINUX
@@ -964,7 +964,7 @@ void rtw_list_insert_head(_list *plist, _list *phead)
 #endif
 }
 
-void rtw_list_insert_tail(_list *plist, _list *phead)
+void rtl8188fu_rtw_list_insert_tail(_list *plist, _list *phead)
 {
 
 #ifdef PLATFORM_LINUX	
@@ -985,7 +985,7 @@ void rtw_list_insert_tail(_list *plist, _list *phead)
 	
 }
 
-void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
+void rtl8188fu_rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
 {
 	_adapter *adapter = (_adapter *)padapter;	
 
@@ -1007,7 +1007,7 @@ Caller must check if the list is empty before calling rtw_list_delete
 */
 
 
-void _rtw_init_sema(_sema	*sema, int init_val)
+void rtl8188fu__rtw_init_sema(_sema	*sema, int init_val)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1031,7 +1031,7 @@ void _rtw_init_sema(_sema	*sema, int init_val)
 
 }
 
-void _rtw_free_sema(_sema	*sema)
+void rtl8188fu__rtw_free_sema(_sema	*sema)
 {
 #ifdef PLATFORM_FREEBSD
 	sema_destroy(sema);
@@ -1042,7 +1042,7 @@ void _rtw_free_sema(_sema	*sema)
 
 }
 
-void _rtw_up_sema(_sema	*sema)
+void rtl8188fu__rtw_up_sema(_sema	*sema)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1064,7 +1064,7 @@ void _rtw_up_sema(_sema	*sema)
 #endif
 }
 
-u32 _rtw_down_sema(_sema *sema)
+u32 rtl8188fu__rtw_down_sema(_sema *sema)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1097,7 +1097,7 @@ u32 _rtw_down_sema(_sema *sema)
 
 
 
-void	_rtw_mutex_init(_mutex *pmutex)
+void	rtl8188fu__rtw_mutex_init(_mutex *pmutex)
 {
 #ifdef PLATFORM_LINUX
 
@@ -1122,8 +1122,8 @@ void	_rtw_mutex_init(_mutex *pmutex)
 #endif
 }
 
-void	_rtw_mutex_free(_mutex *pmutex);
-void	_rtw_mutex_free(_mutex *pmutex)
+void	rtl8188fu__rtw_mutex_free(_mutex *pmutex);
+void	rtl8188fu__rtw_mutex_free(_mutex *pmutex)
 {
 #ifdef PLATFORM_LINUX
 
@@ -1147,7 +1147,7 @@ void	_rtw_mutex_free(_mutex *pmutex)
 #endif
 }
 
-void	_rtw_spinlock_init(_lock *plock)
+void	rtl8188fu__rtw_spinlock_init(_lock *plock)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1166,7 +1166,7 @@ void	_rtw_spinlock_init(_lock *plock)
 	
 }
 
-void	_rtw_spinlock_free(_lock *plock)
+void	rtl8188fu__rtw_spinlock_free(_lock *plock)
 {
 #ifdef PLATFORM_FREEBSD
 	 mtx_destroy(plock);
@@ -1202,7 +1202,7 @@ void rtw_mtx_unlock(_lock *plock){
 #endif //PLATFORM_FREEBSD
 
 
-void	_rtw_spinlock(_lock	*plock)
+void	rtl8188fu__rtw_spinlock(_lock	*plock)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1221,7 +1221,7 @@ void	_rtw_spinlock(_lock	*plock)
 	
 }
 
-void	_rtw_spinunlock(_lock *plock)
+void	rtl8188fu__rtw_spinunlock(_lock *plock)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1240,7 +1240,7 @@ void	_rtw_spinunlock(_lock *plock)
 }
 
 
-void	_rtw_spinlock_ex(_lock	*plock)
+void	rtl8188fu__rtw_spinlock_ex(_lock	*plock)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1259,7 +1259,7 @@ void	_rtw_spinlock_ex(_lock	*plock)
 	
 }
 
-void	_rtw_spinunlock_ex(_lock *plock)
+void	rtl8188fu__rtw_spinunlock_ex(_lock *plock)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1279,24 +1279,24 @@ void	_rtw_spinunlock_ex(_lock *plock)
 
 
 
-void _rtw_init_queue(_queue *pqueue)
+void rtl8188fu__rtw_init_queue(_queue *pqueue)
 {
-	_rtw_init_listhead(&(pqueue->queue));
-	_rtw_spinlock_init(&(pqueue->lock));
+	rtl8188fu__rtw_init_listhead(&(pqueue->queue));
+	rtl8188fu__rtw_spinlock_init(&(pqueue->lock));
 }
 
-void _rtw_deinit_queue(_queue *pqueue)
+void rtl8188fu__rtw_deinit_queue(_queue *pqueue)
 {
-	_rtw_spinlock_free(&(pqueue->lock));
+	rtl8188fu__rtw_spinlock_free(&(pqueue->lock));
 }
 
-u32	  _rtw_queue_empty(_queue	*pqueue)
+u32	  rtl8188fu__rtw_queue_empty(_queue	*pqueue)
 {
-	return (rtw_is_list_empty(&(pqueue->queue)));
+	return (rtl8188fu_rtw_is_list_empty(&(pqueue->queue)));
 }
 
 
-u32 rtw_end_of_queue_search(_list *head, _list *plist)
+u32 rtl8188fu_rtw_end_of_queue_search(_list *head, _list *plist)
 {
 	if (head == plist)
 		return _TRUE;
@@ -1305,7 +1305,7 @@ u32 rtw_end_of_queue_search(_list *head, _list *plist)
 }
 
 
-u32	rtw_get_current_time(void)
+u32	rtl8188fu_rtw_get_current_time(void)
 {
 	
 #ifdef PLATFORM_LINUX
@@ -1323,7 +1323,7 @@ u32	rtw_get_current_time(void)
 #endif
 }
 
-inline u32 rtw_systime_to_ms(u32 systime)
+inline u32 rtl8188fu_rtw_systime_to_ms(u32 systime)
 {
 #ifdef PLATFORM_LINUX
 	return systime * 1000 / HZ;
@@ -1336,7 +1336,7 @@ inline u32 rtw_systime_to_ms(u32 systime)
 #endif
 }
 
-inline u32 rtw_ms_to_systime(u32 ms)
+inline u32 rtl8188fu_rtw_ms_to_systime(u32 ms)
 {
 #ifdef PLATFORM_LINUX
 	return ms * HZ / 1000;
@@ -1349,37 +1349,37 @@ inline u32 rtw_ms_to_systime(u32 ms)
 #endif
 }
 
-// the input parameter start use the same unit as returned by rtw_get_current_time
-inline s32 rtw_get_passing_time_ms(u32 start)
+// the input parameter start use the same unit as returned by rtl8188fu_rtw_get_current_time
+inline s32 rtl8188fu_rtw_get_passing_time_ms(u32 start)
 {
 #ifdef PLATFORM_LINUX
-	return rtw_systime_to_ms(jiffies-start);
+	return rtl8188fu_rtw_systime_to_ms(jiffies-start);
 #endif
 #ifdef PLATFORM_FREEBSD
-	return rtw_systime_to_ms(rtw_get_current_time());
+	return rtl8188fu_rtw_systime_to_ms(rtl8188fu_rtw_get_current_time());
 #endif	
 #ifdef PLATFORM_WINDOWS
 	LARGE_INTEGER	SystemTime;
 	NdisGetCurrentSystemTime(&SystemTime);
-	return rtw_systime_to_ms((u32)(SystemTime.LowPart) - start) ;
+	return rtl8188fu_rtw_systime_to_ms((u32)(SystemTime.LowPart) - start) ;
 #endif
 }
 
-inline s32 rtw_get_time_interval_ms(u32 start, u32 end)
+inline s32 rtl8188fu_rtw_get_time_interval_ms(u32 start, u32 end)
 {
 #ifdef PLATFORM_LINUX
-	return rtw_systime_to_ms(end-start);
+	return rtl8188fu_rtw_systime_to_ms(end-start);
 #endif
 #ifdef PLATFORM_FREEBSD
-	return rtw_systime_to_ms(rtw_get_current_time());
+	return rtl8188fu_rtw_systime_to_ms(rtl8188fu_rtw_get_current_time());
 #endif	
 #ifdef PLATFORM_WINDOWS
-	return rtw_systime_to_ms(end-start);
+	return rtl8188fu_rtw_systime_to_ms(end-start);
 #endif
 }
 	
 
-void rtw_sleep_schedulable(int ms)	
+void rtl8188fu_rtw_sleep_schedulable(int ms)	
 {
 
 #ifdef PLATFORM_LINUX
@@ -1411,7 +1411,7 @@ void rtw_sleep_schedulable(int ms)
 }
 
 
-void rtw_msleep_os(int ms)
+void rtl8188fu_rtw_msleep_os(int ms)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1437,7 +1437,7 @@ void rtw_msleep_os(int ms)
 
 
 }
-void rtw_usleep_os(int us)
+void rtl8188fu_rtw_usleep_os(int us)
 {
 #ifdef PLATFORM_LINUX
 
@@ -1469,12 +1469,12 @@ void rtw_usleep_os(int us)
 
 
 #ifdef DBG_DELAY_OS
-void _rtw_mdelay_os(int ms, const char *func, const int line)
+void _rtl8188fu_rtw_mdelay_os(int ms, const char *func, const int line)
 {
 	#if 0
 	if(ms>10)
 		DBG_871X("%s:%d %s(%d)\n", func, line, __FUNCTION__, ms);
-		rtw_msleep_os(ms);
+		rtl8188fu_rtw_msleep_os(ms);
 	return;
 	#endif
 
@@ -1493,13 +1493,13 @@ void _rtw_mdelay_os(int ms, const char *func, const int line)
 
 
 }
-void _rtw_udelay_os(int us, const char *func, const int line)
+void _rtl8188fu_rtw_udelay_os(int us, const char *func, const int line)
 {
 
 	#if 0
 	if(us > 1000) {
 	DBG_871X("%s:%d %s(%d)\n", func, line, __FUNCTION__, us);
-		rtw_usleep_os(us);
+		rtl8188fu_rtw_usleep_os(us);
 		return;
 	}
 	#endif 
@@ -1520,7 +1520,7 @@ void _rtw_udelay_os(int us, const char *func, const int line)
 
 }
 #else
-void rtw_mdelay_os(int ms)
+void rtl8188fu_rtw_mdelay_os(int ms)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1540,7 +1540,7 @@ void rtw_mdelay_os(int ms)
 
 
 }
-void rtw_udelay_os(int us)
+void rtl8188fu_rtw_udelay_os(int us)
 {
 
 #ifdef PLATFORM_LINUX
@@ -1562,7 +1562,7 @@ void rtw_udelay_os(int us)
 }
 #endif
 
-void rtw_yield_os(void)
+void rtl8188fu_rtw_yield_os(void)
 {
 #ifdef PLATFORM_LINUX
 	yield();
@@ -1609,7 +1609,7 @@ static android_suspend_lock_t rtw_resume_scan_lock ={
 };
 #endif
 
-inline void rtw_suspend_lock_init(void)
+inline void rtl8188fu_rtw_suspend_lock_init(void)
 {
 	#ifdef CONFIG_WAKELOCK
 	wake_lock_init(&rtw_suspend_lock, WAKE_LOCK_SUSPEND, RTW_SUSPEND_LOCK_NAME);
@@ -1628,7 +1628,7 @@ inline void rtw_suspend_lock_init(void)
 	#endif
 }
 
-inline void rtw_suspend_lock_uninit(void)
+inline void rtl8188fu_rtw_suspend_lock_uninit(void)
 {
 	#ifdef CONFIG_WAKELOCK
 	wake_lock_destroy(&rtw_suspend_lock);
@@ -1647,7 +1647,7 @@ inline void rtw_suspend_lock_uninit(void)
 	#endif
 }
 
-inline void rtw_lock_suspend(void)
+inline void rtl8188fu_rtw_lock_suspend(void)
 {
 	#ifdef CONFIG_WAKELOCK
 	wake_lock(&rtw_suspend_lock);
@@ -1660,7 +1660,7 @@ inline void rtw_lock_suspend(void)
 	#endif
 }
 
-inline void rtw_unlock_suspend(void)
+inline void rtl8188fu_rtw_unlock_suspend(void)
 {
 	#ifdef CONFIG_WAKELOCK
 	wake_unlock(&rtw_suspend_lock);
@@ -1673,7 +1673,7 @@ inline void rtw_unlock_suspend(void)
 	#endif
 }
 
-inline void rtw_resume_lock_suspend(void)
+inline void rtl8188fu_rtw_resume_lock_suspend(void)
 {
 	#ifdef CONFIG_WAKELOCK
 	wake_lock(&rtw_suspend_resume_lock);
@@ -1686,7 +1686,7 @@ inline void rtw_resume_lock_suspend(void)
 	#endif
 }
 
-inline void rtw_resume_unlock_suspend(void)
+inline void rtl8188fu_rtw_resume_unlock_suspend(void)
 {
 	#ifdef CONFIG_WAKELOCK
 	wake_unlock(&rtw_suspend_resume_lock);
@@ -1699,57 +1699,57 @@ inline void rtw_resume_unlock_suspend(void)
 	#endif
 }
 
-inline void rtw_lock_suspend_timeout(u32 timeout_ms)
+inline void rtl8188fu_rtw_lock_suspend_timeout(u32 timeout_ms)
 {
 	#ifdef CONFIG_WAKELOCK
-	wake_lock_timeout(&rtw_suspend_lock, rtw_ms_to_systime(timeout_ms));
+	wake_lock_timeout(&rtw_suspend_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#elif defined(CONFIG_ANDROID_POWER)
-	android_lock_suspend_auto_expire(&rtw_suspend_lock, rtw_ms_to_systime(timeout_ms));
+	android_lock_suspend_auto_expire(&rtw_suspend_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#endif
 }
 
-inline void rtw_lock_ext_suspend_timeout(u32 timeout_ms)
+inline void rtl8188fu_rtw_lock_ext_suspend_timeout(u32 timeout_ms)
 {
 	#ifdef CONFIG_WAKELOCK
-	wake_lock_timeout(&rtw_suspend_ext_lock, rtw_ms_to_systime(timeout_ms));
+	wake_lock_timeout(&rtw_suspend_ext_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#elif defined(CONFIG_ANDROID_POWER)
-	android_lock_suspend_auto_expire(&rtw_suspend_ext_lock, rtw_ms_to_systime(timeout_ms));
+	android_lock_suspend_auto_expire(&rtw_suspend_ext_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#endif
 	//DBG_871X("EXT lock timeout:%d\n", timeout_ms);
 }
 
-inline void rtw_lock_rx_suspend_timeout(u32 timeout_ms)
+inline void rtl8188fu_rtw_lock_rx_suspend_timeout(u32 timeout_ms)
 {
 	#ifdef CONFIG_WAKELOCK
-	wake_lock_timeout(&rtw_suspend_rx_lock, rtw_ms_to_systime(timeout_ms));
+	wake_lock_timeout(&rtw_suspend_rx_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#elif defined(CONFIG_ANDROID_POWER)
-	android_lock_suspend_auto_expire(&rtw_suspend_rx_lock, rtw_ms_to_systime(timeout_ms));
+	android_lock_suspend_auto_expire(&rtw_suspend_rx_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#endif
 	//DBG_871X("RX lock timeout:%d\n", timeout_ms);
 }
 
 
-inline void rtw_lock_traffic_suspend_timeout(u32 timeout_ms)
+inline void rtl8188fu_rtw_lock_traffic_suspend_timeout(u32 timeout_ms)
 {
 	#ifdef CONFIG_WAKELOCK
-	wake_lock_timeout(&rtw_suspend_traffic_lock, rtw_ms_to_systime(timeout_ms));
+	wake_lock_timeout(&rtw_suspend_traffic_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#elif defined(CONFIG_ANDROID_POWER)
-	android_lock_suspend_auto_expire(&rtw_suspend_traffic_lock, rtw_ms_to_systime(timeout_ms));
+	android_lock_suspend_auto_expire(&rtw_suspend_traffic_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#endif
 	//DBG_871X("traffic lock timeout:%d\n", timeout_ms);
 }
 
-inline void rtw_lock_resume_scan_timeout(u32 timeout_ms)
+inline void rtl8188fu_rtw_lock_resume_scan_timeout(u32 timeout_ms)
 {
 	#ifdef CONFIG_WAKELOCK
-	wake_lock_timeout(&rtw_resume_scan_lock, rtw_ms_to_systime(timeout_ms));
+	wake_lock_timeout(&rtw_resume_scan_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#elif defined(CONFIG_ANDROID_POWER)
-	android_lock_suspend_auto_expire(&rtw_resume_scan_lock, rtw_ms_to_systime(timeout_ms));
+	android_lock_suspend_auto_expire(&rtw_resume_scan_lock, rtl8188fu_rtw_ms_to_systime(timeout_ms));
 	#endif
 	//DBG_871X("resume scan lock:%d\n", timeout_ms);
 }
 
-inline void ATOMIC_SET(ATOMIC_T *v, int i)
+inline void rtl8188fu_ATOMIC_SET(ATOMIC_T *v, int i)
 {
 	#ifdef PLATFORM_LINUX
 	atomic_set(v,i);
@@ -1760,7 +1760,7 @@ inline void ATOMIC_SET(ATOMIC_T *v, int i)
 	#endif
 }
 
-inline int ATOMIC_READ(ATOMIC_T *v)
+inline int rtl8188fu_ATOMIC_READ(ATOMIC_T *v)
 {
 	#ifdef PLATFORM_LINUX
 	return atomic_read(v);
@@ -1771,7 +1771,7 @@ inline int ATOMIC_READ(ATOMIC_T *v)
 	#endif
 }
 
-inline void ATOMIC_ADD(ATOMIC_T *v, int i)
+inline void rtl8188fu_ATOMIC_ADD(ATOMIC_T *v, int i)
 {
 	#ifdef PLATFORM_LINUX
 	atomic_add(i,v);
@@ -1781,7 +1781,7 @@ inline void ATOMIC_ADD(ATOMIC_T *v, int i)
 	atomic_add_int(v,i);
 	#endif
 }
-inline void ATOMIC_SUB(ATOMIC_T *v, int i)
+inline void rtl8188fu_ATOMIC_SUB(ATOMIC_T *v, int i)
 {
 	#ifdef PLATFORM_LINUX
 	atomic_sub(i,v);
@@ -1792,7 +1792,7 @@ inline void ATOMIC_SUB(ATOMIC_T *v, int i)
 	#endif
 }
 
-inline void ATOMIC_INC(ATOMIC_T *v)
+inline void rtl8188fu_ATOMIC_INC(ATOMIC_T *v)
 {
 	#ifdef PLATFORM_LINUX
 	atomic_inc(v);
@@ -1803,7 +1803,7 @@ inline void ATOMIC_INC(ATOMIC_T *v)
 	#endif
 }
 
-inline void ATOMIC_DEC(ATOMIC_T *v)
+inline void rtl8188fu_ATOMIC_DEC(ATOMIC_T *v)
 {
 	#ifdef PLATFORM_LINUX
 	atomic_dec(v);
@@ -1814,7 +1814,7 @@ inline void ATOMIC_DEC(ATOMIC_T *v)
 	#endif
 }
 
-inline int ATOMIC_ADD_RETURN(ATOMIC_T *v, int i)
+inline int rtl8188fu_ATOMIC_ADD_RETURN(ATOMIC_T *v, int i)
 {
 	#ifdef PLATFORM_LINUX
 	return atomic_add_return(i,v);
@@ -1826,7 +1826,7 @@ inline int ATOMIC_ADD_RETURN(ATOMIC_T *v, int i)
 	#endif
 }
 
-inline int ATOMIC_SUB_RETURN(ATOMIC_T *v, int i)
+inline int rtl8188fu_ATOMIC_SUB_RETURN(ATOMIC_T *v, int i)
 {
 	#ifdef PLATFORM_LINUX
 	return atomic_sub_return(i,v);
@@ -1838,7 +1838,7 @@ inline int ATOMIC_SUB_RETURN(ATOMIC_T *v, int i)
 	#endif
 }
 
-inline int ATOMIC_INC_RETURN(ATOMIC_T *v)
+inline int rtl8188fu_ATOMIC_INC_RETURN(ATOMIC_T *v)
 {
 	#ifdef PLATFORM_LINUX
 	return atomic_inc_return(v);
@@ -1850,7 +1850,7 @@ inline int ATOMIC_INC_RETURN(ATOMIC_T *v)
 	#endif
 }
 
-inline int ATOMIC_DEC_RETURN(ATOMIC_T *v)
+inline int rtl8188fu_ATOMIC_DEC_RETURN(ATOMIC_T *v)
 {
 	#ifdef PLATFORM_LINUX
 	return atomic_dec_return(v);
@@ -1869,7 +1869,7 @@ inline int ATOMIC_DEC_RETURN(ATOMIC_T *v)
 * @param path the path of the file to test
 * @return _TRUE or _FALSE
 */
-int rtw_is_file_readable(char *path)
+int rtl8188fu_rtw_is_file_readable(char *path)
 {
 	//Todo...
 	return _FALSE;
@@ -1882,7 +1882,7 @@ int rtw_is_file_readable(char *path)
 * @param sz how many bytes to read at most
 * @return the byte we've read
 */
-int rtw_retrieve_from_file(char *path, u8 *buf, u32 sz)
+int rtl8188fu_rtw_retrieve_from_file(char *path, u8 *buf, u32 sz)
 {
 	//Todo...
 	return 0;
@@ -1895,14 +1895,14 @@ int rtw_retrieve_from_file(char *path, u8 *buf, u32 sz)
 * @param sz how many bytes to write at most
 * @return the byte we've written
 */
-int rtw_store_to_file(char *path, u8* buf, u32 sz)
+int rtl8188fu_rtw_store_to_file(char *path, u8* buf, u32 sz)
 {
 	//Todo...
 	return 0;
 }
 
 #ifdef PLATFORM_LINUX
-struct net_device *rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_priv)
+struct net_device *rtl8188fu_rtw_alloc_etherdev_with_old_priv(int sizeof_priv, void *old_priv)
 {
 	struct net_device *pnetdev;
 	struct rtw_netdev_priv_indicator *pnpi;
@@ -1923,7 +1923,7 @@ RETURN:
 	return pnetdev;
 }
 
-struct net_device *rtw_alloc_etherdev(int sizeof_priv)
+struct net_device *rtl8188fu_rtw_alloc_etherdev(int sizeof_priv)
 {
 	struct net_device *pnetdev;
 	struct rtw_netdev_priv_indicator *pnpi;
@@ -1950,7 +1950,7 @@ RETURN:
 	return pnetdev;
 }
 
-void rtw_free_netdev(struct net_device * netdev)
+void rtl8188fu_rtw_free_netdev(struct net_device * netdev)
 {
 	struct rtw_netdev_priv_indicator *pnpi;
 	
@@ -1972,7 +1972,7 @@ RETURN:
 * Jeff: this function should be called under ioctl (rtnl_lock is accquired) while 
 * LINUX_VERSION_CODE < KERNEL_VERSION(2,6,26)
 */
-int rtw_change_ifname(_adapter *padapter, const char *ifname)
+int rtw_change_rtl8188fu_ifname(_adapter *padapter, const char *rtl8188fu_ifname)
 {
 	struct net_device *pnetdev;
 	struct net_device *cur_pnetdev;
@@ -2000,7 +2000,7 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 
 	rereg_priv->old_pnetdev=cur_pnetdev;
 
-	pnetdev = rtw_init_netdev(padapter);
+	pnetdev = rtl8188fu_rtw_init_netdev(padapter);
 	if (!pnetdev)  {
 		ret = -1;
 		goto error;
@@ -2008,9 +2008,9 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 
 	SET_NETDEV_DEV(pnetdev, dvobj_to_dev(adapter_to_dvobj(padapter)));
 
-	rtw_init_netdev_name(pnetdev, ifname);
+	rtl8188fu_rtw_init_netdev_name(pnetdev, rtl8188fu_ifname);
 
-	_rtw_memcpy(pnetdev->dev_addr, adapter_mac_addr(padapter), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pnetdev->dev_addr, adapter_mac_addr(padapter), ETH_ALEN);
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,26))
 	if(!rtnl_is_locked())
@@ -2110,7 +2110,7 @@ void module_init_exit_wrapper(void *arg)
 #include <asm-generic/div64.h>
 #endif
 
-u64 rtw_modular64(u64 x, u64 y)
+u64 rtl8188fu_rtw_modular64(u64 x, u64 y)
 {
 #ifdef PLATFORM_LINUX
 	return do_div(x, y);
@@ -2121,7 +2121,7 @@ u64 rtw_modular64(u64 x, u64 y)
 #endif
 }
 
-u64 rtw_division64(u64 x, u64 y)
+u64 rtl8188fu_rtw_division64(u64 x, u64 y)
 {
 #ifdef PLATFORM_LINUX
 	do_div(x, y);
@@ -2133,7 +2133,7 @@ u64 rtw_division64(u64 x, u64 y)
 #endif
 }
 
-inline u32 rtw_random32(void)
+inline u32 rtl8188fu_rtw_random32(void)
 {
 #ifdef PLATFORM_LINUX
 	#if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,8,0))
@@ -2152,7 +2152,7 @@ inline u32 rtw_random32(void)
 #endif
 }
 
-void rtw_buf_free(u8 **buf, u32 *buf_len)
+void rtl8188fu_rtw_buf_free(u8 **buf, u32 *buf_len)
 {
 	u32 ori_len;
 
@@ -2169,7 +2169,7 @@ void rtw_buf_free(u8 **buf, u32 *buf_len)
 	}
 }
 
-void rtw_buf_update(u8 **buf, u32 *buf_len, u8 *src, u32 src_len)
+void rtl8188fu_rtw_buf_update(u8 **buf, u32 *buf_len, u8 *src, u32 src_len)
 {
 	u32 ori_len = 0, dup_len = 0;
 	u8 *ori = NULL;
@@ -2185,7 +2185,7 @@ void rtw_buf_update(u8 **buf, u32 *buf_len, u8 *src, u32 src_len)
 	dup = rtw_malloc(src_len);
 	if (dup) {
 		dup_len = src_len;
-		_rtw_memcpy(dup, src, dup_len);
+		rtl8188fu__rtw_memcpy(dup, src, dup_len);
 	}
 
 keep_ori:
@@ -2204,38 +2204,38 @@ keep_ori:
 
 
 /**
- * rtw_cbuf_full - test if cbuf is full
+ * rtl8188fu_rtw_cbuf_full - test if cbuf is full
  * @cbuf: pointer of struct rtw_cbuf
  *
  * Returns: _TRUE if cbuf is full
  */
-inline bool rtw_cbuf_full(struct rtw_cbuf *cbuf)
+inline bool rtl8188fu_rtw_cbuf_full(struct rtw_cbuf *cbuf)
 {
 	return (cbuf->write == cbuf->read-1)? _TRUE : _FALSE;
 }
 
 /**
- * rtw_cbuf_empty - test if cbuf is empty
+ * rtl8188fu_rtw_cbuf_empty - test if cbuf is empty
  * @cbuf: pointer of struct rtw_cbuf
  *
  * Returns: _TRUE if cbuf is empty
  */
-inline bool rtw_cbuf_empty(struct rtw_cbuf *cbuf)
+inline bool rtl8188fu_rtw_cbuf_empty(struct rtw_cbuf *cbuf)
 {
 	return (cbuf->write == cbuf->read)? _TRUE : _FALSE;
 }
 
 /**
- * rtw_cbuf_push - push a pointer into cbuf
+ * rtl8188fu_rtw_cbuf_push - push a pointer into cbuf
  * @cbuf: pointer of struct rtw_cbuf
  * @buf: pointer to push in
  *
  * Lock free operation, be careful of the use scheme
  * Returns: _TRUE push success
  */
-bool rtw_cbuf_push(struct rtw_cbuf *cbuf, void *buf)
+bool rtl8188fu_rtw_cbuf_push(struct rtw_cbuf *cbuf, void *buf)
 {
-	if (rtw_cbuf_full(cbuf))
+	if (rtl8188fu_rtw_cbuf_full(cbuf))
 		return _FAIL;
 
 	if (0)
@@ -2247,16 +2247,16 @@ bool rtw_cbuf_push(struct rtw_cbuf *cbuf, void *buf)
 }
 
 /**
- * rtw_cbuf_pop - pop a pointer from cbuf
+ * rtl8188fu_rtw_cbuf_pop - pop a pointer from cbuf
  * @cbuf: pointer of struct rtw_cbuf
  *
  * Lock free operation, be careful of the use scheme
  * Returns: pointer popped out
  */
-void *rtw_cbuf_pop(struct rtw_cbuf *cbuf)
+void *rtl8188fu_rtw_cbuf_pop(struct rtw_cbuf *cbuf)
 {
 	void *buf;
-	if (rtw_cbuf_empty(cbuf))
+	if (rtl8188fu_rtw_cbuf_empty(cbuf))
 		return NULL;
 
 	if (0)
@@ -2268,12 +2268,12 @@ void *rtw_cbuf_pop(struct rtw_cbuf *cbuf)
 }
 
 /**
- * rtw_cbuf_alloc - allocte a rtw_cbuf with given size and do initialization
+ * rtl8188fu_rtw_cbuf_alloc - allocte a rtw_cbuf with given size and do initialization
  * @size: size of pointer
  *
  * Returns: pointer of srtuct rtw_cbuf, NULL for allocation failure
  */
-struct rtw_cbuf *rtw_cbuf_alloc(u32 size)
+struct rtw_cbuf *rtl8188fu_rtw_cbuf_alloc(u32 size)
 {
 	struct rtw_cbuf *cbuf;
 
@@ -2288,21 +2288,21 @@ struct rtw_cbuf *rtw_cbuf_alloc(u32 size)
 }
 
 /**
- * rtw_cbuf_free - free the given rtw_cbuf
+ * rtl8188fu_rtw_cbuf_free - free the given rtw_cbuf
  * @cbuf: pointer of struct rtw_cbuf to free
  */
-void rtw_cbuf_free(struct rtw_cbuf *cbuf)
+void rtl8188fu_rtw_cbuf_free(struct rtw_cbuf *cbuf)
 {
 	rtw_mfree((u8*)cbuf, sizeof(*cbuf) + sizeof(void*)*cbuf->size);
 }
 
 /**
-* IsHexDigit -
+* rtl8188fu_IsHexDigit -
 *
 * Return	TRUE if chTmp is represent for hex digit
 *		FALSE otherwise.
 */
-inline BOOLEAN IsHexDigit(char chTmp)
+inline BOOLEAN rtl8188fu_IsHexDigit(char chTmp)
 {
 	if ((chTmp >= '0' && chTmp <= '9') ||
 		(chTmp >= 'a' && chTmp <= 'f') ||
@@ -2313,12 +2313,12 @@ inline BOOLEAN IsHexDigit(char chTmp)
 }
 
 /**
-* is_alpha -
+* rtl8188fu_is_alpha -
 *
 * Return	TRUE if chTmp is represent for alphabet
 *		FALSE otherwise.
 */
-inline BOOLEAN is_alpha(char chTmp)
+inline BOOLEAN rtl8188fu_is_alpha(char chTmp)
 {
 	if ((chTmp >= 'a' && chTmp <= 'z') ||
 		(chTmp >= 'A' && chTmp <= 'Z'))
@@ -2327,7 +2327,7 @@ inline BOOLEAN is_alpha(char chTmp)
 		return _FALSE;
 }
 
-inline char alpha_to_upper(char c)
+inline char rtl8188fu_alpha_to_upper(char c)
 {
 	if ((c >= 'a' && c <= 'z'))
 		c = 'A' + (c - 'a');

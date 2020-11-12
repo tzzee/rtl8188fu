@@ -41,7 +41,7 @@
 
 #if (DM_ODM_SUPPORT_TYPE &  (ODM_CE))
 
-s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValue,u32 max_time)
+s2Byte rtl8188fu_odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValue,u32 max_time)
 {
 	u4Byte				tmp4b;	
 	u1Byte				max_rf_path=0,rf_path;	
@@ -49,7 +49,7 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 	struct noise_level		noise_data;
 	u32 start  = 0, 	func_start=0,	func_end = 0;
 
-	func_start = ODM_GetCurrentTime(pDM_Odm);
+	func_start = rtl8188fu_ODM_GetCurrentTime(pDM_Odm);
 	pDM_Odm->noise_level.noise_all = 0;
 	
 	if((pDM_Odm->RFType == ODM_1T2R) ||(pDM_Odm->RFType == ODM_2T2R))	
@@ -59,7 +59,7 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 	
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("odm_DebugControlInbandNoise_Nseries() ==> \n"));
 
-	ODM_Memory_Set(pDM_Odm,&noise_data,0,sizeof(struct noise_level));
+	rtl8188fu_ODM_Memory_Set(pDM_Odm,&noise_data,0,sizeof(struct noise_level));
 	
 	//
 	// Step 1. Disable DIG && Set initial gain.
@@ -67,7 +67,7 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 	
 	if(bPauseDIG)
 	{
-		odm_PauseDIG(pDM_Odm, PHYDM_PAUSE, PHYDM_PAUSE_LEVEL_1, IGIValue);
+		rtl8188fu_odm_PauseDIG(pDM_Odm, PHYDM_PAUSE, PHYDM_PAUSE_LEVEL_1, IGIValue);
 	}
 	//
 	// Step 2. Disable all power save for read registers
@@ -77,23 +77,23 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 	//
 	// Step 3. Get noise power level
 	//
-	start = ODM_GetCurrentTime(pDM_Odm);
+	start = rtl8188fu_ODM_GetCurrentTime(pDM_Odm);
 	while(1)
 	{
 		
 		//Stop updating idle time pwer report (for driver read)
-		ODM_SetBBReg(pDM_Odm, rFPGA0_TxGainStage, BIT25, 1);	
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_TxGainStage, BIT25, 1);	
 		
 		//Read Noise Floor Report
-		tmp4b = ODM_GetBBReg(pDM_Odm, 0x8f8,bMaskDWord );
+		tmp4b = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x8f8,bMaskDWord );
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("Noise Floor Report (0x8f8) = 0x%08x\n", tmp4b));
 		
-		//ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskByte0, TestInitialGain);
+		//rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskByte0, TestInitialGain);
 		//if(max_rf_path == 2)
-		//	ODM_SetBBReg(pDM_Odm, rOFDM0_XBAGCCore1, bMaskByte0, TestInitialGain);
+		//	rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XBAGCCore1, bMaskByte0, TestInitialGain);
 		
 		//update idle time pwer report per 5us
-		ODM_SetBBReg(pDM_Odm, rFPGA0_TxGainStage, BIT25, 0);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_TxGainStage, BIT25, 0);
 		
 		noise_data.value[ODM_RF_PATH_A] = (u1Byte)(tmp4b&0xff);		
 		noise_data.value[ODM_RF_PATH_B]  = (u1Byte)((tmp4b&0xff00)>>8);
@@ -110,8 +110,8 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 		
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("sval_a = %d, sval_b = %d\n", 
 			noise_data.sval[ODM_RF_PATH_A], noise_data.sval[ODM_RF_PATH_B]));
-		//ODM_delay_ms(10);
-		//ODM_sleep_ms(10);
+		//rtl8188fu_ODM_delay_ms(10);
+		//rtl8188fu_ODM_sleep_ms(10);
 
 		for(rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++) 
 		{
@@ -132,7 +132,7 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 		}
 
 		//printk("####### valid_done:%d #############\n",valid_done);
-		if ((valid_done==max_rf_path) || (ODM_GetProgressingTime(pDM_Odm,start) > max_time))
+		if ((valid_done==max_rf_path) || (rtl8188fu_ODM_GetProgressingTime(pDM_Odm,start) > max_time))
 		{
 			for(rf_path = ODM_RF_PATH_A; rf_path < max_rf_path; rf_path++)
 			{ 
@@ -145,14 +145,14 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 			break;
 		}
 	}
-	reg_c50 = (s4Byte)ODM_GetBBReg(pDM_Odm,rOFDM0_XAAGCCore1,bMaskByte0);
+	reg_c50 = (s4Byte)rtl8188fu_ODM_GetBBReg(pDM_Odm,rOFDM0_XAAGCCore1,bMaskByte0);
 	reg_c50 &= ~BIT7;
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("0x%x = 0x%02x(%d)\n", rOFDM0_XAAGCCore1, reg_c50, reg_c50));
 	pDM_Odm->noise_level.noise[ODM_RF_PATH_A] = -110 + reg_c50 + noise_data.sum[ODM_RF_PATH_A];
 	pDM_Odm->noise_level.noise_all += pDM_Odm->noise_level.noise[ODM_RF_PATH_A];
 		
 	if(max_rf_path == 2){
-		reg_c58 = (s4Byte)ODM_GetBBReg(pDM_Odm,rOFDM0_XBAGCCore1,bMaskByte0);
+		reg_c58 = (s4Byte)rtl8188fu_ODM_GetBBReg(pDM_Odm,rOFDM0_XBAGCCore1,bMaskByte0);
 		reg_c58 &= ~BIT7;
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD,("0x%x = 0x%02x(%d)\n", rOFDM0_XBAGCCore1, reg_c58, reg_c58));
 		pDM_Odm->noise_level.noise[ODM_RF_PATH_B] = -110 + reg_c58 + noise_data.sum[ODM_RF_PATH_B];
@@ -169,9 +169,9 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 	//
 	if(bPauseDIG)
 	{
-		odm_PauseDIG(pDM_Odm, PHYDM_RESUME, PHYDM_PAUSE_LEVEL_1, IGIValue);
+		rtl8188fu_odm_PauseDIG(pDM_Odm, PHYDM_RESUME, PHYDM_PAUSE_LEVEL_1, IGIValue);
 	}	
-	func_end = ODM_GetProgressingTime(pDM_Odm,func_start) ;	
+	func_end = rtl8188fu_ODM_GetProgressingTime(pDM_Odm,func_start) ;	
 	
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_DebugControlInbandNoise_Nseries() <==\n"));
 	return pDM_Odm->noise_level.noise_all;
@@ -179,7 +179,7 @@ s2Byte odm_InbandNoise_Monitor_NSeries(PDM_ODM_T	pDM_Odm,u8 bPauseDIG,u8 IGIValu
 }
 
 s2Byte	
-odm_InbandNoise_Monitor_ACSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 IGIValue, u32 max_time
+rtl8188fu_odm_InbandNoise_Monitor_ACSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 IGIValue, u32 max_time
 	)
 {
 	s4Byte          rxi_buf_anta, rxq_buf_anta; /*rxi_buf_antb, rxq_buf_antb;*/
@@ -192,20 +192,20 @@ odm_InbandNoise_Monitor_ACSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 IGIValue, u
 	if (!(pDM_Odm->SupportICType & (ODM_RTL8812 | ODM_RTL8821)))
 		return 0;
 	
-	func_start = ODM_GetCurrentTime(pDM_Odm);
+	func_start = rtl8188fu_ODM_GetCurrentTime(pDM_Odm);
 	pDM_Odm->noise_level.noise_all = 0;
 	
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_InbandNoise_Monitor_ACSeries() ==>\n"));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("rtl8188fu_odm_InbandNoise_Monitor_ACSeries() ==>\n"));
 	
 	/* Step 1. Disable DIG && Set initial gain. */
 	if (bPauseDIG)
-		odm_PauseDIG(pDM_Odm, PHYDM_PAUSE, PHYDM_PAUSE_LEVEL_1, IGIValue);
+		rtl8188fu_odm_PauseDIG(pDM_Odm, PHYDM_PAUSE, PHYDM_PAUSE_LEVEL_1, IGIValue);
 
 	/* Step 2. Disable all power save for read registers */
 	/*dcmd_DebugControlPowerSave(pAdapter, PSDisable); */
 
 	/* Step 3. Get noise power level */
-	start = ODM_GetCurrentTime(pDM_Odm);
+	start = rtl8188fu_ODM_GetCurrentTime(pDM_Odm);
 
 	/* reset counters */
 	sum = 0;
@@ -214,12 +214,12 @@ odm_InbandNoise_Monitor_ACSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 IGIValue, u
 	/* Step 3. Get noise power level */
 	while (1) {
 		/*Set IGI=0x1C */
-		ODM_Write_DIG(pDM_Odm, 0x1C);
+		rtl8188fu_ODM_Write_DIG(pDM_Odm, 0x1C);
 		/*stop CK320&CK88 */
-		ODM_SetBBReg(pDM_Odm, 0x8B4, BIT6, 1);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x8B4, BIT6, 1);
 		/*Read Path-A */
-		ODM_SetBBReg(pDM_Odm, 0x8FC, bMaskDWord, 0x200); /*set debug port*/
-		value32 = ODM_GetBBReg(pDM_Odm, 0xFA0, bMaskDWord); /*read debug port*/
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x8FC, bMaskDWord, 0x200); /*set debug port*/
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xFA0, bMaskDWord); /*read debug port*/
 		
 		rxi_buf_anta = (value32 & 0xFFC00) >> 10; /*rxi_buf_anta=RegFA0[19:10]*/
 		rxq_buf_anta = value32 & 0x3FF; /*rxq_buf_anta=RegFA0[19:10]*/
@@ -229,20 +229,20 @@ odm_InbandNoise_Monitor_ACSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 IGIValue, u
 		/*Not in packet detection period or Tx state */
 		if ((!pd_flag) || (rxi_buf_anta != 0x200)) {
 			/*sign conversion*/
-			rxi_buf_anta = ODM_SignConversion(rxi_buf_anta, 10);
-			rxq_buf_anta = ODM_SignConversion(rxq_buf_anta, 10);
+			rxi_buf_anta = rtl8188fu_ODM_SignConversion(rxi_buf_anta, 10);
+			rxq_buf_anta = rtl8188fu_ODM_SignConversion(rxq_buf_anta, 10);
 
-			pwdb_A = ODM_PWdB_Conversion(rxi_buf_anta * rxi_buf_anta + rxq_buf_anta * rxq_buf_anta, 20, 18); /*S(10,9)*S(10,9)=S(20,18)*/
+			pwdb_A = rtl8188fu_ODM_PWdB_Conversion(rxi_buf_anta * rxi_buf_anta + rxq_buf_anta * rxq_buf_anta, 20, 18); /*S(10,9)*S(10,9)=S(20,18)*/
 
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("pwdb_A= %d dB, rxi_buf_anta= 0x%x, rxq_buf_anta= 0x%x\n", pwdb_A, rxi_buf_anta & 0x3FF, rxq_buf_anta & 0x3FF));
 		}
 
 		/*BB Reset*/
-		ODM_Write1Byte(pDM_Odm, 0x02, ODM_Read1Byte(pDM_Odm, 0x02) & (~BIT0));
-		ODM_Write1Byte(pDM_Odm, 0x02, ODM_Read1Byte(pDM_Odm, 0x02) | BIT0);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, 0x02, rtl8188fu_ODM_Read1Byte(pDM_Odm, 0x02) & (~BIT0));
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, 0x02, rtl8188fu_ODM_Read1Byte(pDM_Odm, 0x02) | BIT0);
 
 		/*Start CK320&CK88*/
-		ODM_SetBBReg(pDM_Odm, 0x8B4, BIT6, 0);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x8B4, BIT6, 0);
 
 		sval = pwdb_A;
 
@@ -252,7 +252,7 @@ odm_InbandNoise_Monitor_ACSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 IGIValue, u
 				sum += sval;
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("Valid sval = %d\n", sval));
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("Sum of sval = %d,\n", sum));
-				if ((valid_cnt >= ValidCnt) || (ODM_GetProgressingTime(pDM_Odm, start) > max_time)) {
+				if ((valid_cnt >= ValidCnt) || (rtl8188fu_ODM_GetProgressingTime(pDM_Odm, start) > max_time)) {
 					sum /= valid_cnt;
 					ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("After divided, sum = %d\n", sum)); 
 					break;
@@ -272,11 +272,11 @@ odm_InbandNoise_Monitor_ACSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 IGIValue, u
 
 	/* Step 4. Recover the Dig*/
 	if (bPauseDIG)
-		odm_PauseDIG(pDM_Odm, PHYDM_RESUME, PHYDM_PAUSE_LEVEL_1, IGIValue);
+		rtl8188fu_odm_PauseDIG(pDM_Odm, PHYDM_RESUME, PHYDM_PAUSE_LEVEL_1, IGIValue);
 	
-	func_end = ODM_GetProgressingTime(pDM_Odm, func_start);
+	func_end = rtl8188fu_ODM_GetProgressingTime(pDM_Odm, func_start);
 	
-	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("odm_InbandNoise_Monitor_ACSeries() <==\n"));
+	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("rtl8188fu_odm_InbandNoise_Monitor_ACSeries() <==\n"));
 
 	return pDM_Odm->noise_level.noise_all;
 }
@@ -284,14 +284,14 @@ odm_InbandNoise_Monitor_ACSeries(PDM_ODM_T	pDM_Odm, u8 bPauseDIG, u8 IGIValue, u
 
 
 s2Byte
-ODM_InbandNoise_Monitor(PVOID pDM_VOID, u8 bPauseDIG, u8 IGIValue, u32 max_time)
+rtl8188fu_ODM_InbandNoise_Monitor(PVOID pDM_VOID, u8 bPauseDIG, u8 IGIValue, u32 max_time)
 {
 
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	if (pDM_Odm->SupportICType & ODM_IC_11AC_SERIES)
-		return odm_InbandNoise_Monitor_ACSeries(pDM_Odm, bPauseDIG, IGIValue, max_time);
+		return rtl8188fu_odm_InbandNoise_Monitor_ACSeries(pDM_Odm, bPauseDIG, IGIValue, max_time);
 	else
-		return odm_InbandNoise_Monitor_NSeries(pDM_Odm, bPauseDIG, IGIValue, max_time);
+		return rtl8188fu_odm_InbandNoise_Monitor_NSeries(pDM_Odm, bPauseDIG, IGIValue, max_time);
 }
 
 #endif

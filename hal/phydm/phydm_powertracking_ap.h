@@ -62,15 +62,15 @@
 
 //#define	OFDM_TABLE_SIZE_92E 	54
 //#define 	CCK_TABLE_SIZE_92E     	54
-extern	u4Byte OFDMSwingTable[OFDM_TABLE_SIZE_92D];
-extern	u1Byte CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8];
-extern	u1Byte CCKSwingTable_Ch14 [CCK_TABLE_SIZE][8];
+extern	u4Byte rtl8188fu_OFDMSwingTable[OFDM_TABLE_SIZE_92D];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch14 [CCK_TABLE_SIZE][8];
 
 
-extern	u4Byte OFDMSwingTable_New[OFDM_TABLE_SIZE_92D];
-extern	u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8];
-extern	u1Byte CCKSwingTable_Ch14_New [CCK_TABLE_SIZE][8];
-extern	u1Byte CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16];
+extern	u4Byte rtl8188fu_OFDMSwingTable_New[OFDM_TABLE_SIZE_92D];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch14_New [CCK_TABLE_SIZE][8];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16];
 
 #endif
 
@@ -81,28 +81,28 @@ extern u1Byte DeltaSwingTableIdx_2GA_P_DEFAULT[DELTA_SWINGIDX_SIZE];
 extern u1Byte DeltaSwingTableIdx_2GA_N_DEFAULT[DELTA_SWINGIDX_SIZE]; 
 
 
-//extern	u4Byte OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E];
-//extern	u1Byte CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8];
-//extern	u1Byte CCKSwingTable_Ch14_92E[CCK_TABLE_SIZE_92E][8];
+//extern	u4Byte rtl8188fu_OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E];
+//extern	u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8];
+//extern	u1Byte rtl8188fu_CCKSwingTable_Ch14_92E[CCK_TABLE_SIZE_92E][8];
 
 #ifdef CONFIG_WLAN_HAL_8192EE
 #define	OFDM_TABLE_SIZE_92E 	54
 #define	CCK_TABLE_SIZE_92E     	54
-extern	u4Byte OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E];
-extern	u1Byte CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8];
-extern	u1Byte CCKSwingTable_Ch14_92E[CCK_TABLE_SIZE_92E][8];
+extern	u4Byte rtl8188fu_OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch14_92E[CCK_TABLE_SIZE_92E][8];
 #endif
 
 #define	OFDM_TABLE_SIZE_8812 	43
 #define	AVG_THERMAL_NUM_8812	4
 
 #if(RTL8814A_SUPPORT == 1)
-extern u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE];
+extern u4Byte rtl8188fu_TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE];
 #elif(ODM_IC_11AC_SERIES_SUPPORT)
-extern unsigned int OFDMSwingTable_8812[OFDM_TABLE_SIZE_8812];
+extern unsigned int rtl8188fu_OFDMSwingTable_8812[OFDM_TABLE_SIZE_8812];
 #endif
 
-#define dm_CheckTXPowerTracking 	ODM_TXPowerTrackingCheck
+#define dm_CheckTXPowerTracking 	rtl8188fu_ODM_TXPowerTrackingCheck
 
 typedef struct _IQK_MATRIX_REGS_SETTING{
 	BOOLEAN 	bIQKDone;
@@ -248,34 +248,34 @@ typedef struct ODM_RF_Calibration_Structure
 }ODM_RF_CAL_T,*PODM_RF_CAL_T;
 
 VOID
-odm_TXPowerTrackingCheckAP(
+rtl8188fu_odm_TXPowerTrackingCheckAP(
 	IN	PVOID		pDM_VOID
 	);
 
 VOID
-ODM_TXPowerTrackingCheck(
-	IN	PVOID		pDM_VOID
-	);
-
-
-VOID
-odm_TXPowerTrackingThermalMeterInit(
-	IN	PVOID		pDM_VOID
-	);
-
-VOID
-odm_TXPowerTrackingInit(
-	IN	PVOID		pDM_VOID
-	);
-
-VOID
-odm_TXPowerTrackingCheckMP(
+rtl8188fu_ODM_TXPowerTrackingCheck(
 	IN	PVOID		pDM_VOID
 	);
 
 
 VOID
-odm_TXPowerTrackingCheckCE(
+rtl8188fu_odm_TXPowerTrackingThermalMeterInit(
+	IN	PVOID		pDM_VOID
+	);
+
+VOID
+rtl8188fu_odm_TXPowerTrackingInit(
+	IN	PVOID		pDM_VOID
+	);
+
+VOID
+rtl8188fu_odm_TXPowerTrackingCheckMP(
+	IN	PVOID		pDM_VOID
+	);
+
+
+VOID
+rtl8188fu_odm_TXPowerTrackingCheckCE(
 	IN	PVOID		pDM_VOID
 	);
 

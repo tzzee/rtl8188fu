@@ -1158,14 +1158,14 @@ typedef enum tag_RF_Type_Definition
 
 //remove PT by yuchen
 
-//ODM_RAStateCheck() Remove by RS_James
+//rtl8188fu_ODM_RAStateCheck() Remove by RS_James
 
 #if(DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_AP|ODM_ADSL))
 //============================================================
 // function prototype
 //============================================================
-//#define DM_ChangeDynamicInitGainThresh		ODM_ChangeDynamicInitGainThresh
-//void	ODM_ChangeDynamicInitGainThresh(IN	PADAPTER	pAdapter,
+//#define DM_ChangeDynamicInitGainThresh		rtl8188fu_ODM_ChangeDynamicInitGainThresh
+//void	rtl8188fu_ODM_ChangeDynamicInitGainThresh(IN	PADAPTER	pAdapter,
 //											IN	INT32		DM_Type,
 //											IN	INT32		DM_Value);
 
@@ -1186,14 +1186,14 @@ ODM_CheckPowerStatus(
 
 
 
-u4Byte odm_ConvertTo_dB(u4Byte Value);
+u4Byte rtl8188fu_odm_ConvertTo_dB(u4Byte Value);
 
-u4Byte odm_ConvertTo_linear(u4Byte Value);
+u4Byte rtl8188fu_odm_ConvertTo_linear(u4Byte Value);
 
 #if((DM_ODM_SUPPORT_TYPE==ODM_WIN)||(DM_ODM_SUPPORT_TYPE==ODM_CE))
 
 u4Byte
-GetPSDData(
+rtl8188fu_GetPSDData(
 	PDM_ODM_T	pDM_Odm,
 	unsigned int 	point,
 	u1Byte initial_gain_psd);
@@ -1202,32 +1202,32 @@ GetPSDData(
 
 #if (DM_ODM_SUPPORT_TYPE & ODM_WIN)	
 VOID
-ODM_DMWatchdog_LPS(
+rtl8188fu_ODM_DMWatchdog_LPS(
 	IN		PDM_ODM_T		pDM_Odm
 );
 #endif
 
 
 s4Byte
-ODM_PWdB_Conversion(
+rtl8188fu_ODM_PWdB_Conversion(
     IN  s4Byte X,
     IN  u4Byte TotalBit,
     IN  u4Byte DecimalBit
     );
 
 s4Byte
-ODM_SignConversion(
+rtl8188fu_ODM_SignConversion(
     IN  s4Byte value,
     IN  u4Byte TotalBit
     );
 
 VOID 
-ODM_DMInit(
+rtl8188fu_ODM_DMInit(
  IN	PDM_ODM_T	pDM_Odm
 );
 
 VOID
-ODM_DMReset(
+rtl8188fu_ODM_DMReset(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
@@ -1241,26 +1241,26 @@ phydm_support_ablity_debug(
 	);
 
 VOID
-ODM_DMWatchdog(
+rtl8188fu_ODM_DMWatchdog(
 	IN		PDM_ODM_T			pDM_Odm			// For common use in the future
 	);
 
 VOID
-ODM_CmnInfoInit(
+rtl8188fu_ODM_CmnInfoInit(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		u4Byte			Value	
 	);
 
 VOID
-ODM_CmnInfoHook(
+rtl8188fu_ODM_CmnInfoHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		PVOID			pValue	
 	);
 
 VOID
-ODM_CmnInfoPtrArrayHook(
+rtl8188fu_ODM_CmnInfoPtrArrayHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		u2Byte			Index,
@@ -1268,7 +1268,7 @@ ODM_CmnInfoPtrArrayHook(
 	);
 
 VOID
-ODM_CmnInfoUpdate(
+rtl8188fu_ODM_CmnInfoUpdate(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u4Byte			CmnInfo,
 	IN		u8Byte			Value	
@@ -1287,17 +1287,17 @@ ODM_StopAllThreads(
 #endif
 
 VOID 
-ODM_InitAllTimers(
+rtl8188fu_ODM_InitAllTimers(
     IN PDM_ODM_T	pDM_Odm 
     );
 
 VOID 
-ODM_CancelAllTimers(
+rtl8188fu_ODM_CancelAllTimers(
     IN PDM_ODM_T    pDM_Odm 
     );
 
 VOID
-ODM_ReleaseAllTimers(
+rtl8188fu_ODM_ReleaseAllTimers(
     IN PDM_ODM_T	pDM_Odm 
     );
 
@@ -1321,8 +1321,8 @@ PlatformDivision64(
 //====================================================
 
 
-#define DM_ChangeDynamicInitGainThresh		ODM_ChangeDynamicInitGainThresh
-//void	ODM_ChangeDynamicInitGainThresh(IN	PADAPTER	pAdapter,
+#define DM_ChangeDynamicInitGainThresh		rtl8188fu_ODM_ChangeDynamicInitGainThresh
+//void	rtl8188fu_ODM_ChangeDynamicInitGainThresh(IN	PADAPTER	pAdapter,
 //											IN	INT32		DM_Type,
 //											IN	INT32		DM_Value);
 //
@@ -1357,21 +1357,21 @@ typedef enum tag_DIG_Connect_Definition
 	IS_HARDWARE_TYPE_8192D(_Adapter) ? odm_TXPowerTrackingCallback_ThermalMeter_92D(_Adapter) : \
 	IS_HARDWARE_TYPE_8192C(_Adapter) ? odm_TXPowerTrackingCallback_ThermalMeter_92C(_Adapter) : \
 	IS_HARDWARE_TYPE_8723A(_Adapter) ? odm_TXPowerTrackingCallback_ThermalMeter_8723A(_Adapter) :\
-	ODM_TXPowerTrackingCallback_ThermalMeter(_Adapter)
+	rtl8188fu_ODM_TXPowerTrackingCallback_ThermalMeter(_Adapter)
 */
 
 
 #endif	// #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 
 VOID
-ODM_AsocEntry_Init(
+rtl8188fu_ODM_AsocEntry_Init(
 	IN		PDM_ODM_T		pDM_Odm
 	);
 
 //Remove ODM_DynamicARFBSelect() by RS_James
 
 PVOID
-PhyDM_Get_Structure(
+rtl8188fu_PhyDM_Get_Structure(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			Structure_Type
 );
@@ -1416,7 +1416,7 @@ FillH2CCmd92C(
 	IN	pu1Byte	pCmdBuffer
 );
 VOID
-PHY_SetTxPowerLevel8192C(
+PHY_rtl8188fu_SetTxPowerLevel8192C(
 	IN	PADAPTER		Adapter,
 	IN	u1Byte			channel
 	);
@@ -1428,11 +1428,11 @@ u1Byte GetRightChnlPlaceforIQK(u1Byte chnl);
 #endif //#if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-void odm_dtc(PDM_ODM_T pDM_Odm);
+void rtl8188fu_odm_dtc(PDM_ODM_T pDM_Odm);
 #endif /* #if (DM_ODM_SUPPORT_TYPE == ODM_CE) */
 
 
-VOID phydm_NoisyDetection(IN	PDM_ODM_T	pDM_Odm	);
+VOID rtl8188fu_phydm_NoisyDetection(IN	PDM_ODM_T	pDM_Odm	);
 
 
 #endif

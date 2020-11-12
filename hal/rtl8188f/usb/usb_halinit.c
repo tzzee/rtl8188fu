@@ -94,7 +94,7 @@ static BOOLEAN HalUsbSetQueuePipeMapping8188FUsb(
 	/*	return result; */
 	/*} */
 
-	result = Hal_MappingOutPipe(pAdapter, NumOutPipe);
+	result = rtl8188fu_Hal_MappingOutPipe(pAdapter, NumOutPipe);
 
 	return result;
 
@@ -147,7 +147,7 @@ static u32 _InitPowerOn_8188FU(PADAPTER padapter)
 		rtl8188f_set_pll_ref_clk_sel(padapter, regsty->pll_ref_clk_sel);
 
 	/* HW Power on sequence */
-	if (!HalPwrSeqCmdParsing(padapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, rtl8188F_card_enable_flow))
+	if (!rtl8188fu_HalPwrSeqCmdParsing(padapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, rtl8188F_card_enable_flow))
 		return _FAIL;
 
 	/* Enable MAC DMA/WMAC/SCHEDULE/SEC block */
@@ -824,7 +824,7 @@ HalDetectPwrDownMode(
 	HAL_DATA_TYPE		*pHalData	= GET_HAL_DATA(Adapter);
 	struct pwrctrl_priv		*pwrctrlpriv = adapter_to_pwrctl(Adapter);
 
-	EFUSE_ShadowRead(Adapter, 1, EEPROM_FEATURE_OPTION_8188F, (u32 *)&tmpvalue);
+	rtl8188fu_EFUSE_ShadowRead(Adapter, 1, EEPROM_FEATURE_OPTION_8188F, (u32 *)&tmpvalue);
 
 	/* 2010/08/25 MH INF priority > PDN Efuse value. */
 	if (tmpvalue & BIT4 && pwrctrlpriv->reg_pdnmode)
@@ -856,7 +856,7 @@ HalDetectSelectiveSuspendMode(
 	/* If support HW radio detect, we need to enable WOL ability, otherwise, we */
 	/* can not use FW to notify host the power state switch. */
 
-	EFUSE_ShadowRead(Adapter, 1, EEPROM_USB_OPTIONAL1, (u32 *)&tmpvalue);
+	rtl8188fu_EFUSE_ShadowRead(Adapter, 1, EEPROM_USB_OPTIONAL1, (u32 *)&tmpvalue);
 
 	DBG_8192C("HalDetectSelectiveSuspendMode(): SS ");
 	if (tmpvalue & BIT1)
@@ -932,7 +932,7 @@ HwSuspendModeEnable92Cu(
 	}
 
 }	/* HwSuspendModeEnable92Cu */
-rt_rf_power_state RfOnOffDetect(IN	PADAPTER pAdapter)
+rt_rf_power_state rtl8188fu_RfOnOffDetect(IN	PADAPTER pAdapter)
 {
 	/*HAL_DATA_TYPE		*pHalData = GET_HAL_DATA(pAdapter); */
 	u8	val8;
@@ -1026,7 +1026,7 @@ u32 rtl8188fu_hal_init(PADAPTER padapter)
 	rt_rf_power_state		eRfPowerStateToSet;
 	u32 NavUpper = WiFiNavUpperUs;
 	u32 value32;
-	u32 init_start_time = rtw_get_current_time();
+	u32 init_start_time = rtl8188fu_rtw_get_current_time();
 
 
 #ifdef DBG_HAL_INIT_PROFILING
@@ -1090,7 +1090,7 @@ u32 rtl8188fu_hal_init(PADAPTER padapter)
 	for (hal_init_profiling_i = 0; hal_init_profiling_i < HAL_INIT_STAGES_NUM; hal_init_profiling_i++)
 		hal_init_stages_timestamp[hal_init_profiling_i] = 0;
 
-#define HAL_INIT_PROFILE_TAG(stage) { hal_init_stages_timestamp[(stage)] = rtw_get_current_time(); }
+#define HAL_INIT_PROFILE_TAG(stage) { hal_init_stages_timestamp[(stage)] = rtl8188fu_rtw_get_current_time(); }
 #else
 #define HAL_INIT_PROFILE_TAG(stage) do {} while (0)
 #endif /*DBG_HAL_INIT_PROFILING */
@@ -1112,7 +1112,7 @@ u32 rtl8188fu_hal_init(PADAPTER padapter)
 
 
 	HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_PW_ON);
-	status = rtw_hal_power_on(padapter);
+	status = rtl8188fu_rtw_hal_power_on(padapter);
 	if (status == _FAIL) {
 		RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("Failed to init power on!\n"));
 		goto exit;
@@ -1294,15 +1294,15 @@ u32 rtl8188fu_hal_init(PADAPTER padapter)
 	/*NicIFSetMacAddress(padapter, padapter->PermanentAddress); */
 
 
-	rtw_hal_set_chnl_bw(padapter, padapter->registrypriv.channel,
+	rtl8188fu_rtw_hal_set_chnl_bw(padapter, padapter->registrypriv.channel,
 						CHANNEL_WIDTH_20, HAL_PRIME_CHNL_OFFSET_DONT_CARE, HAL_PRIME_CHNL_OFFSET_DONT_CARE);
 
 	HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_INIT_SECURITY);
-	invalidate_cam_all(padapter);
+	rtl8188fu_invalidate_cam_all(padapter);
 
 	HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC11);
 	/* 2010/12/17 MH We need to set TX power according to EFUSE content at first. */
-	/*PHY_SetTxPowerLevel8188F(padapter, pHalData->CurrentChannel); */
+	/*PHY_rtl8188fu_SetTxPowerLevel8188F(padapter, pHalData->CurrentChannel); */
 	rtl8188f_InitAntenna_Selection(padapter);
 
 	/* HW SEQ CTRL */
@@ -1342,7 +1342,7 @@ u32 rtl8188fu_hal_init(PADAPTER padapter)
 			PHY_IQCalibrate_8188F(padapter, _FALSE, restore_iqk_rst);
 			pHalData->odmpriv.RFCalibrateInfo.bIQKInitialized = _TRUE;
 
-			ODM_TXPowerTrackingCheck(&pHalData->odmpriv);
+			rtl8188fu_ODM_TXPowerTrackingCheck(&pHalData->odmpriv);
 		}
 	}
 
@@ -1369,7 +1369,7 @@ u32 rtl8188fu_hal_init(PADAPTER padapter)
 #endif
 
 	HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_MISC31);
-	rtw_hal_set_hwreg(padapter, HW_VAR_NAV_UPPER, (u8 *)&NavUpper);
+	rtl8188fu_rtw_hal_set_hwreg(padapter, HW_VAR_NAV_UPPER, (u8 *)&NavUpper);
 
 #ifdef CONFIG_XMIT_ACK
 	/*ack for xmit mgmt frames. */
@@ -1415,17 +1415,17 @@ u32 rtl8188fu_hal_init(PADAPTER padapter)
 exit:
 	HAL_INIT_PROFILE_TAG(HAL_INIT_STAGES_END);
 
-	DBG_871X("%s in %dms\n", __func__, rtw_get_passing_time_ms(init_start_time));
+	DBG_871X("%s in %dms\n", __func__, rtl8188fu_rtw_get_passing_time_ms(init_start_time));
 
 #ifdef DBG_HAL_INIT_PROFILING
-	hal_init_stages_timestamp[HAL_INIT_STAGES_END] = rtw_get_current_time();
+	hal_init_stages_timestamp[HAL_INIT_STAGES_END] = rtl8188fu_rtw_get_current_time();
 
 	for (hal_init_profiling_i = 0; hal_init_profiling_i < HAL_INIT_STAGES_NUM - 1; hal_init_profiling_i++) {
 		DBG_871X("DBG_HAL_INIT_PROFILING: %35s, %u, %5u, %5u\n"
 				 , hal_init_stages_str[hal_init_profiling_i]
 				 , hal_init_stages_timestamp[hal_init_profiling_i]
 				 , (hal_init_stages_timestamp[hal_init_profiling_i + 1] - hal_init_stages_timestamp[hal_init_profiling_i])
-				 , rtw_get_time_interval_ms(hal_init_stages_timestamp[hal_init_profiling_i], hal_init_stages_timestamp[hal_init_profiling_i + 1])
+				 , rtl8188fu_rtw_get_time_interval_ms(hal_init_stages_timestamp[hal_init_profiling_i], hal_init_stages_timestamp[hal_init_profiling_i + 1])
 				);
 	}
 #endif
@@ -1669,7 +1669,7 @@ _ResetDigitalProcedure1(
 
 				while ((retry_cnts++ < 100) && (FEN_CPUEN & rtw_read16(Adapter, REG_SYS_FUNC_EN))) {
 					/*PlatformStallExecution(50); //us */
-					rtw_udelay_os(50);
+					rtl8188fu_rtw_udelay_os(50);
 				}
 
 				if (retry_cnts >= 100) {
@@ -1680,7 +1680,7 @@ _ResetDigitalProcedure1(
 					/*						0x00010100); */
 					/* 2010/08/31 MH According to Filen's info, if 8051 reset fail, reset MAC directly. */
 					rtw_write8(Adapter, REG_SYS_FUNC_EN + 1, 0x50);	/*Reset MAC and Enable 8051 */
-					rtw_mdelay_os(10);
+					rtl8188fu_rtw_mdelay_os(10);
 				} else {
 					/*DBG_871X("%s =====> 8051 reset success (%d) .\n", __func__, retry_cnts); */
 				}
@@ -1851,7 +1851,7 @@ CardDisableRTL8188FU(
 		rtl8188f_FirmwareSelfReset(Adapter);
 
 	/* 1. Run LPS WL RFOFF flow */
-	HalPwrSeqCmdParsing(Adapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, rtl8188F_enter_lps_flow);
+	rtl8188fu_HalPwrSeqCmdParsing(Adapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, rtl8188F_enter_lps_flow);
 
 	/* Reset MCU. Suggested by Filen. 2011.01.26. by tynli. */
 	u1bTmp = rtw_read8(Adapter, REG_SYS_FUNC_EN_8188F + 1);
@@ -1861,7 +1861,7 @@ CardDisableRTL8188FU(
 	rtw_write8(Adapter, REG_MCUFWDL_8188F, 0x00);
 
 	/* Card disable power action flow */
-	HalPwrSeqCmdParsing(Adapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, rtl8188F_card_disable_flow);
+	rtl8188fu_HalPwrSeqCmdParsing(Adapter, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_USB_MSK, rtl8188F_card_disable_flow);
 
 	Adapter->bFWReady = _FALSE;
 }
@@ -1895,7 +1895,7 @@ u32 rtl8188fu_hal_deinit(PADAPTER Adapter)
 #endif
 	{
 		if (rtw_is_hw_init_completed(Adapter)) {
-			rtw_hal_power_off(Adapter);
+			rtl8188fu_rtw_hal_power_off(Adapter);
 
 			if ((pwrctl->bHWPwrPindetect) && (pwrctl->bHWPowerdown))
 				rtl8188fu_hw_power_down(Adapter);
@@ -1930,7 +1930,7 @@ unsigned int rtl8188fu_inirp_init(PADAPTER Adapter)
 	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
 	for (i = 0; i < NR_RECVBUFF; i++) {
 		if (_read_port(pintfhdl, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf) == _FALSE) {
-			RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("usb_rx_init: usb_read_port error\n"));
+			RT_TRACE(_module_hci_hal_init_c_, _drv_err_, ("usb_rx_init: rtl8188fu_usb_read_port error\n"));
 			status = _FAIL;
 			goto exit;
 		}
@@ -2097,7 +2097,7 @@ InitAdapterVariablesByPROM_8188FU(
 	Hal_EfuseParseIDCode(padapter, hwinfo);
 	Hal_EfuseParsePIDVID_8188FU(padapter, hwinfo, pHalData->bautoload_fail_flag);
 	Hal_EfuseParseEEPROMVer_8188F(padapter, hwinfo, pHalData->bautoload_fail_flag);
-	hal_config_macaddr(padapter, pHalData->bautoload_fail_flag);
+	rtl8188fu_hal_config_macaddr(padapter, pHalData->bautoload_fail_flag);
 	Hal_EfuseParseTxPowerInfo_8188F(padapter, hwinfo, pHalData->bautoload_fail_flag);
 /* Hal_EfuseParseBTCoexistInfo_8188F(padapter, hwinfo, pHalData->bautoload_fail_flag); */
 
@@ -2121,7 +2121,7 @@ InitAdapterVariablesByPROM_8188FU(
 	/*hal_CustomizedBehavior_8188FU(Adapter); */
 
 	Hal_EfuseParseKFreeData_8188F(padapter, hwinfo, pHalData->bautoload_fail_flag);
-	hal_read_mac_hidden_rpt(padapter);
+	rtl8188fu_hal_read_mac_hidden_rpt(padapter);
 
 /*	Adapter->bDongle = (PROMContent[EEPROM_EASY_REPLACEMENT] == 1)? 0: 1; */
 	DBG_8192C("%s(): REPLACEMENT = %x\n", __func__, padapter->bDongle);
@@ -2191,7 +2191,7 @@ static void ReadAdapterInfo8188FU(PADAPTER Adapter)
 	/* Read EEPROM size before call any EEPROM function */
 	Adapter->EepromAddressSize = GetEEPROMSize8188F(Adapter);
 
-	/*Efuse_InitSomeVar(Adapter); */
+	/*rtl8188fu_Efuse_InitSomeVar(Adapter); */
 
 	hal_EfuseCellSel(Adapter);
 
@@ -2217,9 +2217,9 @@ static void rtl8188fu_trigger_gpio_0(_adapter *padapter)
 
 /*
  * If variable not handled here,
- * some variables will be processed in SetHwReg8188FU()
+ * some variables will be processed in rtl8188fu_SetHwReg8188FU()
  */
-void SetHwReg8188FU(PADAPTER Adapter, u8 variable, u8 *val)
+void rtl8188fu_SetHwReg8188FU(PADAPTER Adapter, u8 variable, u8 *val)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 
@@ -2233,7 +2233,7 @@ void SetHwReg8188FU(PADAPTER Adapter, u8 variable, u8 *val)
 
 		if (threshold == 0)
 			threshold = pHalData->UsbRxAggPageCount;
-		SetHwReg8188F(Adapter, HW_VAR_RXDMA_AGG_PG_TH, &threshold);
+		rtl8188fu_SetHwReg8188F(Adapter, HW_VAR_RXDMA_AGG_PG_TH, &threshold);
 	}
 #endif
 	break;
@@ -2247,7 +2247,7 @@ void SetHwReg8188FU(PADAPTER Adapter, u8 variable, u8 *val)
 		break;
 
 	default:
-		SetHwReg8188F(Adapter, variable, val);
+		rtl8188fu_SetHwReg8188F(Adapter, variable, val);
 		break;
 	}
 
@@ -2256,9 +2256,9 @@ void SetHwReg8188FU(PADAPTER Adapter, u8 variable, u8 *val)
 
 /*
  * If variable not handled here,
- * some variables will be processed in GetHwReg8188FU()
+ * some variables will be processed in rtl8188fu_GetHwReg8188FU()
  */
-void GetHwReg8188FU(PADAPTER Adapter, u8 variable, u8 *val)
+void rtl8188fu_GetHwReg8188FU(PADAPTER Adapter, u8 variable, u8 *val)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 
@@ -2266,7 +2266,7 @@ void GetHwReg8188FU(PADAPTER Adapter, u8 variable, u8 *val)
 
 	switch (variable) {
 	default:
-		GetHwReg8188F(Adapter, variable, val);
+		rtl8188fu_GetHwReg8188F(Adapter, variable, val);
 		break;
 	}
 
@@ -2278,7 +2278,7 @@ void GetHwReg8188FU(PADAPTER Adapter, u8 variable, u8 *val)
 /*		Query setting of specified variable. */
 /* */
 u8
-GetHalDefVar8188FUsb(
+rtl8188fu_GetHalDefVar8188FUsb(
 	IN	PADAPTER				Adapter,
 	IN	HAL_DEF_VARIABLE		eVariable,
 	IN	PVOID					pValue
@@ -2307,7 +2307,7 @@ GetHalDefVar8188FUsb(
 		*((HT_CAP_AMPDU_FACTOR *)pValue) = MAX_AMPDU_FACTOR_64K;
 		break;
 	default:
-		bResult = GetHalDefVar8188F(Adapter, eVariable, pValue);
+		bResult = rtl8188fu_GetHalDefVar8188F(Adapter, eVariable, pValue);
 		break;
 	}
 
@@ -2322,7 +2322,7 @@ GetHalDefVar8188FUsb(
 /*		Change default setting of specified variable. */
 /* */
 u8
-SetHalDefVar8188FUsb(
+rtl8188fu_SetHalDefVar8188FUsb(
 	IN	PADAPTER				Adapter,
 	IN	HAL_DEF_VARIABLE		eVariable,
 	IN	PVOID					pValue
@@ -2333,14 +2333,14 @@ SetHalDefVar8188FUsb(
 
 	switch (eVariable) {
 	default:
-		bResult = SetHalDefVar8188F(Adapter, eVariable, pValue);
+		bResult = rtl8188fu_SetHalDefVar8188F(Adapter, eVariable, pValue);
 		break;
 	}
 
 	return bResult;
 }
 
-void _update_response_rate(_adapter *padapter, unsigned int mask)
+void rtl8188fu__update_response_rate(_adapter *padapter, unsigned int mask)
 {
 	u8	RateIndex = 0;
 	/* Set RRSR rate table. */
@@ -2414,10 +2414,10 @@ void rtl8188fu_set_hal_ops(_adapter *padapter)
 	pHalFunc->intf_chip_configure = &rtl8188fu_interface_configure;
 	pHalFunc->read_adapter_info = &ReadAdapterInfo8188FU;
 
-	pHalFunc->SetHwRegHandler = &SetHwReg8188FU;
-	pHalFunc->GetHwRegHandler = &GetHwReg8188FU;
-	pHalFunc->GetHalDefVarHandler = &GetHalDefVar8188FUsb;
-	pHalFunc->SetHalDefVarHandler = &SetHalDefVar8188FUsb;
+	pHalFunc->rtl8188fu_SetHwRegHandler = &rtl8188fu_SetHwReg8188FU;
+	pHalFunc->rtl8188fu_GetHwRegHandler = &rtl8188fu_GetHwReg8188FU;
+	pHalFunc->rtl8188fu_GetHalDefVarHandler = &rtl8188fu_GetHalDefVar8188FUsb;
+	pHalFunc->rtl8188fu_SetHalDefVarHandler = &rtl8188fu_SetHalDefVar8188FUsb;
 
 	pHalFunc->hal_xmit = &rtl8188fu_hal_xmit;
 	pHalFunc->mgnt_xmit = &rtl8188fu_mgnt_xmit;

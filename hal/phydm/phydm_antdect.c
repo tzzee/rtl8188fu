@@ -117,126 +117,126 @@ ODM_SingleDualAntennaDetection(
 
 	//1 Backup Current RF/BB Settings	
 	
-	CurrentChannel = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask);
-	RfLoopReg = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask);
+	CurrentChannel = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask);
+	RfLoopReg = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask);
 	if (pDM_Odm->SupportICType & ODM_RTL8723B) {
-		Reg92c = ODM_GetBBReg(pDM_Odm, rDPDT_control, bMaskDWord);	
-		Reg930 = ODM_GetBBReg(pDM_Odm, rfe_ctrl_anta_src, bMaskDWord);
-		Reg948 = ODM_GetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord);
-		Regb2c = ODM_GetBBReg(pDM_Odm, rAGC_table_select, bMaskDWord);
-		Reg064 = ODM_GetMACReg(pDM_Odm, rSYM_WLBT_PAPE_SEL, BIT29);
-		ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x1);
-		ODM_SetBBReg(pDM_Odm, rfe_ctrl_anta_src, 0xff, 0x77);
-		ODM_SetMACReg(pDM_Odm, rSYM_WLBT_PAPE_SEL, BIT29, 0x1);  //dbg 7
-		ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0x3c0, 0x0);//dbg 8
-		ODM_SetBBReg(pDM_Odm, rAGC_table_select, BIT31, 0x0);
+		Reg92c = rtl8188fu_ODM_GetBBReg(pDM_Odm, rDPDT_control, bMaskDWord);	
+		Reg930 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rfe_ctrl_anta_src, bMaskDWord);
+		Reg948 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord);
+		Regb2c = rtl8188fu_ODM_GetBBReg(pDM_Odm, rAGC_table_select, bMaskDWord);
+		Reg064 = rtl8188fu_ODM_GetMACReg(pDM_Odm, rSYM_WLBT_PAPE_SEL, BIT29);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x1);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rfe_ctrl_anta_src, 0xff, 0x77);
+		rtl8188fu_ODM_SetMACReg(pDM_Odm, rSYM_WLBT_PAPE_SEL, BIT29, 0x1);  //dbg 7
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0x3c0, 0x0);//dbg 8
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rAGC_table_select, BIT31, 0x0);
 	}
 
-	ODM_StallExecution(10);
+	rtl8188fu_ODM_StallExecution(10);
 	
 	//Store A Path Register 88c, c08, 874, c50
-	Reg88c = ODM_GetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord);
-	Regc08 = ODM_GetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord);
-	Reg874 = ODM_GetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord);
-	Regc50 = ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskDWord);	
+	Reg88c = rtl8188fu_ODM_GetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord);
+	Regc08 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord);
+	Reg874 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord);
+	Regc50 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskDWord);	
 	
 	// Store AFE Registers
 	if (pDM_Odm->SupportICType & ODM_RTL8723B)
-		AFE_rRx_Wait_CCA = ODM_GetBBReg(pDM_Odm, rRx_Wait_CCA,bMaskDWord);
+		AFE_rRx_Wait_CCA = rtl8188fu_ODM_GetBBReg(pDM_Odm, rRx_Wait_CCA,bMaskDWord);
 	
 	//Set PSD 128 pts
-	ODM_SetBBReg(pDM_Odm, rFPGA0_PSDFunction, BIT14|BIT15, 0x0);  //128 pts
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_PSDFunction, BIT14|BIT15, 0x0);  //128 pts
 	
 	// To SET CH1 to do
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask, 0x7401);     //Channel 1
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask, 0x7401);     //Channel 1
 	
 	// AFE all on step
 	if (pDM_Odm->SupportICType & ODM_RTL8723B)
-		ODM_SetBBReg(pDM_Odm, rRx_Wait_CCA, bMaskDWord, 0x01c00016);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_Wait_CCA, bMaskDWord, 0x01c00016);
 
 	// 3 wire Disable
-	ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord, 0xCCF000C0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord, 0xCCF000C0);
 	
 	//BB IQK Setting
-	ODM_SetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord, 0x000800E4);
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, 0x22208000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord, 0x000800E4);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, 0x22208000);
 
 	//IQK setting tone@ 4.34Mhz
-	ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x10008C1C);
-	ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, 0x01007c00);	
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_Tone_A, bMaskDWord, 0x10008C1C);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK, bMaskDWord, 0x01007c00);	
 
 	//Page B init
-	ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x00080000);
-	ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x0f600000);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
-	ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x10008c1f);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x00080000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rConfig_AntA, bMaskDWord, 0x0f600000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK, bMaskDWord, 0x01004800);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_Tone_A, bMaskDWord, 0x10008c1f);
 	if (pDM_Odm->SupportICType & ODM_RTL8723B) {
-		ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x82150016);
-		ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x28150016);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rTx_IQK_PI_A, bMaskDWord, 0x82150016);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_IQK_PI_A, bMaskDWord, 0x28150016);
 	}
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x001028d0);	
-	ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, 0x7f, initial_gain);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Rsp, bMaskDWord, 0x001028d0);	
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, 0x7f, initial_gain);
 
 	//IQK Single tone start
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, 0xffffff00, 0x808000);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
-	ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, 0xffffff00, 0x808000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf9000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rIQK_AGC_Pts, bMaskDWord, 0xf8000000);
 	
-	ODM_StallExecution(10000);
+	rtl8188fu_ODM_StallExecution(10000);
 
 	// PSD report of antenna A
 	PSD_report_tmp=0x0;
 	for (n=0;n<2;n++)
  	{
- 		PSD_report_tmp =  GetPSDData(pDM_Odm, 14, initial_gain);	
+ 		PSD_report_tmp =  rtl8188fu_GetPSDData(pDM_Odm, 14, initial_gain);	
 		if(PSD_report_tmp >AntA_report)
 			AntA_report=PSD_report_tmp;
 	}
 
 	 // change to Antenna B
 	if (pDM_Odm->SupportICType & ODM_RTL8723B) {
-		//ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x2);
-		ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0xfff, 0x280);
-		ODM_SetBBReg(pDM_Odm, rAGC_table_select, BIT31, 0x1);
+		//rtl8188fu_ODM_SetBBReg(pDM_Odm, rDPDT_control, 0x3, 0x2);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0xfff, 0x280);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rAGC_table_select, BIT31, 0x1);
 	}
 
-	ODM_StallExecution(10);	
+	rtl8188fu_ODM_StallExecution(10);	
 
 	// PSD report of antenna B
 	PSD_report_tmp=0x0;
 	for (n=0;n<2;n++)
  	{
- 		PSD_report_tmp =  GetPSDData(pDM_Odm, 14, initial_gain);	
+ 		PSD_report_tmp =  rtl8188fu_GetPSDData(pDM_Odm, 14, initial_gain);	
 		if(PSD_report_tmp > AntB_report)
 			AntB_report=PSD_report_tmp;
 	}
 
 	//Close IQK Single Tone function
-	ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, 0xffffff00, 0x000000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_IQK, 0xffffff00, 0x000000);
 
 	//1 Return to antanna A
 	if (pDM_Odm->SupportICType & ODM_RTL8723B) {
 		// external DPDT
-		ODM_SetBBReg(pDM_Odm, rDPDT_control, bMaskDWord, Reg92c);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rDPDT_control, bMaskDWord, Reg92c);
 
 		//internal S0/S1
-		ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord, Reg948);
-		ODM_SetBBReg(pDM_Odm, rAGC_table_select, bMaskDWord, Regb2c);
-		ODM_SetBBReg(pDM_Odm, rfe_ctrl_anta_src, bMaskDWord, Reg930);
-		ODM_SetMACReg(pDM_Odm, rSYM_WLBT_PAPE_SEL, BIT29, Reg064);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord, Reg948);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rAGC_table_select, bMaskDWord, Regb2c);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rfe_ctrl_anta_src, bMaskDWord, Reg930);
+		rtl8188fu_ODM_SetMACReg(pDM_Odm, rSYM_WLBT_PAPE_SEL, BIT29, Reg064);
 	}
 	
-	ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord, Reg88c);
-	ODM_SetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord, Regc08);
-	ODM_SetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, Reg874);
-	ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, 0x7F, 0x40);
-	ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskDWord, Regc50);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask,CurrentChannel);
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask,RfLoopReg);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, bMaskDWord, Reg88c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_TRMuxPar, bMaskDWord, Regc08);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_XCD_RFInterfaceSW, bMaskDWord, Reg874);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, 0x7F, 0x40);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskDWord, Regc50);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask,CurrentChannel);
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x00, bRFRegOffsetMask,RfLoopReg);
 
 	//Reload AFE Registers
 	if (pDM_Odm->SupportICType & ODM_RTL8723B)
-		ODM_SetBBReg(pDM_Odm, rRx_Wait_CCA, bMaskDWord, AFE_rRx_Wait_CCA);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rRx_Wait_CCA, bMaskDWord, AFE_rRx_Wait_CCA);
 
 	if (pDM_Odm->SupportICType & ODM_RTL8723B) {
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("psd_report_A[%d]= %d\n", 2416, AntA_report));	
@@ -325,7 +325,7 @@ ODM_SwAntDivCheckBeforeLink(
 		if(pDM_Odm->SupportICType == ODM_RTL8723B)
 		{
 			if(pDM_SWAT_Table->SWAS_NoLink_BK_Reg948 == 0xff)
-				pDM_SWAT_Table->SWAS_NoLink_BK_Reg948 = ODM_Read4Byte(pDM_Odm, rS0S1_PathSwitch );
+				pDM_SWAT_Table->SWAS_NoLink_BK_Reg948 = rtl8188fu_ODM_Read4Byte(pDM_Odm, rS0S1_PathSwitch );
 		}
 	}
 
@@ -411,17 +411,17 @@ ODM_SwAntDivCheckBeforeLink(
 		} else if (pDM_Odm->SupportICType & (ODM_RTL8723B)) {
 			/*Switch Antenna to another one.*/
 				
-			tmp_SWAS_NoLink_BK_Reg948 = ODM_Read4Byte(pDM_Odm, rS0S1_PathSwitch);
+			tmp_SWAS_NoLink_BK_Reg948 = rtl8188fu_ODM_Read4Byte(pDM_Odm, rS0S1_PathSwitch);
 			
 			if ((pDM_SWAT_Table->CurAntenna == MAIN_ANT) && (tmp_SWAS_NoLink_BK_Reg948 == 0x200)) {
-				ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0xfff, 0x280);
-				ODM_SetBBReg(pDM_Odm, rAGC_table_select, BIT31, 0x1);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0xfff, 0x280);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rAGC_table_select, BIT31, 0x1);
 				pDM_SWAT_Table->CurAntenna = AUX_ANT;
 			} else {
 				ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Reg[948]= (( %x )) was in wrong state\n", tmp_SWAS_NoLink_BK_Reg948));
 				return FALSE;
 			}
-			ODM_StallExecution(10);
+			rtl8188fu_ODM_StallExecution(10);
 
 			ODM_RT_TRACE(pDM_Odm, ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("ODM_SwAntDivCheckBeforeLink: Change to (( %s-ant))  for testing.\n", (pDM_SWAT_Table->CurAntenna == MAIN_ANT)?"MAIN":"AUX"));
 		}
@@ -682,7 +682,7 @@ ODM_SwAntDivCheckBeforeLink(
 			//2 recover the antenna setting
 
 			if(pDM_Odm->DM_SWAT_Table.ANTB_ON == FALSE)
-				ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0xfff, (pDM_SWAT_Table->SWAS_NoLink_BK_Reg948));
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, 0xfff, (pDM_SWAT_Table->SWAS_NoLink_BK_Reg948));
 			
 			ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD,("bResult=(( %d )), Recover  Reg[948]= (( %x )) \n\n",pDM_Odm->DM_SWAT_Table.RSSI_AntDect_bResult, pDM_SWAT_Table->SWAS_NoLink_BK_Reg948 ));
 
@@ -714,7 +714,7 @@ return FALSE;
 
 
 u4Byte
-odm_GetPSDData(
+odm_rtl8188fu_GetPSDData(
 	IN 	PVOID			pDM_VOID,
 	IN u2Byte			point,
 	IN u1Byte 		initial_gain)
@@ -722,13 +722,13 @@ odm_GetPSDData(
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	u4Byte			psd_report;
 	
-	ODM_SetBBReg(pDM_Odm, 0x808, 0x3FF, point);
-	ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 1);  //Start PSD calculation, Reg808[22]=0->1
-	ODM_StallExecution(150);//Wait for HW PSD report
-	ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 0);//Stop PSD calculation,  Reg808[22]=1->0
-	psd_report = ODM_GetBBReg(pDM_Odm,0x8B4, bMaskDWord) & 0x0000FFFF;//Read PSD report, Reg8B4[15:0]
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, 0x3FF, point);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 1);  //Start PSD calculation, Reg808[22]=0->1
+	rtl8188fu_ODM_StallExecution(150);//Wait for HW PSD report
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 0);//Stop PSD calculation,  Reg808[22]=1->0
+	psd_report = rtl8188fu_ODM_GetBBReg(pDM_Odm,0x8B4, bMaskDWord) & 0x0000FFFF;//Read PSD report, Reg8B4[15:0]
 	
-	psd_report = (u4Byte) (odm_ConvertTo_dB(psd_report));//+(u4Byte)(initial_gain);
+	psd_report = (u4Byte) (rtl8188fu_odm_ConvertTo_dB(psd_report));//+(u4Byte)(initial_gain);
 	return psd_report;
 }
 
@@ -766,21 +766,21 @@ ODM_SingleDualAntennaDetection_PSD(
 	
 	//2 [ Backup Current RF/BB Settings ]	
 	
-	Channel_ori = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask);
-	Reg948 = ODM_GetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord);
-	Regb2c =  ODM_GetBBReg(pDM_Odm, rAGC_table_select, bMaskDWord);
-	Regc50 = ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskDWord);
-	Regc14 = ODM_GetBBReg(pDM_Odm, 0xc14, bMaskDWord);
-	Reg908 = ODM_GetBBReg(pDM_Odm, 0x908, bMaskDWord);
+	Channel_ori = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, bRFRegOffsetMask);
+	Reg948 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord);
+	Regb2c =  rtl8188fu_ODM_GetBBReg(pDM_Odm, rAGC_table_select, bMaskDWord);
+	Regc50 = rtl8188fu_ODM_GetBBReg(pDM_Odm, rOFDM0_XAAGCCore1, bMaskDWord);
+	Regc14 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xc14, bMaskDWord);
+	Reg908 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x908, bMaskDWord);
 
 	//2 [ Setting for doing PSD function (CH4)]
-	ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 0); //disable whole CCK block
-	ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0xFF); // Turn off TX  ->  Pause TX Queue
-	ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, 0x0); // [ Set IQK Matrix = 0 ] equivalent to [ Turn off CCA]
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 0); //disable whole CCK block
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0xFF); // Turn off TX  ->  Pause TX Queue
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, 0x0); // [ Set IQK Matrix = 0 ] equivalent to [ Turn off CCA]
 
 	// PHYTXON while loop
-	ODM_SetBBReg(pDM_Odm, 0x908, bMaskDWord, 0x803); 
-	while (ODM_GetBBReg(pDM_Odm, 0xdf4, BIT6)) 
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x908, bMaskDWord, 0x803); 
+	while (rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xdf4, BIT6)) 
 	{
 		i++;
 		if (i > 1000000) 
@@ -790,63 +790,63 @@ ODM_SingleDualAntennaDetection_PSD(
 		}
 	}
 	
-	ODM_SetBBReg(pDM_Odm, 0xc50, 0x7f, initial_gain);  
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, 0x7ff, 0x04);     // Set RF to CH4 & 40M
-	ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, 0xf00000, 0xf);	// 3 wire Disable    88c[23:20]=0xf
-	ODM_SetBBReg(pDM_Odm, rFPGA0_PSDFunction, BIT14|BIT15, 0x0);  //128 pt	//Set PSD 128 ptss
-	ODM_StallExecution(3000);	
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc50, 0x7f, initial_gain);  
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, 0x7ff, 0x04);     // Set RF to CH4 & 40M
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, 0xf00000, 0xf);	// 3 wire Disable    88c[23:20]=0xf
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_PSDFunction, BIT14|BIT15, 0x0);  //128 pt	//Set PSD 128 ptss
+	rtl8188fu_ODM_StallExecution(3000);	
 	
 	
 	//2 [ Doing PSD Function in (CH4)]
 	
         //Antenna A
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Switch to Main-ant   (CH4)\n"));
-	ODM_SetBBReg(pDM_Odm, 0x948, 0xfff, 0x200);
-	ODM_StallExecution(10);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x948, 0xfff, 0x200);
+	rtl8188fu_ODM_StallExecution(10);
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("dbg\n"));
 	for (i=0;i<test_num;i++)
 	{	
 		for (tone_idx=0;tone_idx<Tone_lenth_1;tone_idx++)
 		{
-			PSD_report_temp = odm_GetPSDData(pDM_Odm, Tone_idx_1[tone_idx], initial_gain);
+			PSD_report_temp = odm_rtl8188fu_GetPSDData(pDM_Odm, Tone_idx_1[tone_idx], initial_gain);
 			//if(  PSD_report_temp>PSD_report_Main[tone_idx]  )
 				PSD_report_Main[tone_idx]+=PSD_report_temp;
 		}
 	}
         //Antenna B
        ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Switch to Aux-ant   (CH4)\n"));
-       ODM_SetBBReg(pDM_Odm, 0x948, 0xfff, 0x280);
-       ODM_StallExecution(10);	
+       rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x948, 0xfff, 0x280);
+       rtl8188fu_ODM_StallExecution(10);	
 	for (i=0;i<test_num;i++)
 	{
 		for (tone_idx=0;tone_idx<Tone_lenth_1;tone_idx++)
 		{
-			PSD_report_temp = odm_GetPSDData(pDM_Odm, Tone_idx_1[tone_idx], initial_gain);
+			PSD_report_temp = odm_rtl8188fu_GetPSDData(pDM_Odm, Tone_idx_1[tone_idx], initial_gain);
 			//if(  PSD_report_temp>PSD_report_Aux[tone_idx]  )
 				PSD_report_Aux[tone_idx]+=PSD_report_temp;
 		}
 	}
 	//2 [ Doing PSD Function in (CH8)]
 
-	ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, 0xf00000, 0x0);	// 3 wire enable    88c[23:20]=0x0
-	ODM_StallExecution(3000);	
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, 0xf00000, 0x0);	// 3 wire enable    88c[23:20]=0x0
+	rtl8188fu_ODM_StallExecution(3000);	
 	
-	ODM_SetBBReg(pDM_Odm, 0xc50, 0x7f, initial_gain);  
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, 0x7ff, 0x04);     // Set RF to CH8 & 40M
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc50, 0x7f, initial_gain);  
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, ODM_CHANNEL, 0x7ff, 0x04);     // Set RF to CH8 & 40M
 	
-	ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, 0xf00000, 0xf);	// 3 wire Disable    88c[23:20]=0xf
-	ODM_StallExecution(3000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, 0xf00000, 0xf);	// 3 wire Disable    88c[23:20]=0xf
+	rtl8188fu_ODM_StallExecution(3000);
 
         //Antenna A
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Switch to Main-ant   (CH8)\n"));
-	ODM_SetBBReg(pDM_Odm, 0x948, 0xfff, 0x200);
-	ODM_StallExecution(10);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x948, 0xfff, 0x200);
+	rtl8188fu_ODM_StallExecution(10);
 
 	for (i=0;i<test_num;i++)
 	{
 		for (tone_idx=0;tone_idx<Tone_lenth_2;tone_idx++)
 		{
-			PSD_report_temp = odm_GetPSDData(pDM_Odm, Tone_idx_2[tone_idx], initial_gain);
+			PSD_report_temp = odm_rtl8188fu_GetPSDData(pDM_Odm, Tone_idx_2[tone_idx], initial_gain);
 			//if(  PSD_report_temp>PSD_report_Main[tone_idx]  )
 				PSD_report_Main[Tone_lenth_1+tone_idx]+=PSD_report_temp;
 		}
@@ -854,14 +854,14 @@ ODM_SingleDualAntennaDetection_PSD(
 
         //Antenna B
         ODM_RT_TRACE(pDM_Odm,ODM_COMP_ANT_DIV, ODM_DBG_LOUD, ("Switch to Aux-ant   (CH8)\n"));
-        ODM_SetBBReg(pDM_Odm, 0x948, 0xfff, 0x280);
-	ODM_StallExecution(10);	
+        rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x948, 0xfff, 0x280);
+	rtl8188fu_ODM_StallExecution(10);	
 
 	for (i=0;i<test_num;i++)
 	{
 		for (tone_idx=0;tone_idx<Tone_lenth_2;tone_idx++)
 		{
-			PSD_report_temp = odm_GetPSDData(pDM_Odm, Tone_idx_2[tone_idx], initial_gain);
+			PSD_report_temp = odm_rtl8188fu_GetPSDData(pDM_Odm, Tone_idx_2[tone_idx], initial_gain);
 			//if(  PSD_report_temp>PSD_report_Aux[tone_idx]  )
 				PSD_report_Aux[Tone_lenth_1+tone_idx]+=PSD_report_temp;
 		}
@@ -928,17 +928,17 @@ ODM_SingleDualAntennaDetection_PSD(
 
 	//2 [ Recover all parameters ]
 	
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask,Channel_ori);	
-	ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, 0xf00000, 0x0);	// 3 wire enable    88c[23:20]=0x0
-	ODM_SetBBReg(pDM_Odm, 0xc50, 0x7f, Regc50);  	
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_CHNLBW, bRFRegOffsetMask,Channel_ori);	
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_AnalogParameter4, 0xf00000, 0x0);	// 3 wire enable    88c[23:20]=0x0
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc50, 0x7f, Regc50);  	
 	
-	ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord, Reg948);
-	ODM_SetBBReg(pDM_Odm, rAGC_table_select, bMaskDWord, Regb2c);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rS0S1_PathSwitch, bMaskDWord, Reg948);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rAGC_table_select, bMaskDWord, Regb2c);
 
-	ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 1); //enable whole CCK block
-	ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0x0); //Turn on TX 	// Resume TX Queue
-	ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, Regc14); // [ Set IQK Matrix = 0 ] equivalent to [ Turn on CCA]
-	ODM_SetBBReg(pDM_Odm, 0x908, bMaskDWord, Reg908); 
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, rFPGA0_RFMOD, BIT24, 1); //enable whole CCK block
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXPAUSE, 0x0); //Turn on TX 	// Resume TX Queue
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xC14, bMaskDWord, Regc14); // [ Set IQK Matrix = 0 ] equivalent to [ Turn on CCA]
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x908, bMaskDWord, Reg908); 
 	
 	return;
 
@@ -946,7 +946,7 @@ ODM_SingleDualAntennaDetection_PSD(
 
 #endif
 void
-odm_SwAntDetectInit(
+rtl8188fu_odm_SwAntDetectInit(
 	IN		PVOID		pDM_VOID
 	)
 {

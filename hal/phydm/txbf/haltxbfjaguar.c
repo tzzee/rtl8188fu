@@ -19,7 +19,7 @@ HalTxbf8812A_setNDPArate(
 {
 	PDM_ODM_T	pDM_Odm = (PDM_ODM_T)pDM_VOID;
 	
-	ODM_Write1Byte(pDM_Odm, REG_NDPA_OPT_CTRL_8812A,  (Rate << 2 | BW));	
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_NDPA_OPT_CTRL_8812A,  (Rate << 2 | BW));	
 
 }
 
@@ -36,36 +36,36 @@ halTxbfJaguar_RfMode(
 
 	ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("[%s] set TxIQGen\n", __func__));
 
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WeLut_Jaguar, 0x80000, 0x1);	/*RF Mode table write enable*/
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_WeLut_Jaguar, 0x80000, 0x1);	/*RF Mode table write enable*/
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WeLut_Jaguar, 0x80000, 0x1);	/*RF Mode table write enable*/
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_WeLut_Jaguar, 0x80000, 0x1);	/*RF Mode table write enable*/
 
 	if (pBeamInfo->beamformee_su_cnt > 0) {
 		// Paath_A
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableAddr, 0x78000, 0x3);		/*Select RX mode*/
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData0, 0xfffff, 0x3F7FF);	/*Set Table data*/
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData1, 0xfffff, 0xE26BF);	/*Enable TXIQGEN in RX mode*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableAddr, 0x78000, 0x3);		/*Select RX mode*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData0, 0xfffff, 0x3F7FF);	/*Set Table data*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData1, 0xfffff, 0xE26BF);	/*Enable TXIQGEN in RX mode*/
 		// Path_B
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableAddr, 0x78000, 0x3);		/*Select RX mode*/
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableData0, 0xfffff, 0x3F7FF);	/*Set Table data*/
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableData1, 0xfffff, 0xE26BF);	/*Enable TXIQGEN in RX mode*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableAddr, 0x78000, 0x3);		/*Select RX mode*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableData0, 0xfffff, 0x3F7FF);	/*Set Table data*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableData1, 0xfffff, 0xE26BF);	/*Enable TXIQGEN in RX mode*/
 	} else {
 		// Paath_A
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableAddr, 0x78000, 0x3);		/*Select RX mode*/
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData0, 0xfffff, 0x3F7FF);	/*Set Table data*/
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData1, 0xfffff, 0xC26BF);	/*Disable TXIQGEN in RX mode*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableAddr, 0x78000, 0x3);		/*Select RX mode*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData0, 0xfffff, 0x3F7FF);	/*Set Table data*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_ModeTableData1, 0xfffff, 0xC26BF);	/*Disable TXIQGEN in RX mode*/
 		// Path_B
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableAddr, 0x78000, 0x3);		/*Select RX mode*/
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableData0, 0xfffff, 0x3F7FF);	/*Set Table data*/
-		ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableData1, 0xfffff, 0xC26BF);	/*Disable TXIQGEN in RX mode*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableAddr, 0x78000, 0x3);		/*Select RX mode*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableData0, 0xfffff, 0x3F7FF);	/*Set Table data*/
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_ModeTableData1, 0xfffff, 0xC26BF);	/*Disable TXIQGEN in RX mode*/
 	}
 
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WeLut_Jaguar, 0x80000, 0x0);	/*RF Mode table write disable*/
-	ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_WeLut_Jaguar, 0x80000, 0x0);	/*RF Mode table write disable*/
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_A, RF_WeLut_Jaguar, 0x80000, 0x0);	/*RF Mode table write disable*/
+	rtl8188fu_ODM_SetRFReg(pDM_Odm, ODM_RF_PATH_B, RF_WeLut_Jaguar, 0x80000, 0x0);	/*RF Mode table write disable*/
 
 	if (pBeamInfo->beamformee_su_cnt > 0)
-		ODM_SetBBReg(pDM_Odm, rTxPath_Jaguar, bMaskByte1, 0x33);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rTxPath_Jaguar, bMaskByte1, 0x33);
 	else
-		ODM_SetBBReg(pDM_Odm, rTxPath_Jaguar, bMaskByte1, 0x11);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, rTxPath_Jaguar, bMaskByte1, 0x11);
 }
 
 
@@ -93,16 +93,16 @@ halTxbfJaguar_DownloadNDPA(
 	else
 		Head_Page = 0xFE;
 
-	Adapter->HalFunc.GetHalDefVarHandler(Adapter, HAL_DEF_TX_PAGE_BOUNDARY, (pu1Byte)&TxPageBndy);
+	Adapter->HalFunc.rtl8188fu_GetHalDefVarHandler(Adapter, HAL_DEF_TX_PAGE_BOUNDARY, (pu1Byte)&TxPageBndy);
 
 	/*Set REG_CR bit 8. DMA beacon by SW.*/
-	u1bTmp = ODM_Read1Byte(pDM_Odm, REG_CR_8812A + 1);
-	ODM_Write1Byte(pDM_Odm,  REG_CR_8812A + 1, (u1bTmp | BIT0));
+	u1bTmp = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_CR_8812A + 1);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm,  REG_CR_8812A + 1, (u1bTmp | BIT0));
 
 
 	/*Set FWHW_TXQ_CTRL 0x422[6]=0 to tell Hw the packet is not a real beacon frame.*/
-	tmpReg422 = ODM_Read1Byte(pDM_Odm, REG_FWHW_TXQ_CTRL_8812A + 2);
-	ODM_Write1Byte(pDM_Odm, REG_FWHW_TXQ_CTRL_8812A + 2,  tmpReg422 & (~BIT6));
+	tmpReg422 = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_FWHW_TXQ_CTRL_8812A + 2);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_FWHW_TXQ_CTRL_8812A + 2,  tmpReg422 & (~BIT6));
 
 	if (tmpReg422 & BIT6) {
 		ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("SetBeamformDownloadNDPA_8812(): There is an Adapter is sending beacon.\n"));
@@ -110,12 +110,12 @@ halTxbfJaguar_DownloadNDPA(
 	}
 
 	/*TDECTRL[15:8] 0x209[7:0] = 0xF6	Beacon Head for TXDMA*/
-	ODM_Write1Byte(pDM_Odm, REG_TDECTRL_8812A + 1, Head_Page);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TDECTRL_8812A + 1, Head_Page);
 
 	do {
 		/*Clear beacon valid check bit.*/
-		BcnValidReg = ODM_Read1Byte(pDM_Odm, REG_TDECTRL_8812A + 2);
-		ODM_Write1Byte(pDM_Odm, REG_TDECTRL_8812A + 2, (BcnValidReg | BIT0));
+		BcnValidReg = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_TDECTRL_8812A + 2);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TDECTRL_8812A + 2, (BcnValidReg | BIT0));
 
 		/*download NDPA rsvd page.*/
 		if (pBeamEntry->BeamformEntryCap & BEAMFORMER_CAP_VHT_SU)
@@ -124,12 +124,12 @@ halTxbfJaguar_DownloadNDPA(
 			Beamforming_SendHTNDPAPacket(pDM_Odm, pBeamEntry->MacAddr, pBeamEntry->SoundBW, BEACON_QUEUE);
 
 		/*check rsvd page download OK.*/
-		BcnValidReg = ODM_Read1Byte(pDM_Odm, REG_TDECTRL_8812A + 2);
+		BcnValidReg = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_TDECTRL_8812A + 2);
 		count = 0;
 		while (!(BcnValidReg & BIT0) && count < 20) {
 			count++;
-			ODM_delay_ms(10);
-			BcnValidReg = ODM_Read1Byte(pDM_Odm, REG_TDECTRL_8812A + 2);
+			rtl8188fu_ODM_delay_ms(10);
+			BcnValidReg = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_TDECTRL_8812A + 2);
 		}
 		DLBcnCount++;
 	} while (!(BcnValidReg & BIT0) && DLBcnCount < 5);
@@ -138,7 +138,7 @@ halTxbfJaguar_DownloadNDPA(
 		ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("%s Download RSVD page failed!\n", __func__));
 
 	/*TDECTRL[15:8] 0x209[7:0] = 0xF6	Beacon Head for TXDMA*/
-	ODM_Write1Byte(pDM_Odm, REG_TDECTRL_8812A + 1, TxPageBndy);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TDECTRL_8812A + 1, TxPageBndy);
 
 	/*To make sure that if there exists an adapter which would like to send beacon.*/
 	/*If exists, the origianl value of 0x422[6] will be 1, we should check this to*/
@@ -146,12 +146,12 @@ halTxbfJaguar_DownloadNDPA(
 	/*the beacon cannot be sent by HW.*/
 	/*2010.06.23. Added by tynli.*/
 	if (bSendBeacon)
-		ODM_Write1Byte(pDM_Odm, REG_FWHW_TXQ_CTRL_8812A + 2, tmpReg422);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_FWHW_TXQ_CTRL_8812A + 2, tmpReg422);
 
 	/*Do not enable HW DMA BCN or it will cause Pcie interface hang by timing issue. 2011.11.24. by tynli.*/
 	/*Clear CR[8] or beacon packet will not be send to TxBuf anymore.*/
-	u1bTmp = ODM_Read1Byte(pDM_Odm, REG_CR_8812A + 1);
-	ODM_Write1Byte(pDM_Odm, REG_CR_8812A + 1, (u1bTmp & (~BIT0)));
+	u1bTmp = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_CR_8812A + 1);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_CR_8812A + 1, (u1bTmp & (~BIT0)));
 
 	pBeamEntry->BeamformEntryState = BEAMFORMING_ENTRY_STATE_PROGRESSED;
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
@@ -193,7 +193,7 @@ halTxbfJaguar_FwTxBFCmd(
 	u1TxBFParm[0] = PageNum0;
 	u1TxBFParm[1] = PageNum1;
 	u1TxBFParm[2] = (Period1 << 4) | Period0;
-	ODM_FillH2CCmd(pDM_Odm, PHYDM_H2C_TXBF, 3, u1TxBFParm);
+	rtl8188fu_ODM_FillH2CCmd(pDM_Odm, PHYDM_H2C_TXBF, 3, u1TxBFParm);
 
 	ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, 
 		("[%s] PageNum0 = %d Period0 = %d, PageNum1 = %d Period1 %d\n", __func__, PageNum0, Period0, PageNum1, Period1));
@@ -221,25 +221,25 @@ HalTxbfJaguar_Enter(
 	halTxbfJaguar_RfMode(pDM_Odm, pBeamformingInfo);
 
 	if (pDM_Odm->RFType == ODM_2T2R)
-		ODM_SetBBReg(pDM_Odm, ODM_REG_CSI_CONTENT_VALUE, bMaskDWord, 0x00000000);	/*Nc =2*/
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_CSI_CONTENT_VALUE, bMaskDWord, 0x00000000);	/*Nc =2*/
 	else
-		ODM_SetBBReg(pDM_Odm, ODM_REG_CSI_CONTENT_VALUE, bMaskDWord, 0x01081008);	/*Nc =1*/
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_CSI_CONTENT_VALUE, bMaskDWord, 0x01081008);	/*Nc =1*/
 
 	if ((pBeamformingInfo->beamformer_su_cnt > 0) && (BFerIdx < BEAMFORMER_ENTRY_NUM)) {
 		BeamformerEntry = pBeamformingInfo->BeamformerEntry[BFerIdx];
 
 		/*Sounding protocol control*/
-		ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A, 0xCB);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A, 0xCB);
 
 		/*MAC address/Partial AID of Beamformer*/
 		if (BFerIdx == 0) {
 			for (i = 0; i < 6 ; i++)
-				ODM_Write1Byte(pDM_Odm, (REG_BFMER0_INFO_8812A + i), BeamformerEntry.MacAddr[i]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, (REG_BFMER0_INFO_8812A + i), BeamformerEntry.MacAddr[i]);
 			/*CSI report use legacy ofdm so don't need to fill P_AID. */
 			/*PlatformEFIOWrite2Byte(Adapter, REG_BFMER0_INFO_8812A+6, BeamformEntry.P_AID); */
 		} else {
 			for (i = 0; i < 6 ; i++)
-				ODM_Write1Byte(pDM_Odm, (REG_BFMER1_INFO_8812A + i), BeamformerEntry.MacAddr[i]);
+				rtl8188fu_ODM_Write1Byte(pDM_Odm, (REG_BFMER1_INFO_8812A + i), BeamformerEntry.MacAddr[i]);
 			/*CSI report use legacy ofdm so don't need to fill P_AID.*/
 			/*PlatformEFIOWrite2Byte(Adapter, REG_BFMER1_INFO_8812A+6, BeamformEntry.P_AID);*/
 		}
@@ -257,40 +257,40 @@ HalTxbfJaguar_Enter(
 				CSI_Param = 0x03080308;
 		}
 
-		ODM_Write4Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8812A, CSI_Param);
-		ODM_Write4Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW40_8812A, CSI_Param);
-		ODM_Write4Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW80_8812A, CSI_Param);
+		rtl8188fu_ODM_Write4Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8812A, CSI_Param);
+		rtl8188fu_ODM_Write4Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW40_8812A, CSI_Param);
+		rtl8188fu_ODM_Write4Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW80_8812A, CSI_Param);
 
 		/*Timeout value for MAC to leave NDP_RX_standby_state (60 us, Test chip) (80 us,  MP chip)*/
-		ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A + 3, 0x50);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A + 3, 0x50);
 	}
 
 
 	if ((pBeamformingInfo->beamformee_su_cnt > 0) && (BFeeIdx < BEAMFORMEE_ENTRY_NUM)) {
 		BeamformeeEntry = pBeamformingInfo->BeamformeeEntry[BFeeIdx];
 
-		if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS))
+		if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS))
 			STAid = BeamformeeEntry.MacId;
 		else
 			STAid = BeamformeeEntry.P_AID;
 
 		/*P_AID of Beamformee & enable NDPA transmission & enable NDPA interrupt*/
 		if (BFeeIdx == 0) {
-			ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8812A, STAid);
-			ODM_Write1Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 3, ODM_Read1Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 3) | BIT4 | BIT6 | BIT7);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8812A, STAid);
+			rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 3, rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 3) | BIT4 | BIT6 | BIT7);
 		} else
-			ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 2, STAid | BIT12 | BIT14 | BIT15);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 2, STAid | BIT12 | BIT14 | BIT15);
 
 		/*CSI report parameters of Beamformee*/
 		if (BFeeIdx == 0) {
 			/*Get BIT24 & BIT25*/
-			u1Byte	tmp = ODM_Read1Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 3) & 0x3;
+			u1Byte	tmp = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 3) & 0x3;
 
-			ODM_Write1Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 3, tmp | 0x60);
-			ODM_Write2Byte(pDM_Odm, REG_BFMEE_SEL_8812A, STAid | BIT9);
+			rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 3, tmp | 0x60);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_BFMEE_SEL_8812A, STAid | BIT9);
 		} else {
 			/*Set BIT25*/
-			ODM_Write2Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 2, STAid | 0xE200);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 2, STAid | 0xE200);
 		}
 			phydm_Beamforming_Notify(pDM_Odm);
 	}
@@ -321,30 +321,30 @@ HalTxbfJaguar_Leave(
 	/*Clear Associated Bfmee Sel*/
 	
 	if (BeamformerEntry.BeamformEntryCap == BEAMFORMING_CAP_NONE) {
-		ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A, 0xC8);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A, 0xC8);
 		if (Idx == 0) {
-			ODM_Write4Byte(pDM_Odm, REG_BFMER0_INFO_8812A, 0);
-			ODM_Write2Byte(pDM_Odm, REG_BFMER0_INFO_8812A + 4, 0);
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8812A, 0);
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW40_8812A, 0);
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW80_8812A, 0);
+			rtl8188fu_ODM_Write4Byte(pDM_Odm, REG_BFMER0_INFO_8812A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_BFMER0_INFO_8812A + 4, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8812A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW40_8812A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW80_8812A, 0);
 		} else {
-			ODM_Write4Byte(pDM_Odm, REG_BFMER1_INFO_8812A, 0);
-			ODM_Write2Byte(pDM_Odm, REG_BFMER1_INFO_8812A + 4, 0);
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8812A, 0);
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW40_8812A, 0);
-			ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW80_8812A, 0);
+			rtl8188fu_ODM_Write4Byte(pDM_Odm, REG_BFMER1_INFO_8812A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_BFMER1_INFO_8812A + 4, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW20_8812A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW40_8812A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_CSI_RPT_PARAM_BW80_8812A, 0);
 		}
 	}
 
 	if (BeamformeeEntry.BeamformEntryCap == BEAMFORMING_CAP_NONE) {
 		halTxbfJaguar_RfMode(pDM_Odm, pBeamformingInfo);
 		if (Idx == 0) {
-			ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8812A, 0x0);
-			ODM_Write2Byte(pDM_Odm, REG_BFMEE_SEL_8812A, 0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8812A, 0x0);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_BFMEE_SEL_8812A, 0);
 		} else {
-			ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 2, ODM_Read2Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 2) & 0xF000);
-			ODM_Write2Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 2, ODM_Read2Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 2) & 0x60);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 2, rtl8188fu_ODM_Read2Byte(pDM_Odm, REG_TXBF_CTRL_8812A + 2) & 0xF000);
+			rtl8188fu_ODM_Write2Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 2, rtl8188fu_ODM_Read2Byte(pDM_Odm, REG_BFMEE_SEL_8812A + 2) & 0x60);
 		}
 	}
 	
@@ -363,7 +363,7 @@ HalTxbfJaguar_Status(
 	PRT_BEAMFORMING_INFO	pBeamInfo = &pDM_Odm->BeamformingInfo;
 	RT_BEAMFORMEE_ENTRY	BeamformEntry = pBeamInfo->BeamformeeEntry[Idx];
 
-	if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS))
+	if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS))
 		BeamCtrlVal = BeamformEntry.MacId;
 	else
 		BeamCtrlVal = BeamformEntry.P_AID;
@@ -387,7 +387,7 @@ HalTxbfJaguar_Status(
 
 	ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("[%s] BeamCtrlVal = 0x%x!\n", __func__, BeamCtrlVal));
 
-	ODM_Write2Byte(pDM_Odm, BeamCtrlReg, BeamCtrlVal);
+	rtl8188fu_ODM_Write2Byte(pDM_Odm, BeamCtrlReg, BeamCtrlVal);
 }
 
 
@@ -426,9 +426,9 @@ HalTxbfJaguar_Patch(
 		return;
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 	if (Operation == SCAN_OPT_BACKUP_BAND0)
-		ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A, 0xC8);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A, 0xC8);
 	else if (Operation == SCAN_OPT_RESTORE)
-		ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A, 0xCB);
+		rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SND_PTCL_CTRL_8812A, 0xCB);
 #endif
 }
 
@@ -450,7 +450,7 @@ HalTxbfJaguar_Clk_8812A(
 	}
 #if DEV_BUS_TYPE == RT_PCI_INTERFACE	
 	/*Stop PCIe TxDMA*/
-	ODM_Write1Byte(pDM_Odm, REG_PCIE_CTRL_REG_8812A + 1, 0xFE);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_PCIE_CTRL_REG_8812A + 1, 0xFE);
 #endif
 
 	/*Stop Usb TxDMA*/
@@ -463,21 +463,21 @@ HalTxbfJaguar_Clk_8812A(
 
 	/*Wait TXFF empty*/
 	for (Count = 0; Count < 100; Count++) {
-		u2btmp = ODM_Read2Byte(pDM_Odm, REG_TXPKT_EMPTY_8812A);
+		u2btmp = rtl8188fu_ODM_Read2Byte(pDM_Odm, REG_TXPKT_EMPTY_8812A);
 		u2btmp = u2btmp & 0xfff;
 		if (u2btmp != 0xfff) {
-			ODM_delay_ms(10);
+			rtl8188fu_ODM_delay_ms(10);
 			continue;
 		} else
 			break;
 	}
 
 	/*TX pause*/
-	ODM_Write1Byte(pDM_Odm, REG_TXPAUSE_8812A, 0xFF);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXPAUSE_8812A, 0xFF);
 
 	/*Wait TX State Machine OK*/
 	for (Count = 0; Count < 100; Count++) {
-		if (ODM_Read4Byte(pDM_Odm, REG_SCH_TXCMD_8812A) != 0)
+		if (rtl8188fu_ODM_Read4Byte(pDM_Odm, REG_SCH_TXCMD_8812A) != 0)
 			continue;
 		else
 			break;
@@ -485,36 +485,36 @@ HalTxbfJaguar_Clk_8812A(
 
 
 	/*Stop RX DMA path*/
-	u1btmp = ODM_Read1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A);
-	ODM_Write1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A, u1btmp | BIT2);
+	u1btmp = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A, u1btmp | BIT2);
 
 	for (Count = 0; Count < 100; Count++) {
-		u1btmp = ODM_Read1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A);
+		u1btmp = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A);
 		if (u1btmp & BIT1)
 			break;
 		else
-			ODM_delay_ms(10);
+			rtl8188fu_ODM_delay_ms(10);
 	}
 
 	/*Disable clock*/
-	ODM_Write1Byte(pDM_Odm, REG_SYS_CLKR_8812A + 1, 0xf0);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SYS_CLKR_8812A + 1, 0xf0);
 	/*Disable 320M*/
-	ODM_Write1Byte(pDM_Odm, REG_AFE_PLL_CTRL_8812A + 3, 0x8);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_AFE_PLL_CTRL_8812A + 3, 0x8);
 	/*Enable 320M*/
-	ODM_Write1Byte(pDM_Odm, REG_AFE_PLL_CTRL_8812A + 3, 0xa);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_AFE_PLL_CTRL_8812A + 3, 0xa);
 	/*Enable clock*/
-	ODM_Write1Byte(pDM_Odm, REG_SYS_CLKR_8812A + 1, 0xfc);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_SYS_CLKR_8812A + 1, 0xfc);
 
 
 	/*Release Tx pause*/
-	ODM_Write1Byte(pDM_Odm, REG_TXPAUSE_8812A, 0);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_TXPAUSE_8812A, 0);
 
 	/*Enable RX DMA path*/
-	u1btmp = ODM_Read1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A);
-	ODM_Write1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A, u1btmp & (~BIT2));
+	u1btmp = rtl8188fu_ODM_Read1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_RXDMA_CONTROL_8812A, u1btmp & (~BIT2));
 #if DEV_BUS_TYPE == RT_PCI_INTERFACE
 	/*Enable PCIe TxDMA*/
-	ODM_Write1Byte(pDM_Odm, REG_PCIE_CTRL_REG_8812A + 1, 0);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, REG_PCIE_CTRL_REG_8812A + 1, 0);
 #endif
 	/*Start Usb TxDMA*/
 	RT_ENABLE_FUNC(Adapter, DF_TX_BIT);

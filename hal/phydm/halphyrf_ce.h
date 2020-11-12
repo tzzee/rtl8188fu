@@ -65,19 +65,19 @@ typedef struct _TXPWRTRACK_CFG {
 	FuncSwing8814only	GetDeltaSwingTable8814only;
 } TXPWRTRACK_CFG, *PTXPWRTRACK_CFG;
 
-void ConfigureTxpowerTrack(
+void rtl8188fu_ConfigureTxpowerTrack(
 	IN		PVOID					pDM_VOID,
 	OUT	PTXPWRTRACK_CFG	pConfig
 	);
 
 
 VOID
-ODM_ClearTxPowerTrackingState(
+rtl8188fu_ODM_ClearTxPowerTrackingState(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID
-ODM_TXPowerTrackingCallback_ThermalMeter(
+rtl8188fu_ODM_TXPowerTrackingCallback_ThermalMeter(
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 	IN		PVOID					pDM_VOID
 #else
@@ -91,16 +91,16 @@ ODM_TXPowerTrackingCallback_ThermalMeter(
 
 
 VOID
-ODM_ResetIQKResult(
+rtl8188fu_ODM_ResetIQKResult(
 	IN		PVOID					pDM_VOID
 );
 u1Byte 
-ODM_GetRightChnlPlaceforIQK(
+rtl8188fu_ODM_GetRightChnlPlaceforIQK(
     IN u1Byte chnl
 );
 
-void phydm_rf_init(	IN		PVOID					pDM_VOID);
-void phydm_rf_watchdog(	IN		PVOID					pDM_VOID);
+void rtl8188fu_phydm_rf_init(	IN		PVOID					pDM_VOID);
+void rtl8188fu_phydm_rf_watchdog(	IN		PVOID					pDM_VOID);
 								
 #endif	// #ifndef __HAL_PHY_RF_H__
 

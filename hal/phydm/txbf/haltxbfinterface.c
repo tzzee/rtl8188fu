@@ -332,16 +332,16 @@ ConstructVHTNDPAPacket(
 	SET_80211_HDR_DURATION(pNDPAFrame, Duration);
 
 	Sequence = *(pDM_Odm->pSoundingSeq) << 2;
-	ODM_MoveMemory(pDM_Odm, pNDPAFrame+16, &Sequence, 1);
+	rtl8188fu_ODM_MoveMemory(pDM_Odm, pNDPAFrame+16, &Sequence, 1);
 
-	if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS) || phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP) == FALSE)
+	if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS) || rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP) == FALSE)
 		AID = 0;
 
 	STAInfo.AID = AID;
 	STAInfo.FeedbackType = 0;
 	STAInfo.NcIndex = 0;
 	
-	ODM_MoveMemory(pDM_Odm, pNDPAFrame+17, (pu1Byte)&STAInfo, 2);
+	rtl8188fu_ODM_MoveMemory(pDM_Odm, pNDPAFrame+17, (pu1Byte)&STAInfo, 2);
 
 	*pLength = 19;
 }
@@ -399,7 +399,7 @@ SendFWVHTNDPAPacket(
 		
 		pTcb->BWOfPacket = BW;
 
-		if (phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS) || phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP))
+		if (rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_IBSS) || rtl8188fu_phydm_actingDetermine(pDM_Odm, PhyDM_ACTING_AS_AP))
 			pTcb->G_ID = 63;
 
 		pTcb->P_AID = pBeamformEntry->P_AID;
@@ -804,7 +804,7 @@ ConstructVHTMUNDPAPacket(
 	SET_80211_HDR_DURATION(pNDPAFrame, Duration);
 
 	Sequence = *(pDM_Odm->pSoundingSeq) << 2;
-	ODM_MoveMemory(pDM_Odm, pNDPAFrame + 16, &Sequence, 1);
+	rtl8188fu_ODM_MoveMemory(pDM_Odm, pNDPAFrame + 16, &Sequence, 1);
 
 	*pLength = 17;
 
@@ -818,7 +818,7 @@ ConstructVHTMUNDPAPacket(
 
 			ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("[%s] Get BeamformeeEntry idx(%d), AID =%d\n", __func__, idx, pEntry->AID));
 			
-			ODM_MoveMemory(pDM_Odm, pNDPAFrame+(*pLength), (pu1Byte)&STAInfo, 2);
+			rtl8188fu_ODM_MoveMemory(pDM_Odm, pNDPAFrame+(*pLength), (pu1Byte)&STAInfo, 2);
 			*pLength += 2;
 		}
 	}
@@ -930,7 +930,7 @@ SendFWHTNDPAPacket(
 	PRT_BEAMFORMING_INFO	pBeamInfo = &(pDM_Odm->BeamformingInfo);
 	PRT_BEAMFORMEE_ENTRY	pBeamformEntry = phydm_Beamforming_GetBFeeEntryByAddr(pDM_Odm, RA, &Idx);
 
-	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	pmgntframe = rtl8188furtl8188fu__alloc_mgtxmitframe(pxmitpriv);
 	
 	if (pmgntframe == NULL) {
 		DBG_871X("%s, alloc mgnt frame fail\n", __func__);
@@ -939,7 +939,7 @@ SendFWHTNDPAPacket(
 
 	//update attribute
 	pattrib = &pmgntframe->attrib;
-	update_mgntframe_attrib(Adapter, pattrib);
+	rtl8188fu_update_mgntframe_attrib(Adapter, pattrib);
 
 	pattrib->qsel = QSLT_BEACON;
 	NDPTxRate = Beamforming_GetHTNDPTxRate(pDM_Odm, pBeamformEntry->CompSteeringNumofBFer);
@@ -949,7 +949,7 @@ SendFWHTNDPAPacket(
 	pattrib->order = 1;
 	pattrib->subtype = WIFI_ACTION_NOACK;
 
-	_rtw_memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
+	rtl8188fu__rtw_memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
 
 	pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 
@@ -961,9 +961,9 @@ SendFWHTNDPAPacket(
 	SetOrderBit(pframe);
 	SetFrameSubType(pframe, WIFI_ACTION_NOACK);
 
-	_rtw_memcpy(pwlanhdr->addr1, RA, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, pBeamformEntry->MyMacAddr, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr1, RA, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr2, pBeamformEntry->MyMacAddr, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr3, rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	if( pmlmeext->cur_wireless_mode == WIRELESS_11B)
 		aSifsTime = 10;
@@ -983,13 +983,13 @@ SendFWHTNDPAPacket(
 	SET_HT_CTRL_CSI_STEERING(pframe+24, 3);
 	SET_HT_CTRL_NDP_ANNOUNCEMENT(pframe+24, 1);
 
-	_rtw_memcpy(pframe+28, ActionHdr, 4);
+	rtl8188fu__rtw_memcpy(pframe+28, ActionHdr, 4);
 
 	pattrib->pktlen = 32;
 
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
-	dump_mgntframe(Adapter, pmgntframe);
+	rtl8188fu_dump_mgntframe(Adapter, pmgntframe);
 
 	return _TRUE;
 }
@@ -1020,7 +1020,7 @@ SendSWHTNDPAPacket(
 
 	NDPTxRate = Beamforming_GetHTNDPTxRate(pDM_Odm, pBeamformEntry->CompSteeringNumofBFer);
 	
-	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	pmgntframe = rtl8188furtl8188fu__alloc_mgtxmitframe(pxmitpriv);
 	
 	if (pmgntframe == NULL) {
 		DBG_871X("%s, alloc mgnt frame fail\n", __func__);
@@ -1029,14 +1029,14 @@ SendSWHTNDPAPacket(
 
 	/*update attribute*/
 	pattrib = &pmgntframe->attrib;
-	update_mgntframe_attrib(Adapter, pattrib);
+	rtl8188fu_update_mgntframe_attrib(Adapter, pattrib);
 	pattrib->qsel = QSLT_MGNT;
 	pattrib->rate = NDPTxRate;
 	pattrib->bwmode = BW;
 	pattrib->order = 1;
 	pattrib->subtype = WIFI_ACTION_NOACK;
 
-	_rtw_memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
+	rtl8188fu__rtw_memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
 
 	pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 
@@ -1048,9 +1048,9 @@ SendSWHTNDPAPacket(
 	SetOrderBit(pframe);
 	SetFrameSubType(pframe, WIFI_ACTION_NOACK);
 
-	_rtw_memcpy(pwlanhdr->addr1, RA, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, pBeamformEntry->MyMacAddr, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr3, get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr1, RA, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr2, pBeamformEntry->MyMacAddr, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr3, rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), ETH_ALEN);
 
 	if (pmlmeext->cur_wireless_mode == WIRELESS_11B)
 		aSifsTime = 10;
@@ -1070,13 +1070,13 @@ SendSWHTNDPAPacket(
 	SET_HT_CTRL_CSI_STEERING(pframe+24, 3);
 	SET_HT_CTRL_NDP_ANNOUNCEMENT(pframe+24, 1);
 
-	_rtw_memcpy(pframe+28, ActionHdr, 4);
+	rtl8188fu__rtw_memcpy(pframe+28, ActionHdr, 4);
 
 	pattrib->pktlen = 32;
 
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
-	dump_mgntframe(Adapter, pmgntframe);
+	rtl8188fu_dump_mgntframe(Adapter, pmgntframe);
 
 	return _TRUE;
 }
@@ -1107,7 +1107,7 @@ SendFWVHTNDPAPacket(
 	PRT_BEAMFORMEE_ENTRY	pBeamformEntry = phydm_Beamforming_GetBFeeEntryByAddr(pDM_Odm, RA, &Idx);
 	RT_NDPA_STA_INFO	sta_info;
 
-	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	pmgntframe = rtl8188furtl8188fu__alloc_mgtxmitframe(pxmitpriv);
 	
 	if (pmgntframe == NULL) {
 		DBG_871X("%s, alloc mgnt frame fail\n", __func__);
@@ -1116,8 +1116,8 @@ SendFWVHTNDPAPacket(
 
 	//update attribute
 	pattrib = &pmgntframe->attrib;
-	_rtw_memcpy(pattrib->ra, RA, ETH_ALEN);
-	update_mgntframe_attrib(Adapter, pattrib);
+	rtl8188fu__rtw_memcpy(pattrib->ra, RA, ETH_ALEN);
+	rtl8188fu_update_mgntframe_attrib(Adapter, pattrib);
 
 	pattrib->qsel = QSLT_BEACON;
 	NDPTxRate = Beamforming_GetVHTNDPTxRate(pDM_Odm, pBeamformEntry->CompSteeringNumofBFer);
@@ -1126,7 +1126,7 @@ SendFWVHTNDPAPacket(
 	pattrib->bwmode = BW;
 	pattrib->subtype = WIFI_NDPA;
 
-	_rtw_memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
+	rtl8188fu__rtw_memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
 
 	pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 
@@ -1137,8 +1137,8 @@ SendFWVHTNDPAPacket(
 
 	SetFrameSubType(pframe, WIFI_NDPA);
 
-	_rtw_memcpy(pwlanhdr->addr1, RA, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, pBeamformEntry->MyMacAddr, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr1, RA, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr2, pBeamformEntry->MyMacAddr, ETH_ALEN);
 
 	if (IsSupported5G(pmlmeext->cur_wireless_mode) || IsSupportedHT(pmlmeext->cur_wireless_mode))
 		aSifsTime = 16;
@@ -1162,7 +1162,7 @@ SendFWVHTNDPAPacket(
 	else
 		pBeamInfo->SoundingSequence++;
 
-	_rtw_memcpy(pframe+16, &sequence,1);
+	rtl8188fu__rtw_memcpy(pframe+16, &sequence,1);
 
 	if (((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE) || ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE))
 		AID = 0;		
@@ -1171,13 +1171,13 @@ SendFWVHTNDPAPacket(
 	sta_info.FeedbackType = 0;
 	sta_info.NcIndex= 0;
 	
-	_rtw_memcpy(pframe+17, (u8 *)&sta_info, 2);
+	rtl8188fu__rtw_memcpy(pframe+17, (u8 *)&sta_info, 2);
 
 	pattrib->pktlen = 19;
 
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
-	dump_mgntframe(Adapter, pmgntframe);
+	rtl8188fu_dump_mgntframe(Adapter, pmgntframe);
 
 	return _TRUE;
 }
@@ -1212,7 +1212,7 @@ SendSWVHTNDPAPacket(
 	NDPTxRate = Beamforming_GetVHTNDPTxRate(pDM_Odm, pBeamformEntry->CompSteeringNumofBFer);
 	ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("[%s] NDPTxRate =%d\n", __func__, NDPTxRate));
 
-	pmgntframe = alloc_mgtxmitframe(pxmitpriv);
+	pmgntframe = rtl8188furtl8188fu__alloc_mgtxmitframe(pxmitpriv);
 	
 	if (pmgntframe == NULL) {
 		DBG_871X("%s, alloc mgnt frame fail\n", __func__);
@@ -1221,14 +1221,14 @@ SendSWVHTNDPAPacket(
 	
 	/*update attribute*/
 	pattrib = &pmgntframe->attrib;
-	_rtw_memcpy(pattrib->ra, RA, ETH_ALEN);
-	update_mgntframe_attrib(Adapter, pattrib);
+	rtl8188fu__rtw_memcpy(pattrib->ra, RA, ETH_ALEN);
+	rtl8188fu_update_mgntframe_attrib(Adapter, pattrib);
 	pattrib->qsel = QSLT_MGNT;
 	pattrib->rate = NDPTxRate;
 	pattrib->bwmode = BW;
 	pattrib->subtype = WIFI_NDPA;
 
-	_rtw_memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
+	rtl8188fu__rtw_memset(pmgntframe->buf_addr, 0, WLANHDR_OFFSET + TXDESC_OFFSET);
 
 	pframe = (u8 *)(pmgntframe->buf_addr) + TXDESC_OFFSET;
 
@@ -1239,8 +1239,8 @@ SendSWVHTNDPAPacket(
 
 	SetFrameSubType(pframe, WIFI_NDPA);
 
-	_rtw_memcpy(pwlanhdr->addr1, RA, ETH_ALEN);
-	_rtw_memcpy(pwlanhdr->addr2, pBeamformEntry->MyMacAddr, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr1, RA, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pwlanhdr->addr2, pBeamformEntry->MyMacAddr, ETH_ALEN);
 
 	if (IsSupported5G(pmlmeext->cur_wireless_mode) || IsSupportedHT(pmlmeext->cur_wireless_mode))
 		aSifsTime = 16;
@@ -1264,7 +1264,7 @@ SendSWVHTNDPAPacket(
 	else
 		pBeamInfo->SoundingSequence++;
 
-	_rtw_memcpy(pframe+16, &sequence, 1);
+	rtl8188fu__rtw_memcpy(pframe+16, &sequence, 1);
 	if (((pmlmeinfo->state&0x03) == WIFI_FW_ADHOC_STATE) || ((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE))
 		AID = 0;		
 
@@ -1272,13 +1272,13 @@ SendSWVHTNDPAPacket(
 	ndpa_sta_info.FeedbackType = 0;
 	ndpa_sta_info.NcIndex = 0;
 	
-	_rtw_memcpy(pframe+17, (u8 *)&ndpa_sta_info, 2);
+	rtl8188fu__rtw_memcpy(pframe+17, (u8 *)&ndpa_sta_info, 2);
 
 	pattrib->pktlen = 19;
 
 	pattrib->last_txcmdsz = pattrib->pktlen;
 
-	dump_mgntframe(Adapter, pmgntframe);
+	rtl8188fu_dump_mgntframe(Adapter, pmgntframe);
 	ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("[%s] [%d]\n", __func__, __LINE__));
 	
 	return _TRUE;

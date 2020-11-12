@@ -23,12 +23,12 @@
 
 #define DBG_DUMP_OS_QUEUE_CTL 0
 
-uint rtw_remainder_len(struct pkt_file *pfile)
+uint rtl8188fu_rtw_remainder_len(struct pkt_file *pfile)
 {
 	return (pfile->buf_len - ((SIZE_PTR)(pfile->cur_addr) - (SIZE_PTR)(pfile->buf_start)));
 }
 
-void _rtw_open_pktfile (_pkt *pktptr, struct pkt_file *pfile)
+void rtl8188fu__rtw_open_pktfile (_pkt *pktptr, struct pkt_file *pfile)
 {
 _func_enter_;
 
@@ -41,13 +41,13 @@ _func_enter_;
 _func_exit_;
 }
 
-uint _rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen)
+uint rtl8188fu__rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen)
 {	
 	uint	len = 0;
 	
 _func_enter_;
 
-       len =  rtw_remainder_len(pfile);
+       len =  rtl8188fu_rtw_remainder_len(pfile);
       	len = (rlen > len)? len: rlen;
 
        if(rmem)
@@ -61,7 +61,7 @@ _func_exit_;
 	return len;	
 }
 
-sint rtw_endofpktfile(struct pkt_file *pfile)
+sint rtl8188fu_rtw_endofpktfile(struct pkt_file *pfile)
 {
 _func_enter_;
 
@@ -75,7 +75,7 @@ _func_exit_;
 	return _FALSE;
 }
 
-void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib)
+void rtl8188fu_rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib)
 {
 
 #ifdef CONFIG_TCP_CSUM_OFFLOAD_TX
@@ -114,7 +114,7 @@ void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib)
 	
 }
 
-int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, u8 flag)
+int rtl8188fu_rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, u8 flag)
 {
 	if (alloc_sz > 0) {
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_TX
@@ -156,7 +156,7 @@ int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u3
 	return _SUCCESS;	
 }
 
-void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, u8 flag)
+void rtl8188fu_rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32 free_sz, u8 flag)
 {
 	if (flag) {
 #ifdef CONFIG_USB_HCI
@@ -188,7 +188,7 @@ void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf,u32
 	}
 }
 
-void dump_os_queue(void *sel, _adapter *padapter)
+void rtl8188fu_dump_os_queue(void *sel, _adapter *padapter)
 {
 	struct net_device *ndev = padapter->pnetdev;
 
@@ -243,7 +243,7 @@ inline static bool rtw_os_need_stop_queue(_adapter *padapter, u16 qidx)
 	return _FALSE;
 }
 
-void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
+void rtl8188fu_rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
 	u16	qidx;
@@ -265,15 +265,15 @@ void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt)
 	rtw_skb_free(pkt);
 }
 
-void rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe)
+void rtl8188fu_rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe)
 {
 	if(pxframe->pkt)
-		rtw_os_pkt_complete(padapter, pxframe->pkt);
+		rtl8188fu_rtw_os_pkt_complete(padapter, pxframe->pkt);
 
 	pxframe->pkt = NULL;
 }
 
-void rtw_os_xmit_schedule(_adapter *padapter)
+void rtl8188fu_rtw_os_xmit_schedule(_adapter *padapter)
 {
 	_adapter *pri_adapter = padapter;
 
@@ -286,8 +286,8 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 		pri_adapter = padapter->pbuddy_adapter;
 #endif
 
-	if (_rtw_queue_empty(&padapter->xmitpriv.pending_xmitbuf_queue) == _FALSE)
-		_rtw_up_sema(&pri_adapter->xmitpriv.xmit_sema);
+	if (rtl8188fu__rtw_queue_empty(&padapter->xmitpriv.pending_xmitbuf_queue) == _FALSE)
+		rtl8188fu__rtw_up_sema(&pri_adapter->xmitpriv.xmit_sema);
 
 
 #else
@@ -301,7 +301,7 @@ void rtw_os_xmit_schedule(_adapter *padapter)
 
 	_enter_critical_bh(&pxmitpriv->lock, &irqL);
 
-	if(rtw_txframes_pending(padapter))	
+	if(rtl8188fu_rtw_txframes_pending(padapter))	
 	{
 		tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
 	}
@@ -335,7 +335,7 @@ static bool rtw_check_xmit_resource(_adapter *padapter, _pkt *pkt)
 	return busy;
 }
 
-void rtw_os_wake_queue_at_free_stainfo(_adapter *padapter, int *qcnt_freed)
+void rtl8188fu_rtw_os_wake_queue_at_free_stainfo(_adapter *padapter, int *qcnt_freed)
 {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,35))
 	int i;
@@ -362,7 +362,7 @@ void rtw_os_wake_queue_at_free_stainfo(_adapter *padapter, int *qcnt_freed)
 }
 
 #ifdef CONFIG_TX_MCAST2UNI
-int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
+int rtl8188fu_rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 {
 	struct	sta_priv *pstapriv = &padapter->stapriv;
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
@@ -373,7 +373,7 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 	u8 chk_alive_num = 0;
 	char chk_alive_list[NUM_STA];
 	u8 bc_addr[6]={0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-	u8 null_addr[6]={0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	u8 rtl8188fu_null_addr[6]={0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 	int i;
 	s32	res;
@@ -385,12 +385,12 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 	plist = get_next(phead);
 	
 	//free sta asoc_queue
-	while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+	while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE) {
 		int stainfo_offset;
 		psta = LIST_CONTAINOR(plist, struct sta_info, asoc_list);
 		plist = get_next(plist);
 
-		stainfo_offset = rtw_stainfo_offset(pstapriv, psta);
+		stainfo_offset = rtl8188fu_rtw_stainfo_offset(pstapriv, psta);
 		if (stainfo_offset_valid(stainfo_offset)) {
 			chk_alive_list[chk_alive_num++] = stainfo_offset;
 		}
@@ -398,7 +398,7 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 	_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
 
 	for (i = 0; i < chk_alive_num; i++) {
-		psta = rtw_get_stainfo_by_offset(pstapriv, chk_alive_list[i]);
+		psta = rtl8188fu_rtw_get_stainfo_by_offset(pstapriv, chk_alive_list[i]);
 		if(!(psta->state &_FW_LINKED))
 		{
 			DBG_COUNTER(padapter->tx_logs.os_tx_m2u_ignore_fw_linked);
@@ -406,9 +406,9 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 		}
 		
 		/* avoid come from STA1 and send back STA1 */ 
-		if (_rtw_memcmp(psta->hwaddr, &skb->data[6], 6) == _TRUE
-			|| _rtw_memcmp(psta->hwaddr, null_addr, 6) == _TRUE
-			|| _rtw_memcmp(psta->hwaddr, bc_addr, 6) == _TRUE
+		if (rtl8188fu__rtw_memcmp(psta->hwaddr, &skb->data[6], 6) == _TRUE
+			|| rtl8188fu__rtw_memcmp(psta->hwaddr, rtl8188fu_null_addr, 6) == _TRUE
+			|| rtl8188fu__rtw_memcmp(psta->hwaddr, bc_addr, 6) == _TRUE
 		)
 		{
 			DBG_COUNTER(padapter->tx_logs.os_tx_m2u_ignore_self);
@@ -420,11 +420,11 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 		newskb = rtw_skb_copy(skb);
 
 		if (newskb) {
-			_rtw_memcpy(newskb->data, psta->hwaddr, 6);
-			res = rtw_xmit(padapter, &newskb);
+			rtl8188fu__rtw_memcpy(newskb->data, psta->hwaddr, 6);
+			res = rtl8188fu_rtw_xmit(padapter, &newskb);
 			if (res < 0) {
 				DBG_COUNTER(padapter->tx_logs.os_tx_m2u_entry_err_xmit);
-				DBG_871X("%s()-%d: rtw_xmit() return error! res=%d\n", __FUNCTION__, __LINE__, res);
+				DBG_871X("%s()-%d: rtl8188fu_rtw_xmit() return error! res=%d\n", __FUNCTION__, __LINE__, res);
 				pxmitpriv->tx_drop++;
 				rtw_skb_free(newskb);
 			}
@@ -443,13 +443,13 @@ int rtw_mlcst2unicst(_adapter *padapter, struct sk_buff *skb)
 #endif	// CONFIG_TX_MCAST2UNI
 
 
-int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
+int _rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
 	struct xmit_priv *pxmitpriv = &padapter->xmitpriv;
 #ifdef CONFIG_TX_MCAST2UNI
 	struct mlme_priv	*pmlmepriv = &padapter->mlmepriv;
-	extern int rtw_mc2u_disable;
+	extern int rtl8188fu_rtw_mc2u_disable;
 #endif	// CONFIG_TX_MCAST2UNI	
 	s32 res = 0;
 #if (LINUX_VERSION_CODE>=KERNEL_VERSION(2,6,35))
@@ -461,9 +461,9 @@ _func_enter_;
 	DBG_COUNTER(padapter->tx_logs.os_tx);
 	RT_TRACE(_module_rtl871x_mlme_c_, _drv_info_, ("+xmit_enry\n"));
 
-	if (rtw_if_up(padapter) == _FALSE) {
+	if (rtl8188fu_rtw_if_up(padapter) == _FALSE) {
 		DBG_COUNTER(padapter->tx_logs.os_tx_err_up);
-		RT_TRACE(_module_xmit_osdep_c_, _drv_err_, ("rtw_xmit_entry: rtw_if_up fail\n"));
+		RT_TRACE(_module_xmit_osdep_c_, _drv_err_, ("rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry: rtl8188fu_rtw_if_up fail\n"));
 		#ifdef DBG_TX_DROP_FRAME
 		DBG_871X("DBG_TX_DROP_FRAME %s if_up fail\n", __FUNCTION__);
 		#endif
@@ -473,7 +473,7 @@ _func_enter_;
 	rtw_check_xmit_resource(padapter, pkt);
 
 #ifdef CONFIG_TX_MCAST2UNI
-	if ( !rtw_mc2u_disable
+	if ( !rtl8188fu_rtw_mc2u_disable
 		&& check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE
 		&& ( IP_MCAST_MAC(pkt->data)
 			|| ICMPV6_MCAST_MAC(pkt->data)
@@ -485,7 +485,7 @@ _func_enter_;
 		)
 	{
 		if ( pxmitpriv->free_xmitframe_cnt > (NR_XMITFRAME/4) ) {
-			res = rtw_mlcst2unicst(padapter, pkt);
+			res = rtl8188fu_rtw_mlcst2unicst(padapter, pkt);
 			if (res == _TRUE) {
 				goto exit;
 			}
@@ -497,21 +497,21 @@ _func_enter_;
 	}	
 #endif	// CONFIG_TX_MCAST2UNI	
 
-	res = rtw_xmit(padapter, &pkt);
+	res = rtl8188fu_rtw_xmit(padapter, &pkt);
 	if (res < 0) {
 		#ifdef DBG_TX_DROP_FRAME
-		DBG_871X("DBG_TX_DROP_FRAME %s rtw_xmit fail\n", __FUNCTION__);
+		DBG_871X("DBG_TX_DROP_FRAME %s rtl8188fu_rtw_xmit fail\n", __FUNCTION__);
 		#endif
 		goto drop_packet;
 	}
 
-	RT_TRACE(_module_xmit_osdep_c_, _drv_info_, ("rtw_xmit_entry: tx_pkts=%d\n", (u32)pxmitpriv->tx_pkts));
+	RT_TRACE(_module_xmit_osdep_c_, _drv_info_, ("rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry: tx_pkts=%d\n", (u32)pxmitpriv->tx_pkts));
 	goto exit;
 
 drop_packet:
 	pxmitpriv->tx_drop++;
-	rtw_os_pkt_complete(padapter, pkt);
-	RT_TRACE(_module_xmit_osdep_c_, _drv_notice_, ("rtw_xmit_entry: drop, tx_drop=%d\n", (u32)pxmitpriv->tx_drop));
+	rtl8188fu_rtw_os_pkt_complete(padapter, pkt);
+	RT_TRACE(_module_xmit_osdep_c_, _drv_notice_, ("rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry: drop, tx_drop=%d\n", (u32)pxmitpriv->tx_drop));
 
 exit:
 
@@ -520,7 +520,7 @@ _func_exit_;
 	return 0;
 }
 
-int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
+int rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 {
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(pnetdev);
 	struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
@@ -528,10 +528,10 @@ int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev)
 
 	if (pkt) {
 		if (check_fwstate(pmlmepriv, WIFI_MONITOR_STATE) == _TRUE) {
-			rtw_monitor_xmit_entry((struct sk_buff *)pkt, pnetdev);
+			rtl8188fu_rtw_monitor_xmit_entry((struct sk_buff *)pkt, pnetdev);
 		} else {
 			rtw_mstat_update(MSTAT_TYPE_SKB, MSTAT_ALLOC_SUCCESS, pkt->truesize);
-			ret = _rtw_xmit_entry(pkt, pnetdev);
+			ret = _rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry(pkt, pnetdev);
 		}
 
 	}

@@ -39,7 +39,7 @@ struct rtw_wdev_invit_info {
 #define rtw_wdev_invit_info_init(invit_info) \
 	do { \
 		(invit_info)->state = 0xff; \
-		_rtw_memset((invit_info)->peer_mac, 0, ETH_ALEN); \
+		rtl8188fu__rtw_memset((invit_info)->peer_mac, 0, ETH_ALEN); \
 		(invit_info)->active = 0xff; \
 		(invit_info)->token = 0; \
 		(invit_info)->flags = 0x00; \
@@ -65,7 +65,7 @@ struct rtw_wdev_nego_info {
 #define rtw_wdev_nego_info_init(nego_info) \
 	do { \
 		(nego_info)->state = 0xff; \
-		_rtw_memset((nego_info)->peer_mac, 0, ETH_ALEN); \
+		rtl8188fu__rtw_memset((nego_info)->peer_mac, 0, ETH_ALEN); \
 		(nego_info)->active = 0xff; \
 		(nego_info)->token = 0; \
 		(nego_info)->status = 0xff; \
@@ -87,7 +87,7 @@ struct rtw_wdev_priv
 	_lock scan_req_lock;
 
 	struct net_device *pmon_ndev;//for monitor interface
-	char ifname_mon[IFNAMSIZ + 1]; //interface name for monitor interface
+	char rtl8188fu_ifname_mon[IFNAMSIZ + 1]; //interface name for monitor interface
 
 	u8 p2p_enabled;
 
@@ -125,51 +125,51 @@ struct rtw_wdev_priv
 #define SET_CFG80211_REPORT_MGMT(w, t, v) (w->report_mgmt |= (v?BIT(t >> 4):0))
 #define GET_CFG80211_REPORT_MGMT(w, t) ((w->report_mgmt & BIT(t >> 4)) > 0)
 
-struct wiphy *rtw_wiphy_alloc(_adapter *padapter, struct device *dev);
-void rtw_wiphy_free(struct wiphy *wiphy);
-int rtw_wiphy_register(struct wiphy *wiphy);
-void rtw_wiphy_unregister(struct wiphy *wiphy);
+struct wiphy *rtl8188fu_rtw_wiphy_alloc(_adapter *padapter, struct device *dev);
+void rtl8188fu_rtw_wiphy_free(struct wiphy *wiphy);
+int rtl8188fu_rtw_wiphy_register(struct wiphy *wiphy);
+void rtl8188fu_rtw_wiphy_unregister(struct wiphy *wiphy);
 
-int rtw_wdev_alloc(_adapter *padapter, struct wiphy *wiphy);
-void rtw_wdev_free(struct wireless_dev *wdev);
-void rtw_wdev_unregister(struct wireless_dev *wdev);
+int rtl8188fu_rtw_wdev_alloc(_adapter *padapter, struct wiphy *wiphy);
+void rtl8188fu_rtw_wdev_free(struct wireless_dev *wdev);
+void rtl8188fu_rtw_wdev_unregister(struct wireless_dev *wdev);
 
-int rtw_cfg80211_ndev_res_alloc(_adapter *adapter);
-void rtw_cfg80211_ndev_res_free(_adapter *adapter);
-int rtw_cfg80211_ndev_res_register(_adapter *adapter);
-void rtw_cfg80211_ndev_res_unregister(_adapter *adapter);
+int rtl8188fu_rtw_cfg80211_ndev_res_alloc(_adapter *adapter);
+void rtl8188fu_rtw_cfg80211_ndev_res_free(_adapter *adapter);
+int rtl8188fu_rtw_cfg80211_ndev_res_register(_adapter *adapter);
+void rtl8188fu_rtw_cfg80211_ndev_res_unregister(_adapter *adapter);
 
-int rtw_cfg80211_dev_res_alloc(struct dvobj_priv *dvobj);
-void rtw_cfg80211_dev_res_free(struct dvobj_priv *dvobj);
-int rtw_cfg80211_dev_res_register(struct dvobj_priv *dvobj);
-void rtw_cfg80211_dev_res_unregister(struct dvobj_priv *dvobj);
+int rtl8188fu_rtw_cfg80211_dev_res_alloc(struct dvobj_priv *dvobj);
+void rtl8188fu_rtw_cfg80211_dev_res_free(struct dvobj_priv *dvobj);
+int rtl8188fu_rtw_cfg80211_dev_res_register(struct dvobj_priv *dvobj);
+void rtl8188fu_rtw_cfg80211_dev_res_unregister(struct dvobj_priv *dvobj);
 
-void rtw_cfg80211_init_wiphy(_adapter *padapter);
+void rtl8188fu_rtw_cfg80211_init_wiphy(_adapter *padapter);
 
-void rtw_cfg80211_unlink_bss(_adapter *padapter, struct wlan_network *pnetwork);
-void rtw_cfg80211_surveydone_event_callback(_adapter *padapter);
-struct cfg80211_bss *rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_network *pnetwork);
-int rtw_cfg80211_check_bss(_adapter *padapter);
-void rtw_cfg80211_ibss_indicate_connect(_adapter *padapter);
-void rtw_cfg80211_indicate_connect(_adapter *padapter);
-void rtw_cfg80211_indicate_disconnect(_adapter *padapter, u16 reason, u8 locally_generated);
-void rtw_cfg80211_indicate_scan_done(_adapter *adapter, bool aborted);
-u32 rtw_cfg80211_wait_scan_req_empty(_adapter *adapter, u32 timeout_ms);
+void rtl8188fu_rtw_cfg80211_unlink_bss(_adapter *padapter, struct wlan_network *pnetwork);
+void rtl8188fu_rtw_cfg80211_surveydone_event_callback(_adapter *padapter);
+struct cfg80211_bss *rtl8188fu_rtw_cfg80211_inform_bss(_adapter *padapter, struct wlan_network *pnetwork);
+int rtl8188fu_rtw_cfg80211_check_bss(_adapter *padapter);
+void rtl8188fu_rtw_cfg80211_ibss_indicate_connect(_adapter *padapter);
+void rtl8188fu_rtw_cfg80211_indicate_connect(_adapter *padapter);
+void rtl8188fu_rtw_cfg80211_indicate_disconnect(_adapter *padapter, u16 reason, u8 locally_generated);
+void rtl8188fu_rtw_cfg80211_indicate_scan_done(_adapter *adapter, bool aborted);
+u32 rtl8188fu_rtw_cfg80211_wait_scan_req_empty(_adapter *adapter, u32 timeout_ms);
 
 #ifdef CONFIG_AP_MODE
-void rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
-void rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, unsigned short reason);
+void rtl8188fu_rtw_cfg80211_indicate_sta_assoc(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
+void rtl8188fu_rtw_cfg80211_indicate_sta_disassoc(_adapter *padapter, unsigned char *da, unsigned short reason);
 #endif //CONFIG_AP_MODE
 
-void rtw_cfg80211_issue_p2p_provision_request(_adapter *padapter, const u8 *buf, size_t len);
-void rtw_cfg80211_rx_p2p_action_public(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
-void rtw_cfg80211_rx_action_p2p(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
-void rtw_cfg80211_rx_action(_adapter *adapter, u8 *frame, uint frame_len, const char*msg);
-void rtw_cfg80211_rx_probe_request(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
+void rtw_cfg80211_rtl8188fu_issue_p2p_provision_request(_adapter *padapter, const u8 *buf, size_t len);
+void rtl8188fu_rtw_cfg80211_rx_p2p_action_public(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
+void rtl8188fu_rtw_cfg80211_rx_action_p2p(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
+void rtl8188fu_rtw_cfg80211_rx_action(_adapter *adapter, u8 *frame, uint frame_len, const char*msg);
+void rtl8188fu_rtw_cfg80211_rx_probe_request(_adapter *padapter, u8 *pmgmt_frame, uint frame_len);
 
-int rtw_cfg80211_set_mgnt_wpsp2pie(struct net_device *net, char *buf, int len, int type);
+int rtl8188fu_rtw_cfg80211_set_mgnt_wpsp2pie(struct net_device *net, char *buf, int len, int type);
 
-bool rtw_cfg80211_pwr_mgmt(_adapter *adapter);
+bool rtl8188fu_rtw_cfg80211_pwr_mgmt(_adapter *adapter);
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(3,4,0))  && !defined(COMPAT_KERNEL_RELEASE)
 #define rtw_cfg80211_rx_mgmt(adapter, freq, sig_dbm, buf, len, gfp) cfg80211_rx_mgmt((adapter)->pnetdev, freq, buf, len, gfp)

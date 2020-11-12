@@ -23,11 +23,11 @@
 
 int	rtl8188fu_init_recv_priv(_adapter *padapter)
 {
-	return usb_init_recv_priv(padapter, USB_INTR_CONTENT_LENGTH);
+	return rtl8188fu_usb_init_recv_priv(padapter, USB_INTR_CONTENT_LENGTH);
 }
 
 void rtl8188fu_free_recv_priv(_adapter *padapter)
 {
-	usb_free_recv_priv(padapter, USB_INTR_CONTENT_LENGTH);
+	rtl8188fu_usb_free_recv_priv(padapter, USB_INTR_CONTENT_LENGTH);
 }
 

@@ -21,7 +21,7 @@
 
 #include <drv_types.h>
 
-static const char *_security_type_str[] = {
+static const char *_rtl8188fu_security_type_str[] = {
 	"N/A",
 	"WEP40",
 	"TKIP",
@@ -33,14 +33,14 @@ static const char *_security_type_str[] = {
 	"BIP",
 };
 
-const char *security_type_str(u8 value)
+const char *rtl8188fu_security_type_str(u8 value)
 {
 #ifdef CONFIG_IEEE80211W
 	if (value <= _BIP_)
 #else
 	if (value <= _WEP_WPA_MIXED_)
 #endif
-		return _security_type_str[value];
+		return _rtl8188fu_security_type_str[value];
 	return NULL;
 }
 
@@ -235,7 +235,7 @@ _func_exit_;
 /*
 	Need to consider the fragment  situation
 */
-void rtw_wep_encrypt(_adapter *padapter, u8 *pxmitframe)
+void rtl8188fu_rtw_wep_encrypt(_adapter *padapter, u8 *pxmitframe)
 {																	// exclude ICV
 	
 	unsigned char	crc[4];
@@ -278,8 +278,8 @@ _func_enter_;
 		for(curfragnum=0;curfragnum<pattrib->nr_frags;curfragnum++)
 		{
 			iv=pframe+pattrib->hdrlen;
-			_rtw_memcpy(&wepkey[0], iv, 3);
-			_rtw_memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[psecuritypriv->dot11PrivacyKeyIndex].skey[0],keylength);
+			rtl8188fu__rtw_memcpy(&wepkey[0], iv, 3);
+			rtl8188fu__rtw_memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[psecuritypriv->dot11PrivacyKeyIndex].skey[0],keylength);
 			payload=pframe+pattrib->iv_len+pattrib->hdrlen;
 
 			if((curfragnum+1)==pattrib->nr_frags)
@@ -316,7 +316,7 @@ _func_exit_;
 
 }
 
-void rtw_wep_decrypt(_adapter  *padapter, u8 *precvframe)
+void rtl8188fu_rtw_wep_decrypt(_adapter  *padapter, u8 *precvframe)
 {								
 	// exclude ICV
 	u8	crc[4];
@@ -339,9 +339,9 @@ _func_enter_;
 		//keyindex=(iv[3]&0x3);
 		keyindex = prxattrib->key_index;
 		keylength=psecuritypriv->dot11DefKeylen[keyindex];
-		_rtw_memcpy(&wepkey[0], iv, 3);
-		//_rtw_memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[psecuritypriv->dot11PrivacyKeyIndex].skey[0],keylength);
-		_rtw_memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[keyindex].skey[0],keylength);
+		rtl8188fu__rtw_memcpy(&wepkey[0], iv, 3);
+		//rtl8188fu__rtw_memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[psecuritypriv->dot11PrivacyKeyIndex].skey[0],keylength);
+		rtl8188fu__rtw_memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[keyindex].skey[0],keylength);
 		length= ((union recv_frame *)precvframe)->u.hdr.len-prxattrib->hdrlen-prxattrib->iv_len;
 
 		payload=pframe+prxattrib->iv_len+prxattrib->hdrlen;
@@ -355,7 +355,7 @@ _func_enter_;
 		
 		if(crc[3]!=payload[length-1] || crc[2]!=payload[length-2] || crc[1]!=payload[length-3] || crc[0]!=payload[length-4])
 		{
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtw_wep_decrypt:icv error crc[3](%x)!=payload[length-1](%x) || crc[2](%x)!=payload[length-2](%x) || crc[1](%x)!=payload[length-3](%x) || crc[0](%x)!=payload[length-4](%x)\n",
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtl8188fu_rtw_wep_decrypt:icv error crc[3](%x)!=payload[length-1](%x) || crc[2](%x)!=payload[length-2](%x) || crc[1](%x)!=payload[length-3](%x) || crc[0](%x)!=payload[length-4](%x)\n",
 						crc[3],payload[length-1],crc[2],payload[length-2],crc[1],payload[length-3],crc[0],payload[length-4]));
 		}
 
@@ -408,7 +408,7 @@ _func_enter_;
 _func_exit_;	
 }
 
-void rtw_secmicsetkey(struct mic_data *pmicdata, u8 * key )
+void rtl8188fu_rtw_secmicsetkey(struct mic_data *pmicdata, u8 * key )
 {
 	// Set the key
 _func_enter_;		
@@ -419,7 +419,7 @@ _func_enter_;
 _func_exit_;		
 }
 
-void rtw_secmicappendbyte(struct mic_data *pmicdata, u8 b )
+void rtl8188fu_rtw_secmicappendbyte(struct mic_data *pmicdata, u8 b )
 {
 _func_enter_;	
 	// Append the byte to our word-sized buffer
@@ -444,31 +444,31 @@ _func_enter_;
 _func_exit_;			
 }
 
-void rtw_secmicappend(struct mic_data *pmicdata, u8 * src, u32 nbytes )
+void rtl8188fu_rtw_secmicappend(struct mic_data *pmicdata, u8 * src, u32 nbytes )
 {
 _func_enter_;	
 	// This is simple
 	while( nbytes > 0 )
 	{
-		rtw_secmicappendbyte(pmicdata, *src++ );
+		rtl8188fu_rtw_secmicappendbyte(pmicdata, *src++ );
 		nbytes--;
 	}
 _func_exit_;			
 }
 
-void rtw_secgetmic(struct mic_data *pmicdata, u8 * dst )
+void rtl8188fu_rtw_secgetmic(struct mic_data *pmicdata, u8 * dst )
 {
 _func_enter_;	
 	// Append the minimum padding
-	rtw_secmicappendbyte(pmicdata, 0x5a );
-	rtw_secmicappendbyte(pmicdata, 0 );
-	rtw_secmicappendbyte(pmicdata, 0 );
-	rtw_secmicappendbyte(pmicdata, 0 );
-	rtw_secmicappendbyte(pmicdata, 0 );
+	rtl8188fu_rtw_secmicappendbyte(pmicdata, 0x5a );
+	rtl8188fu_rtw_secmicappendbyte(pmicdata, 0 );
+	rtl8188fu_rtw_secmicappendbyte(pmicdata, 0 );
+	rtl8188fu_rtw_secmicappendbyte(pmicdata, 0 );
+	rtl8188fu_rtw_secmicappendbyte(pmicdata, 0 );
 	// and then zeroes until the length is a multiple of 4
 	while( pmicdata->nBytesInM != 0 )
 	{
-		rtw_secmicappendbyte(pmicdata, 0 );
+		rtl8188fu_rtw_secmicappendbyte(pmicdata, 0 );
 	}
 	// The appendByte function has already computed the result.
 	secmicputuint32( dst, pmicdata->L );
@@ -479,37 +479,37 @@ _func_exit_;
 }
 
 
-void rtw_seccalctkipmic(u8 * key,u8 *header,u8 *data,u32 data_len,u8 *mic_code, u8 pri)
+void rtl8188fu_rtw_seccalctkipmic(u8 * key,u8 *header,u8 *data,u32 data_len,u8 *mic_code, u8 pri)
 {
 
 	struct mic_data	micdata;
 	u8 priority[4]={0x0,0x0,0x0,0x0};
 _func_enter_;		
-	rtw_secmicsetkey(&micdata, key);
+	rtl8188fu_rtw_secmicsetkey(&micdata, key);
 	priority[0]=pri;
 	
 	/* Michael MIC pseudo header: DA, SA, 3 x 0, Priority */
 	if(header[1]&1){   //ToDS==1
-			rtw_secmicappend(&micdata, &header[16], 6);  //DA
+			rtl8188fu_rtw_secmicappend(&micdata, &header[16], 6);  //DA
 		if(header[1]&2)  //From Ds==1
-			rtw_secmicappend(&micdata, &header[24], 6);
+			rtl8188fu_rtw_secmicappend(&micdata, &header[24], 6);
 		else
-			rtw_secmicappend(&micdata, &header[10], 6);		
+			rtl8188fu_rtw_secmicappend(&micdata, &header[10], 6);		
 	}	
 	else{	//ToDS==0
-		rtw_secmicappend(&micdata, &header[4], 6);   //DA
+		rtl8188fu_rtw_secmicappend(&micdata, &header[4], 6);   //DA
 		if(header[1]&2)  //From Ds==1
-			rtw_secmicappend(&micdata, &header[16], 6);
+			rtl8188fu_rtw_secmicappend(&micdata, &header[16], 6);
 		else
-			rtw_secmicappend(&micdata, &header[10], 6);
+			rtl8188fu_rtw_secmicappend(&micdata, &header[10], 6);
 
 	}
-	rtw_secmicappend(&micdata, &priority[0], 4);
+	rtl8188fu_rtw_secmicappend(&micdata, &priority[0], 4);
 
 	
-	rtw_secmicappend(&micdata, data, data_len);
+	rtl8188fu_rtw_secmicappend(&micdata, data, data_len);
 
-	rtw_secgetmic(&micdata,mic_code);
+	rtl8188fu_rtw_secgetmic(&micdata,mic_code);
 _func_exit_;	
 }
 
@@ -725,7 +725,7 @@ _func_exit_;
 
 
 //The hlen isn't include the IV
-u32	rtw_tkip_encrypt(_adapter *padapter, u8 *pxmitframe)
+u32	rtl8188fu_rtw_tkip_encrypt(_adapter *padapter, u8 *pxmitframe)
 {																	// exclude ICV
 	u16	pnl;
 	u32	pnh;
@@ -771,8 +771,8 @@ _func_enter_;
 		}
 		else
 		{
-			DBG_871X("%s, call rtw_get_stainfo()\n", __func__);
-			stainfo=rtw_get_stainfo(&padapter->stapriv ,&pattrib->ra[0] );
+			DBG_871X("%s, call rtl8188fu_rtw_get_stainfo()\n", __func__);
+			stainfo=rtl8188fu_rtw_get_stainfo(&padapter->stapriv ,&pattrib->ra[0] );
 		}	
 */	
 		//if (stainfo!=NULL)
@@ -784,7 +784,7 @@ _func_enter_;
 				return _FAIL;
 			}
 */			
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtw_tkip_encrypt: stainfo!=NULL!!!\n"));
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtl8188fu_rtw_tkip_encrypt: stainfo!=NULL!!!\n"));
 
 			if(IS_MCAST(pattrib->ra))
 			{
@@ -838,7 +838,7 @@ _func_enter_;
 		}
 /*
 		else{
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtw_tkip_encrypt: stainfo==NULL!!!\n"));
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtl8188fu_rtw_tkip_encrypt: stainfo==NULL!!!\n"));
                         DBG_871X("%s, psta==NUL\n", __func__);
 			res=_FAIL;
 		}
@@ -852,7 +852,7 @@ _func_exit_;
 
 
 //The hlen isn't include the IV
-u32 rtw_tkip_decrypt(_adapter *padapter, u8 *precvframe)
+u32 rtl8188fu_rtw_tkip_decrypt(_adapter *padapter, u8 *precvframe)
 {																	// exclude ICV
 	u16 pnl;
 	u32 pnh;
@@ -878,7 +878,7 @@ _func_enter_;
 	//4 start to decrypt recvframe
 	if(prxattrib->encrypt==_TKIP_){
 
-		stainfo=rtw_get_stainfo(&padapter->stapriv ,&prxattrib->ta[0] );
+		stainfo=rtl8188fu_rtw_get_stainfo(&padapter->stapriv ,&prxattrib->ta[0] );
 		if (stainfo!=NULL){
 
 			if(IS_MCAST(prxattrib->ra))
@@ -892,19 +892,19 @@ _func_enter_;
 					res=_FAIL;
 
 					if (start == 0)
-						start = rtw_get_current_time();
+						start = rtl8188fu_rtw_get_current_time();
 
 					if (is_broadcast_mac_addr(prxattrib->ra))
 						no_gkey_bc_cnt++;
 					else
 						no_gkey_mc_cnt++;
 
-					if (rtw_get_passing_time_ms(start) > 1000) {
+					if (rtl8188fu_rtw_get_passing_time_ms(start) > 1000) {
 						if (no_gkey_bc_cnt || no_gkey_mc_cnt) {
 							DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" no_gkey_bc_cnt:%u, no_gkey_mc_cnt:%u\n",
 								FUNC_ADPT_ARG(padapter), no_gkey_bc_cnt, no_gkey_mc_cnt);
 						}
-						start = rtw_get_current_time();
+						start = rtl8188fu_rtw_get_current_time();
 						no_gkey_bc_cnt = 0;
 						no_gkey_mc_cnt = 0;
 					}
@@ -919,7 +919,7 @@ _func_enter_;
 				no_gkey_bc_cnt = 0;
 				no_gkey_mc_cnt = 0;
 
-				//DBG_871X("rx bc/mc packets, to perform sw rtw_tkip_decrypt\n");
+				//DBG_871X("rx bc/mc packets, to perform sw rtl8188fu_rtw_tkip_decrypt\n");
 				//prwskey = psecuritypriv->dot118021XGrpKey[psecuritypriv->dot118021XGrpKeyid].skey;
 				prwskey = psecuritypriv->dot118021XGrpKey[prxattrib->key_index].skey;
 				prwskeylen=16;
@@ -951,7 +951,7 @@ _func_enter_;
 
 			if(crc[3]!=payload[length-1] || crc[2]!=payload[length-2] || crc[1]!=payload[length-3] || crc[0]!=payload[length-4])
 			{
-			    RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtw_wep_decrypt:icv error crc[3](%x)!=payload[length-1](%x) || crc[2](%x)!=payload[length-2](%x) || crc[1](%x)!=payload[length-3](%x) || crc[0](%x)!=payload[length-4](%x)\n",
+			    RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtl8188fu_rtw_wep_decrypt:icv error crc[3](%x)!=payload[length-1](%x) || crc[2](%x)!=payload[length-2](%x) || crc[1](%x)!=payload[length-3](%x) || crc[0](%x)!=payload[length-4](%x)\n",
 						crc[3],payload[length-1],crc[2],payload[length-2],crc[1],payload[length-3],crc[0],payload[length-4]));
 				res=_FAIL;
 			}
@@ -959,7 +959,7 @@ _func_enter_;
 			TKIP_SW_DEC_CNT_INC(psecuritypriv, prxattrib->ra);
 		}
 		else{
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtw_tkip_decrypt: stainfo==NULL!!!\n"));
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtl8188fu_rtw_tkip_decrypt: stainfo==NULL!!!\n"));
 			res=_FAIL;
 		}
 						
@@ -1487,13 +1487,13 @@ _func_enter_;
 	frsubtype=frsubtype>>4;
 
 
-	_rtw_memset((void *)mic_iv, 0, 16);
-	_rtw_memset((void *)mic_header1, 0, 16);
-	_rtw_memset((void *)mic_header2, 0, 16);
-	_rtw_memset((void *)ctr_preload, 0, 16);
-	_rtw_memset((void *)chain_buffer, 0, 16);
-	_rtw_memset((void *)aes_out, 0, 16);
-	_rtw_memset((void *)padded_buffer, 0, 16);
+	rtl8188fu__rtw_memset((void *)mic_iv, 0, 16);
+	rtl8188fu__rtw_memset((void *)mic_header1, 0, 16);
+	rtl8188fu__rtw_memset((void *)mic_header2, 0, 16);
+	rtl8188fu__rtw_memset((void *)ctr_preload, 0, 16);
+	rtl8188fu__rtw_memset((void *)chain_buffer, 0, 16);
+	rtl8188fu__rtw_memset((void *)aes_out, 0, 16);
+	rtl8188fu__rtw_memset((void *)padded_buffer, 0, 16);
 
 	if ((hdrlen == WLAN_HDR_A3_LEN )||(hdrlen ==  WLAN_HDR_A3_QOS_LEN))
 		a4_exists = 0;
@@ -1662,7 +1662,7 @@ _func_exit_;
 
 
 
-u32	rtw_aes_encrypt(_adapter *padapter, u8 *pxmitframe)
+u32	rtl8188fu_rtw_aes_encrypt(_adapter *padapter, u8 *pxmitframe)
 {	// exclude ICV
 
 
@@ -1708,8 +1708,8 @@ _func_enter_;
 		}
 		else
 		{
-			DBG_871X("%s, call rtw_get_stainfo()\n", __func__);
-			stainfo=rtw_get_stainfo(&padapter->stapriv ,&pattrib->ra[0] );
+			DBG_871X("%s, call rtl8188fu_rtw_get_stainfo()\n", __func__);
+			stainfo=rtl8188fu_rtw_get_stainfo(&padapter->stapriv ,&pattrib->ra[0] );
 		}
 */		
 		//if (stainfo!=NULL)
@@ -1721,7 +1721,7 @@ _func_enter_;
 				return _FAIL;
 			}
 */
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtw_aes_encrypt: stainfo!=NULL!!!\n"));
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtl8188fu_rtw_aes_encrypt: stainfo!=NULL!!!\n"));
 
 			if(IS_MCAST(pattrib->ra))
 			{
@@ -1737,7 +1737,7 @@ _func_enter_;
 			{
 				/* Swencryption */
 				struct	sta_info		*ptdls_sta;
-				ptdls_sta=rtw_get_stainfo(&padapter->stapriv ,&pattrib->dst[0] );
+				ptdls_sta=rtl8188fu_rtw_get_stainfo(&padapter->stapriv ,&pattrib->dst[0] );
 				if((ptdls_sta != NULL) && (ptdls_sta->tdls_sta_state & TDLS_LINKED_STATE) )
 				{
 					DBG_871X("[%s] for tdls link\n", __FUNCTION__);
@@ -1769,7 +1769,7 @@ _func_enter_;
 		}
 /*
 		else{
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtw_aes_encrypt: stainfo==NULL!!!\n"));
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtl8188fu_rtw_aes_encrypt: stainfo==NULL!!!\n"));
 			DBG_871X("%s, psta==NUL\n", __func__);
 			res=_FAIL;
 		}
@@ -1809,13 +1809,13 @@ _func_enter_;
 	frsubtype=frsubtype>>4;
 
 
-	_rtw_memset((void *)mic_iv, 0, 16);
-	_rtw_memset((void *)mic_header1, 0, 16);
-	_rtw_memset((void *)mic_header2, 0, 16);
-	_rtw_memset((void *)ctr_preload, 0, 16);
-	_rtw_memset((void *)chain_buffer, 0, 16);
-	_rtw_memset((void *)aes_out, 0, 16);
-	_rtw_memset((void *)padded_buffer, 0, 16);
+	rtl8188fu__rtw_memset((void *)mic_iv, 0, 16);
+	rtl8188fu__rtw_memset((void *)mic_header1, 0, 16);
+	rtl8188fu__rtw_memset((void *)mic_header2, 0, 16);
+	rtl8188fu__rtw_memset((void *)ctr_preload, 0, 16);
+	rtl8188fu__rtw_memset((void *)chain_buffer, 0, 16);
+	rtl8188fu__rtw_memset((void *)aes_out, 0, 16);
+	rtl8188fu__rtw_memset((void *)padded_buffer, 0, 16);
 
 	//start to decrypt the payload
 
@@ -1908,7 +1908,7 @@ _func_enter_;
 
 	//start to calculate the mic	
 	if((hdrlen +plen+8) <= MAX_MSG_SIZE)
-		_rtw_memcpy((void *)message, pframe, (hdrlen +plen+8)); //8 is for ext iv len
+		rtl8188fu__rtw_memcpy((void *)message, pframe, (hdrlen +plen+8)); //8 is for ext iv len
 
 
 	pn_vector[0]=pframe[hdrlen];
@@ -2056,7 +2056,7 @@ _func_exit_;
 	return res;
 }
 
-u32	rtw_aes_decrypt(_adapter *padapter, u8 *precvframe)
+u32	rtl8188fu_rtw_aes_decrypt(_adapter *padapter, u8 *precvframe)
 {	// exclude ICV
 
 
@@ -2080,9 +2080,9 @@ _func_enter_;
 	//4 start to encrypt each fragment
 	if((prxattrib->encrypt==_AES_)){
 
-		stainfo=rtw_get_stainfo(&padapter->stapriv ,&prxattrib->ta[0] );
+		stainfo=rtl8188fu_rtw_get_stainfo(&padapter->stapriv ,&prxattrib->ta[0] );
 		if (stainfo!=NULL){
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtw_aes_decrypt: stainfo!=NULL!!!\n"));
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtl8188fu_rtw_aes_decrypt: stainfo!=NULL!!!\n"));
 
 			if(IS_MCAST(prxattrib->ra))
 			{
@@ -2090,26 +2090,26 @@ _func_enter_;
 				static u32 no_gkey_bc_cnt = 0;
 				static u32 no_gkey_mc_cnt = 0;
 
-				//DBG_871X("rx bc/mc packets, to perform sw rtw_aes_decrypt\n");
+				//DBG_871X("rx bc/mc packets, to perform sw rtl8188fu_rtw_aes_decrypt\n");
 				//prwskey = psecuritypriv->dot118021XGrpKey[psecuritypriv->dot118021XGrpKeyid].skey;
 				if(psecuritypriv->binstallGrpkey==_FALSE)
 				{
 					res=_FAIL;
 
 					if (start == 0)
-						start = rtw_get_current_time();
+						start = rtl8188fu_rtw_get_current_time();
 
 					if (is_broadcast_mac_addr(prxattrib->ra))
 						no_gkey_bc_cnt++;
 					else
 						no_gkey_mc_cnt++;
 
-					if (rtw_get_passing_time_ms(start) > 1000) {
+					if (rtl8188fu_rtw_get_passing_time_ms(start) > 1000) {
 						if (no_gkey_bc_cnt || no_gkey_mc_cnt) {
 							DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" no_gkey_bc_cnt:%u, no_gkey_mc_cnt:%u\n",
 								FUNC_ADPT_ARG(padapter), no_gkey_bc_cnt, no_gkey_mc_cnt);
 						}
-						start = rtw_get_current_time();
+						start = rtl8188fu_rtw_get_current_time();
 						no_gkey_bc_cnt = 0;
 						no_gkey_mc_cnt = 0;
 					}
@@ -2168,7 +2168,7 @@ _func_enter_;
 			AES_SW_DEC_CNT_INC(psecuritypriv, prxattrib->ra);
 		}
 		else{
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtw_aes_decrypt: stainfo==NULL!!!\n"));
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("rtl8188fu_rtw_aes_decrypt: stainfo==NULL!!!\n"));
 			res=_FAIL;
 		}
 						
@@ -2202,16 +2202,16 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 	//mapping to wlan header
 	pwlanhdr = (struct rtw_ieee80211_hdr *)pframe;
 	//save the frame body + MME
-	_rtw_memcpy(BIP_AAD+BIP_AAD_SIZE, pframe+WLAN_HDR_A3_LEN, pattrib->pkt_len-WLAN_HDR_A3_LEN);
+	rtl8188fu__rtw_memcpy(BIP_AAD+BIP_AAD_SIZE, pframe+WLAN_HDR_A3_LEN, pattrib->pkt_len-WLAN_HDR_A3_LEN);
 	//find MME IE pointer
-	p = rtw_get_ie(BIP_AAD+BIP_AAD_SIZE, _MME_IE_, &len, pattrib->pkt_len-WLAN_HDR_A3_LEN);
+	p = rtl8188fu_rtw_get_ie(BIP_AAD+BIP_AAD_SIZE, _MME_IE_, &len, pattrib->pkt_len-WLAN_HDR_A3_LEN);
 	//Baron
 	if(p)
 	{
 		u16 keyid=0;
 		u64 temp_ipn=0;
 		//save packet number
-		_rtw_memcpy(&temp_ipn, p+4, 6);
+		rtl8188fu__rtw_memcpy(&temp_ipn, p+4, 6);
 		temp_ipn = le64_to_cpu(temp_ipn);
 		//BIP packet number should bigger than previous BIP packet
 		if (temp_ipn < pmlmeext->mgnt_80211w_IPN_rx) {
@@ -2219,7 +2219,7 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 			goto BIP_exit;
 		}
 		//copy key index
-		_rtw_memcpy(&keyid, p+2, 2);
+		rtl8188fu__rtw_memcpy(&keyid, p+2, 2);
 		keyid = le16_to_cpu(keyid);
 		if(keyid != padapter->securitypriv.dot11wBIPKeyid)
 		{
@@ -2227,17 +2227,17 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 			goto BIP_exit;
 		}
 		//clear the MIC field of MME to zero
-		_rtw_memset(p+2+len-8, 0, 8);
+		rtl8188fu__rtw_memset(p+2+len-8, 0, 8);
 		
 		//conscruct AAD, copy frame control field
-		_rtw_memcpy(BIP_AAD, &pwlanhdr->frame_ctl, 2);
+		rtl8188fu__rtw_memcpy(BIP_AAD, &pwlanhdr->frame_ctl, 2);
 		ClearRetry(BIP_AAD);
 		ClearPwrMgt(BIP_AAD);
 		ClearMData(BIP_AAD);
 		//conscruct AAD, copy address 1 to address 3
-		_rtw_memcpy(BIP_AAD+2, pwlanhdr->addr1, 18);
+		rtl8188fu__rtw_memcpy(BIP_AAD+2, pwlanhdr->addr1, 18);
 		
-		if(omac1_aes_128(padapter->securitypriv.dot11wBIPKey[padapter->securitypriv.dot11wBIPKeyid].skey
+		if(rtl8188fu_omac1_aes_128(padapter->securitypriv.dot11wBIPKey[padapter->securitypriv.dot11wBIPKeyid].skey
 			, BIP_AAD, ori_len, mic))
 			goto BIP_exit;
 		
@@ -2261,7 +2261,7 @@ u32	rtw_BIP_verify(_adapter *padapter, u8 *precvframe)
 		}
 		*/
 		//MIC field should be last 8 bytes of packet (packet without FCS)
-		if(_rtw_memcmp(mic, pframe+pattrib->pkt_len-8, 8))
+		if(rtl8188fu__rtw_memcmp(mic, pframe+pattrib->pkt_len-8, 8))
 		{
 			pmlmeext->mgnt_80211w_IPN_rx = temp_ipn;
 			res=_SUCCESS;
@@ -2281,7 +2281,7 @@ BIP_exit:
 
 
 /* AES tables*/
-const u32 Te0[256] = {
+const u32 rtl8188fu_Te0[256] = {
     0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
     0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
     0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
@@ -2347,7 +2347,7 @@ const u32 Te0[256] = {
     0x824141c3U, 0x299999b0U, 0x5a2d2d77U, 0x1e0f0f11U,
     0x7bb0b0cbU, 0xa85454fcU, 0x6dbbbbd6U, 0x2c16163aU,
 };
-const u32 Td0[256] = {
+const u32 rtl8188fu_Td0[256] = {
     0x51f4a750U, 0x7e416553U, 0x1a17a4c3U, 0x3a275e96U,
     0x3bab6bcbU, 0x1f9d45f1U, 0xacfa58abU, 0x4be30393U,
     0x2030fa55U, 0xad766df6U, 0x88cc7691U, 0xf5024c25U,
@@ -2413,7 +2413,7 @@ const u32 Td0[256] = {
     0x39a80171U, 0x080cb3deU, 0xd8b4e49cU, 0x6456c190U,
     0x7bcb8461U, 0xd532b670U, 0x486c5c74U, 0xd0b85742U,
 };
-const u8 Td4s[256] = {
+const u8 rtl8188fu_Td4s[256] = {
     0x52U, 0x09U, 0x6aU, 0xd5U, 0x30U, 0x36U, 0xa5U, 0x38U,
     0xbfU, 0x40U, 0xa3U, 0x9eU, 0x81U, 0xf3U, 0xd7U, 0xfbU,
     0x7cU, 0xe3U, 0x39U, 0x82U, 0x9bU, 0x2fU, 0xffU, 0x87U,
@@ -2447,7 +2447,7 @@ const u8 Td4s[256] = {
     0x17U, 0x2bU, 0x04U, 0x7eU, 0xbaU, 0x77U, 0xd6U, 0x26U,
     0xe1U, 0x69U, 0x14U, 0x63U, 0x55U, 0x21U, 0x0cU, 0x7dU,
 };
-const u8 rcons[] = {
+const u8 rtl8188fu_rcons[] = {
 	0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36
 	/* for 128-bit blocks, Rijndael never uses more than 10 rcon values */
 };
@@ -2578,13 +2578,13 @@ static void gf_mulx(u8 *pad)
 
 static void aes_encrypt_deinit(void *ctx)
 {
-	_rtw_memset(ctx, 0, AES_PRIV_SIZE);
+	rtl8188fu__rtw_memset(ctx, 0, AES_PRIV_SIZE);
 	rtw_mfree(ctx, AES_PRIV_SIZE);
 }
 
 
 /**
- * omac1_aes_128_vector - One-Key CBC MAC (OMAC1) hash with AES-128
+ * rtl8188fu_omac1_aes_128_vector - One-Key CBC MAC (OMAC1) hash with AES-128
  * @key: 128-bit key for the hash operation
  * @num_elem: Number of elements in the data vector
  * @addr: Pointers to the data areas
@@ -2596,7 +2596,7 @@ static void aes_encrypt_deinit(void *ctx)
  * OMAC1 was standardized with the name CMAC by NIST in a Special Publication
  * (SP) 800-38B.
  */
-static int omac1_aes_128_vector(u8 *key, size_t num_elem,
+static int rtl8188fu_omac1_aes_128_vector(u8 *key, size_t num_elem,
 							 u8 *addr[], size_t *len, u8 *mac)
 {
 	void *ctx;
@@ -2607,7 +2607,7 @@ static int omac1_aes_128_vector(u8 *key, size_t num_elem,
 	ctx = aes_encrypt_init(key, 16);
 	if (ctx == NULL)
 		return -1;
-	_rtw_memset(cbc, 0, AES_BLOCK_SIZE);
+	rtl8188fu__rtw_memset(cbc, 0, AES_BLOCK_SIZE);
 
 	total_len = 0;
 	for (e = 0; e < num_elem; e++)
@@ -2632,7 +2632,7 @@ static int omac1_aes_128_vector(u8 *key, size_t num_elem,
 		left -= AES_BLOCK_SIZE;
 	}
 
-	_rtw_memset(pad, 0, AES_BLOCK_SIZE);
+	rtl8188fu__rtw_memset(pad, 0, AES_BLOCK_SIZE);
 	aes_128_encrypt(ctx, pad, pad);
 	gf_mulx(pad);
 
@@ -2658,7 +2658,7 @@ static int omac1_aes_128_vector(u8 *key, size_t num_elem,
 
 
 /**
- * omac1_aes_128 - One-Key CBC MAC (OMAC1) hash with AES-128 (aka AES-CMAC)
+ * rtl8188fu_omac1_aes_128 - One-Key CBC MAC (OMAC1) hash with AES-128 (aka AES-CMAC)
  * @key: 128-bit key for the hash operation
  * @data: Data buffer for which a MAC is determined
  * @data_len: Length of data buffer in bytes
@@ -2669,9 +2669,9 @@ static int omac1_aes_128_vector(u8 *key, size_t num_elem,
  * OMAC1 was standardized with the name CMAC by NIST in a Special Publication
  * (SP) 800-38B.
  */ //modify for CONFIG_IEEE80211W
-int omac1_aes_128(u8 *key, u8 *data, size_t data_len, u8 *mac)
+int rtl8188fu_omac1_aes_128(u8 *key, u8 *data, size_t data_len, u8 *mac)
 {
-	return omac1_aes_128_vector(key, 1, &data, &data_len, mac);
+	return rtl8188fu_omac1_aes_128_vector(key, 1, &data, &data_len, mac);
 }
 #endif //PLATFORM_FREEBSD Baron
 
@@ -2712,13 +2712,13 @@ void wpa_tdls_generate_tpk(_adapter *padapter, PVOID sta)
 	 */
 
 	if (os_memcmp(adapter_mac_addr(padapter), psta->hwaddr, ETH_ALEN) < 0) {
-		_rtw_memcpy(data, adapter_mac_addr(padapter), ETH_ALEN);
-		_rtw_memcpy(data + ETH_ALEN, psta->hwaddr, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(data, adapter_mac_addr(padapter), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(data + ETH_ALEN, psta->hwaddr, ETH_ALEN);
 	} else {
-		_rtw_memcpy(data, psta->hwaddr, ETH_ALEN);
-		_rtw_memcpy(data + ETH_ALEN, adapter_mac_addr(padapter), ETH_ALEN);
+		rtl8188fu__rtw_memcpy(data, psta->hwaddr, ETH_ALEN);
+		rtl8188fu__rtw_memcpy(data + ETH_ALEN, adapter_mac_addr(padapter), ETH_ALEN);
 	}
-	_rtw_memcpy(data + 2 * ETH_ALEN, get_bssid(pmlmepriv), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(data + 2 * ETH_ALEN, get_bssid(pmlmepriv), ETH_ALEN);
 
 	sha256_prf(key_input, SHA256_MAC_LEN, "TDLS PMK", data, sizeof(data), (u8 *) &psta->tpk, sizeof(psta->tpk));	
 
@@ -2755,29 +2755,29 @@ int wpa_tdls_ftie_mic(u8 *kck, u8 trans_seq,
 	pos = buf;
 	_lnkid = (struct wpa_tdls_lnkid *) lnkid;
 	/* 1) TDLS initiator STA MAC address */
-	_rtw_memcpy(pos, _lnkid->init_sta, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pos, _lnkid->init_sta, ETH_ALEN);
 	pos += ETH_ALEN;
 	/* 2) TDLS responder STA MAC address */
-	_rtw_memcpy(pos, _lnkid->resp_sta, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pos, _lnkid->resp_sta, ETH_ALEN);
 	pos += ETH_ALEN;
 	/* 3) Transaction Sequence number */
 	*pos++ = trans_seq;
 	/* 4) Link Identifier IE */
-	_rtw_memcpy(pos, lnkid, 2 + lnkid[1]);
+	rtl8188fu__rtw_memcpy(pos, lnkid, 2 + lnkid[1]);
 	pos += 2 + lnkid[1];
 	/* 5) RSN IE */
-	_rtw_memcpy(pos, rsnie, 2 + rsnie[1]);
+	rtl8188fu__rtw_memcpy(pos, rsnie, 2 + rsnie[1]);
 	pos += 2 + rsnie[1];
 	/* 6) Timeout Interval IE */
-	_rtw_memcpy(pos, timeoutie, 2 + timeoutie[1]);
+	rtl8188fu__rtw_memcpy(pos, timeoutie, 2 + timeoutie[1]);
 	pos += 2 + timeoutie[1];
 	/* 7) FTIE, with the MIC field of the FTIE set to 0 */
-	_rtw_memcpy(pos, ftie, 2 + ftie[1]);
+	rtl8188fu__rtw_memcpy(pos, ftie, 2 + ftie[1]);
 	_ftie = (struct wpa_tdls_ftie *) pos;
-	_rtw_memset(_ftie->mic, 0, TDLS_MIC_LEN);
+	rtl8188fu__rtw_memset(_ftie->mic, 0, TDLS_MIC_LEN);
 	pos += 2 + ftie[1];
  
-	ret = omac1_aes_128(kck, buf, pos - buf, mic);
+	ret = rtl8188fu_omac1_aes_128(kck, buf, pos - buf, mic);
 	rtw_mfree(buf, len);
 	return ret;
 
@@ -2811,22 +2811,22 @@ int wpa_tdls_teardown_ftie_mic(u8 *kck, u8 *lnkid, u16 reason,
 
 	pos = buf;
 	/* 1) Link Identifier IE */
-	_rtw_memcpy(pos, lnkid, 2 + lnkid[1]);
+	rtl8188fu__rtw_memcpy(pos, lnkid, 2 + lnkid[1]);
 	pos += 2 + lnkid[1];
 	/* 2) Reason Code */
-	_rtw_memcpy(pos, (u8 *)&reason, 2);
+	rtl8188fu__rtw_memcpy(pos, (u8 *)&reason, 2);
 	pos += 2;
 	/* 3) Dialog Token */
 	*pos++ = dialog_token;
 	/* 4) Transaction Sequence number */
 	*pos++ = trans_seq;
 	/* 5) FTIE, with the MIC field of the FTIE set to 0 */
-	_rtw_memcpy(pos, ftie, 2 + ftie[1]);
+	rtl8188fu__rtw_memcpy(pos, ftie, 2 + ftie[1]);
 	_ftie = (struct wpa_tdls_ftie *) pos;
-	_rtw_memset(_ftie->mic, 0, TDLS_MIC_LEN);
+	rtl8188fu__rtw_memset(_ftie->mic, 0, TDLS_MIC_LEN);
 	pos += 2 + ftie[1];
 
-	ret = omac1_aes_128(kck, buf, pos - buf, mic);
+	ret = rtl8188fu_omac1_aes_128(kck, buf, pos - buf, mic);
 	rtw_mfree(buf, len);
 	return ret;
 
@@ -2854,30 +2854,30 @@ int tdls_verify_mic(u8 *kck, u8 trans_seq,
 
 	pos = buf;
 	/* 1) TDLS initiator STA MAC address */
-	_rtw_memcpy(pos, lnkid + ETH_ALEN + 2, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pos, lnkid + ETH_ALEN + 2, ETH_ALEN);
 	pos += ETH_ALEN;
 	/* 2) TDLS responder STA MAC address */
-	_rtw_memcpy(pos, lnkid + 2 * ETH_ALEN + 2, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pos, lnkid + 2 * ETH_ALEN + 2, ETH_ALEN);
 	pos += ETH_ALEN;
 	/* 3) Transaction Sequence number */
 	*pos++ = trans_seq;
 	/* 4) Link Identifier IE */
-	_rtw_memcpy(pos, lnkid, 2 + 18);
+	rtl8188fu__rtw_memcpy(pos, lnkid, 2 + 18);
 	pos += 2 + 18;
 	/* 5) RSN IE */
-	_rtw_memcpy(pos, rsnie, 2 + *(rsnie+1));
+	rtl8188fu__rtw_memcpy(pos, rsnie, 2 + *(rsnie+1));
 	pos += 2 + *(rsnie+1);
 	/* 6) Timeout Interval IE */
-	_rtw_memcpy(pos, timeoutie, 2 + *(timeoutie+1));
+	rtl8188fu__rtw_memcpy(pos, timeoutie, 2 + *(timeoutie+1));
 	pos += 2 + *(timeoutie+1);
 	/* 7) FTIE, with the MIC field of the FTIE set to 0 */
-	_rtw_memcpy(pos, ftie, 2 + *(ftie+1));
+	rtl8188fu__rtw_memcpy(pos, ftie, 2 + *(ftie+1));
 	pos += 2;
 	tmp_ftie = (u8 *) (pos+2);
-	_rtw_memset(tmp_ftie, 0, 16);
+	rtl8188fu__rtw_memset(tmp_ftie, 0, 16);
 	pos += *(ftie+1);
 
-	ret = omac1_aes_128(kck, buf, pos - buf, mic);
+	ret = rtl8188fu_omac1_aes_128(kck, buf, pos - buf, mic);
 	rtw_mfree(buf, len);
 	if (ret)
 		return _FAIL;
@@ -2895,17 +2895,17 @@ int tdls_verify_mic(u8 *kck, u8 trans_seq,
 }
 #endif //CONFIG_TDLS
 
-void rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS)
+void rtl8188fu_rtw_use_tkipkey_handler(RTW_TIMER_HDL_ARGS)
 {
         _adapter *padapter = (_adapter *)FunctionContext;
 
 _func_enter_;			
 
-	RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtw_use_tkipkey_handler ^^^\n"));
+	RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtl8188fu_rtw_use_tkipkey_handler ^^^\n"));
 	
 /*
 	if (RTW_CANNOT_RUN(padapter)) {
-			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtw_use_tkipkey_handler (padapter->bDriverStopped %s)(padapter->bSurpriseRemoved %s)^^^\n"
+			RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtl8188fu_rtw_use_tkipkey_handler (padapter->bDriverStopped %s)(padapter->bSurpriseRemoved %s)^^^\n"
 			, rtw_is_drv_stopped(padapter)?"True":"False"
 			, rtw_is_surprise_removed(padapter)?"True":"False"));
 
@@ -2915,14 +2915,14 @@ _func_enter_;
 	
 	padapter->securitypriv.busetkipkey=_TRUE;
 
-	RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtw_use_tkipkey_handler padapter->securitypriv.busetkipkey=%d^^^\n",padapter->securitypriv.busetkipkey));
+	RT_TRACE(_module_rtl871x_security_c_,_drv_err_,("^^^rtl8188fu_rtw_use_tkipkey_handler padapter->securitypriv.busetkipkey=%d^^^\n",padapter->securitypriv.busetkipkey));
 
 _func_exit_;	
 
 }
 
 /* Restore HW wep key setting according to key_mask */
-void rtw_sec_restore_wep_key(_adapter *adapter)
+void rtl8188fu_rtw_sec_restore_wep_key(_adapter *adapter)
 {
 	struct security_priv* securitypriv=&(adapter->securitypriv);
 	sint keyid;
@@ -2931,21 +2931,21 @@ void rtw_sec_restore_wep_key(_adapter *adapter)
 		for(keyid=0;keyid<4;keyid++){
 			if(securitypriv->key_mask & BIT(keyid)){
 				if(keyid == securitypriv->dot11PrivacyKeyIndex)
-					rtw_set_key(adapter,securitypriv, keyid, 1, _FALSE);
+					rtl8188fu_rtw_set_key(adapter,securitypriv, keyid, 1, _FALSE);
 				else
-					rtw_set_key(adapter,securitypriv, keyid, 0, _FALSE);
+					rtl8188fu_rtw_set_key(adapter,securitypriv, keyid, 0, _FALSE);
 			}
 		}
 	}
 }
 
-u8 rtw_handle_tkip_countermeasure(_adapter* adapter, const char *caller)
+u8 rtl8188fu_rtw_handle_tkip_countermeasure(_adapter* adapter, const char *caller)
 {
 	struct security_priv* securitypriv=&(adapter->securitypriv);
 	u8 status = _SUCCESS;
 
 	if (securitypriv->btkip_countermeasure == _TRUE) {
-		u32 passing_ms = rtw_get_passing_time_ms(securitypriv->btkip_countermeasure_time);
+		u32 passing_ms = rtl8188fu_rtw_get_passing_time_ms(securitypriv->btkip_countermeasure_time);
 		if (passing_ms > 60*1000) {
 			DBG_871X_LEVEL(_drv_always_, "%s("ADPT_FMT") countermeasure time:%ds > 60s \n",
 				caller, ADPT_ARG(adapter), passing_ms/1000);

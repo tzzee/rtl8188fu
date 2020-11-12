@@ -48,7 +48,7 @@ struct pkt_file {
 
 #define ETH_ALEN	6
 
-extern NDIS_STATUS rtw_xmit_entry(
+extern NDIS_STATUS rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry(
 IN _nic_hdl		cnxt,
 IN NDIS_PACKET		*pkt,
 IN UINT				flags
@@ -58,8 +58,8 @@ IN UINT				flags
 
 #ifdef PLATFORM_FREEBSD
 #define NR_XMITFRAME	256
-extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);
-extern void rtw_xmit_entry_wrap (struct ifnet * pifp);
+extern int rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);
+extern void rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry_wrap (struct ifnet * pifp);
 #endif //PLATFORM_FREEBSD
 
 #ifdef PLATFORM_LINUX
@@ -72,29 +72,29 @@ struct sta_xmit_priv;
 struct xmit_frame;
 struct xmit_buf;
 
-extern int _rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);
-extern int rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);
+extern int _rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);
+extern int rtl8188furtl8188fu__rtl8188fu_rtw_xmit_entry(_pkt *pkt, _nic_hdl pnetdev);
 
 #endif
 
-void rtw_os_xmit_schedule(_adapter *padapter);
+void rtl8188fu_rtw_os_xmit_schedule(_adapter *padapter);
 
-int rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, u8 flag);
-void rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 free_sz, u8 flag);
+int rtl8188fu_rtw_os_xmit_resource_alloc(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 alloc_sz, u8 flag);
+void rtl8188fu_rtw_os_xmit_resource_free(_adapter *padapter, struct xmit_buf *pxmitbuf, u32 free_sz, u8 flag);
 
-extern void rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib);
+extern void rtl8188fu_rtw_set_tx_chksum_offload(_pkt *pkt, struct pkt_attrib *pattrib);
 
-extern uint rtw_remainder_len(struct pkt_file *pfile);
-extern void _rtw_open_pktfile(_pkt *pkt, struct pkt_file *pfile);
-extern uint _rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen);
-extern sint rtw_endofpktfile (struct pkt_file *pfile);
+extern uint rtl8188fu_rtw_remainder_len(struct pkt_file *pfile);
+extern void rtl8188fu__rtw_open_pktfile(_pkt *pkt, struct pkt_file *pfile);
+extern uint rtl8188fu__rtw_pktfile_read (struct pkt_file *pfile, u8 *rmem, uint rlen);
+extern sint rtl8188fu_rtw_endofpktfile (struct pkt_file *pfile);
 
-extern void rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt);
-extern void rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe);
+extern void rtl8188fu_rtw_os_pkt_complete(_adapter *padapter, _pkt *pkt);
+extern void rtl8188fu_rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe);
 
-void rtw_os_wake_queue_at_free_stainfo(_adapter *padapter, int *qcnt_freed);
+void rtl8188fu_rtw_os_wake_queue_at_free_stainfo(_adapter *padapter, int *qcnt_freed);
 
-void dump_os_queue(void *sel, _adapter *padapter);
+void rtl8188fu_dump_os_queue(void *sel, _adapter *padapter);
 
 #endif //__XMIT_OSDEP_H_
 

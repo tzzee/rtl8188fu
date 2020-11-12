@@ -36,24 +36,24 @@ void rtl8188f_sreset_xmit_status_check(_adapter *padapter)
 	txdma_status = rtw_read32(padapter, REG_TXDMA_STATUS);
 	if (txdma_status != 0x00 && txdma_status != 0xeaeaeaea) {
 		DBG_871X("%s REG_TXDMA_STATUS:0x%08x\n", __func__, txdma_status);
-		rtw_hal_sreset_reset(padapter);
+		rtw_hal_rtl8188fu_sreset_reset(padapter);
 	}
 
 #ifdef CONFIG_USB_HCI
 	/*total xmit irp = 4 */
 	/*DBG_8192C("==>%s free_xmitbuf_cnt(%d),txirp_cnt(%d)\n",__func__,pxmitpriv->free_xmitbuf_cnt,pxmitpriv->txirp_cnt); */
 	/*if(pxmitpriv->txirp_cnt == NR_XMITBUFF+1) */
-	current_time = rtw_get_current_time();
+	current_time = rtl8188fu_rtw_get_current_time();
 
 	if (0 == pxmitpriv->free_xmitbuf_cnt || 0 == pxmitpriv->free_xmit_extbuf_cnt) {
 
-		diff_time = rtw_get_passing_time_ms(psrtpriv->last_tx_time);
+		diff_time = rtl8188fu_rtw_get_passing_time_ms(psrtpriv->last_tx_time);
 
 		if (diff_time > 2000) {
 			if (psrtpriv->last_tx_complete_time == 0)
 				psrtpriv->last_tx_complete_time = current_time;
 			else {
-				diff_time = rtw_get_passing_time_ms(psrtpriv->last_tx_complete_time);
+				diff_time = rtl8188fu_rtw_get_passing_time_ms(psrtpriv->last_tx_complete_time);
 				if (diff_time > 4000) {
 					u32 ability = 0;
 
@@ -63,7 +63,7 @@ void rtl8188f_sreset_xmit_status_check(_adapter *padapter)
 							 (ability & ODM_BB_ADAPTIVITY) ? "ODM_BB_ADAPTIVITY" : "");
 
 					if (!(ability & ODM_BB_ADAPTIVITY))
-						rtw_hal_sreset_reset(padapter);
+						rtw_hal_rtl8188fu_sreset_reset(padapter);
 				}
 			}
 		}
@@ -72,7 +72,7 @@ void rtl8188f_sreset_xmit_status_check(_adapter *padapter)
 
 	if (psrtpriv->dbg_trigger_point == SRESET_TGP_XMIT_STATUS) {
 		psrtpriv->dbg_trigger_point = SRESET_TGP_NULL;
-		rtw_hal_sreset_reset(padapter);
+		rtw_hal_rtl8188fu_sreset_reset(padapter);
 		return;
 	}
 }
@@ -94,13 +94,13 @@ void rtl8188f_sreset_linked_status_check(_adapter *padapter)
 		(((reg800 & 0xFFFFFF00) != 0x03040000) && ((reg800 & 0xFFFFFF00) != 0x83040000))) {
 		DBG_8192C("%s regc50:0x%08x, regc58:0x%08x, reg824:0x%08x, reg800:0x%08x,\n", __func__,
 				  regc50, regc58, reg824, reg800);
-		rtw_hal_sreset_reset(padapter);
+		rtw_hal_rtl8188fu_sreset_reset(padapter);
 	}
 #endif
 
 	if (psrtpriv->dbg_trigger_point == SRESET_TGP_LINK_STATUS) {
 		psrtpriv->dbg_trigger_point = SRESET_TGP_NULL;
-		rtw_hal_sreset_reset(padapter);
+		rtw_hal_rtl8188fu_sreset_reset(padapter);
 		return;
 	}
 }

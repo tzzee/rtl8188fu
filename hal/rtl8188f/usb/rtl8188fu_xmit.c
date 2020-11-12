@@ -39,11 +39,11 @@ void	rtl8188fu_free_xmit_priv(_adapter *padapter)
 {
 }
 
-void _dbg_dump_tx_info(_adapter	*padapter, int frame_tag, struct tx_desc *ptxdesc)
+void rtl8188fu__dbg_dump_tx_info(_adapter	*padapter, int frame_tag, struct tx_desc *ptxdesc)
 {
 	u8 bDumpTxPkt;
 	u8 bDumpTxDesc = _FALSE;
-	rtw_hal_get_def_var(padapter, HAL_DEF_DBG_DUMP_TXPKT, &(bDumpTxPkt));
+	rtl8188fu_rtw_hal_get_def_var(padapter, HAL_DEF_DBG_DUMP_TXPKT, &(bDumpTxPkt));
 
 	if (bDumpTxPkt == 1) { /*dump txdesc for data frame */
 		DBG_871X("dump tx_desc for data frame\n");
@@ -193,10 +193,10 @@ static s32 update_txdesc(struct xmit_frame *pxmitframe, u8 *pmem, s32 sz, u8 bag
 	}
 #endif	/* CONFIG_USE_USB_BUFFER_ALLOC_TX */
 
-	_rtw_memset(ptxdesc, 0, sizeof(struct tx_desc));
+	rtl8188fu__rtw_memset(ptxdesc, 0, sizeof(struct tx_desc));
 
 	rtl8188f_update_txdesc(pxmitframe, (u8 *)ptxdesc);
-	_dbg_dump_tx_info(padapter, pxmitframe->frame_tag, ptxdesc);
+	rtl8188fu__dbg_dump_tx_info(padapter, pxmitframe->frame_tag, ptxdesc);
 	return pull;
 
 }
@@ -221,7 +221,7 @@ s32 rtl8188fu_xmit_buf_handler(PADAPTER padapter)
 	/*phal = GET_HAL_DATA(padapter); */
 	pxmitpriv = &padapter->xmitpriv;
 
-	ret = _rtw_down_sema(&pxmitpriv->xmit_sema);
+	ret = rtl8188fu__rtw_down_sema(&pxmitpriv->xmit_sema);
 	if (_FAIL == ret) {
 		RT_TRACE(_module_hal_xmit_c_, _drv_emerg_,
 				 ("%s: down SdioXmitBufSema fail!\n", __func__));
@@ -281,7 +281,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 		(pxmitframe->attrib.ether_type != 0x0806) &&
 		(pxmitframe->attrib.ether_type != 0x888e) &&
 		(pxmitframe->attrib.dhcp_pkt != 1))
-		rtw_issue_addbareq_cmd(padapter, pxmitframe);
+		rtl8188fu_rtw_issue_addbareq_cmd(padapter, pxmitframe);
 
 	mem_addr = pxmitframe->buf_addr;
 
@@ -312,7 +312,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 		} else
 			w_sz = sz + TXDESC_SIZE + PACKET_OFFSET_SZ;
 
-		ff_hwaddr = rtw_get_ff_hwaddr(pxmitframe);
+		ff_hwaddr = rtl8188fu_rtw_get_ff_hwaddr(pxmitframe);
 #ifdef CONFIG_XMIT_THREAD_MODE
 		pxmitbuf->len = w_sz;
 		pxmitbuf->ff_hwaddr = ff_hwaddr;
@@ -320,7 +320,7 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 #else
 		inner_ret = rtw_write_port(padapter, ff_hwaddr, w_sz, (unsigned char *)pxmitbuf);
 #endif
-		rtw_count_tx_stats(padapter, pxmitframe, sz);
+		rtl8188fu_rtw_count_tx_stats(padapter, pxmitframe, sz);
 
 
 		RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("rtw_write_port, w_sz=%d\n", w_sz));
@@ -332,10 +332,10 @@ static s32 rtw_dump_xframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 
 	}
 
-	rtw_free_xmitframe(pxmitpriv, pxmitframe);
+	rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
 	if (ret != _SUCCESS)
-		rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_UNKNOWN);
+		rtl8188fu_rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_UNKNOWN);
 
 	return ret;
 }
@@ -397,19 +397,19 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 
 	/* check xmitbuffer is ok */
 	if (pxmitbuf == NULL) {
-		pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv);
+		pxmitbuf = rtl8188fu_rtw_alloc_xmitbuf(pxmitpriv);
 		if (pxmitbuf == NULL) return _FALSE;
 	}
 
 
 	/*3 1. pick up first frame */
 	do {
-		rtw_free_xmitframe(pxmitpriv, pxmitframe);
+		rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
-		pxmitframe = rtw_dequeue_xframe(pxmitpriv, pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
+		pxmitframe = rtl8188fu_rtw_dequeue_xframe(pxmitpriv, pxmitpriv->hwxmits, pxmitpriv->hwxmit_entry);
 		if (pxmitframe == NULL) {
 			/* no more xmit frame, release xmit buffer */
-			rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
+			rtl8188fu_rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 			return _FALSE;
 		}
 
@@ -419,7 +419,7 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 			RT_TRACE(_module_rtl8192c_xmit_c_, _drv_err_,
 					 ("xmitframe_complete: frame tag(%d) is not DATA_FRAMETAG(%d)!\n",
 					  pxmitframe->frame_tag, DATA_FRAMETAG));
-/*			rtw_free_xmitframe(pxmitpriv, pxmitframe); */
+/*			rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe); */
 			continue;
 		}
 
@@ -429,7 +429,7 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 			RT_TRACE(_module_rtl8192c_xmit_c_, _drv_err_,
 					 ("xmitframe_complete: TID(%d) should be 0~15!\n",
 					  pxmitframe->attrib.priority));
-/*			rtw_free_xmitframe(pxmitpriv, pxmitframe); */
+/*			rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe); */
 			continue;
 		}
 #endif
@@ -442,14 +442,14 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 		/* pxmitframe->pkt_offset = 1; */ /* first frame of aggregation, reserve offset */
 		pxmitframe->pkt_offset = (PACKET_OFFSET_SZ/8);
 
-		if (rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe) == _FALSE) {
+		if (rtl8188fu_rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe) == _FALSE) {
 			DBG_871X("%s coalesce 1st xmitframe failed\n", __func__);
 			continue;
 		}
 
 
-		/* always return ndis_packet after rtw_xmitframe_coalesce */
-		rtw_os_xmit_complete(padapter, pxmitframe);
+		/* always return ndis_packet after rtl8188fu_rtw_xmitframe_coalesce */
+		rtl8188fu_rtw_os_xmit_complete(padapter, pxmitframe);
 
 		break;
 	} while (1);
@@ -503,15 +503,15 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 
 	sta_phead = get_list_head(phwxmit->sta_queue);
 	sta_plist = get_next(sta_phead);
-	single_sta_in_queue = rtw_end_of_queue_search(sta_phead, get_next(sta_plist));
+	single_sta_in_queue = rtl8188fu_rtw_end_of_queue_search(sta_phead, get_next(sta_plist));
 
 	xmitframe_phead = get_list_head(&ptxservq->sta_pending);
 	xmitframe_plist = get_next(xmitframe_phead);
-	while (rtw_end_of_queue_search(xmitframe_phead, xmitframe_plist) == _FALSE) {
+	while (rtl8188fu_rtw_end_of_queue_search(xmitframe_phead, xmitframe_plist) == _FALSE) {
 		pxmitframe = LIST_CONTAINOR(xmitframe_plist, struct xmit_frame, list);
 		xmitframe_plist = get_next(xmitframe_plist);
 
-		if (_FAIL == rtw_hal_busagg_qsel_check(padapter, pfirstframe->attrib.qsel, pxmitframe->attrib.qsel))
+		if (_FAIL == rtl8188fu_rtw_hal_busagg_qsel_check(padapter, pfirstframe->attrib.qsel, pxmitframe->attrib.qsel))
 			break;
 
 		len = xmitframe_need_length(pxmitframe) + TXDESC_SIZE; /* no offset */
@@ -527,7 +527,7 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 			RT_TRACE(_module_rtl8192c_xmit_c_, _drv_err_,
 					 ("xmitframe_complete: frame tag(%d) is not DATA_FRAMETAG(%d)!\n",
 					  pxmitframe->frame_tag, DATA_FRAMETAG));
-			rtw_free_xmitframe(pxmitpriv, pxmitframe);
+			rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			continue;
 		}
 
@@ -537,7 +537,7 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 			RT_TRACE(_module_rtl8192c_xmit_c_, _drv_err_,
 					 ("xmitframe_complete: TID(%d) should be 0~15!\n",
 					  pxmitframe->attrib.priority));
-			rtw_free_xmitframe(pxmitpriv, pxmitframe);
+			rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			continue;
 		}
 #endif
@@ -548,21 +548,21 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 		pxmitframe->agg_num = 0; /* not first frame of aggregation */
 		pxmitframe->pkt_offset = 0; /* not first frame of aggregation, no need to reserve offset */
 
-		if (rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe) == _FALSE) {
+		if (rtl8188fu_rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe) == _FALSE) {
 			DBG_871X("%s coalesce failed\n", __func__);
-			rtw_free_xmitframe(pxmitpriv, pxmitframe);
+			rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			continue;
 		}
 
 
-		/* always return ndis_packet after rtw_xmitframe_coalesce */
-		rtw_os_xmit_complete(padapter, pxmitframe);
+		/* always return ndis_packet after rtl8188fu_rtw_xmitframe_coalesce */
+		rtl8188fu_rtw_os_xmit_complete(padapter, pxmitframe);
 
 		/* (len - TXDESC_SIZE) == pxmitframe->attrib.last_txcmdsz */
 		update_txdesc(pxmitframe, pxmitframe->buf_addr, pxmitframe->attrib.last_txcmdsz, _TRUE);
 
 		/* don't need xmitframe any more */
-		rtw_free_xmitframe(pxmitpriv, pxmitframe);
+		rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
 		/* handle pointer and stop condition */
 		pbuf_tail = pbuf + len;
@@ -581,12 +581,12 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 			bulkPtr = ((pbuf / bulkSize) + 1) * bulkSize;
 		}
 	}
-	if (_rtw_queue_empty(&ptxservq->sta_pending) == _TRUE)
+	if (rtl8188fu__rtw_queue_empty(&ptxservq->sta_pending) == _TRUE)
 		rtw_list_delete(&ptxservq->tx_pending);
 	else if (single_sta_in_queue == _FALSE) {
 		/* Re-arrange the order of stations in this ac queue to balance the service for these stations */
 		rtw_list_delete(&ptxservq->tx_pending);
-		rtw_list_insert_tail(&ptxservq->tx_pending, get_list_head(phwxmit->sta_queue));
+		rtl8188fu_rtw_list_insert_tail(&ptxservq->tx_pending, get_list_head(phwxmit->sta_queue));
 	}
 
 	_exit_critical_bh(&pxmitpriv->lock, &irqL);
@@ -594,7 +594,7 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 	if ((pfirstframe->attrib.ether_type != 0x0806) &&
 		(pfirstframe->attrib.ether_type != 0x888e) &&
 		(pfirstframe->attrib.dhcp_pkt != 1))
-		rtw_issue_addbareq_cmd(padapter, pfirstframe);
+		rtl8188fu_rtw_issue_addbareq_cmd(padapter, pfirstframe);
 
 #ifndef CONFIG_USE_USB_BUFFER_ALLOC_TX
 	/*3 3. update first frame txdesc */
@@ -609,7 +609,7 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 	update_txdesc(pfirstframe, pfirstframe->buf_addr, pfirstframe->attrib.last_txcmdsz, _TRUE);
 
 	/*3 4. write xmit buffer to USB FIFO */
-	ff_hwaddr = rtw_get_ff_hwaddr(pfirstframe);
+	ff_hwaddr = rtl8188fu_rtw_get_ff_hwaddr(pfirstframe);
 
 	/* xmit address == ((xmit_frame*)pxmitbuf->priv_data)->buf_addr */
 	rtw_write_port(padapter, ff_hwaddr, pbuf_tail, (u8 *)pxmitbuf);
@@ -619,9 +619,9 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 	pbuf_tail -= (pfirstframe->agg_num * TXDESC_SIZE);
 	if (pfirstframe->pkt_offset == 1) pbuf_tail -= PACKET_OFFSET_SZ;
 
-	rtw_count_tx_stats(padapter, pfirstframe, pbuf_tail);
+	rtl8188fu_rtw_count_tx_stats(padapter, pfirstframe, pbuf_tail);
 
-	rtw_free_xmitframe(pxmitpriv, pfirstframe);
+	rtl8188fu_rtw_free_xmitframe(pxmitpriv, pfirstframe);
 
 	return _TRUE;
 }
@@ -642,14 +642,14 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 	RT_TRACE(_module_rtl871x_xmit_c_, _drv_info_, ("xmitframe_complete()\n"));
 
 	if (pxmitbuf == NULL) {
-		pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv);
+		pxmitbuf = rtl8188fu_rtw_alloc_xmitbuf(pxmitpriv);
 		if (!pxmitbuf)
 			return _FALSE;
 	}
 
 
 	do {
-		pxmitframe =  rtw_dequeue_xframe(pxmitpriv, phwxmits, hwentry);
+		pxmitframe =  rtl8188fu_rtw_dequeue_xframe(pxmitpriv, phwxmits, hwentry);
 
 		if (pxmitframe) {
 			pxmitframe->pxmitbuf = pxmitbuf;
@@ -660,9 +660,9 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 
 			if ((pxmitframe->frame_tag & 0x0f) == DATA_FRAMETAG) {
 				if (pxmitframe->attrib.priority <= 15) /*TID0~15 */
-					res = rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe);
+					res = rtl8188fu_rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe);
 
-				rtw_os_xmit_complete(padapter, pxmitframe);/*always return ndis_packet after rtw_xmitframe_coalesce */
+				rtl8188fu_rtw_os_xmit_complete(padapter, pxmitframe);/*always return ndis_packet after rtl8188fu_rtw_xmitframe_coalesce */
 			}
 
 
@@ -672,14 +672,14 @@ s32 rtl8188fu_xmitframe_complete(_adapter *padapter, struct xmit_priv *pxmitpriv
 			if (res == _SUCCESS)
 				rtw_dump_xframe(padapter, pxmitframe);
 			else {
-				rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
-				rtw_free_xmitframe(pxmitpriv, pxmitframe);
+				rtl8188fu_rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
+				rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 			}
 
 			xcnt++;
 
 		} else {
-			rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
+			rtl8188fu_rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 			return _FALSE;
 		}
 
@@ -699,7 +699,7 @@ static s32 xmitframe_direct(_adapter *padapter, struct xmit_frame *pxmitframe)
 	s32 res = _SUCCESS;
 
 
-	res = rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe);
+	res = rtl8188fu_rtw_xmitframe_coalesce(padapter, pxmitframe->pkt, pxmitframe);
 	if (res == _SUCCESS)
 		rtw_dump_xframe(padapter, pxmitframe);
 
@@ -723,17 +723,17 @@ static s32 pre_xmitframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 
 	_enter_critical_bh(&pxmitpriv->lock, &irqL);
 
-	if (rtw_txframes_sta_ac_pending(padapter, pattrib) > 0)
+	if (rtl8188fu_rtw_txframes_sta_ac_pending(padapter, pattrib) > 0)
 		goto enqueue;
 
-	if (rtw_xmit_ac_blocked(padapter) == _TRUE)
+	if (rtl8188fu_rtw_xmit_ac_blocked(padapter) == _TRUE)
 		goto enqueue;
 
 	rtw_dev_iface_status(padapter, NULL, NULL , &lg_sta_num, NULL, NULL);
 	if (lg_sta_num)
 		goto enqueue;
 
-	pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv);
+	pxmitbuf = rtl8188fu_rtw_alloc_xmitbuf(pxmitpriv);
 	if (pxmitbuf == NULL)
 		goto enqueue;
 
@@ -744,19 +744,19 @@ static s32 pre_xmitframe(_adapter *padapter, struct xmit_frame *pxmitframe)
 	pxmitbuf->priv_data = pxmitframe;
 
 	if (xmitframe_direct(padapter, pxmitframe) != _SUCCESS) {
-		rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
-		rtw_free_xmitframe(pxmitpriv, pxmitframe);
+		rtl8188fu_rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
+		rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 	}
 
 	return _TRUE;
 
 enqueue:
-	res = rtw_xmitframe_enqueue(padapter, pxmitframe);
+	res = rtl8188fu_rtw_xmitframe_enqueue(padapter, pxmitframe);
 	_exit_critical_bh(&pxmitpriv->lock, &irqL);
 
 	if (res != _SUCCESS) {
 		RT_TRACE(_module_xmit_osdep_c_, _drv_err_, ("pre_xmitframe: enqueue xmitframe fail\n"));
-		rtw_free_xmitframe(pxmitpriv, pxmitframe);
+		rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
 		pxmitpriv->tx_drop++;
 		return _TRUE;
@@ -785,9 +785,9 @@ s32	rtl8188fu_hal_xmitframe_enqueue(_adapter *padapter, struct xmit_frame *pxmit
 	struct xmit_priv 	*pxmitpriv = &padapter->xmitpriv;
 	s32 err;
 
-	err = rtw_xmitframe_enqueue(padapter, pxmitframe);
+	err = rtl8188fu_rtw_xmitframe_enqueue(padapter, pxmitframe);
 	if (err != _SUCCESS) {
-		rtw_free_xmitframe(pxmitpriv, pxmitframe);
+		rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 
 		pxmitpriv->tx_drop++;
 	} else {
@@ -856,7 +856,7 @@ s32 rtl8188fu_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 
 	/* ----- fill tx desc ----- */
 	ptxdesc = (struct tx_desc *)pxmitbuf;
-	_rtw_memset(ptxdesc, 0, sizeof(*ptxdesc));
+	rtl8188fu__rtw_memset(ptxdesc, 0, sizeof(*ptxdesc));
 
 	/*offset 0 */
 	ptxdesc->txdw0 |= cpu_to_le32(len & 0x0000ffff);
@@ -895,7 +895,7 @@ s32 rtl8188fu_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 	/* */
 	skb_put(pxmit_skb, len + TXDESC_SIZE);
 	pxmitbuf = pxmitbuf + TXDESC_SIZE;
-	_rtw_memcpy(pxmitbuf, skb->data, len);
+	rtl8188fu__rtw_memcpy(pxmitbuf, skb->data, len);
 
 	/*DBG_8192C("mgnt_xmit, len=%x\n", pxmit_skb->len); */
 
@@ -903,7 +903,7 @@ s32 rtl8188fu_hostap_mgnt_xmit_entry(_adapter *padapter, _pkt *pkt)
 	/* ----- prepare urb for submit ----- */
 
 	/*translate DMA FIFO addr to pipehandle */
-	/*pipe = ffaddr2pipehdl(pdvobj, MGT_QUEUE_INX); */
+	/*pipe = rtl8188fu_ffaddr2pipehdl(pdvobj, MGT_QUEUE_INX); */
 	pipe = usb_sndbulkpipe(pdvobj->pusbdev, pHalData->Queue2EPNum[(u8)MGT_QUEUE_INX] & 0x0f);
 
 	usb_fill_bulk_urb(urb, pdvobj->pusbdev, pipe,

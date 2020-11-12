@@ -64,23 +64,23 @@ typedef struct _ACS_
 
 
 VOID
-odm_AutoChannelSelectInit(
+rtl8188fu_odm_AutoChannelSelectInit(
 	IN		PVOID			pDM_VOID
 );
 
 VOID
-odm_AutoChannelSelectReset(
+rtl8188fu_odm_AutoChannelSelectReset(
 	IN		PVOID			pDM_VOID
 );
 
 VOID
-odm_AutoChannelSelect(
+rtl8188fu_odm_AutoChannelSelect(
 	IN		PVOID			pDM_VOID,
 	IN		u1Byte			Channel
 );
 
 u1Byte
-ODM_GetAutoChannelSelectResult(
+rtl8188fu_ODM_GetAutoChannelSelectResult(
 	IN		PVOID			pDM_VOID,
 	IN		u1Byte			Band
 );
@@ -111,17 +111,17 @@ phydm_CLMInit(
 );
 
 VOID
-phydm_CLMtrigger(
+rtl8188fu_phydm_CLMtrigger(
 	IN		PVOID			pDM_VOID
 );
 
 BOOLEAN
-phydm_checkCLMready(
+rtl8188fu_phydm_checkCLMready(
 	IN		PVOID			pDM_VOID
 );
 
 u2Byte
-phydm_getCLMresult(
+rtl8188fu_phydm_getCLMresult(
 	IN		PVOID			pDM_VOID
 );
 

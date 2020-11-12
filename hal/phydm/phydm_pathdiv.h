@@ -127,19 +127,19 @@ typedef struct _ODM_PATH_DIVERSITY_
 #endif //#if(defined(CONFIG_PATH_DIVERSITY))
 
 VOID
-phydm_c2h_dtp_handler(
+rtl8188fu_phydm_c2h_dtp_handler(
 	 IN	PVOID	pDM_VOID,
 	 IN 	pu1Byte   CmdBuf,
 	 IN 	u1Byte	CmdLen
 	);
 
 VOID
-odm_PathDiversityInit(
+rtl8188fu_odm_PathDiversityInit(
 	IN	PVOID	pDM_VOID
 	);
 
 VOID
-odm_PathDiversity(
+rtl8188fu_odm_PathDiversity(
 	IN	PVOID	pDM_VOID
 	);
 
@@ -193,7 +193,7 @@ typedef struct _PathDiv_Parameter_define_
 }PATHDIV_PARA,*pPATHDIV_PARA;
 
 VOID	
-odm_PathDiversityInit_92C(
+rtl8188fu_odm_PathDiversityInit_92C(
 	IN	PADAPTER	Adapter
 	);
 
@@ -219,7 +219,7 @@ ODM_PathDiversityBeforeLink92C(
 	);
 
 VOID	
-odm_PathDiversityAfterLink_92C(
+rtl8188fu_odm_PathDiversityAfterLink_92C(
 	IN	PADAPTER	Adapter
 	);
 

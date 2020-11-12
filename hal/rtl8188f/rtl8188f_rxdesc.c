@@ -27,7 +27,7 @@ void rtl8188f_query_rx_desc_status(union recv_frame *precvframe, u8 *pdesc)
 
 
 	pattrib = &precvframe->u.hdr.attrib;
-	_rtw_memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
+	rtl8188fu__rtw_memset(pattrib, 0, sizeof(struct rx_pkt_attrib));
 
 	pattrib->pkt_len = (u16)GET_RX_STATUS_DESC_PKT_LEN_8188F(pdesc);
 	pattrib->pkt_rpt_type = GET_RX_STATUS_DESC_RPT_SEL_8188F(pdesc) ? C2H_PACKET : NORMAL_RX;

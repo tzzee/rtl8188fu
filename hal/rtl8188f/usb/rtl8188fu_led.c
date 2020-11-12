@@ -101,14 +101,14 @@ rtl8188fu_InitSwLeds(
 {
 	struct led_priv *pledpriv = &(padapter->ledpriv);
 
-	pledpriv->LedControlHandler = LedControlUSB;
+	pledpriv->LedControlHandler = rtl8188fu_LedControlUSB;
 
 	pledpriv->SwLedOn = SwLedOn_8188FU;
 	pledpriv->SwLedOff = SwLedOff_8188FU;
 
-	InitLed(padapter, &(pledpriv->SwLed0), LED_PIN_LED0);
+	rtl8188fu_InitLed(padapter, &(pledpriv->SwLed0), LED_PIN_LED0);
 
-	InitLed(padapter, &(pledpriv->SwLed1), LED_PIN_LED1);
+	rtl8188fu_InitLed(padapter, &(pledpriv->SwLed1), LED_PIN_LED1);
 }
 
 
@@ -124,7 +124,7 @@ rtl8188fu_DeInitSwLeds(
 {
 	struct led_priv  *ledpriv = &(padapter->ledpriv);
 
-	DeInitLed(&(ledpriv->SwLed0));
-	DeInitLed(&(ledpriv->SwLed1));
+	Dertl8188fu_InitLed(&(ledpriv->SwLed0));
+	Dertl8188fu_InitLed(&(ledpriv->SwLed1));
 }
 

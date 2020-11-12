@@ -91,7 +91,7 @@
 #define RTL8822B_SUPPORT		0
 
 VOID
-PHY_SetTxPowerLimit(
+rtl8188fu_PHY_rtl8188fu_SetTxPowerLimit(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u8	*Regulation,
 	IN	u8	*Band,

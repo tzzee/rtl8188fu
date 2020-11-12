@@ -44,7 +44,7 @@ return i;
 
 #ifdef CONFIG_MP_INCLUDED
 
-u32 read_macreg(_adapter *padapter, u32 addr, u32 sz)
+u32 rtl8188fu_read_macreg(_adapter *padapter, u32 addr, u32 sz)
 {
 	u32 val = 0;
 
@@ -68,7 +68,7 @@ u32 read_macreg(_adapter *padapter, u32 addr, u32 sz)
 	
 }
 
-void write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz)
+void rtl8188fu_write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz)
 {
 	switch(sz)
 	{
@@ -87,41 +87,41 @@ void write_macreg(_adapter *padapter, u32 addr, u32 val, u32 sz)
 
 }
 
-u32 read_bbreg(_adapter *padapter, u32 addr, u32 bitmask)
+u32 rtl8188fu_read_bbreg(_adapter *padapter, u32 addr, u32 bitmask)
 {
-	return rtw_hal_read_bbreg(padapter, addr, bitmask);
+	return rtw_hal_rtl8188fu_read_bbreg(padapter, addr, bitmask);
 }
 
-void write_bbreg(_adapter *padapter, u32 addr, u32 bitmask, u32 val)
+void rtl8188fu_write_bbreg(_adapter *padapter, u32 addr, u32 bitmask, u32 val)
 {
-	rtw_hal_write_bbreg(padapter, addr, bitmask, val);
+	rtl8188fu_rtw_hal_rtl8188fu_write_bbreg(padapter, addr, bitmask, val);
 }
 
-u32 _read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask)
+u32 rtl8188fu__rtl8188fu_read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask)
 {
-	return rtw_hal_read_rfreg(padapter, rfpath, addr, bitmask);
+	return rtl8188fu_rtw_halrtl8188fu__rtl8188fu_read_rfreg(padapter, rfpath, addr, bitmask);
 }
 
-void _write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask, u32 val)
+void _rtl8188furtl8188fu__write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 bitmask, u32 val)
 {
-	rtw_hal_write_rfreg(padapter, rfpath, addr, bitmask, val);
+	rtl8188fu_rtw_hal_rtl8188furtl8188fu__write_rfreg(padapter, rfpath, addr, bitmask, val);
 }
 
-u32 read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr)
+u32 rtl8188fu_read_rfreg(PADAPTER padapter, u8 rfpath, u32 addr)
 {
-	return _read_rfreg(padapter, rfpath, addr, bRFRegOffsetMask);
+	return rtl8188fu__rtl8188fu_read_rfreg(padapter, rfpath, addr, bRFRegOffsetMask);
 }
 
-void write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 val)
+void rtl8188furtl8188fu__write_rfreg(PADAPTER padapter, u8 rfpath, u32 addr, u32 val)
 {
-	_write_rfreg(padapter, rfpath, addr, bRFRegOffsetMask, val);
+	_rtl8188furtl8188fu__write_rfreg(padapter, rfpath, addr, bRFRegOffsetMask, val);
 }
 
-static void _init_mp_priv_(struct mp_priv *pmp_priv)
+static void _rtl8188fu_init_mp_priv_(struct mp_priv *pmp_priv)
 {
 	WLAN_BSSID_EX *pnetwork;
 
-	_rtw_memset(pmp_priv, 0, sizeof(struct mp_priv));
+	rtl8188fu__rtw_memset(pmp_priv, 0, sizeof(struct mp_priv));
 
 	pmp_priv->mode = MP_OFF;
 
@@ -154,10 +154,10 @@ static void _init_mp_priv_(struct mp_priv *pmp_priv)
 	pmp_priv->bloopback = _FALSE;
 
 	pnetwork = &pmp_priv->mp_network.network;
-	_rtw_memcpy(pnetwork->MacAddress, pmp_priv->network_macaddr, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pnetwork->MacAddress, pmp_priv->network_macaddr, ETH_ALEN);
 
 	pnetwork->Ssid.SsidLength = 8;
-	_rtw_memcpy(pnetwork->Ssid.Ssid, "mp_871x", pnetwork->Ssid.SsidLength);
+	rtl8188fu__rtw_memcpy(pnetwork->Ssid.Ssid, "mp_871x", pnetwork->Ssid.SsidLength);
 
 	pmp_priv->tx.payload = 2;
 #ifdef CONFIG_80211N_HT
@@ -207,7 +207,7 @@ void mp_wi_callback(
 }
 */
 
-static int init_mp_priv_by_os(struct mp_priv *pmp_priv)
+static int rtl8188fu_init_mp_priv_by_os(struct mp_priv *pmp_priv)
 {
 	struct mp_wi_cntx *pmp_wi_cntx;
 
@@ -230,20 +230,20 @@ static int init_mp_priv_by_os(struct mp_priv *pmp_priv)
 #endif
 
 #ifdef PLATFORM_LINUX
-static int init_mp_priv_by_os(struct mp_priv *pmp_priv)
+static int rtl8188fu_init_mp_priv_by_os(struct mp_priv *pmp_priv)
 {
 	int i, res;
 	struct mp_xmit_frame *pmp_xmitframe;
 
 	if (pmp_priv == NULL) return _FAIL;
 
-	_rtw_init_queue(&pmp_priv->free_mp_xmitqueue);
+	rtl8188fu__rtw_init_queue(&pmp_priv->free_mp_xmitqueue);
 
 	pmp_priv->pallocated_mp_xmitframe_buf = NULL;
 	pmp_priv->pallocated_mp_xmitframe_buf = rtw_zmalloc(NR_MP_XMITFRAME * sizeof(struct mp_xmit_frame) + 4);
 	if (pmp_priv->pallocated_mp_xmitframe_buf == NULL) {
 		res = _FAIL;
-		goto _exit_init_mp_priv;
+		goto _exit_rtl8188fu_init_mp_priv;
 	}
 
 	pmp_priv->pmp_xmtframe_buf = pmp_priv->pallocated_mp_xmitframe_buf + 4 - ((SIZE_PTR) (pmp_priv->pallocated_mp_xmitframe_buf) & 3);
@@ -252,8 +252,8 @@ static int init_mp_priv_by_os(struct mp_priv *pmp_priv)
 
 	for (i = 0; i < NR_MP_XMITFRAME; i++)
 	{
-		_rtw_init_listhead(&pmp_xmitframe->list);
-		rtw_list_insert_tail(&pmp_xmitframe->list, &pmp_priv->free_mp_xmitqueue.queue);
+		rtl8188fu__rtw_init_listhead(&pmp_xmitframe->list);
+		rtl8188fu_rtw_list_insert_tail(&pmp_xmitframe->list, &pmp_priv->free_mp_xmitqueue.queue);
 
 		pmp_xmitframe->pkt = NULL;
 		pmp_xmitframe->frame_tag = MP_FRAMETAG;
@@ -266,7 +266,7 @@ static int init_mp_priv_by_os(struct mp_priv *pmp_priv)
 
 	res = _SUCCESS;
 
-_exit_init_mp_priv:
+_exit_rtl8188fu_init_mp_priv:
 
 	return res;
 }
@@ -280,15 +280,15 @@ static void mp_init_xmit_attrib(struct mp_tx *pmptx, PADAPTER padapter)
 
 	// init xmitframe attribute
 	pattrib = &pmptx->attrib;
-	_rtw_memset(pattrib, 0, sizeof(struct pkt_attrib));
-	_rtw_memset(pmptx->desc, 0, TXDESC_SIZE);
+	rtl8188fu__rtw_memset(pattrib, 0, sizeof(struct pkt_attrib));
+	rtl8188fu__rtw_memset(pmptx->desc, 0, TXDESC_SIZE);
 
 	pattrib->ether_type = 0x8712;
 	#if 0
-	_rtw_memcpy(pattrib->src, adapter_mac_addr(padapter), ETH_ALEN);
-	_rtw_memcpy(pattrib->ta, pattrib->src, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pattrib->src, adapter_mac_addr(padapter), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pattrib->ta, pattrib->src, ETH_ALEN);
 	#endif
-	_rtw_memset(pattrib->dst, 0xFF, ETH_ALEN);
+	rtl8188fu__rtw_memset(pattrib->dst, 0xFF, ETH_ALEN);
 
 //	pattrib->dhcp_pkt = 0;
 //	pattrib->pktlen = 0;
@@ -318,18 +318,18 @@ static void mp_init_xmit_attrib(struct mp_tx *pmptx, PADAPTER padapter)
 #endif		
 }
 
-s32 init_mp_priv(PADAPTER padapter)
+s32 rtl8188fu_init_mp_priv(PADAPTER padapter)
 {
 	struct mp_priv *pmppriv = &padapter->mppriv;
 	PHAL_DATA_TYPE pHalData;
 
 	pHalData = GET_HAL_DATA(padapter);
 	
-	_init_mp_priv_(pmppriv);
+	_rtl8188fu_init_mp_priv_(pmppriv);
 	pmppriv->papdater = padapter;
 	pmppriv->mp_dm =0;
 	pmppriv->tx.stop = 1;
-	pmppriv->bSetTxPower = 0;		/*for  manually set tx power*/
+	pmppriv->brtl8188fu_SetTxPower = 0;		/*for  manually set tx power*/
 	pmppriv->bTxBufCkFail = _FALSE;
 	pmppriv->pktInterval = 0;
 	pmppriv->pktLength = 1000;
@@ -363,7 +363,7 @@ s32 init_mp_priv(PADAPTER padapter)
 	return _SUCCESS;
 }
 
-void free_mp_priv(struct mp_priv *pmp_priv)
+void rtl8188fu_free_mp_priv(struct mp_priv *pmp_priv)
 {
 	if (pmp_priv->pallocated_mp_xmitframe_buf) {
 		rtw_mfree(pmp_priv->pallocated_mp_xmitframe_buf, 0);
@@ -397,7 +397,7 @@ static VOID PHY_SetRFPathSwitch_default(
 }
 
 
-void mpt_InitHWConfig(PADAPTER Adapter)
+void rtl8188fu_mpt_InitHWConfig(PADAPTER Adapter)
 {
 	if (IS_HARDWARE_TYPE_8723B(Adapter)) {
 		// TODO: <20130114, Kordan> The following setting is only for DPDT and Fixed board type.
@@ -509,7 +509,7 @@ static void PHY_IQCalibrate(PADAPTER padapter, u8 bReCovery)
 #endif
 
 s32
-MPT_InitializeAdapter(
+rtl8188fu_MPT_InitializeAdapter(
 	IN	PADAPTER			pAdapter,
 	IN	u8				Channel
 	)
@@ -529,11 +529,11 @@ MPT_InitializeAdapter(
 	pMptCtx->bMPh2c_timeout = _FALSE;
 	pMptCtx->MptH2cRspEvent = _FALSE;
 	pMptCtx->MptBtC2hEvent = _FALSE;
-	_rtw_init_sema(&pMptCtx->MPh2c_Sema, 0);
+	rtl8188fu__rtw_init_sema(&pMptCtx->MPh2c_Sema, 0);
 	_init_timer( &pMptCtx->MPh2c_timeout_timer, pAdapter->pnetdev, MPh2c_timeout_handle, pAdapter );
 #endif
 
-	mpt_InitHWConfig(pAdapter);
+	rtl8188fu_mpt_InitHWConfig(pAdapter);
 
 #ifdef CONFIG_RTL8723B
 	rtl8723b_InitAntenna_Selection(pAdapter);
@@ -587,7 +587,7 @@ MPT_InitializeAdapter(
 }
 
 /*-----------------------------------------------------------------------------
- * Function:	MPT_DeInitAdapter()
+ * Function:	rtl8188fu_MPT_DeInitAdapter()
  *
  * Overview:	Extra DeInitialization for Mass Production Test.
  *
@@ -604,7 +604,7 @@ MPT_InitializeAdapter(
  *
  *---------------------------------------------------------------------------*/
 VOID
-MPT_DeInitAdapter(
+rtl8188fu_MPT_DeInitAdapter(
 	IN	PADAPTER	pAdapter
 	)
 {
@@ -612,7 +612,7 @@ MPT_DeInitAdapter(
 
 	pMptCtx->bMptDrvUnload = _TRUE;
 	#if defined(CONFIG_RTL8723B)
-	_rtw_free_sema(&(pMptCtx->MPh2c_Sema));
+	rtl8188fu__rtw_free_sema(&(pMptCtx->MPh2c_Sema));
 	_cancel_timer_ex( &pMptCtx->MPh2c_timeout_timer);
 	#endif
 	#if	defined(CONFIG_RTL8723B)
@@ -651,16 +651,16 @@ static u8 mpt_ProStartTest(PADAPTER padapter)
 /*
  * General use
  */
-s32 SetPowerTracking(PADAPTER padapter, u8 enable)
+s32 rtl8188fu_SetPowerTracking(PADAPTER padapter, u8 enable)
 {
 
-	hal_mpt_SetPowerTracking(padapter, enable);
+	hal_mpt_rtl8188fu_SetPowerTracking(padapter, enable);
 	return 0;
 }
 
-void GetPowerTracking(PADAPTER padapter, u8 *enable)
+void rtl8188fu_GetPowerTracking(PADAPTER padapter, u8 *enable)
 {
-	hal_mpt_GetPowerTracking(padapter, enable);
+	hal_mpt_rtl8188fu_GetPowerTracking(padapter, enable);
 }
 
 static void disable_dm(PADAPTER padapter)
@@ -685,29 +685,29 @@ static void disable_dm(PADAPTER padapter)
 }
 
 
-void MPT_PwrCtlDM(PADAPTER padapter, u32 bstart)
+void rtl8188fu_MPT_PwrCtlDM(PADAPTER padapter, u32 bstart)
 {
 	HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
 	PDM_ODM_T		pDM_Odm = &pHalData->odmpriv;
 
 	if (bstart==1){
-		DBG_871X("in MPT_PwrCtlDM start\n");
+		DBG_871X("in rtl8188fu_MPT_PwrCtlDM start\n");
 		rtw_phydm_func_set(padapter, ODM_RF_TX_PWR_TRACK | ODM_RF_CALIBRATION);
 
 		pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = _TRUE;
 		padapter->mppriv.mp_dm =1;
 		
 	}else{
-		DBG_871X("in MPT_PwrCtlDM stop \n");
+		DBG_871X("in rtl8188fu_MPT_PwrCtlDM stop \n");
 		disable_dm(padapter);
 		pDM_Odm->RFCalibrateInfo.TxPowerTrackControl = _FALSE;
 		padapter->mppriv.mp_dm = 0;
 		{
 			TXPWRTRACK_CFG	c;
 			u1Byte	chnl =0 ;
-			_rtw_memset(&c, 0, sizeof(TXPWRTRACK_CFG));
-			ConfigureTxpowerTrack(pDM_Odm, &c);
-			ODM_ClearTxPowerTrackingState(pDM_Odm);
+			rtl8188fu__rtw_memset(&c, 0, sizeof(TXPWRTRACK_CFG));
+			rtl8188fu_ConfigureTxpowerTrack(pDM_Odm, &c);
+			rtl8188fu_ODM_ClearTxPowerTrackingState(pDM_Odm);
 			if (*c.ODM_TxPwrTrackSetPwr) {
 				if (pDM_Odm->SupportICType == ODM_RTL8188F)
 					(*c.ODM_TxPwrTrackSetPwr)(pDM_Odm, MIX_MODE, ODM_RF_PATH_A, chnl);
@@ -722,7 +722,7 @@ void MPT_PwrCtlDM(PADAPTER padapter, u32 bstart)
 }
 
 
-u32 mp_join(PADAPTER padapter,u8 mode)
+u32 rtl8188fu_mp_join(PADAPTER padapter,u8 mode)
 {
 	WLAN_BSSID_EX bssid;
 	struct sta_info *psta;
@@ -742,14 +742,14 @@ u32 mp_join(PADAPTER padapter,u8 mode)
 	struct wireless_dev *pwdev = padapter->rtw_wdev;
 #endif //#ifdef CONFIG_IOCTL_CFG80211
 	// 1. initialize a new WLAN_BSSID_EX
-	_rtw_memset(&bssid, 0, sizeof(WLAN_BSSID_EX));
+	rtl8188fu__rtw_memset(&bssid, 0, sizeof(WLAN_BSSID_EX));
 	DBG_8192C("%s ,pmppriv->network_macaddr=%x %x %x %x %x %x \n",__func__,
 				pmppriv->network_macaddr[0],pmppriv->network_macaddr[1],pmppriv->network_macaddr[2],pmppriv->network_macaddr[3],pmppriv->network_macaddr[4],pmppriv->network_macaddr[5]);
-	_rtw_memcpy(bssid.MacAddress, pmppriv->network_macaddr, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(bssid.MacAddress, pmppriv->network_macaddr, ETH_ALEN);
 	
 	if( mode==WIFI_FW_ADHOC_STATE ){
 		bssid.Ssid.SsidLength = strlen("mp_pseudo_adhoc");
-		_rtw_memcpy(bssid.Ssid.Ssid, (u8*)"mp_pseudo_adhoc", bssid.Ssid.SsidLength);
+		rtl8188fu__rtw_memcpy(bssid.Ssid.Ssid, (u8*)"mp_pseudo_adhoc", bssid.Ssid.SsidLength);
 		bssid.InfrastructureMode = Ndis802_11IBSS;
 		bssid.NetworkTypeInUse = Ndis802_11DS;
 		bssid.IELength = 0;
@@ -757,7 +757,7 @@ u32 mp_join(PADAPTER padapter,u8 mode)
 
 	}else if(mode==WIFI_FW_STATION_STATE){
 		bssid.Ssid.SsidLength = strlen("mp_pseudo_STATION");
-		_rtw_memcpy(bssid.Ssid.Ssid, (u8*)"mp_pseudo_STATION", bssid.Ssid.SsidLength);
+		rtl8188fu__rtw_memcpy(bssid.Ssid.Ssid, (u8*)"mp_pseudo_STATION", bssid.Ssid.SsidLength);
 		bssid.InfrastructureMode = Ndis802_11Infrastructure;
 		bssid.NetworkTypeInUse = Ndis802_11DS;
 		bssid.IELength = 0;
@@ -776,9 +776,9 @@ u32 mp_join(PADAPTER padapter,u8 mode)
 
 	//init mp_start_test status
 	if (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) {
-		rtw_disassoc_cmd(padapter, 500, _TRUE);
-		rtw_indicate_disconnect(padapter, 0, _FALSE);
-		rtw_free_assoc_resources(padapter, 1);
+		rtl8188fu_rtw_disassoc_cmd(padapter, 500, _TRUE);
+		rtl8188fu_rtw_indicate_disconnect(padapter, 0, _FALSE);
+		rtl8188fu_rtw_free_assoc_resources(padapter, 1);
 	}
 	pmppriv->prev_fw_state = get_fwstate(pmlmepriv);
 	pmlmepriv->fw_state = WIFI_MP_STATE;
@@ -787,10 +787,10 @@ u32 mp_join(PADAPTER padapter,u8 mode)
 
 	//3 2. create a new psta for mp driver
 	//clear psta in the cur_network, if any
-	psta = rtw_get_stainfo(&padapter->stapriv, tgt_network->network.MacAddress);
-	if (psta) rtw_free_stainfo(padapter, psta);
+	psta = rtl8188fu_rtw_get_stainfo(&padapter->stapriv, tgt_network->network.MacAddress);
+	if (psta) rtl8188fu_rtw_free_stainfo(padapter, psta);
 
-	psta = rtw_alloc_stainfo(&padapter->stapriv, bssid.MacAddress);
+	psta = rtl8188fu_rtw_alloc_stainfo(&padapter->stapriv, bssid.MacAddress);
 	if (psta == NULL) {
 		RT_TRACE(_module_mp_, _drv_err_, ("mp_start_test: Can't alloc sta_info!\n"));
 		pmlmepriv->fw_state = pmppriv->prev_fw_state;
@@ -802,12 +802,12 @@ u32 mp_join(PADAPTER padapter,u8 mode)
 	tgt_network->join_res = 1;
 	tgt_network->aid = psta->aid = 1;
 
-	_rtw_memcpy(&padapter->registrypriv.dev_network, &bssid, length);
-	rtw_update_registrypriv_dev_network(padapter);
-	_rtw_memcpy(&tgt_network->network,&padapter->registrypriv.dev_network, padapter->registrypriv.dev_network.Length);
-	_rtw_memcpy(pnetwork,&padapter->registrypriv.dev_network, padapter->registrypriv.dev_network.Length);
+	rtl8188fu__rtw_memcpy(&padapter->registrypriv.dev_network, &bssid, length);
+	rtl8188fu_rtw_update_registrypriv_dev_network(padapter);
+	rtl8188fu__rtw_memcpy(&tgt_network->network,&padapter->registrypriv.dev_network, padapter->registrypriv.dev_network.Length);
+	rtl8188fu__rtw_memcpy(pnetwork,&padapter->registrypriv.dev_network, padapter->registrypriv.dev_network.Length);
 
-	rtw_indicate_connect(padapter);
+	rtl8188fu_rtw_indicate_connect(padapter);
 	_clr_fwstate_(pmlmepriv, _FW_UNDER_LINKING);
 	set_fwstate(pmlmepriv,_FW_LINKED);
 
@@ -825,12 +825,12 @@ end_of_mp_start_test:
 			rtw_write8(padapter, MSR, val8); // Link in ad hoc network
 		} 
 		else {
-			Set_MSR(padapter, WIFI_FW_STATION_STATE);
+			rtl8188fu_Set_MSR(padapter, WIFI_FW_STATION_STATE);
 
 			DBG_8192C("%s , pmppriv->network_macaddr =%x %x %x %x %x %x\n",__func__,
 						pmppriv->network_macaddr[0],pmppriv->network_macaddr[1],pmppriv->network_macaddr[2],pmppriv->network_macaddr[3],pmppriv->network_macaddr[4],pmppriv->network_macaddr[5]);
 
-			rtw_hal_set_hwreg(padapter, HW_VAR_BSSID, pmppriv->network_macaddr);
+			rtl8188fu_rtw_hal_set_hwreg(padapter, HW_VAR_BSSID, pmppriv->network_macaddr);
 		}
 	}
 
@@ -880,7 +880,7 @@ static VOID mpt_AdjustRFRegByRateByChan92CU(PADAPTER pAdapter, u8 RateIdx, u8 Ch
 
 //	RT_TRACE(COMP_CMD, DBG_LOUD, ("\n mpt_AdjustRFRegByRateByChan92CU():Chan:%d Rate=%d rfReg0x26:0x%08x\n",Channel, RateIdx,rfReg0x26));
 	for (eRFPath = 0; eRFPath < pHalData->NumTotalRFPath; eRFPath++) {
-		write_rfreg(pAdapter, eRFPath, RF_SYN_G2, rfReg0x26);
+		rtl8188furtl8188fu__write_rfreg(pAdapter, eRFPath, RF_SYN_G2, rfReg0x26);
 	}
 }
 #endif
@@ -903,57 +903,57 @@ static VOID mpt_AdjustRFRegByRateByChan92CU(PADAPTER pAdapter, u8 RateIdx, u8 Ch
  *---------------------------------------------------------------------------*/
 static void mpt_SwitchRfSetting(PADAPTER pAdapter)
 {
-	hal_mpt_SwitchRfSetting(pAdapter);
+	rtl8188fu_hal_mpt_SwitchRfSetting(pAdapter);
     }
 
 /*---------------------------hal\rtl8192c\MPT_Phy.c---------------------------*/
 /*---------------------------hal\rtl8192c\MPT_HelperFunc.c---------------------------*/
 static void MPT_CCKTxPowerAdjust(PADAPTER Adapter, BOOLEAN bInCH14)
 {
-	hal_mpt_CCKTxPowerAdjust(Adapter, bInCH14);
+	rtl8188fu_hal_mpt_CCKTxPowerAdjust(Adapter, bInCH14);
 }
 
 static void MPT_CCKTxPowerAdjustbyIndex(PADAPTER pAdapter, BOOLEAN beven)
 {
-	hal_mpt_CCKTxPowerAdjustbyIndex(pAdapter, beven);
+	rtl8188fu_hal_mpt_CCKTxPowerAdjustbyIndex(pAdapter, beven);
 	}
 
 /*---------------------------hal\rtl8192c\MPT_HelperFunc.c---------------------------*/
 
 /*
- * SetChannel
+ * rtl8188fu_SetChannel
  * Description
  *	Use H2C command to change channel,
  *	not only modify rf register, but also other setting need to be done.
  */
-void SetChannel(PADAPTER pAdapter)
+void rtl8188fu_SetChannel(PADAPTER pAdapter)
 {
-	hal_mpt_SetChannel(pAdapter);
+	rtl8188fu_hal_mpt_rtl8188fu_SetChannel(pAdapter);
 }
 
 /*
  * Notice
  *	Switch bandwitdth may change center frequency(channel)
  */
-void SetBandwidth(PADAPTER pAdapter)
+void rtl8188fu_SetBandwidth(PADAPTER pAdapter)
 {
-	hal_mpt_SetBandwidth(pAdapter);
+	rtl8188fu_hal_mpt_rtl8188fu_SetBandwidth(pAdapter);
 
 }
 
-void SetAntenna(PADAPTER pAdapter)
+void rtl8188fu_SetAntenna(PADAPTER pAdapter)
 {
-	hal_mpt_SetAntenna(pAdapter);
+	hal_mpt_rtl8188fu_SetAntenna(pAdapter);
 }
 
-int SetTxPower(PADAPTER pAdapter)
+int rtl8188fu_SetTxPower(PADAPTER pAdapter)
 {
 
-	hal_mpt_SetTxPower(pAdapter);
+	hal_mpt_rtl8188fu_SetTxPower(pAdapter);
 	return _TRUE;
 }
 
-void SetTxAGCOffset(PADAPTER pAdapter, u32 ulTxAGCOffset)
+void rtl8188fu_SetTxAGCOffset(PADAPTER pAdapter, u32 ulTxAGCOffset)
 {
 	u32 TxAGCOffset_B, TxAGCOffset_C, TxAGCOffset_D,tmpAGC;
 
@@ -962,16 +962,16 @@ void SetTxAGCOffset(PADAPTER pAdapter, u32 ulTxAGCOffset)
 	TxAGCOffset_D = ((ulTxAGCOffset&0x00ff0000)>>16);
 
 	tmpAGC = (TxAGCOffset_D<<8 | TxAGCOffset_C<<4 | TxAGCOffset_B);
-	write_bbreg(pAdapter, rFPGA0_TxGainStage,
+	rtl8188fu_write_bbreg(pAdapter, rFPGA0_TxGainStage,
 			(bXBTxAGC|bXCTxAGC|bXDTxAGC), tmpAGC);
 }
 
-void SetDataRate(PADAPTER pAdapter)
+void rtl8188fu_SetDataRate(PADAPTER pAdapter)
 {
-	hal_mpt_SetDataRate(pAdapter);
+	hal_mpt_rtl8188fu_SetDataRate(pAdapter);
 }
 
-void MP_PHY_SetRFPathSwitch(PADAPTER pAdapter ,BOOLEAN bMain)
+void rtl8188fu_MP_PHY_SetRFPathSwitch(PADAPTER pAdapter ,BOOLEAN bMain)
 {
 
 	PHY_SetRFPathSwitch(pAdapter, bMain);
@@ -979,85 +979,85 @@ void MP_PHY_SetRFPathSwitch(PADAPTER pAdapter ,BOOLEAN bMain)
 }
 
 
-s32 SetThermalMeter(PADAPTER pAdapter, u8 target_ther)
+s32 rtl8188fu_SetThermalMeter(PADAPTER pAdapter, u8 target_ther)
 {
-	return hal_mpt_SetThermalMeter(pAdapter, target_ther);
+	return rtl8188fu_hal_mpt_rtl8188fu_SetThermalMeter(pAdapter, target_ther);
 }
 
 static void TriggerRFThermalMeter(PADAPTER pAdapter)
 {
-	hal_mpt_TriggerRFThermalMeter(pAdapter);
+	rtl8188fu_hal_mpt_TriggerRFThermalMeter(pAdapter);
 }
 
 static u8 ReadRFThermalMeter(PADAPTER pAdapter)
 {
-	return hal_mpt_ReadRFThermalMeter(pAdapter);
+	return rtl8188fu_hal_mpt_ReadRFThermalMeter(pAdapter);
 }
 
-void GetThermalMeter(PADAPTER pAdapter, u8 *value)
+void rtl8188fu_GetThermalMeter(PADAPTER pAdapter, u8 *value)
 {
-	hal_mpt_GetThermalMeter(pAdapter, value);
+	rtl8188fu_hal_mpt_rtl8188fu_GetThermalMeter(pAdapter, value);
 }
 
-void SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart)
+void rtl8188fu_SetSingleCarrierTx(PADAPTER pAdapter, u8 bStart)
 {
-	PhySetTxPowerLevel(pAdapter);
-	hal_mpt_SetSingleCarrierTx(pAdapter, bStart);
+	Phyrtl8188fu_SetTxPowerLevel(pAdapter);
+	rtl8188fu_hal_mpt_rtl8188fu_SetSingleCarrierTx(pAdapter, bStart);
 }
 
-void SetSingleToneTx(PADAPTER pAdapter, u8 bStart)
+void rtl8188fu_SetSingleToneTx(PADAPTER pAdapter, u8 bStart)
 {
-	PhySetTxPowerLevel(pAdapter);
-	hal_mpt_SetSingleToneTx(pAdapter, bStart);
+	Phyrtl8188fu_SetTxPowerLevel(pAdapter);
+	hal_mpt_rtl8188fu_SetSingleToneTx(pAdapter, bStart);
 }
 
-void SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart)
+void rtl8188fu_SetCarrierSuppressionTx(PADAPTER pAdapter, u8 bStart)
 {
-	PhySetTxPowerLevel(pAdapter);
-	hal_mpt_SetCarrierSuppressionTx(pAdapter, bStart);
+	Phyrtl8188fu_SetTxPowerLevel(pAdapter);
+	hal_mpt_rtl8188fu_SetCarrierSuppressionTx(pAdapter, bStart);
 }
 
-void SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
+void rtl8188fu_SetCCKContinuousTx(PADAPTER pAdapter, u8 bStart)
 {
-	PhySetTxPowerLevel(pAdapter);
-	hal_mpt_SetCCKContinuousTx(pAdapter, bStart);
+	Phyrtl8188fu_SetTxPowerLevel(pAdapter);
+	rtl8188fu_hal_mpt_rtl8188fu_SetCCKContinuousTx(pAdapter, bStart);
 }
 
-void SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart)
+void rtl8188fu_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart)
 {
-	PhySetTxPowerLevel(pAdapter);
-	hal_mpt_SetOFDMContinuousTx(pAdapter, bStart);
+	Phyrtl8188fu_SetTxPowerLevel(pAdapter);
+	rtl8188fu_hal_mpt_rtl8188fu_SetOFDMContinuousTx(pAdapter, bStart);
 }/* mpt_StartOfdmContTx */
 
-void SetContinuousTx(PADAPTER pAdapter, u8 bStart)
+void rtl8188fu_SetContinuousTx(PADAPTER pAdapter, u8 bStart)
 {
-	PhySetTxPowerLevel(pAdapter);
-	hal_mpt_SetContinuousTx(pAdapter, bStart);
+	Phyrtl8188fu_SetTxPowerLevel(pAdapter);
+	hal_mpt_rtl8188fu_SetContinuousTx(pAdapter, bStart);
 }
 
 
-void PhySetTxPowerLevel(PADAPTER pAdapter)
+void Phyrtl8188fu_SetTxPowerLevel(PADAPTER pAdapter)
 {
 	struct mp_priv *pmp_priv = &pAdapter->mppriv;
 		
-	if (pmp_priv->bSetTxPower==0) // for NO manually set power index
+	if (pmp_priv->brtl8188fu_SetTxPower==0) // for NO manually set power index
 	{
 #ifdef CONFIG_RTL8188E	
-		PHY_SetTxPowerLevel8188E(pAdapter,pmp_priv->channel);
+		PHY_rtl8188fu_SetTxPowerLevel8188E(pAdapter,pmp_priv->channel);
 #endif
 #if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
-		PHY_SetTxPowerLevel8812(pAdapter,pmp_priv->channel);
+		PHY_rtl8188fu_SetTxPowerLevel8812(pAdapter,pmp_priv->channel);
 #endif
 #if defined(CONFIG_RTL8192E)
-		PHY_SetTxPowerLevel8192E(pAdapter,pmp_priv->channel);
+		PHY_rtl8188fu_SetTxPowerLevel8192E(pAdapter,pmp_priv->channel);
 #endif
 #if defined(CONFIG_RTL8723B)
-		PHY_SetTxPowerLevel8723B(pAdapter,pmp_priv->channel);
+		PHY_rtl8188fu_SetTxPowerLevel8723B(pAdapter,pmp_priv->channel);
 #endif
 #if defined(CONFIG_RTL8188F)
-		PHY_SetTxPowerLevel8188F(pAdapter, pmp_priv->channel);
+		PHY_rtl8188fu_SetTxPowerLevel8188F(pAdapter, pmp_priv->channel);
 #endif
-	mpt_ProQueryCalTxPower(pAdapter,pmp_priv->antenna_tx);
+	rtl8188fu_mpt_ProQueryCalTxPower(pAdapter,pmp_priv->antenna_tx);
 
 	}
 }
@@ -1065,7 +1065,7 @@ void PhySetTxPowerLevel(PADAPTER pAdapter)
 //------------------------------------------------------------------------------
 static void dump_mpframe(PADAPTER padapter, struct xmit_frame *pmpframe)
 {
-	rtw_hal_mgnt_xmit(padapter, pmpframe);
+	rtl8188fu_rtw_hal_mgnt_xmit(padapter, pmpframe);
 }
 
 static struct xmit_frame *alloc_mp_xmitframe(struct xmit_priv *pxmitpriv)
@@ -1073,14 +1073,14 @@ static struct xmit_frame *alloc_mp_xmitframe(struct xmit_priv *pxmitpriv)
 	struct xmit_frame	*pmpframe;
 	struct xmit_buf	*pxmitbuf;
 
-	if ((pmpframe = rtw_alloc_xmitframe(pxmitpriv)) == NULL)
+	if ((pmpframe = rtl8188fu_rtw_alloc_xmitframe(pxmitpriv)) == NULL)
 	{
 		return NULL;
 	}
 
-	if ((pxmitbuf = rtw_alloc_xmitbuf(pxmitpriv)) == NULL)
+	if ((pxmitbuf = rtl8188fu_rtw_alloc_xmitbuf(pxmitpriv)) == NULL)
 	{
-		rtw_free_xmitframe(pxmitpriv, pmpframe);
+		rtl8188fu_rtw_free_xmitframe(pxmitpriv, pmpframe);
 		return NULL;
 	}
 
@@ -1120,15 +1120,15 @@ static thread_return mp_xmit_packet_thread(thread_context context)
 				goto exit;
 			}
 			else {
-				rtw_usleep_os(10);
+				rtl8188fu_rtw_usleep_os(10);
 				continue;
 			}
 		}
-		_rtw_memcpy((u8 *)(pxmitframe->buf_addr+TXDESC_OFFSET), pmptx->buf, pmptx->write_size);
-		_rtw_memcpy(&(pxmitframe->attrib), &(pmptx->attrib), sizeof(struct pkt_attrib));
+		rtl8188fu__rtw_memcpy((u8 *)(pxmitframe->buf_addr+TXDESC_OFFSET), pmptx->buf, pmptx->write_size);
+		rtl8188fu__rtw_memcpy(&(pxmitframe->attrib), &(pmptx->attrib), sizeof(struct pkt_attrib));
 
 		
-		rtw_usleep_os(padapter->mppriv.pktInterval);
+		rtl8188fu_rtw_usleep_os(padapter->mppriv.pktInterval);
 		dump_mpframe(padapter, pxmitframe);
 		
 		pmptx->sended++;
@@ -1153,10 +1153,10 @@ exit:
 	thread_exit();
 }
 
-void fill_txdesc_for_mp(PADAPTER padapter, u8 *ptxdesc)
+void rtl8188fu_fill_txdesc_for_mp(PADAPTER padapter, u8 *ptxdesc)
 {		
 	struct mp_priv *pmp_priv = &padapter->mppriv;
-	_rtw_memcpy(ptxdesc, pmp_priv->tx.desc, TXDESC_SIZE);
+	rtl8188fu__rtw_memcpy(ptxdesc, pmp_priv->tx.desc, TXDESC_SIZE);
 }
 
 #if defined(CONFIG_RTL8188E) 
@@ -1190,7 +1190,7 @@ void fill_tx_desc_8188e(PADAPTER padapter)
 	desc->txdw4 |= cpu_to_le32(DISDATAFB);
 
 	if( pmp_priv->preamble ){
-		if (HwRateToMPTRate(pmp_priv->rateidx) <=  MPT_RATE_54M)
+		if (rtl8188fu_HwRateToMPTRate(pmp_priv->rateidx) <=  MPT_RATE_54M)
 			desc->txdw4 |= cpu_to_le32(DATA_SHORT); // CCK Short Preamble
 	}
 
@@ -1201,7 +1201,7 @@ void fill_tx_desc_8188e(PADAPTER padapter)
 	desc->txdw5 |= cpu_to_le32(pmp_priv->rateidx & 0x0000001F);
 
 	if( pmp_priv->preamble ){
-		if (HwRateToMPTRate(pmp_priv->rateidx) > MPT_RATE_54M)
+		if (rtl8188fu_HwRateToMPTRate(pmp_priv->rateidx) > MPT_RATE_54M)
 			desc->txdw5 |= cpu_to_le32(SGI); // MCS Short Guard Interval
 	}
 
@@ -1405,7 +1405,7 @@ void fill_tx_desc_8723b(PADAPTER padapter)
 	SET_TX_DESC_DISABLE_FB_8723B(ptxdesc, 1);
 
 	if (pmp_priv->preamble) {
-		if (HwRateToMPTRate(pmp_priv->rateidx) <=  MPT_RATE_54M)
+		if (rtl8188fu_HwRateToMPTRate(pmp_priv->rateidx) <=  MPT_RATE_54M)
 			SET_TX_DESC_DATA_SHORT_8723B(ptxdesc, 1);
 	}
 
@@ -1438,7 +1438,7 @@ void fill_tx_desc_8703b(PADAPTER padapter)
 	SET_TX_DESC_DISABLE_FB_8703B(ptxdesc, 1);
 
 	if (pmp_priv->preamble) {
-		if (HwRateToMPTRate(pmp_priv->rateidx) <=  MPT_RATE_54M)
+		if (rtl8188fu_HwRateToMPTRate(pmp_priv->rateidx) <=  MPT_RATE_54M)
 			SET_TX_DESC_DATA_SHORT_8703B(ptxdesc, 1);
 	}
 
@@ -1470,7 +1470,7 @@ void fill_tx_desc_8188f(PADAPTER padapter)
 	SET_TX_DESC_DISABLE_FB_8188F(ptxdesc, 1);
 
 	if (pmp_priv->preamble)
-		if (HwRateToMPTRate(pmp_priv->rateidx) <=  MPT_RATE_54M)
+		if (rtl8188fu_HwRateToMPTRate(pmp_priv->rateidx) <=  MPT_RATE_54M)
 			SET_TX_DESC_DATA_SHORT_8188F(ptxdesc, 1);
 
 	if (pmp_priv->bandwidth == CHANNEL_WIDTH_40) 
@@ -1498,7 +1498,7 @@ static void Rtw_MPSetMacTxEDCA(PADAPTER padapter)
 
 }
 
-void SetPacketTx(PADAPTER padapter)
+void rtl8188fu_SetPacketTx(PADAPTER padapter)
 {
 	u8 *ptr, *pkt_start, *pkt_end,*fctrl;
 	u32 pkt_size,offset,startPlace,i;
@@ -1517,16 +1517,16 @@ void SetPacketTx(PADAPTER padapter)
 
 	//3 1. update_attrib()
 	pattrib = &pmp_priv->tx.attrib;
-	_rtw_memcpy(pattrib->src, adapter_mac_addr(padapter), ETH_ALEN);
-	_rtw_memcpy(pattrib->ta, pattrib->src, ETH_ALEN);
-	_rtw_memcpy(pattrib->ra, pattrib->dst, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pattrib->src, adapter_mac_addr(padapter), ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pattrib->ta, pattrib->src, ETH_ALEN);
+	rtl8188fu__rtw_memcpy(pattrib->ra, pattrib->dst, ETH_ALEN);
 	bmcast = IS_MCAST(pattrib->ra);
 	if (bmcast) {
 		pattrib->mac_id = 1;
-		pattrib->psta = rtw_get_bcmc_stainfo(padapter);
+		pattrib->psta = rtl8188fu_rtw_get_bcmc_stainfo(padapter);
 	} else {
 		pattrib->mac_id = 0;
-		pattrib->psta = rtw_get_stainfo(&padapter->stapriv, get_bssid(&padapter->mlmepriv));
+		pattrib->psta = rtl8188fu_rtw_get_stainfo(&padapter->stapriv, get_bssid(&padapter->mlmepriv));
 	}
 	pattrib->mbssid = 0;
 	
@@ -1547,7 +1547,7 @@ void SetPacketTx(PADAPTER padapter)
 	pmp_priv->tx.buf = (u8 *)N_BYTE_ALIGMENT((SIZE_PTR)(pmp_priv->tx.pallocated_buf), XMITBUF_ALIGN_SZ);
 	ptr = pmp_priv->tx.buf;
 
-	_rtw_memset(pmp_priv->tx.desc, 0, TXDESC_SIZE);
+	rtl8188fu__rtw_memset(pmp_priv->tx.desc, 0, TXDESC_SIZE);
 	pkt_start = ptr;
 	pkt_end = pkt_start + pkt_size;
 
@@ -1590,9 +1590,9 @@ void SetPacketTx(PADAPTER padapter)
 	SetFrameSubType(&hdr->frame_ctl, pattrib->subtype);
 	//
 	SetFrDs(&hdr->frame_ctl);
-	_rtw_memcpy(hdr->addr1, pattrib->dst, ETH_ALEN); // DA
-	_rtw_memcpy(hdr->addr2, pattrib->src, ETH_ALEN); // SA
-	_rtw_memcpy(hdr->addr3, get_bssid(&padapter->mlmepriv), ETH_ALEN); // RA, BSSID
+	rtl8188fu__rtw_memcpy(hdr->addr1, pattrib->dst, ETH_ALEN); // DA
+	rtl8188fu__rtw_memcpy(hdr->addr2, pattrib->src, ETH_ALEN); // SA
+	rtl8188fu__rtw_memcpy(hdr->addr3, get_bssid(&padapter->mlmepriv), ETH_ALEN); // RA, BSSID
 
 	//3 5. make payload
 	ptr = pkt_start + pattrib->hdrlen;
@@ -1623,11 +1623,11 @@ void SetPacketTx(PADAPTER padapter)
 	
 	
 	for(i=0;i<4096;i++)
-		pmp_priv->TXradomBuffer[i] = rtw_random32() %0xFF;
+		pmp_priv->TXradomBuffer[i] = rtl8188fu_rtw_random32() %0xFF;
 	
-	//startPlace = (u32)(rtw_random32() % 3450);
-	_rtw_memcpy(ptr, pmp_priv->TXradomBuffer,pkt_end - ptr);
-	//_rtw_memset(ptr, payload, pkt_end - ptr);
+	//startPlace = (u32)(rtl8188fu_rtw_random32() % 3450);
+	rtl8188fu__rtw_memcpy(ptr, pmp_priv->TXradomBuffer,pkt_end - ptr);
+	//rtl8188fu__rtw_memset(ptr, payload, pkt_end - ptr);
 	rtw_mfree(pmp_priv->TXradomBuffer,4096);
 	
 	//3 6. start thread
@@ -1653,7 +1653,7 @@ exit:
 	return;
 }
 
-void SetPacketRx(PADAPTER pAdapter, u8 bStartRx, u8 bAB)
+void rtl8188fu_SetPacketRx(PADAPTER pAdapter, u8 bStartRx, u8 bAB)
 {
 	PHAL_DATA_TYPE pHalData = GET_HAL_DATA(pAdapter);
 	struct mp_priv *pmppriv = &pAdapter->mppriv;
@@ -1662,7 +1662,7 @@ void SetPacketRx(PADAPTER pAdapter, u8 bStartRx, u8 bAB)
 	if (bStartRx) {
 #ifdef CONFIG_RTL8723B
 		PHY_SetMacReg(pAdapter, 0xe70, BIT23|BIT22, 0x3);// Power on adc  (in RX_WAIT_CCA state)
-		write_bbreg(pAdapter, 0xa01, BIT0, bDisable);// improve Rx performance by jerry	
+		rtl8188fu_write_bbreg(pAdapter, 0xa01, BIT0, bDisable);// improve Rx performance by jerry	
 #endif
 		pHalData->ReceiveConfig = RCR_AAP | RCR_APM | RCR_AM | RCR_AMF | RCR_HTC_LOC_CTRL;
 		pHalData->ReceiveConfig |= RCR_ACRC32;
@@ -1672,9 +1672,9 @@ void SetPacketRx(PADAPTER pAdapter, u8 bStartRx, u8 bAB)
 			DBG_8192C("%s: pmppriv->network_macaddr=" MAC_FMT "\n", __func__,
 				MAC_ARG(pmppriv->network_macaddr));
 
-			//Set_MSR(pAdapter, WIFI_FW_AP_STATE);
-			//rtw_hal_set_hwreg(pAdapter, HW_VAR_BSSID, pmppriv->network_macaddr);
-			//rtw_hal_set_hwreg(pAdapter, HW_VAR_SET_OPMODE, (u8 *)(&type));
+			//rtl8188fu_Set_MSR(pAdapter, WIFI_FW_AP_STATE);
+			//rtl8188fu_rtw_hal_set_hwreg(pAdapter, HW_VAR_BSSID, pmppriv->network_macaddr);
+			//rtl8188fu_rtw_hal_set_hwreg(pAdapter, HW_VAR_SET_OPMODE, (u8 *)(&type));
 		} else {
 			pHalData->ReceiveConfig |= RCR_ADF;
 
@@ -1687,7 +1687,7 @@ void SetPacketRx(PADAPTER pAdapter, u8 bStartRx, u8 bAB)
 	} else {
 #ifdef CONFIG_RTL8723B
 		PHY_SetMacReg(pAdapter, 0xe70, BIT23|BIT22, 0x00);// Power off adc  (in RX_WAIT_CCA state)
-		write_bbreg(pAdapter, 0xa01, BIT0, bEnable);// improve Rx performance by jerry	
+		rtl8188fu_write_bbreg(pAdapter, 0xa01, BIT0, bEnable);// improve Rx performance by jerry	
 #endif
 		pHalData->ReceiveConfig = 0;
 	}
@@ -1695,7 +1695,7 @@ void SetPacketRx(PADAPTER pAdapter, u8 bStartRx, u8 bAB)
 	rtw_write32(pAdapter, REG_RCR, pHalData->ReceiveConfig);
 }
 
-void ResetPhyRxPktCount(PADAPTER pAdapter)
+void rtl8188fu_ResetPhyRxPktCount(PADAPTER pAdapter)
 {
 	u32 i, phyrx_set = 0;
 
@@ -1721,7 +1721,7 @@ static u32 GetPhyRxPktCounts(PADAPTER pAdapter, u32 selbit)
 	return count;
 }
 
-u32 GetPhyRxPktReceived(PADAPTER pAdapter)
+u32 rtl8188fu_GetPhyRxPktReceived(PADAPTER pAdapter)
 {
 	u32 OFDM_cnt = 0, CCK_cnt = 0, HT_cnt = 0;
 
@@ -1732,7 +1732,7 @@ u32 GetPhyRxPktReceived(PADAPTER pAdapter)
 	return OFDM_cnt + CCK_cnt + HT_cnt;
 }
 
-u32 GetPhyRxPktCRC32Error(PADAPTER pAdapter)
+u32 rtl8188fu_GetPhyRxPktCRC32Error(PADAPTER pAdapter)
 {
 	u32 OFDM_cnt = 0, CCK_cnt = 0, HT_cnt = 0;
 
@@ -1746,7 +1746,7 @@ u32 GetPhyRxPktCRC32Error(PADAPTER pAdapter)
 //reg 0x808[9:0]: FFT data x
 //reg 0x808[22]:  0  -->  1  to get 1 FFT data y
 //reg 0x8B4[15:0]: FFT data y report
-static u32 rtw_GetPSDData(PADAPTER pAdapter, u32 point)
+static u32 rtw_rtl8188fu_GetPSDData(PADAPTER pAdapter, u32 point)
 {
 	u32 psd_val=0;
 	
@@ -1764,11 +1764,11 @@ static u32 rtw_GetPSDData(PADAPTER pAdapter, u32 point)
 	psd_val |= point;
 
 	rtw_write32(pAdapter, psd_reg, psd_val);
-	rtw_mdelay_os(1);
+	rtl8188fu_rtw_mdelay_os(1);
 	psd_val |= 0x00400000;
 
 	rtw_write32(pAdapter, psd_reg, psd_val);
-	rtw_mdelay_os(1);
+	rtl8188fu_rtw_mdelay_os(1);
 
 	psd_val = rtw_read32(pAdapter, psd_regL);
 	psd_val &= 0x0000FFFF;
@@ -1784,7 +1784,7 @@ static u32 rtw_GetPSDData(PADAPTER pAdapter, u32 point)
  * 1024	512			512 + 1024 = 1536
  *
  */
-u32 mp_query_psd(PADAPTER pAdapter, u8 *data)
+u32 rtl8188fu_mp_query_psd(PADAPTER pAdapter, u8 *data)
 {
 	u32 i, psd_pts=0, psd_start=0, psd_stop=0;
 	u32 psd_data=0;
@@ -1792,13 +1792,13 @@ u32 mp_query_psd(PADAPTER pAdapter, u8 *data)
 
 #ifdef PLATFORM_LINUX
 	if (!netif_running(pAdapter->pnetdev)) {
-		RT_TRACE(_module_mp_, _drv_warning_, ("mp_query_psd: Fail! interface not opened!\n"));
+		RT_TRACE(_module_mp_, _drv_warning_, ("rtl8188fu_mp_query_psd: Fail! interface not opened!\n"));
 		return 0;
 	}
 #endif
 
 	if (check_fwstate(&pAdapter->mlmepriv, WIFI_MP_STATE) == _FALSE) {
-		RT_TRACE(_module_mp_, _drv_warning_, ("mp_query_psd: Fail! not in MP mode!\n"));
+		RT_TRACE(_module_mp_, _drv_warning_, ("rtl8188fu_mp_query_psd: Fail! not in MP mode!\n"));
 		return 0;
 	}
 
@@ -1816,18 +1816,18 @@ u32 mp_query_psd(PADAPTER pAdapter, u8 *data)
 	while (i < psd_stop)
 	{
 		if (i >= psd_pts) {
-			psd_data = rtw_GetPSDData(pAdapter, i-psd_pts);
+			psd_data = rtw_rtl8188fu_GetPSDData(pAdapter, i-psd_pts);
 		} else {
-			psd_data = rtw_GetPSDData(pAdapter, i);
+			psd_data = rtw_rtl8188fu_GetPSDData(pAdapter, i);
 		}
 		sprintf(data, "%s%x ", data, psd_data);
 		i++;
 	}
 
 	#ifdef CONFIG_LONG_DELAY_ISSUE
-	rtw_msleep_os(100);
+	rtl8188fu_rtw_msleep_os(100);
 	#else
-	rtw_mdelay_os(100);
+	rtl8188fu_rtw_mdelay_os(100);
 	#endif
 
 	return strlen(data)+1;
@@ -1858,7 +1858,7 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 	pxmitbuf = (struct xmit_buf *)pxmitpriv->pxmit_extbuf;
 	for(i=0; i<num_xmit_extbuf; i++)
 	{
-		rtw_os_xmit_resource_free(padapter, pxmitbuf,(max_xmit_extbuf_size + XMITBUF_ALIGN_SZ), _FALSE);
+		rtl8188fu_rtw_os_xmit_resource_free(padapter, pxmitbuf,(max_xmit_extbuf_size + XMITBUF_ALIGN_SZ), _FALSE);
 		
 		pxmitbuf++;
 	}
@@ -1879,7 +1879,7 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 	}
 	
 	// Init xmit extension buff
-	_rtw_init_queue(&pxmitpriv->free_xmit_extbuf_queue);
+	rtl8188fu__rtw_init_queue(&pxmitpriv->free_xmit_extbuf_queue);
 
 	pxmitpriv->pallocated_xmit_extbuf = rtw_zvmalloc(num_xmit_extbuf * sizeof(struct xmit_buf) + 4);
 	
@@ -1895,13 +1895,13 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 
 	for (i = 0; i < num_xmit_extbuf; i++)
 	{
-		_rtw_init_listhead(&pxmitbuf->list);
+		rtl8188fu__rtw_init_listhead(&pxmitbuf->list);
 
 		pxmitbuf->priv_data = NULL;
 		pxmitbuf->padapter = padapter;
 		pxmitbuf->buf_tag = XMITBUF_MGNT;
 
-		if((res=rtw_os_xmit_resource_alloc(padapter, pxmitbuf,max_xmit_extbuf_size + XMITBUF_ALIGN_SZ, _TRUE)) == _FAIL) {
+		if((res=rtl8188fu_rtw_os_xmit_resource_alloc(padapter, pxmitbuf,max_xmit_extbuf_size + XMITBUF_ALIGN_SZ, _TRUE)) == _FAIL) {
 			res= _FAIL;
 			goto exit;
 		}
@@ -1913,7 +1913,7 @@ void _rtw_mp_xmit_priv (struct xmit_priv *pxmitpriv)
 		pxmitbuf->pdata = pxmitbuf->ptail = pxmitbuf->phead;
 #endif
 
-		rtw_list_insert_tail(&pxmitbuf->list, &(pxmitpriv->free_xmit_extbuf_queue.queue));
+		rtl8188fu_rtw_list_insert_tail(&pxmitbuf->list, &(pxmitpriv->free_xmit_extbuf_queue.queue));
 		#ifdef DBG_XMIT_BUF_EXT
 		pxmitbuf->no=i;
 		#endif
@@ -2127,7 +2127,7 @@ ULONG getPowerDiffByRate8188E(
 
 
 static	ULONG
-mpt_ProQueryCalTxPower_8188E(
+rtl8188fu_mpt_ProQueryCalTxPower_8188E(
 	IN	PADAPTER		pAdapter,
 	IN	u1Byte			RfPath	
 	)
@@ -2143,7 +2143,7 @@ mpt_ProQueryCalTxPower_8188E(
 	u1Byte				rf_path=(RfPath), rfPath;
 	u1Byte				limit = 0, rate = 0;
 
-	if(HAL_IsLegalChannel(pAdapter, CurrChannel) == FALSE)
+	if(rtl8188fu_HAL_IsLegalChannel(pAdapter, CurrChannel) == FALSE)
 	{
 		CurrChannel = 1;
 	}	
@@ -2207,7 +2207,7 @@ mpt_ProQueryCalTxPower_8188E(
 		rate = MGN_MCS7;
 	}
 
-	limit = (u8)PHY_GetTxPowerLimit(pAdapter, pMptCtx->RegTxPwrLimit, 
+	limit = (u8)rtl8188fu_PHY_GetTxPowerLimit(pAdapter, pMptCtx->RegTxPwrLimit, 
 								   pHalData->CurrentBandType, 
 								   pHalData->CurrentChannelBW,RfPath, 
 								   rate, CurrChannel);
@@ -2225,7 +2225,7 @@ mpt_ProQueryCalTxPower_8188E(
 
 
 u8 
-MptToMgntRate(
+rtl8188fu_MptToMgntRate(
 	IN	ULONG	MptRateIdx
 	)
 {
@@ -2326,13 +2326,13 @@ MptToMgntRate(
 		
 		case	MPT_RATE_LAST:	// fully automatiMGN_VHT2SS_MCS1;	
 		default:					  
-			DBG_871X("<===MptToMgntRate(), Invalid Rate: %d!!\n", MptRateIdx);
+			DBG_871X("<===rtl8188fu_MptToMgntRate(), Invalid Rate: %d!!\n", MptRateIdx);
 			return 0x0; 					   
 	}										   
 }											   
 
 
-u8 HwRateToMPTRate(u8 rate)
+u8 rtl8188fu_HwRateToMPTRate(u8 rate)
 {
 	u8	ret_rate = MGN_1M;
 
@@ -2507,13 +2507,13 @@ u8 HwRateToMPTRate(u8 rate)
 			ret_rate = MPT_RATE_VHT4SS_MCS9;		break;
 
 		default:
-			DBG_871X("HwRateToMRate(): Non supported Rate [%x]!!!\n", rate);
+			DBG_871X("rtl8188fu_HwRateToMRate(): Non supported Rate [%x]!!!\n", rate);
 			break;
 	}
 	return ret_rate;
 }
 
-u8 rtw_mpRateParseFunc(PADAPTER pAdapter, u8 *targetStr)
+u8 rtl8188fu_rtw_mpRateParseFunc(PADAPTER pAdapter, u8 *targetStr)
 {
 	u16 i=0;
  	u8* rateindex_Array[] = { "1M","2M","5.5M","11M","6M","9M","12M","18M","24M","36M","48M","54M",
@@ -2542,7 +2542,7 @@ u8 rtw_mpRateParseFunc(PADAPTER pAdapter, u8 *targetStr)
 	return _FAIL;
 }
 
-ULONG mpt_ProQueryCalTxPower(
+ULONG rtl8188fu_mpt_ProQueryCalTxPower(
 	PADAPTER	pAdapter,
 		u8		RfPath
 	)
@@ -2553,40 +2553,40 @@ ULONG mpt_ProQueryCalTxPower(
 
 	ULONG			TxPower = 1, PwrGroup=0, PowerDiffByRate=0;	
 	u1Byte			limit = 0, rate = 0;
-	u8 mgn_rate = MptToMgntRate(pMptCtx->MptRateIndex);
+	u8 mgn_rate = rtl8188fu_MptToMgntRate(pMptCtx->MptRateIndex);
 
 	#if defined(CONFIG_RTL8188E)
 	if (IS_HARDWARE_TYPE_8188E(pAdapter))
-		TxPower = PHY_GetTxPowerIndex_8188E(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+		TxPower = rtl8188fu_PHY_GetTxPowerIndex_8188E(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 	#endif
 
 	#if defined(CONFIG_RTL8723B)	
 	if (IS_HARDWARE_TYPE_8723B(pAdapter))
-		TxPower = PHY_GetTxPowerIndex_8723B(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+		TxPower = rtl8188fu_PHY_GetTxPowerIndex_8723B(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 	#endif
 
 	#if defined(CONFIG_RTL8192E)
 	if (IS_HARDWARE_TYPE_8192E(pAdapter))
-		TxPower = PHY_GetTxPowerIndex_8192E(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+		TxPower = rtl8188fu_PHY_GetTxPowerIndex_8192E(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 	#endif
 
 	#if defined(CONFIG_RTL8812A) || defined(CONFIG_RTL8821A)
 	if (IS_HARDWARE_TYPE_JAGUAR(pAdapter))
-		TxPower = PHY_GetTxPowerIndex_8812A(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+		TxPower = rtl8188fu_PHY_GetTxPowerIndex_8812A(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 	#endif
 
 	#if defined(CONFIG_RTL8814A)
 	if (IS_HARDWARE_TYPE_8814A(pAdapter))
-		TxPower = PHY_GetTxPowerIndex_8814A(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+		TxPower = rtl8188fu_PHY_GetTxPowerIndex_8814A(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 	#endif
 	#if defined(CONFIG_RTL8703B)
 	if (IS_HARDWARE_TYPE_8703B(pAdapter))
-		TxPower = PHY_GetTxPowerIndex_8703B(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+		TxPower = rtl8188fu_PHY_GetTxPowerIndex_8703B(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 	#endif
 
 	#if defined(CONFIG_RTL8188F)
 	if (IS_HARDWARE_TYPE_8188F(pAdapter))
-		TxPower = PHY_GetTxPowerIndex_8188F(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
+		TxPower = rtl8188fu_PHY_GetTxPowerIndex_8188F(pAdapter, RfPath, mgn_rate, pHalData->CurrentChannelBW, pHalData->CurrentChannel);
 	#endif
 
 	DBG_8192C("txPower=%d ,CurrentChannelBW=%d ,CurrentChannel=%d ,rate =%d\n",
@@ -2597,7 +2597,7 @@ ULONG mpt_ProQueryCalTxPower(
 	pMptCtx->TxPwrLevel[ODM_RF_PATH_B] = (u8)TxPower;
 	pMptCtx->TxPwrLevel[ODM_RF_PATH_C] = (u8)TxPower;
 	pMptCtx->TxPwrLevel[ODM_RF_PATH_D]  = (u8)TxPower;
-	hal_mpt_SetTxPower(pAdapter);
+	hal_mpt_rtl8188fu_SetTxPower(pAdapter);
 
 	return TxPower;
 }
@@ -2741,7 +2741,7 @@ void CCK_generator(
 
 	CRC16_generator(crc16_out, crc16_in, 32);
 
-	_rtw_memset(pPMacTxInfo->CRC16, 0, 2);
+	rtl8188fu__rtw_memset(pPMacTxInfo->CRC16, 0, 2);
 	ByteToBit(pPMacTxInfo->CRC16, crc16_out, 2);
 
 }
@@ -3121,7 +3121,7 @@ void L_SIG_generator(
 		sig_bi[i] = 0;
 
 	/* dump_buf(sig_bi,24);*/
-	_rtw_memset(pPMacTxInfo->LSIG, 0, 3);
+	rtl8188fu__rtw_memset(pPMacTxInfo->LSIG, 0, 3);
 	ByteToBit(pPMacTxInfo->LSIG, (bool *)sig_bi, 3);
 }
 
@@ -3211,7 +3211,7 @@ void HT_SIG_generator(
 	for (i = 42; i < 48; i++)
 		sig_bi[i] = 0;
 
-	_rtw_memset(pPMacTxInfo->HT_SIG, 0, 6);
+	rtl8188fu__rtw_memset(pPMacTxInfo->HT_SIG, 0, 6);
 	ByteToBit(pPMacTxInfo->HT_SIG, sig_bi, 6);
 }
 
@@ -3231,8 +3231,8 @@ void VHT_SIG_A_generator(
 	UINT i;
 	bool sig_bi[48], crc8[8];
 
-	_rtw_memset(sig_bi, 0, 48);
-	_rtw_memset(crc8, 0, 8);
+	rtl8188fu__rtw_memset(sig_bi, 0, 48);
+	rtl8188fu__rtw_memset(crc8, 0, 8);
 
 	/*	BW Setting*/
 	for (i = 0; i < 2; i++)
@@ -3279,7 +3279,7 @@ void VHT_SIG_A_generator(
 	for (i = 42; i < 48; i++)
 		sig_bi[i] = 0;
 
-	_rtw_memset(pPMacTxInfo->VHT_SIG_A, 0, 6);
+	rtl8188fu__rtw_memset(pPMacTxInfo->VHT_SIG_A, 0, 6);
 	ByteToBit(pPMacTxInfo->VHT_SIG_A, sig_bi, 6);
 }
 
@@ -3295,23 +3295,23 @@ void VHT_SIG_B_generator(
 	UINT i, len, res, tail = 6, total_len, crc8_in_len;
 	UINT sigb_len;
 
-	_rtw_memset(sig_bi, 0, 32);
-	_rtw_memset(crc8_bi, 0, 8);
+	rtl8188fu__rtw_memset(sig_bi, 0, 32);
+	rtl8188fu__rtw_memset(crc8_bi, 0, 8);
 
 	/*Sounding Packet*/
 	if (pPMacTxInfo->NDP_sound == 1) {
 		if (pPMacTxInfo->BandWidth == 0) {
 			bool sigb_temp[26] = {0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
 
-			_rtw_memcpy(sig_bi, sigb_temp, 26);
+			rtl8188fu__rtw_memcpy(sig_bi, sigb_temp, 26);
 		} else if (pPMacTxInfo->BandWidth == 1) {
 			bool sigb_temp[27] = {1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0};
 
-			_rtw_memcpy(sig_bi, sigb_temp, 27);
+			rtl8188fu__rtw_memcpy(sig_bi, sigb_temp, 27);
 		} else if (pPMacTxInfo->BandWidth == 2) {
 			bool sigb_temp[29] = {0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0};
 
-			_rtw_memcpy(sig_bi, sigb_temp, 29);
+			rtl8188fu__rtw_memcpy(sig_bi, sigb_temp, 29);
 		}
 	} else {	/* Not NDP Sounding*/
 		bool *sigb_temp[29] = {0};
@@ -3344,7 +3344,7 @@ void VHT_SIG_B_generator(
 			sig_bi[len+res+i] = 0;
 	}
 
-	_rtw_memset(pPMacTxInfo->VHT_SIG_B, 0, 4);
+	rtl8188fu__rtw_memset(pPMacTxInfo->VHT_SIG_B, 0, 4);
 	ByteToBit(pPMacTxInfo->VHT_SIG_B, sig_bi, 4);
 
 	pPMacTxInfo->VHT_SIG_B_CRC = 0;
@@ -3379,7 +3379,7 @@ void VHT_Delimiter_generator(
 	for (j = 24; j < 32; j++) /* Delimiter[31:24]: Signature ('4E' in Hex, 78 in Dec)*/
 		sig_bi[j]	= (78 >> (j-24)) % 2;
 
-	_rtw_memset(pPMacTxInfo->VHT_Delimiter, 0, 4);
+	rtl8188fu__rtw_memset(pPMacTxInfo->VHT_Delimiter, 0, 4);
 	ByteToBit(pPMacTxInfo->VHT_Delimiter, sig_bi, 4);
 }
 

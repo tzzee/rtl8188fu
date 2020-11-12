@@ -82,10 +82,10 @@
 #define MIRACAST_MODE_REVERSE(mode) \
 	((((mode) & MIRACAST_SOURCE) ? MIRACAST_SINK : 0) | (((mode) & MIRACAST_SINK) ? MIRACAST_SOURCE : 0))
 
-bool is_miracast_enabled(_adapter *adapter);
-bool rtw_chk_miracast_mode(_adapter *adapter, u8 mode);
-const char *get_miracast_mode_str(int mode);
-void rtw_wfd_st_switch(struct sta_info *sta, bool on);
+bool rtl8188fu_is_miracast_enabled(_adapter *adapter);
+bool rtl8188fu_rtw_chk_miracast_mode(_adapter *adapter, u8 mode);
+const char *rtl8188fu_get_miracast_mode_str(int mode);
+void rtl8188fu_rtw_wfd_st_switch(struct sta_info *sta, bool on);
 
 #define MLME_STATE(adapter) get_fwstate(&((adapter)->mlmepriv))
 
@@ -102,8 +102,8 @@ void rtw_wfd_st_switch(struct sta_info *sta, bool on);
 #define MLME_IS_GC(adapter) 0
 #define MLME_IS_GO(adapter) 0
 #endif /* !CONFIG_P2P */
-#define MLME_IS_MSRC(adapter) rtw_chk_miracast_mode((adapter), MIRACAST_SOURCE)
-#define MLME_IS_MSINK(adapter) rtw_chk_miracast_mode((adapter), MIRACAST_SINK)
+#define MLME_IS_MSRC(adapter) rtl8188fu_rtw_chk_miracast_mode((adapter), MIRACAST_SOURCE)
+#define MLME_IS_MSINK(adapter) rtl8188fu_rtw_chk_miracast_mode((adapter), MIRACAST_SINK)
 
 #define MLME_STATE_FMT "%s%s%s%s%s%s%s%s%s%s%s%s%s%s"
 #define MLME_STATE_ARG(adapter) \
@@ -759,7 +759,7 @@ struct mlme_priv {
 		adapter->mlmepriv.auto_scan_int_ms = ms; \
 	} while (0)
 
-void rtw_mlme_reset_auto_scan_int(_adapter *adapter);
+void rtl8188fu_rtw_mlme_reset_auto_scan_int(_adapter *adapter);
 
 #ifdef CONFIG_AP_MODE
 
@@ -779,33 +779,33 @@ extern void hostapd_mode_unload(_adapter *padapter);
 #endif
 
 
-extern void rtw_joinbss_event_prehandle(_adapter *adapter, u8 *pbuf);
-extern void rtw_survey_event_callback(_adapter *adapter, u8 *pbuf);
-extern void rtw_surveydone_event_callback(_adapter *adapter, u8 *pbuf);
-extern void rtw_joinbss_event_callback(_adapter *adapter, u8 *pbuf);
-extern void rtw_stassoc_event_callback(_adapter *adapter, u8 *pbuf);
-extern void rtw_stadel_event_callback(_adapter *adapter, u8 *pbuf);
-void rtw_sta_mstatus_report(_adapter *adapter);
-extern void rtw_atimdone_event_callback(_adapter *adapter, u8 *pbuf);
-extern void rtw_cpwm_event_callback(_adapter *adapter, u8 *pbuf);
-extern void rtw_wmm_event_callback(PADAPTER padapter, u8 *pbuf);
+extern void rtl8188fu_rtw_joinbss_event_prehandle(_adapter *adapter, u8 *pbuf);
+extern void rtl8188fu_rtw_survey_event_callback(_adapter *adapter, u8 *pbuf);
+extern void rtl8188fu_rtw_surveydone_event_callback(_adapter *adapter, u8 *pbuf);
+extern void rtl8188fu_rtw_joinbss_event_callback(_adapter *adapter, u8 *pbuf);
+extern void rtl8188fu_rtw_stassoc_event_callback(_adapter *adapter, u8 *pbuf);
+extern void rtl8188fu_rtw_stadel_event_callback(_adapter *adapter, u8 *pbuf);
+void rtl8188fu_rtw_sta_mstatus_report(_adapter *adapter);
+extern void rtl8188fu_rtw_atimdone_event_callback(_adapter *adapter, u8 *pbuf);
+extern void rtl8188fu_rtw_cpwm_event_callback(_adapter *adapter, u8 *pbuf);
+extern void rtl8188fu_rtw_wmm_event_callback(PADAPTER padapter, u8 *pbuf);
 #ifdef CONFIG_IEEE80211W
 void rtw_sta_timeout_event_callback(_adapter *adapter, u8 *pbuf);
 #endif /* CONFIG_IEEE80211W */
-extern void rtw_join_timeout_handler(RTW_TIMER_HDL_ARGS);
-extern void _rtw_scan_timeout_handler(RTW_TIMER_HDL_ARGS);
+extern void rtl8188fu_rtw_join_timeout_handler(RTW_TIMER_HDL_ARGS);
+extern void _rtl8188furtl8188fu__rtw_scan_timeout_handler(RTW_TIMER_HDL_ARGS);
 
 thread_return event_thread(thread_context context);
 
-extern void rtw_free_network_queue(_adapter *adapter,u8 isfreeall);
-extern int rtw_init_mlme_priv(_adapter *adapter);// (struct mlme_priv *pmlmepriv);
+extern void rtl8188furtl8188fu__rtl8188fu_rtw_free_network_queue(_adapter *adapter,u8 isfreeall);
+extern int rtl8188fu_rtw_init_mlme_priv(_adapter *adapter);// (struct mlme_priv *pmlmepriv);
 
-extern void rtw_free_mlme_priv (struct mlme_priv *pmlmepriv);
+extern void rtl8188fu_rtw_free_mlme_priv (struct mlme_priv *pmlmepriv);
 
 
-extern sint rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv);
-extern sint rtw_set_key(_adapter *adapter,struct security_priv *psecuritypriv,sint keyid, u8 set_tx, bool enqueue);
-extern sint rtw_set_auth(_adapter *adapter,struct security_priv *psecuritypriv);
+extern sint rtl8188fu_rtw_select_and_join_from_scanned_queue(struct mlme_priv *pmlmepriv);
+extern sint rtl8188fu_rtw_set_key(_adapter *adapter,struct security_priv *psecuritypriv,sint keyid, u8 set_tx, bool enqueue);
+extern sint rtl8188fu_rtw_set_auth(_adapter *adapter,struct security_priv *psecuritypriv);
 
 __inline static u8 *get_bssid(struct mlme_priv *pmlmepriv)
 {	//if sta_mode:pmlmepriv->cur_network.network.MacAddress=> bssid
@@ -897,51 +897,51 @@ __inline static void set_scanned_network_val(struct mlme_priv *pmlmepriv, sint v
 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
 }
 
-extern u16 rtw_get_capability(WLAN_BSSID_EX *bss);
-extern void rtw_update_scanned_network(_adapter *adapter, WLAN_BSSID_EX *target);
-extern void rtw_disconnect_hdl_under_linked(_adapter* adapter, struct sta_info *psta, u8 free_assoc);
-extern void rtw_generate_random_ibss(u8 *pibss);
-extern struct wlan_network* rtw_find_network(_queue *scanned_queue, u8 *addr);
-extern struct wlan_network* rtw_get_oldest_wlan_network(_queue *scanned_queue);
-struct wlan_network *_rtw_find_same_network(_queue *scanned_queue, struct wlan_network *network);
-struct wlan_network *rtw_find_same_network(_queue *scanned_queue, struct wlan_network *network);
+extern u16 rtl8188fu_rtw_get_capability(WLAN_BSSID_EX *bss);
+extern void rtl8188fu_rtw_update_scanned_network(_adapter *adapter, WLAN_BSSID_EX *target);
+extern void rtw_rtl8188fu_disconnect_hdl_under_linked(_adapter* adapter, struct sta_info *psta, u8 free_assoc);
+extern void rtl8188fu_rtw_generate_random_ibss(u8 *pibss);
+extern struct wlan_network* rtl8188fu_rtw_find_network(_queue *scanned_queue, u8 *addr);
+extern struct wlan_network* rtl8188fu_rtw_get_oldest_wlan_network(_queue *scanned_queue);
+struct wlan_network *rtl8188fu__rtl8188fu_rtw_find_same_network(_queue *scanned_queue, struct wlan_network *network);
+struct wlan_network *rtl8188fu_rtw_find_same_network(_queue *scanned_queue, struct wlan_network *network);
 
-extern void rtw_free_assoc_resources(_adapter* adapter, int lock_scanned_queue);
-extern void rtw_indicate_disconnect(_adapter *adapter, u16 reason, u8 locally_generated);
-extern void rtw_indicate_connect(_adapter* adapter);
-void rtw_indicate_scan_done( _adapter *padapter, bool aborted);
+extern void rtl8188fu_rtw_free_assoc_resources(_adapter* adapter, int lock_scanned_queue);
+extern void rtl8188fu_rtw_indicate_disconnect(_adapter *adapter, u16 reason, u8 locally_generated);
+extern void rtl8188fu_rtw_indicate_connect(_adapter* adapter);
+void rtl8188fu_rtw_indicate_scan_done( _adapter *padapter, bool aborted);
 
-void rtw_drv_scan_by_self(_adapter *padapter);
-void rtw_scan_wait_completed(_adapter *adapter);
-u32 rtw_scan_abort_timeout(_adapter *adapter, u32 timeout_ms);
-void rtw_scan_abort_no_wait(_adapter *adapter);
-void rtw_scan_abort(_adapter *adapter);
+void rtl8188fu_rtw_drv_scan_by_self(_adapter *padapter);
+void rtl8188fu_rtw_scan_wait_completed(_adapter *adapter);
+u32 rtl8188fu_rtw_scan_abort_timeout(_adapter *adapter, u32 timeout_ms);
+void rtl8188fu_rtw_scan_abort_no_wait(_adapter *adapter);
+void rtl8188fu_rtw_scan_abort(_adapter *adapter);
 
-extern int rtw_restruct_sec_ie(_adapter *adapter,u8 *in_ie,u8 *out_ie,uint in_len);
-extern int rtw_restruct_wmm_ie(_adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_len, uint initial_out_len);
-extern void rtw_init_registrypriv_dev_network(_adapter *adapter);
+extern int rtl8188fu_rtw_restruct_sec_ie(_adapter *adapter,u8 *in_ie,u8 *out_ie,uint in_len);
+extern int rtl8188fu_rtw_restruct_wmm_ie(_adapter *adapter, u8 *in_ie, u8 *out_ie, uint in_len, uint initial_out_len);
+extern void rtl8188fu_rtw_init_registrypriv_dev_network(_adapter *adapter);
 
-extern void rtw_update_registrypriv_dev_network(_adapter *adapter);
+extern void rtl8188fu_rtw_update_registrypriv_dev_network(_adapter *adapter);
 
-extern void rtw_get_encrypt_decrypt_from_registrypriv(_adapter *adapter);
+extern void rtl8188fu_rtw_get_encrypt_decrypt_from_registrypriv(_adapter *adapter);
 
-extern void _rtw_join_timeout_handler(_adapter *adapter);
-extern void rtw_scan_timeout_handler(_adapter *adapter);
+extern void rtl8188fu__rtl8188fu_rtw_join_timeout_handler(_adapter *adapter);
+extern void rtl8188furtl8188fu__rtw_scan_timeout_handler(_adapter *adapter);
 
-extern void rtw_dynamic_check_timer_handlder(_adapter *adapter);
+extern void rtl8188fu_rtwrtl8188fu__dynamic_check_timer_handlder(_adapter *adapter);
 #ifdef CONFIG_SET_SCAN_DENY_TIMER
-bool rtw_is_scan_deny(_adapter *adapter);
-void rtw_clear_scan_deny(_adapter *adapter);
-void rtw_set_scan_deny_timer_hdl(_adapter *adapter);
-void rtw_set_scan_deny(_adapter *adapter, u32 ms);
+bool rtl8188fu_rtw_is_scan_deny(_adapter *adapter);
+void rtl8188fu_rtw_clear_scan_deny(_adapter *adapter);
+void rtl8188fu_rtw_set_scan_deny_timer_hdl(_adapter *adapter);
+void rtl8188fu_rtw_set_scan_deny(_adapter *adapter, u32 ms);
 #else
-#define rtw_is_scan_deny(adapter) _FALSE
-#define rtw_clear_scan_deny(adapter) do {} while (0)
-#define rtw_set_scan_deny_timer_hdl(adapter) do {} while (0)
-#define rtw_set_scan_deny(adapter, ms) do {} while (0)
+#define rtl8188fu_rtw_is_scan_deny(adapter) _FALSE
+#define rtl8188fu_rtw_clear_scan_deny(adapter) do {} while (0)
+#define rtl8188fu_rtw_set_scan_deny_timer_hdl(adapter) do {} while (0)
+#define rtl8188fu_rtw_set_scan_deny(adapter, ms) do {} while (0)
 #endif
 
-void rtw_free_mlme_priv_ie_data(struct mlme_priv *pmlmepriv);
+void rtl8188fu_rtw_free_mlme_priv_ie_data(struct mlme_priv *pmlmepriv);
 
 #define MLME_BEACON_IE			0
 #define MLME_PROBE_REQ_IE		1
@@ -951,49 +951,49 @@ void rtw_free_mlme_priv_ie_data(struct mlme_priv *pmlmepriv);
 #define MLME_ASSOC_RESP_IE		5
 
 #if defined(CONFIG_WFD) && defined(CONFIG_IOCTL_CFG80211)
-int rtw_mlme_update_wfd_ie_data(struct mlme_priv *mlme, u8 type, u8 *ie, u32 ie_len);
+int rtl8188fu_rtw_mlme_update_wfd_ie_data(struct mlme_priv *mlme, u8 type, u8 *ie, u32 ie_len);
 #endif
 
-extern int _rtw_init_mlme_priv(_adapter *padapter);
-extern void _rtw_free_mlme_priv(struct mlme_priv *pmlmepriv);
+extern int rtl8188fu__rtl8188fu_rtw_init_mlme_priv(_adapter *padapter);
+extern void rtl8188fu__rtl8188fu_rtw_free_mlme_priv(struct mlme_priv *pmlmepriv);
 
-extern int _rtw_enqueue_network(_queue *queue, struct wlan_network *pnetwork);
+extern int rtl8188fu__rtl8188fu_rtw_enqueue_network(_queue *queue, struct wlan_network *pnetwork);
 
 //extern struct wlan_network* _rtw_dequeue_network(_queue *queue);
 
-extern struct wlan_network* _rtw_alloc_network(struct mlme_priv *pmlmepriv);
+extern struct wlan_network* _rtl8188furtl8188fu__rtw_alloc_network(struct mlme_priv *pmlmepriv);
 
 
-extern void _rtw_free_network(struct mlme_priv *pmlmepriv, struct wlan_network *pnetwork, u8 isfreeall);
-extern void _rtw_free_network_nolock(struct mlme_priv *pmlmepriv, struct wlan_network *pnetwork);
+extern void _rtl8188furtl8188fu__rtw_free_network(struct mlme_priv *pmlmepriv, struct wlan_network *pnetwork, u8 isfreeall);
+extern void rtl8188fu__rtl8188fu_rtl8188furtl8188fu__rtw_free_network_nolock(struct mlme_priv *pmlmepriv, struct wlan_network *pnetwork);
 
 
-extern struct wlan_network* _rtw_find_network(_queue *scanned_queue, u8 *addr);
+extern struct wlan_network* rtl8188fu__rtl8188fu_rtw_find_network(_queue *scanned_queue, u8 *addr);
 
-extern void _rtw_free_network_queue(_adapter* padapter, u8 isfreeall);
+extern void rtl8188fu__rtl8188furtl8188fu__rtl8188fu_rtw_free_network_queue(_adapter* padapter, u8 isfreeall);
 
-extern sint rtw_if_up(_adapter *padapter);
+extern sint rtl8188fu_rtw_if_up(_adapter *padapter);
 
-sint rtw_linked_check(_adapter *padapter);
+sint rtl8188fu_rtw_linked_check(_adapter *padapter);
 
-u8 *rtw_get_capability_from_ie(u8 *ie);
-u8 *rtw_get_timestampe_from_ie(u8 *ie);
-u8 *rtw_get_beacon_interval_from_ie(u8 *ie);
+u8 *rtl8188fu_rtw_get_capability_from_ie(u8 *ie);
+u8 *rtl8188fu_rtw_get_timestampe_from_ie(u8 *ie);
+u8 *rtw_rtl8188fu_get_beacon_interval_from_ie(u8 *ie);
 
 
-void rtw_joinbss_reset(_adapter *padapter);
+void rtl8188fu_rtw_joinbss_reset(_adapter *padapter);
 
 #ifdef CONFIG_80211N_HT
-void	rtw_ht_use_default_setting(_adapter *padapter);
-void rtw_build_wmm_ie_ht(_adapter *padapter, u8 *out_ie, uint *pout_len);
-unsigned int rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, uint in_len, uint *pout_len, u8 channel);
-void rtw_update_ht_cap(_adapter *padapter, u8 *pie, uint ie_len, u8 channel);
-void rtw_issue_addbareq_cmd(_adapter *padapter, struct xmit_frame *pxmitframe);
-void rtw_append_exented_cap(_adapter *padapter, u8 *out_ie, uint *pout_len);
+void	rtl8188fu_rtw_ht_use_default_setting(_adapter *padapter);
+void rtl8188fu_rtw_build_wmm_ie_ht(_adapter *padapter, u8 *out_ie, uint *pout_len);
+unsigned int rtl8188fu_rtw_restructure_ht_ie(_adapter *padapter, u8 *in_ie, u8 *out_ie, uint in_len, uint *pout_len, u8 channel);
+void rtl8188fu_rtw_update_ht_cap(_adapter *padapter, u8 *pie, uint ie_len, u8 channel);
+void rtl8188fu_rtw_issue_addbareq_cmd(_adapter *padapter, struct xmit_frame *pxmitframe);
+void rtl8188fu_rtw_append_exented_cap(_adapter *padapter, u8 *out_ie, uint *pout_len);
 #endif
 
-int rtw_is_same_ibss(_adapter *adapter, struct wlan_network *pnetwork);
-int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst, u8 feature);
+int rtl8188fu_rtw_is_same_ibss(_adapter *adapter, struct wlan_network *pnetwork);
+int rtl8188fu_is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst, u8 feature);
 
 #ifdef CONFIG_LAYER2_ROAMING
 #define rtw_roam_flags(adapter) ((adapter)->mlmepriv.roam_flags)
@@ -1013,36 +1013,36 @@ int is_same_network(WLAN_BSSID_EX *src, WLAN_BSSID_EX *dst, u8 feature);
 		((adapter)->mlmepriv.roam_flags = flags); \
 	} while (0)
 
-void _rtw_roaming(_adapter *adapter, struct wlan_network *tgt_network);
-void rtw_roaming(_adapter *adapter, struct wlan_network *tgt_network);
-void rtw_set_to_roam(_adapter *adapter, u8 to_roam);
-u8 rtw_dec_to_roam(_adapter *adapter);
-u8 rtw_to_roam(_adapter *adapter);
-int rtw_select_roaming_candidate(struct mlme_priv *pmlmepriv);
+void rtl8188fu__rtl8188fu_rtw_roaming(_adapter *adapter, struct wlan_network *tgt_network);
+void rtl8188fu_rtw_roaming(_adapter *adapter, struct wlan_network *tgt_network);
+void rtl8188fu_rtw_set_to_roam(_adapter *adapter, u8 to_roam);
+u8 rtl8188fu_rtw_dec_to_roam(_adapter *adapter);
+u8 rtl8188fu_rtw_to_roam(_adapter *adapter);
+int rtl8188fu_rtw_select_roaming_candidate(struct mlme_priv *pmlmepriv);
 #else
 #define rtw_roam_flags(adapter) 0
 #define rtw_chk_roam_flags(adapter, flags) 0
 #define rtw_clr_roam_flags(adapter, flags) do {} while (0)
 #define rtw_set_roam_flags(adapter, flags) do {} while (0)
 #define rtw_assign_roam_flags(adapter, flags) do {} while (0)
-#define _rtw_roaming(adapter, tgt_network) do {} while(0)
-#define rtw_roaming(adapter, tgt_network) do {} while(0)
-#define rtw_set_to_roam(adapter, to_roam) do {} while(0)
-#define rtw_dec_to_roam(adapter) 0
-#define rtw_to_roam(adapter) 0
-#define rtw_select_roaming_candidate(mlme) _FAIL
+#define rtl8188fu__rtl8188fu_rtw_roaming(adapter, tgt_network) do {} while(0)
+#define rtl8188fu_rtw_roaming(adapter, tgt_network) do {} while(0)
+#define rtl8188fu_rtw_set_to_roam(adapter, to_roam) do {} while(0)
+#define rtl8188fu_rtw_dec_to_roam(adapter) 0
+#define rtl8188fu_rtw_to_roam(adapter) 0
+#define rtl8188fu_rtw_select_roaming_candidate(mlme) _FAIL
 #endif /* CONFIG_LAYER2_ROAMING */
 
-bool rtw_adjust_chbw(_adapter *adapter, u8 req_ch, u8 *req_bw, u8 *req_offset);
+bool rtl8188fu_rtw_adjust_chbw(_adapter *adapter, u8 req_ch, u8 *req_bw, u8 *req_offset);
 
 struct sta_media_status_rpt_cmd_parm {
 	struct sta_info *sta;
 	bool connected;
 };
 
-void rtw_sta_media_status_rpt(_adapter *adapter, struct sta_info *sta, bool connected);
-u8 rtw_sta_media_status_rpt_cmd(_adapter *adapter, struct sta_info *sta, bool connected);
-void rtw_sta_media_status_rpt_cmd_hdl(_adapter *adapter, struct sta_media_status_rpt_cmd_parm *parm);
+void rtl8188fu_rtw_sta_media_status_rpt(_adapter *adapter, struct sta_info *sta, bool connected);
+u8 rtl8188fu_rtw_sta_media_status_rpt_cmd(_adapter *adapter, struct sta_info *sta, bool connected);
+void rtl8188fu_rtl8188fu_rtw_sta_media_status_rpt_cmd_hdl(_adapter *adapter, struct sta_media_status_rpt_cmd_parm *parm);
 
 #ifdef CONFIG_INTEL_PROXIM
 void rtw_proxim_enable(_adapter *padapter);

@@ -74,78 +74,78 @@ typedef struct _ADAPTIVITY_STATISTICS {
 } ADAPTIVITY_STATISTICS, *PADAPTIVITY_STATISTICS;
 
 VOID
-Phydm_CheckAdaptivity(
+rtl8188fu_Phydm_CheckAdaptivity(
 	IN		PVOID			pDM_VOID
 	);
 
 VOID
-Phydm_CheckEnvironment(
+rtl8188fu_Phydm_CheckEnvironment(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID
-Phydm_NHMCounterStatisticsInit(
+rtl8188fu_Phydm_NHMCounterStatisticsInit(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID
-Phydm_NHMCounterStatistics(
+rtl8188fu_Phydm_NHMCounterStatistics(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID
-Phydm_NHMCounterStatisticsReset(
-	IN		PVOID			pDM_VOID
-);
-
-VOID
-Phydm_GetNHMCounterStatistics(
+rtl8188fu_Phydm_NHMCounterStatisticsReset(
 	IN		PVOID			pDM_VOID
 );
 
 VOID
-Phydm_MACEDCCAState(
+rtl8188fu_Phydm_GetNHMCounterStatistics(
+	IN		PVOID			pDM_VOID
+);
+
+VOID
+rtl8188fu_Phydm_MACEDCCAState(
 	IN	PVOID					pDM_VOID,
 	IN	PhyDM_MACEDCCA_Type		State
 );
 
 VOID
-Phydm_SetEDCCAThreshold(
+rtl8188fu_Phydm_SetEDCCAThreshold(
 	IN		PVOID		pDM_VOID,
 	IN		s1Byte		H2L,
 	IN		s1Byte		L2H
 );
 
 VOID
-Phydm_SetTRxMux(
+rtl8188fu_Phydm_SetTRxMux(
 	IN		PVOID			pDM_VOID,
 	IN		PhyDM_Trx_MUX_Type			txMode,
 	IN		PhyDM_Trx_MUX_Type			rxMode
 );	
 
 BOOLEAN
-Phydm_CalNHMcnt(
+rtl8188fu_Phydm_CalNHMcnt(
 	IN		PVOID		pDM_VOID
 );
 
 VOID
-Phydm_SearchPwdBLowerBound(
+rtl8188fu_Phydm_SearchPwdBLowerBound(
 	IN		PVOID					pDM_VOID
 );
 
 VOID 
-Phydm_AdaptivityInit(
+rtl8188fu_Phydm_AdaptivityInit(
 	IN		PVOID					pDM_VOID
 	);
 
 VOID
-Phydm_Adaptivity(
+rtl8188fu_Phydm_Adaptivity(
 	IN		PVOID					pDM_VOID,
 	IN		u1Byte					IGI
 	);
 
 VOID
-phydm_setEDCCAThresholdAPI(
+rtl8188fu_phydm_setEDCCAThresholdAPI(
 	IN	PVOID	pDM_VOID,
 	IN	u1Byte	IGI
 );
@@ -162,7 +162,7 @@ Phydm_DynamicEDCCA(
 );
 
 VOID
-Phydm_AdaptivityBSOD(
+rtl8188fu_Phydm_AdaptivityBSOD(
 	IN		PVOID					pDM_VOID
 );
 

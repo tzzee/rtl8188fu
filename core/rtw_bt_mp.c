@@ -44,7 +44,7 @@ void MPh2c_timeout_handle(void *FunctionContext)
 		|| ((_TRUE == pMptCtx->MptH2cRspEvent)
 			&& (_FALSE == pMptCtx->MptBtC2hEvent)))
 	{
-		_rtw_up_sema(&pMptCtx->MPh2c_Sema);
+		rtl8188fu__rtw_up_sema(&pMptCtx->MPh2c_Sema);
 	}
 }
 
@@ -61,7 +61,7 @@ u32 WaitC2Hevent(PADAPTER pAdapter, u8 *C2H_event, u32 delay_time)
 
 	_set_timer( &pMptCtx->MPh2c_timeout_timer, delay_time );
 	
-	_rtw_down_sema(&pMptCtx->MPh2c_Sema);
+	rtl8188fu__rtw_down_sema(&pMptCtx->MPh2c_Sema);
 
 	if (pMptCtx->bMPh2c_timeout == _TRUE)
 	{
@@ -236,8 +236,8 @@ mptbt_BtFwOpCodeProcess(
 	pH2c->opCodeVer = opCodeVer;
 	pH2c->reqNum = pMptCtx->h2cReqNum;
 	//PlatformMoveMemory(&pH2c->buf[0], pH2cPar, h2cParaLen);
-	//_rtw_memcpy(&pH2c->buf[0], pH2cPar, h2cParaLen);
-	_rtw_memcpy(pH2c->buf, pH2cPar, h2cParaLen);
+	//rtl8188fu__rtw_memcpy(&pH2c->buf[0], pH2cPar, h2cParaLen);
+	rtl8188fu__rtw_memcpy(pH2c->buf, pH2cPar, h2cParaLen);
 
 	DBG_8192C("[MPT], pH2c->opCode=%d\n", pH2c->opCode);
 	DBG_8192C("[MPT], pH2c->opCodeVer=%d\n", pH2c->opCodeVer);
@@ -554,13 +554,13 @@ MPTBT_FwC2hBtMpCtrl(
 				&& (_FALSE == pMptCtx->MptH2cRspEvent))
 			{
 				pMptCtx->MptH2cRspEvent = _TRUE;
-				_rtw_up_sema(&pMptCtx->MPh2c_Sema);
+				rtl8188fu__rtw_up_sema(&pMptCtx->MPh2c_Sema);
 			}
 			break;
 
 		case EXT_C2H_TRIG_BY_BT_FW:
 			DBG_8192C("[MPT], EXT_C2H_TRIG_BY_BT_FW\n");
-			_rtw_memcpy(&pMptCtx->c2hBuf[0], tmpBuf, length);
+			rtl8188fu__rtw_memcpy(&pMptCtx->c2hBuf[0], tmpBuf, length);
 			DBG_8192C("[MPT], pExtC2h->statusCode=0x%x\n", pExtC2h->statusCode);
 			DBG_8192C("[MPT], pExtC2h->retLen=0x%x\n", pExtC2h->retLen);
 			DBG_8192C("[MPT], pExtC2h->opCodeVer=0x%x\n", pExtC2h->opCodeVer);
@@ -575,7 +575,7 @@ MPTBT_FwC2hBtMpCtrl(
 				&& (_FALSE == pMptCtx->MptBtC2hEvent))
 			{
 				pMptCtx->MptBtC2hEvent = _TRUE;
-				_rtw_up_sema(&pMptCtx->MPh2c_Sema);
+				rtl8188fu__rtw_up_sema(&pMptCtx->MPh2c_Sema);
 			}
 			break;
 
@@ -1698,7 +1698,7 @@ mptbt_BtControlProcess(
 		//DBG_8192C("[MPT], parameters(hex):0x%x %d \n",&pBtReq->pParamStart[0], pBtReq->paraLength);
 	}
 
-	_rtw_memset((void*)pMptCtx->mptOutBuf, 0, 100);
+	rtl8188fu__rtw_memset((void*)pMptCtx->mptOutBuf, 0, 100);
 	pMptCtx->mptOutLen = 4; //length of (BT_RSP_CMD.status+BT_RSP_CMD.paraLength)
 
 	pBtRsp = (PBT_RSP_CMD)pMptCtx->mptOutBuf;

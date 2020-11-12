@@ -65,13 +65,13 @@ u32 GlobalDebugLevel = _drv_err_;
 #define TDLS_DBG_INFO_SPACE_BTWN_ITEM_AND_VALUE	41
 #endif
 
-void dump_drv_version(void *sel)
+void rtl8188fu_dump_drv_version(void *sel)
 {
 	DBG_871X_SEL_NL(sel, "%s %s\n", DRV_NAME, DRIVERVERSION);
 	//DBG_871X_SEL_NL(sel, "build time: %s %s\n", __DATE__, __TIME__);
 }
 
-void dump_drv_cfg(void *sel)
+void rtl8188fu_dump_drv_cfg(void *sel)
 {
 	char *kernel_version = utsname()->release;
 	
@@ -155,7 +155,7 @@ void dump_drv_cfg(void *sel)
 	
 }
 
-void dump_log_level(void *sel)
+void rtl8188fu_dump_log_level(void *sel)
 {
 	DBG_871X_SEL_NL(sel, "log_level:%d\n", GlobalDebugLevel);
 }
@@ -193,7 +193,7 @@ void sdio_local_reg_dump(void *sel, _adapter *adapter)
 }
 #endif /* CONFIG_SDIO_HCI */
 
-void mac_reg_dump(void *sel, _adapter *adapter)
+void rtl8188fu_mac_reg_dump(void *sel, _adapter *adapter)
 {
 	int i, j = 1;
 
@@ -222,7 +222,7 @@ void mac_reg_dump(void *sel, _adapter *adapter)
 #endif /* CONFIG_RTL8814A */
 }
 
-void bb_reg_dump(void *sel, _adapter *adapter)
+void rtl8188fu_bb_reg_dump(void *sel, _adapter *adapter)
 {
 	int i, j = 1;
 
@@ -237,14 +237,14 @@ void bb_reg_dump(void *sel, _adapter *adapter)
 	}
 }
 
-void rf_reg_dump(void *sel, _adapter *adapter)
+void rtl8188fu_rf_reg_dump(void *sel, _adapter *adapter)
 {
 	int i, j = 1, path;
 	u32 value;
 	u8 rf_type = 0;
 	u8 path_nums = 0;
 
-	rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
+	rtl8188fu_rtw_hal_get_hwreg(adapter, HW_VAR_RF_TYPE, (u8 *)(&rf_type));
 	if((RF_1T2R == rf_type) ||(RF_1T1R ==rf_type ))
 		path_nums = 1;
 	else
@@ -255,7 +255,7 @@ void rf_reg_dump(void *sel, _adapter *adapter)
 	for (path=0;path<path_nums;path++) {
 		DBG_871X_SEL_NL(sel, "RF_Path(%x)\n",path);
 		for (i=0;i<0x100;i++) {
-			value = rtw_hal_read_rfreg(adapter, path, i, 0xffffffff);
+			value = rtl8188fu_rtw_halrtl8188fu__rtl8188fu_read_rfreg(adapter, path, i, 0xffffffff);
 			if(j%4==1)
 				DBG_871X_SEL_NL(sel, "0x%02x ",i);
 			DBG_871X_SEL(sel, " 0x%08x ",value);
@@ -268,7 +268,7 @@ void rf_reg_dump(void *sel, _adapter *adapter)
 static u8 fwdl_test_chksum_fail = 0;
 static u8 fwdl_test_wintint_rdy_fail = 0;
 
-bool rtw_fwdl_test_trigger_chksum_fail(void)
+bool rtl8188fu_rtw_fwdl_test_trigger_chksum_fail(void)
 {
 	if (fwdl_test_chksum_fail) {
 		DBG_871X_LEVEL(_drv_always_, "fwdl test case: trigger chksum_fail\n");
@@ -278,7 +278,7 @@ bool rtw_fwdl_test_trigger_chksum_fail(void)
 	return _FALSE;
 }
 
-bool rtw_fwdl_test_trigger_wintint_rdy_fail(void)
+bool rtl8188fu_rtw_fwdl_test_trigger_wintint_rdy_fail(void)
 {
 	if (fwdl_test_wintint_rdy_fail) {
 		DBG_871X_LEVEL(_drv_always_, "fwdl test case: trigger wintint_rdy_fail\n");
@@ -290,14 +290,14 @@ bool rtw_fwdl_test_trigger_wintint_rdy_fail(void)
 
 static u32 g_wait_hiq_empty_ms = 0;
 
-u32 rtw_get_wait_hiq_empty_ms(void)
+u32 rtl8188fu_rtw_get_wait_hiq_empty_ms(void)
 {
 	return g_wait_hiq_empty_ms;
 }
 
 static u8 del_rx_ampdu_test_no_tx_fail = 0;
 
-bool rtw_del_rx_ampdu_test_trigger_no_tx_fail(void)
+bool rtl8188fu_rtw_del_rx_ampdu_test_trigger_no_tx_fail(void)
 {
 	if (del_rx_ampdu_test_no_tx_fail) {
 		DBG_871X_LEVEL(_drv_always_, "del_rx_ampdu test case: trigger no_tx_fail\n");
@@ -307,7 +307,7 @@ bool rtw_del_rx_ampdu_test_trigger_no_tx_fail(void)
 	return _FALSE;
 }
 
-void rtw_sink_rtp_seq_dbg( _adapter *adapter,_pkt *pkt)
+void rtl8188fu_rtw_sink_rtp_seq_dbg( _adapter *adapter,_pkt *pkt)
 {
 	struct recv_priv *precvpriv = &(adapter->recvpriv);
 	if( precvpriv->sink_udpport > 0)
@@ -322,7 +322,7 @@ void rtw_sink_rtp_seq_dbg( _adapter *adapter,_pkt *pkt)
 	}
 }
 
-void sta_rx_reorder_ctl_dump(void *sel, struct sta_info *sta)
+void rtl8188fu_sta_rx_reorder_ctl_dump(void *sel, struct sta_info *sta)
 {
 	struct recv_reorder_ctrl *reorder_ctl;
 	int i;
@@ -337,7 +337,7 @@ void sta_rx_reorder_ctl_dump(void *sel, struct sta_info *sta)
 	}
 }
 
-void dump_adapters_status(void *sel, struct dvobj_priv *dvobj)
+void rtl8188fu_dump_adapters_status(void *sel, struct dvobj_priv *dvobj)
 {
 	struct rf_ctl_t *rfctl = dvobj_to_rfctl(dvobj);
 	int i;
@@ -345,7 +345,7 @@ void dump_adapters_status(void *sel, struct dvobj_priv *dvobj)
 	u8 u_ch, u_bw, u_offset;
 
 	DBG_871X_SEL_NL(sel, "%-2s %-8s %-17s %-4s %-7s %s\n"
-		, "id", "ifname", "macaddr", "port", "ch", "status");
+		, "id", "rtl8188fu_ifname", "macaddr", "port", "ch", "status");
 
 	DBG_871X_SEL_NL(sel, "------------------------------------------\n");
 
@@ -391,7 +391,7 @@ void dump_adapters_status(void *sel, struct dvobj_priv *dvobj)
 		);
 
 		if (IS_UNDER_CAC(rfctl))
-			DBG_871X_SEL(sel, ", cac:%d\n", rtw_systime_to_ms(rfctl->cac_end_time - rtw_get_current_time()));
+			DBG_871X_SEL(sel, ", cac:%d\n", rtl8188fu_rtw_systime_to_ms(rfctl->cac_end_time - rtl8188fu_rtw_get_current_time()));
 		else
 			DBG_871X_SEL(sel, "\n");
 	}
@@ -411,12 +411,12 @@ void dump_adapters_status(void *sel, struct dvobj_priv *dvobj)
 	, MAC_ARG((ent)->mac) \
 	, KEY_ARG((ent)->key) \
 	, ((ent)->ctrl) & 0x03 \
-	, security_type_str((((ent)->ctrl) >> 2) & 0x07) \
+	, rtl8188fu_security_type_str((((ent)->ctrl) >> 2) & 0x07) \
 	, (((ent)->ctrl) >> 5) & 0x01 \
 	, (((ent)->ctrl) >> 6) & 0x01 \
 	, (((ent)->ctrl) >> 15) & 0x01
 
-void dump_sec_cam_ent(void *sel, struct sec_cam_ent *ent, int id)
+void rtl8188fu_dump_sec_cam_ent(void *sel, struct sec_cam_ent *ent, int id)
 {
 	if (id >= 0) {
 		DBG_871X_SEL_NL(sel, SEC_CAM_ENT_ID_VALUE_FMT " " SEC_CAM_ENT_VALUE_FMT"\n"
@@ -426,7 +426,7 @@ void dump_sec_cam_ent(void *sel, struct sec_cam_ent *ent, int id)
 	}
 }
 
-void dump_sec_cam_ent_title(void *sel, u8 has_id)
+void rtl8188fu_rtl8188fu_dump_sec_cam_ent_title(void *sel, u8 has_id)
 {
 	if (has_id) {
 		DBG_871X_SEL_NL(sel, SEC_CAM_ENT_ID_TITLE_FMT " " SEC_CAM_ENT_TITLE_FMT"\n"
@@ -436,7 +436,7 @@ void dump_sec_cam_ent_title(void *sel, u8 has_id)
 	}
 }
 
-void dump_sec_cam(void *sel, _adapter *adapter)
+void rtl8188fu_dump_sec_cam(void *sel, _adapter *adapter)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
@@ -444,15 +444,15 @@ void dump_sec_cam(void *sel, _adapter *adapter)
 	int i;
 
 	DBG_871X_SEL_NL(sel, "HW sec cam:\n");
-	dump_sec_cam_ent_title(sel, 1);
+	rtl8188fu_rtl8188fu_dump_sec_cam_ent_title(sel, 1);
 	for (i = 0; i < cam_ctl->num; i++) {
-		rtw_sec_read_cam_ent(adapter, i, (u8 *)(&ent.ctrl), ent.mac, ent.key);
-		dump_sec_cam_ent(sel , &ent, i);
+		rtl8188fu_rtw_sec_read_cam_ent(adapter, i, (u8 *)(&ent.ctrl), ent.mac, ent.key);
+		rtl8188fu_dump_sec_cam_ent(sel , &ent, i);
 	}
 }
 
 #ifdef CONFIG_PROC_DEBUG
-ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_write_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -504,7 +504,7 @@ ssize_t proc_set_write_reg(struct file *file, const char __user *buffer, size_t 
 static u32 proc_get_read_addr=0xeeeeeeee;
 static u32 proc_get_read_len=0x4;
 
-int proc_get_read_reg(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_read_reg(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -533,7 +533,7 @@ int proc_get_read_reg(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_read_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_read_reg(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	char tmp[16];
@@ -568,7 +568,7 @@ ssize_t proc_set_read_reg(struct file *file, const char __user *buffer, size_t c
 
 }
 
-int proc_get_fwstate(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_fwstate(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -579,7 +579,7 @@ int proc_get_fwstate(struct seq_file *m, void *v)
 	return 0;
 }
 
-int proc_get_sec_info(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_sec_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);	
@@ -611,7 +611,7 @@ int proc_get_sec_info(struct seq_file *m, void *v)
 	return 0;
 }
 
-int proc_get_mlmext_state(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_mlmext_state(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);	
@@ -624,7 +624,7 @@ int proc_get_mlmext_state(struct seq_file *m, void *v)
 }
 
 #ifdef CONFIG_LAYER2_ROAMING
-int proc_get_roam_flags(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_roam_flags(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
@@ -634,7 +634,7 @@ int proc_get_roam_flags(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_roam_flags(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_roam_flags(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
@@ -662,7 +662,7 @@ ssize_t proc_set_roam_flags(struct file *file, const char __user *buffer, size_t
 	
 }
 
-int proc_get_roam_param(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_roam_param(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
@@ -678,7 +678,7 @@ int proc_get_roam_param(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_roam_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_roam_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
@@ -713,7 +713,7 @@ ssize_t proc_set_roam_param(struct file *file, const char __user *buffer, size_t
 	
 }
 
-ssize_t proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
@@ -733,7 +733,7 @@ ssize_t proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, siz
 
 		int num = sscanf(tmp, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", addr, addr+1, addr+2, addr+3, addr+4, addr+5);
 		if (num == 6)
-			_rtw_memcpy(adapter->mlmepriv.roam_tgt_addr, addr, ETH_ALEN);
+			rtl8188fu__rtw_memcpy(adapter->mlmepriv.roam_tgt_addr, addr, ETH_ALEN);
 
 		DBG_871X("set roam_tgt_addr to "MAC_FMT"\n", MAC_ARG(adapter->mlmepriv.roam_tgt_addr));
 	}
@@ -742,7 +742,7 @@ ssize_t proc_set_roam_tgt_addr(struct file *file, const char __user *buffer, siz
 }
 #endif /* CONFIG_LAYER2_ROAMING */
 
-int proc_get_qos_option(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_qos_option(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -753,7 +753,7 @@ int proc_get_qos_option(struct seq_file *m, void *v)
 	return 0;
 }
 
-int proc_get_ht_option(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_ht_option(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -766,7 +766,7 @@ int proc_get_ht_option(struct seq_file *m, void *v)
 	return 0;
 }
 
-int proc_get_rf_info(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_rf_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);	
@@ -776,12 +776,12 @@ int proc_get_rf_info(struct seq_file *m, void *v)
 					pmlmeext->cur_channel, pmlmeext->cur_bwmode, pmlmeext->cur_ch_offset);
 	
 	DBG_871X_SEL_NL(m, "oper_ch=%d, oper_bw=%d, oper_ch_offet=%d\n", 
-					rtw_get_oper_ch(padapter), rtw_get_oper_bw(padapter),  rtw_get_oper_choffset(padapter));
+					rtl8188fu_rtw_get_oper_ch(padapter), rtl8188fu_rtw_get_oper_bw(padapter),  rtl8188fu_rtw_get_oper_choffset(padapter));
 
 	return 0;
 }
 
-int proc_get_scan_param(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_scan_param(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
@@ -838,7 +838,7 @@ int proc_get_scan_param(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_scan_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_scan_param(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
@@ -907,13 +907,13 @@ u16 scan_ch_ms;
 	return count;	
 }
 
-int proc_get_scan_abort(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_scan_abort(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
 	u32 pass_ms;
 
-	pass_ms = rtw_scan_abort_timeout(adapter, 10000);
+	pass_ms = rtl8188fu_rtw_scan_abort_timeout(adapter, 10000);
 
 	DBG_871X_SEL_NL(m, "%u\n", pass_ms);
 
@@ -1001,7 +1001,7 @@ ssize_t proc_set_backop_flags_ap(struct file *file, const char __user *buffer, s
 
 #endif /* CONFIG_SCAN_BACKOP */
 
-int proc_get_survey_info(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_survey_info(struct seq_file *m, void *v)
 {
 	_irqL irqL;
 	struct net_device *dev = m->private;
@@ -1030,7 +1030,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 	DBG_871X_SEL_NL(m, "%5s  %-17s  %3s  %-3s  %-4s  %-4s  %5s  %32s  %32s\n", "index", "bssid", "ch", "RSSI", "SdBm", "Noise", "age", "flag", "ssid");
 	while(1)
 	{
-		if (rtw_end_of_queue_search(phead,plist)== _TRUE)
+		if (rtl8188fu_rtw_end_of_queue_search(phead,plist)== _TRUE)
 			break;
 
 		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
@@ -1038,21 +1038,21 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 			break;
 	
 		if ( check_fwstate(pmlmepriv, _FW_LINKED)== _TRUE &&
-			is_same_network(&pmlmepriv->cur_network.network, &pnetwork->network, 0)) {
+			rtl8188fu_is_same_network(&pmlmepriv->cur_network.network, &pnetwork->network, 0)) {
 			notify_signal = translate_percentage_to_dbm(padapter->recvpriv.signal_strength);//dbm
 		} else {
 			notify_signal = translate_percentage_to_dbm(pnetwork->network.PhyInfo.SignalStrength);//dbm
 		}
 
 		#if defined(CONFIG_SIGNAL_DISPLAY_DBM) && defined(CONFIG_BACKGROUND_NOISE_MONITOR)
-		rtw_hal_get_odm_var(padapter, HAL_ODM_NOISE_MONITOR,&(pnetwork->network.Configuration.DSConfig), &(notify_noise));
+		rtl8188fu_rtw_hal_get_odm_var(padapter, HAL_ODM_NOISE_MONITOR,&(pnetwork->network.Configuration.DSConfig), &(notify_noise));
 		#endif
 	
-		ie_wpa = rtw_get_wpa_ie(&pnetwork->network.IEs[12], &ielen, pnetwork->network.IELength-12);	
-		ie_wpa2 = rtw_get_wpa2_ie(&pnetwork->network.IEs[12], &ielen, pnetwork->network.IELength-12);
-		ie_cap = rtw_get_capability(&pnetwork->network);
-		ie_wps = rtw_get_wps_ie(&pnetwork->network.IEs[12], pnetwork->network.IELength-12, NULL, &wpsielen);
-		ie_p2p = rtw_get_p2p_ie(&pnetwork->network.IEs[12], pnetwork->network.IELength-12, NULL, &ielen);
+		ie_wpa = rtl8188fu_rtw_get_wpa_ie(&pnetwork->network.IEs[12], &ielen, pnetwork->network.IELength-12);	
+		ie_wpa2 = rtl8188fu_rtw_get_wpa2_ie(&pnetwork->network.IEs[12], &ielen, pnetwork->network.IELength-12);
+		ie_cap = rtl8188fu_rtw_get_capability(&pnetwork->network);
+		ie_wps = rtl8188fu_rtw_get_wps_ie(&pnetwork->network.IEs[12], pnetwork->network.IELength-12, NULL, &wpsielen);
+		ie_p2p = rtl8188fu_rtw_get_p2p_ie(&pnetwork->network.IEs[12], pnetwork->network.IELength-12, NULL, &ielen);
 		ssid = pnetwork->network.Ssid.Ssid;
 		sprintf(flag_str, "%s%s%s%s%s%s%s",
 					(ie_wpa) ? "[WPA]":"",
@@ -1069,7 +1069,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 			(int)pnetwork->network.Rssi,
 			notify_signal,
 			notify_noise,
-			rtw_get_passing_time_ms((u32)pnetwork->last_scanned),
+			rtl8188fu_rtw_get_passing_time_ms((u32)pnetwork->last_scanned),
 			flag_str,
 			pnetwork->network.Ssid.Ssid);
 		plist = get_next(plist);
@@ -1079,7 +1079,7 @@ int proc_get_survey_info(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_survey_info(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_survey_info(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	_irqL irqL;
 	struct net_device *dev = data;
@@ -1092,7 +1092,7 @@ ssize_t proc_set_survey_info(struct file *file, const char __user *buffer, size_
 	if (count < 1)
 		return -EFAULT;
 
-	rtw_ps_deny(padapter, PS_DENY_SCAN);
+	rtl8188fu_rtw_ps_deny(padapter, PS_DENY_SCAN);
 	if (_FAIL == rtw_pwr_wakeup(padapter))
 		goto exit;
 
@@ -1111,7 +1111,7 @@ ssize_t proc_set_survey_info(struct file *file, const char __user *buffer, size_
 		goto exit;
 	}
 	
-	if (rtw_is_scan_deny(padapter)) {
+	if (rtl8188fu_rtw_is_scan_deny(padapter)) {
 		DBG_871X(FUNC_ADPT_FMT  ": scan deny\n", FUNC_ADPT_ARG(padapter));
 		goto exit;
 	}
@@ -1138,14 +1138,14 @@ ssize_t proc_set_survey_info(struct file *file, const char __user *buffer, size_
 		goto exit;
 	}
 #endif
-	_status = rtw_set_802_11_bssid_list_scan(padapter, NULL, 0);
+	_status = rtl8188fu_rtw_set_802_11_bssid_list_scan(padapter, NULL, 0);
 
 exit:
-	rtw_ps_deny_cancel(padapter, PS_DENY_SCAN);
+	rtl8188fu_rtw_ps_deny_cancel(padapter, PS_DENY_SCAN);
 	return count;
 }
 
-int proc_get_ap_info(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_ap_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	struct sta_info *psta;
@@ -1155,7 +1155,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 	struct wlan_network *cur_network = &(pmlmepriv->cur_network);
 	struct sta_priv *pstapriv = &padapter->stapriv;
 
-	psta = rtw_get_stainfo(pstapriv, cur_network->network.MacAddress);
+	psta = rtl8188fu_rtw_get_stainfo(pstapriv, cur_network->network.MacAddress);
 	if(psta)
 	{
 		int i;
@@ -1179,7 +1179,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 		DBG_871X_SEL_NL(m, "vht_mcs_map=0x%x, vht_highest_rate=0x%x, vht_ampdu_len=%d\n", *(u16*)psta->vhtpriv.vht_mcs_map, psta->vhtpriv.vht_highest_rate, psta->vhtpriv.ampdu_len);
 #endif
 
-		sta_rx_reorder_ctl_dump(m, psta);
+		rtl8188fu_sta_rx_reorder_ctl_dump(m, psta);
 	}
 	else
 	{							
@@ -1189,7 +1189,7 @@ int proc_get_ap_info(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_reset_trx_info(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_reset_trx_info(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1219,7 +1219,7 @@ ssize_t proc_reset_trx_info(struct file *file, const char __user *buffer, size_t
 	return count;
 }
 	
-int proc_get_trx_info(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_trx_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	int i;
@@ -1230,7 +1230,7 @@ int proc_get_trx_info(struct seq_file *m, void *v)
 	struct debug_priv *pdbgpriv = &psdpriv->drv_dbg;
 	struct hw_xmit *phwxmit;
 
-	dump_os_queue(m, padapter);
+	rtl8188fu_dump_os_queue(m, padapter);
 
 	DBG_871X_SEL_NL(m, "free_xmitbuf_cnt=%d, free_xmitframe_cnt=%d\n"
 		, pxmitpriv->free_xmitbuf_cnt, pxmitpriv->free_xmitframe_cnt);
@@ -1246,7 +1246,7 @@ int proc_get_trx_info(struct seq_file *m, void *v)
 	}
 
 #ifdef CONFIG_USB_HCI
-	DBG_871X_SEL_NL(m, "rx_urb_pending_cn=%d\n", ATOMIC_READ(&(precvpriv->rx_pending_cnt)));
+	DBG_871X_SEL_NL(m, "rx_urb_pending_cn=%d\n", rtl8188fu_ATOMIC_READ(&(precvpriv->rx_pending_cnt)));
 #endif
 
 	//Folowing are RX info
@@ -1263,16 +1263,16 @@ int proc_get_trx_info(struct seq_file *m, void *v)
 	return 0;
 }
 
-int proc_get_dis_pwt(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_dis_pwt(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 	u8 dis_pwt = 0;
-	rtw_hal_get_def_var(padapter, HAL_DEF_DBG_DIS_PWT, &(dis_pwt));
+	rtl8188fu_rtw_hal_get_def_var(padapter, HAL_DEF_DBG_DIS_PWT, &(dis_pwt));
 	DBG_871X_SEL_NL(m, " Tx Power training mode:%s \n",(dis_pwt==_TRUE)?"Disable":"Enable");
 	return 0;
 }
-ssize_t proc_set_dis_pwt(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_dis_pwt(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1293,14 +1293,14 @@ ssize_t proc_set_dis_pwt(struct file *file, const char __user *buffer, size_t co
 		DBG_871X("Set Tx Power training mode:%s\n", (dis_pwt == _TRUE)?"Disable":"Enable");
 		
 		if (num >= 1)
-			rtw_hal_set_def_var(padapter, HAL_DEF_DBG_DIS_PWT, &(dis_pwt));
+			rtl8188fu_rtw_hal_set_def_var(padapter, HAL_DEF_DBG_DIS_PWT, &(dis_pwt));
 	}
 
 	return count;
 	
 }
 
-int proc_get_rate_ctl(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_rate_ctl(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	int i;
@@ -1324,7 +1324,7 @@ int proc_get_rate_ctl(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_rate_ctl(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_rate_ctl(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *adapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1394,7 +1394,7 @@ ssize_t proc_set_rx_cnt_dump(struct file *file, const char __user *buffer, size_
 	return count;
 }
 #endif
-ssize_t proc_set_fwdl_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_fwdl_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1415,7 +1415,7 @@ ssize_t proc_set_fwdl_test_case(struct file *file, const char __user *buffer, si
 	return count;
 }
 
-ssize_t proc_set_del_rx_ampdu_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_del_rx_ampdu_test_case(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1482,7 +1482,7 @@ ssize_t proc_set_dfs_master_test_case(struct file *file, const char __user *buff
 }
 #endif /* CONFIG_DFS_MASTER */
 
-ssize_t proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1503,7 +1503,7 @@ ssize_t proc_set_wait_hiq_empty(struct file *file, const char __user *buffer, si
 	return count;
 }
 
-int proc_get_suspend_resume_info(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_suspend_resume_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1582,7 +1582,7 @@ int proc_get_rx_logs(struct seq_file *m, void *v)
 		"core_rx_post_decrypt_unknown=%d\n"
 		"core_rx_post_decrypt_err=%d\n"
 		"core_rx_post_defrag_err=%d\n"
-		"core_rx_post_portctrl_err=%d\n"
+		"core_rx_post_rtl8188fu_portctrl_err=%d\n"
 		"core_rx_post_indicate=%d\n"
 		"core_rx_post_indicate_in_oder=%d\n"
 		"core_rx_post_indicate_reoder=%d\n"
@@ -1625,7 +1625,7 @@ int proc_get_rx_logs(struct seq_file *m, void *v)
 		rx_logs->core_rx_post_decrypt_unknown,
 		rx_logs->core_rx_post_decrypt_err,
 		rx_logs->core_rx_post_defrag_err,
-		rx_logs->core_rx_post_portctrl_err,
+		rx_logs->core_rx_post_rtl8188fu_portctrl_err,
 		rx_logs->core_rx_post_indicate,
 		rx_logs->core_rx_post_indicate_in_oder,
 		rx_logs->core_rx_post_indicate_reoder,
@@ -1805,7 +1805,7 @@ int proc_get_int_logs(struct seq_file *m, void *v)
 
 #endif // CONFIG_DBG_COUNTER
 
-int proc_get_hw_status(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_hw_status(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1824,7 +1824,7 @@ int proc_get_hw_status(struct seq_file *m, void *v)
 
 	return 0;
 }
-int proc_get_trx_info_debug(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_trx_info_debug(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1834,16 +1834,16 @@ int proc_get_trx_info_debug(struct seq_file *m, void *v)
 
 
 	/*============  tx info ============	*/
-	rtw_hal_get_def_var(padapter, HW_DEF_RA_INFO_DUMP, m);
+	rtl8188fu_rtw_hal_get_def_var(padapter, HW_DEF_RA_INFO_DUMP, m);
 
 	/*============  rx info ============	*/
-	rtw_hal_set_odm_var(padapter, HAL_ODM_RX_INFO_DUMP, m, _FALSE);
+	rtl8188fu_rtw_hal_set_odm_var(padapter, HAL_ODM_RX_INFO_DUMP, m, _FALSE);
 
 
 return 0;
 }
 
-int proc_get_rx_signal(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_rx_signal(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1854,16 +1854,16 @@ int proc_get_rx_signal(struct seq_file *m, void *v)
 	DBG_871X_SEL_NL(m, "signal_strength:%u\n", padapter->recvpriv.signal_strength);
 	DBG_871X_SEL_NL(m, "signal_qual:%u\n", padapter->recvpriv.signal_qual);
 
-	rtw_get_noise(padapter);
+	rtl8188fu_rtw_get_noise(padapter);
 	DBG_871X_SEL_NL(m, "noise:%d\n", padapter->recvpriv.noise);
 	#ifdef DBG_RX_SIGNAL_DISPLAY_RAW_DATA
-	rtw_odm_get_perpkt_rssi(m,padapter);
+	rtl8188fu_rtw_odm_get_perpkt_rssi(m,padapter);
 	rtw_get_raw_rssi_info(m,padapter);
 	#endif
 	return 0;
 }
 
-ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_rx_signal(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1904,7 +1904,7 @@ ssize_t proc_set_rx_signal(struct file *file, const char __user *buffer, size_t 
 }
 #ifdef CONFIG_80211N_HT
 
-int proc_get_ht_enable(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_ht_enable(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1916,7 +1916,7 @@ int proc_get_ht_enable(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_ht_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1947,7 +1947,7 @@ ssize_t proc_set_ht_enable(struct file *file, const char __user *buffer, size_t 
 	
 }
 
-int proc_get_bw_mode(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_bw_mode(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1959,7 +1959,7 @@ int proc_get_bw_mode(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_bw_mode(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -1995,7 +1995,7 @@ ssize_t proc_set_bw_mode(struct file *file, const char __user *buffer, size_t co
 	
 }
 
-int proc_get_ampdu_enable(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_ampdu_enable(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2007,7 +2007,7 @@ int proc_get_ampdu_enable(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_ampdu_enable(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2038,7 +2038,7 @@ ssize_t proc_set_ampdu_enable(struct file *file, const char __user *buffer, size
 	
 }
 
-int proc_get_mac_rptbuf(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_mac_rptbuf(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2068,20 +2068,20 @@ int proc_get_mac_rptbuf(struct seq_file *m, void *v)
 }
 
 
-int proc_get_rx_ampdu(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_rx_ampdu(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
 
 	DBG_871X_SEL(m, "accept: ");
 	if (padapter->fix_rx_ampdu_accept == RX_AMPDU_ACCEPT_INVALID)
-		DBG_871X_SEL_NL(m, "%u%s\n", rtw_rx_ampdu_is_accept(padapter), "(auto)");
+		DBG_871X_SEL_NL(m, "%u%s\n", rtl8188fu_rtw_rx_ampdu_is_accept(padapter), "(auto)");
 	else
 		DBG_871X_SEL_NL(m, "%u%s\n", padapter->fix_rx_ampdu_accept, "(fixed)");
 
 	DBG_871X_SEL(m, "size: ");
 	if (padapter->fix_rx_ampdu_size == RX_AMPDU_SIZE_INVALID)
-		DBG_871X_SEL_NL(m, "%u%s\n", rtw_rx_ampdu_size(padapter), "(auto)");
+		DBG_871X_SEL_NL(m, "%u%s\n", rtl8188fu_rtw_rx_ampdu_size(padapter), "(auto)");
 	else
 		DBG_871X_SEL_NL(m, "%u%s\n", padapter->fix_rx_ampdu_size, "(fixed)");
 
@@ -2094,7 +2094,7 @@ int proc_get_rx_ampdu(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2118,17 +2118,17 @@ ssize_t proc_set_rx_ampdu(struct file *file, const char __user *buffer, size_t c
 		int num = sscanf(tmp, "%hhu %hhu", &accept, &size);
 
 		if (num >= 1)
-			rtw_rx_ampdu_set_accept(padapter, accept, RX_AMPDU_DRV_FIXED);
+			rtl8188fu_rtw_rx_ampdu_set_accept(padapter, accept, RX_AMPDU_DRV_FIXED);
 		if (num >= 2)
-			rtw_rx_ampdu_set_size(padapter, size, RX_AMPDU_DRV_FIXED);
+			rtl8188fu_rtw_rx_ampdu_set_size(padapter, size, RX_AMPDU_DRV_FIXED);
 
-		rtw_rx_ampdu_apply(padapter);
+		rtl8188fu_rtw_rx_ampdu_apply(padapter);
 	}
 
 exit:
 	return count;
 }
-int proc_get_rx_ampdu_factor(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_rx_ampdu_factor(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2142,7 +2142,7 @@ int proc_get_rx_ampdu_factor(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_rx_ampdu_factor(struct file *file, const char __user *buffer
+ssize_t rtl8188fu_proc_set_rx_ampdu_factor(struct file *file, const char __user *buffer
                                  , size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
@@ -2176,7 +2176,7 @@ ssize_t proc_set_rx_ampdu_factor(struct file *file, const char __user *buffer
 	return count;
 }
 
-int proc_get_rx_ampdu_density(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_rx_ampdu_density(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2190,7 +2190,7 @@ int proc_get_rx_ampdu_density(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_rx_ampdu_density(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_rx_ampdu_density(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2223,7 +2223,7 @@ ssize_t proc_set_rx_ampdu_density(struct file *file, const char __user *buffer, 
 	return count;
 }
 
-int proc_get_tx_ampdu_density(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_tx_ampdu_density(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2237,7 +2237,7 @@ int proc_get_tx_ampdu_density(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_tx_ampdu_density(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_tx_ampdu_density(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2271,7 +2271,7 @@ ssize_t proc_set_tx_ampdu_density(struct file *file, const char __user *buffer, 
 }
 #endif //CONFIG_80211N_HT
 
-int proc_get_en_fwps(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_en_fwps(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2286,7 +2286,7 @@ int proc_get_en_fwps(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_en_fwps(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_en_fwps(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2333,7 +2333,7 @@ int proc_get_two_path_rssi(struct seq_file *m, void *v)
 }
 */
 #ifdef CONFIG_80211N_HT
-int proc_get_rx_stbc(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_rx_stbc(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2345,7 +2345,7 @@ int proc_get_rx_stbc(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	struct net_device *dev = data;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -2431,7 +2431,7 @@ ssize_t proc_set_rx_stbc(struct file *file, const char __user *buffer, size_t co
 */		
 #ifdef CONFIG_AP_MODE
 
-int proc_get_all_sta_info(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_all_sta_info(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_irqL irqL;
@@ -2450,7 +2450,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 		phead = &(pstapriv->sta_hash[i]);
 		plist = get_next(phead);
 		
-		while ((rtw_end_of_queue_search(phead, plist)) == _FALSE)
+		while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE)
 		{
 			psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 
@@ -2482,7 +2482,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 				DBG_871X_SEL_NL(m, "qos_info=0x%x\n", psta->qos_info);
 				DBG_871X_SEL_NL(m, "dot118021XPrivacy=0x%x\n", psta->dot118021XPrivacy);
 
-				sta_rx_reorder_ctl_dump(m, psta);
+				rtl8188fu_sta_rx_reorder_ctl_dump(m, psta);
 
 #ifdef CONFIG_TDLS
 				DBG_871X_SEL_NL(m, "tdls_sta_state=0x%08x\n", psta->tdls_sta_state);
@@ -2493,7 +2493,7 @@ int proc_get_all_sta_info(struct seq_file *m, void *v)
 				DBG_871X_SEL_NL(m, "tx_bytes=%llu\n", psta->sta_stats.tx_bytes);
 #endif //CONFIG_TDLS
 
-				dump_st_ctl(m, &psta->st_ctl);
+				rtl8188fu_dump_st_ctl(m, &psta->st_ctl);
 
 				if (STA_OP_WFD_MODE(psta))
 					DBG_871X_SEL_NL(m, "op_wfd_mode:0x%02x\n", STA_OP_WFD_MODE(psta));
@@ -2663,9 +2663,9 @@ ssize_t proc_set_sreset(struct file *file, const char __user *buffer, size_t cou
 		int num = sscanf(tmp, "%d", &trigger_point);
 
 		if (trigger_point == SRESET_TGP_NULL)
-			rtw_hal_sreset_reset(padapter);
+			rtw_hal_rtl8188fu_sreset_reset(padapter);
 		else
-			sreset_set_trigger_point(padapter, trigger_point);
+			rtl8188fu_sreset_set_trigger_point(padapter, trigger_point);
 	}
 	
 	return count;
@@ -2799,11 +2799,11 @@ ssize_t proc_set_wowlan_gpio_info(struct file *file, const char __user *buffer,
 
 		pwrpriv->is_high_active = is_high_active;
 
-		rtw_ps_deny(padapter, PS_DENY_IOCTL);
-		LeaveAllPowerSaveModeDirect(padapter);
+		rtl8188fu_rtw_ps_deny(padapter, PS_DENY_IOCTL);
+		rtl8188fu_LeaveAllPowerSaveModeDirect(padapter);
 		val8 = (pwrpriv->is_high_active == 0) ? 1 : 0;
 		rtw_hal_set_output_gpio(padapter, WAKEUP_GPIO_IDX, val8);
-		rtw_ps_deny_cancel(padapter, PS_DENY_IOCTL);
+		rtl8188fu_rtw_ps_deny_cancel(padapter, PS_DENY_IOCTL);
 
 		DBG_871X("set %s %d\n", "gpio_high_active",
 				pwrpriv->is_high_active);
@@ -2815,18 +2815,18 @@ ssize_t proc_set_wowlan_gpio_info(struct file *file, const char __user *buffer,
 }
 #endif /* CONFIG_GPIO_WAKEUP */
 
-int proc_get_new_bcn_max(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_rtl8188fu_new_bcn_max(struct seq_file *m, void *v)
 {
-	extern int new_bcn_max;
+	extern int rtl8188fu_new_bcn_max;
 
-	DBG_871X_SEL_NL(m, "%d", new_bcn_max);
+	DBG_871X_SEL_NL(m, "%d", rtl8188fu_new_bcn_max);
 	return 0;
 }
 
-ssize_t proc_set_new_bcn_max(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_rtl8188fu_new_bcn_max(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	char tmp[32];
-	extern int new_bcn_max;
+	extern int rtl8188fu_new_bcn_max;
 
 	if(count < 1)
 		return -EFAULT;
@@ -2837,7 +2837,7 @@ ssize_t proc_set_new_bcn_max(struct file *file, const char __user *buffer, size_
 	}
 
 	if (buffer && !copy_from_user(tmp, buffer, count))
-		sscanf(tmp, "%d ", &new_bcn_max);
+		sscanf(tmp, "%d ", &rtl8188fu_new_bcn_max);
 
 	return count;
 }
@@ -2871,7 +2871,7 @@ int proc_get_ps_info(struct seq_file *m, void *v)
 
 	DBG_871X_SEL_NL(m, " IPS mode: %s\n", str);
 	DBG_871X_SEL_NL(m, " IPS enter count:%d, IPS leave count:%d\n",
-			pwrpriv->ips_enter_cnts, pwrpriv->ips_leave_cnts);
+			pwrpriv->rtl8188fu_ips_enter_cnts, pwrpriv->rtl8188fu_ips_leave_cnts);
 	DBG_871X_SEL_NL(m, "------------------------------\n");
 	DBG_871X_SEL_NL(m, "*LPS:\n");
 
@@ -2974,7 +2974,7 @@ static int proc_tdls_display_tdls_function_info(struct seq_file *m)
 		}
 	}
 
-	DBG_871X_SEL_NL(m, "%-*s = %s\n", SpaceBtwnItemAndValue, "TDLS CH SW On", (ATOMIC_READ(&ptdlsinfo->chsw_info.chsw_on) == _TRUE) ? "_TRUE" : "_FALSE");
+	DBG_871X_SEL_NL(m, "%-*s = %s\n", SpaceBtwnItemAndValue, "TDLS CH SW On", (rtl8188fu_ATOMIC_READ(&ptdlsinfo->chsw_info.chsw_on) == _TRUE) ? "_TRUE" : "_FALSE");
 	DBG_871X_SEL_NL(m, "%-*s = %d\n", SpaceBtwnItemAndValue, "TDLS CH SW Off-Channel Num", ptdlsinfo->chsw_info.off_ch_num);
 	DBG_871X_SEL_NL(m, "%-*s = %d\n", SpaceBtwnItemAndValue, "TDLS CH SW Channel Offset", ptdlsinfo->chsw_info.ch_offset);
 	DBG_871X_SEL_NL(m, "%-*s = %d\n", SpaceBtwnItemAndValue, "TDLS CH SW Current Time", ptdlsinfo->chsw_info.cur_time);
@@ -3138,7 +3138,7 @@ static int proc_tdls_display_tdls_sta_info(struct seq_file *m)
 	{
 		phead = &(pstapriv->sta_hash[i]);
 		plist = get_next(phead);	
-		while ((rtw_end_of_queue_search(phead, plist)) == _FALSE)
+		while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE)
 		{
 				psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 				plist = get_next(plist);
@@ -3320,7 +3320,7 @@ int proc_get_tdls_info(struct seq_file *m, void *v)
 	u8 NumOfTdlsStaToShow = 0;
 	BOOLEAN FirstMatchFound = _FALSE;
 
-	if (hal_chk_wl_func(padapter, WL_FUNC_TDLS) == _FALSE) {
+	if (rtl8188fu_hal_chk_wl_func(padapter, WL_FUNC_TDLS) == _FALSE) {
 		DBG_871X_SEL_NL(m, "No tdls info can be shown since hal doesn't support tdls\n");
 		return 0;
 	}
@@ -3333,7 +3333,7 @@ int proc_get_tdls_info(struct seq_file *m, void *v)
 }
 #endif
 
-int proc_get_monitor(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_monitor(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -3344,7 +3344,7 @@ int proc_get_monitor(struct seq_file *m, void *v)
 		DBG_871X_SEL_NL(m, "Monitor mode : Enable\n");
 
 		DBG_871X_SEL_NL(m, "ch=%d, ch_offset=%d, bw=%d\n",
-						rtw_get_oper_ch(padapter), rtw_get_oper_choffset(padapter), rtw_get_oper_bw(padapter));
+						rtl8188fu_rtw_get_oper_ch(padapter), rtl8188fu_rtw_get_oper_choffset(padapter), rtl8188fu_rtw_get_oper_bw(padapter));
 	} else {
 		DBG_871X_SEL_NL(m, "Monitor mode : Disable\n");
 	}
@@ -3352,7 +3352,7 @@ int proc_get_monitor(struct seq_file *m, void *v)
 	return 0;
 }
 
-ssize_t proc_set_monitor(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_monitor(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 	char tmp[32];
 	struct net_device *dev = data;
@@ -3378,14 +3378,14 @@ ssize_t proc_set_monitor(struct file *file, const char __user *buffer, size_t co
 		}
 
 		padapter->mlmeextpriv.cur_channel  = target_chan;
-		set_channel_bwmode(padapter, target_chan, target_offset, target_bw);
+		rtl8188fu_set_channel_bwmode(padapter, target_chan, target_offset, target_bw);
 	}
 
 	return count;
 }
 
 #include <hal_data.h>
-int proc_get_efuse_map(struct seq_file *m, void *v)
+int rtl8188fu_proc_get_efuse_map(struct seq_file *m, void *v)
 {
 	struct net_device *dev = m->private;
 	_adapter *padapter = (_adapter *)rtw_netdev_priv(dev);
@@ -3397,29 +3397,29 @@ int proc_get_efuse_map(struct seq_file *m, void *v)
 	int mapLen = EFUSE_MAP_SIZE;
 
 	ips_mode = pwrctrlpriv->ips_mode;
-	rtw_pm_set_ips(padapter, IPS_NONE);
-	if (rtw_efuse_map_read(padapter, EFUSE_WIFI, mapLen, pEfuseHal->fakeEfuseInitMap) == _FAIL)
+	rtl8188fu_rtw_pm_set_ips(padapter, IPS_NONE);
+	if (rtl8188fu_rtw_efuse_map_read(padapter, EFUSE_WIFI, mapLen, pEfuseHal->rtl8188fu_fakeEfuseInitMap) == _FAIL)
 		DBG_871X_SEL_NL(m, "WARN - Read Realmap Failed\n");	
 	
 	DBG_871X_SEL_NL(m, "\n");
 	for (i = 0; i < EFUSE_MAP_SIZE; i += 16) {
 		DBG_871X_SEL_NL(m, "0x%02x\t", i);
 		for (j = 0; j < 8; j++) 
-			DBG_871X_SEL_NL(m, "%02X ", pEfuseHal->fakeEfuseInitMap[i+j]);
+			DBG_871X_SEL_NL(m, "%02X ", pEfuseHal->rtl8188fu_fakeEfuseInitMap[i+j]);
 		
 		DBG_871X_SEL_NL(m, "\t");
 				
 		for (; j < 16; j++)
-			DBG_871X_SEL_NL(m, "%02X ", pEfuseHal->fakeEfuseInitMap[i+j]);
+			DBG_871X_SEL_NL(m, "%02X ", pEfuseHal->rtl8188fu_fakeEfuseInitMap[i+j]);
 		
 		DBG_871X_SEL_NL(m, "\n");
 				
 	}
-	rtw_pm_set_ips(padapter, ips_mode);
+	rtl8188fu_rtw_pm_set_ips(padapter, ips_mode);
 	return 0;
 }
 
-ssize_t proc_set_efuse_map(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
+ssize_t rtl8188fu_proc_set_efuse_map(struct file *file, const char __user *buffer, size_t count, loff_t *pos, void *data)
 {
 #if 0
 	char tmp[256] = {0};
@@ -3453,10 +3453,10 @@ ssize_t proc_set_efuse_map(struct file *file, const char __user *buffer, size_t 
 		}
 	}
 	ips_mode = pwrctrlpriv->ips_mode;
-	rtw_pm_set_ips(padapter, IPS_NONE);
-	if (rtw_efuse_map_write(padapter, addr, cnts, &efuse_data) == _FAIL) 
-		DBG_871X("WARN - rtw_efuse_map_write error!!\n");		
-	rtw_pm_set_ips(padapter, ips_mode);
+	rtl8188fu_rtw_pm_set_ips(padapter, IPS_NONE);
+	if (rtl8188fu_rtw_efuse_map_write(padapter, addr, cnts, &efuse_data) == _FAIL) 
+		DBG_871X("WARN - rtl8188fu_rtw_efuse_map_write error!!\n");		
+	rtl8188fu_rtw_pm_set_ips(padapter, ips_mode);
 #endif	
 	return count;
 }
@@ -3498,9 +3498,9 @@ ssize_t proc_set_tx_sa_query(struct file *file, const char __user *buffer, size_
 	
 	if ((check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _TRUE)
 		&& (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE) && padapter->securitypriv.binstallBIPkey == _TRUE) {
-		DBG_871X("STA:"MAC_FMT"\n", MAC_ARG(get_my_bssid(&(pmlmeinfo->network))));
+		DBG_871X("STA:"MAC_FMT"\n", MAC_ARG(rtl8188fu_get_my_bssid(&(pmlmeinfo->network))));
 		/* TX unicast sa_query to AP */
-		issue_action_SA_Query(padapter, get_my_bssid(&(pmlmeinfo->network)), 0, 0, (u8)key_type);
+		issue_action_SA_Query(padapter, rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), 0, 0, (u8)key_type);
 	} else if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE && padapter->securitypriv.binstallBIPkey == _TRUE) {
 		/* TX unicast sa_query to every client STA */
 		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
@@ -3510,17 +3510,17 @@ ssize_t proc_set_tx_sa_query(struct file *file, const char __user *buffer, size_
 			phead = &(pstapriv->sta_hash[index]);
 			plist = get_next(phead);
 			
-			while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+			while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE) {
 				psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 				plist = get_next(plist);
-				_rtw_memcpy(&mac_addr[psta->mac_id][0], psta->hwaddr, ETH_ALEN);
+				rtl8188fu__rtw_memcpy(&mac_addr[psta->mac_id][0], psta->hwaddr, ETH_ALEN);
 			}
 		}
 		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
 		
 		for (index = 0; index < macid_ctl->num && index < NUM_STA; index++) {
-			if (rtw_macid_is_used(macid_ctl, index) && !rtw_macid_is_bmc(macid_ctl, index)) {
-				if (!_rtw_memcmp(get_my_bssid(&(pmlmeinfo->network)), &mac_addr[index][0], ETH_ALEN) 
+			if (rtl8188fu_rtw_macid_is_used(macid_ctl, index) && !rtl8188fu_rtw_macid_is_bmc(macid_ctl, index)) {
+				if (!rtl8188fu__rtw_memcmp(rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), &mac_addr[index][0], ETH_ALEN) 
 					&& !IS_MCAST(&mac_addr[index][0])) {
 					issue_action_SA_Query(padapter, &mac_addr[index][0], 0, 0, (u8)key_type);
 					DBG_871X("STA[%u]:"MAC_FMT"\n", index , MAC_ARG(&mac_addr[index][0]));
@@ -3584,11 +3584,11 @@ ssize_t proc_set_tx_deauth(struct file *file, const char __user *buffer, size_t 
 		if (key_type == 3) /* key_type 3 only for AP mode */
 			return count;
 		/* TX unicast deauth to AP */
-		issue_deauth_11w(padapter, get_my_bssid(&(pmlmeinfo->network)), 0, (u8)key_type);
+		rtl8188fu_issue_deauth_11w(padapter, rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), 0, (u8)key_type);
 	} else if (check_fwstate(pmlmepriv, WIFI_AP_STATE) == _TRUE) {
 		
 		if (key_type == 3)
-			issue_deauth_11w(padapter, bc_addr, 0, IEEE80211W_RIGHT_KEY);
+			rtl8188fu_issue_deauth_11w(padapter, bc_addr, 0, IEEE80211W_RIGHT_KEY);
 		
 		/* TX unicast deauth to every client STA */
 		_enter_critical_bh(&pstapriv->sta_hash_lock, &irqL);
@@ -3598,34 +3598,34 @@ ssize_t proc_set_tx_deauth(struct file *file, const char __user *buffer, size_t 
 			phead = &(pstapriv->sta_hash[index]);
 			plist = get_next(phead);
 			
-			while ((rtw_end_of_queue_search(phead, plist)) == _FALSE) {
+			while ((rtl8188fu_rtw_end_of_queue_search(phead, plist)) == _FALSE) {
 				psta = LIST_CONTAINOR(plist, struct sta_info, hash_list);
 				plist = get_next(plist);
-				_rtw_memcpy(&mac_addr[psta->mac_id][0], psta->hwaddr, ETH_ALEN);
+				rtl8188fu__rtw_memcpy(&mac_addr[psta->mac_id][0], psta->hwaddr, ETH_ALEN);
 			}
 		}
 		_exit_critical_bh(&pstapriv->sta_hash_lock, &irqL);
 		
 		for (index = 0; index < macid_ctl->num && index < NUM_STA; index++) {
-			if (rtw_macid_is_used(macid_ctl, index) && !rtw_macid_is_bmc(macid_ctl, index)) {
-				if (!_rtw_memcmp(get_my_bssid(&(pmlmeinfo->network)), &mac_addr[index][0], ETH_ALEN)) {
+			if (rtl8188fu_rtw_macid_is_used(macid_ctl, index) && !rtl8188fu_rtw_macid_is_bmc(macid_ctl, index)) {
+				if (!rtl8188fu__rtw_memcmp(rtl8188fu_get_my_bssid(&(pmlmeinfo->network)), &mac_addr[index][0], ETH_ALEN)) {
 					if (key_type != 3)
-						issue_deauth_11w(padapter, &mac_addr[index][0], 0, (u8)key_type);
+						rtl8188fu_issue_deauth_11w(padapter, &mac_addr[index][0], 0, (u8)key_type);
 					
-					psta = rtw_get_stainfo(pstapriv, &mac_addr[index][0]);	
+					psta = rtl8188fu_rtw_get_stainfo(pstapriv, &mac_addr[index][0]);	
 					if (psta && key_type != IEEE80211W_WRONG_KEY && key_type != IEEE80211W_NO_KEY) {
 						u8 updated = _FALSE;
 					
 						_enter_critical_bh(&pstapriv->asoc_list_lock, &irqL);
-						if (rtw_is_list_empty(&psta->asoc_list) == _FALSE) {			
+						if (rtl8188fu_rtw_is_list_empty(&psta->asoc_list) == _FALSE) {			
 							rtw_list_delete(&psta->asoc_list);
 							pstapriv->asoc_list_cnt--;
-							updated = ap_free_sta(padapter, psta, _FALSE, WLAN_REASON_PREV_AUTH_NOT_VALID, _TRUE);
+							updated = rtl8188fu_ap_free_sta(padapter, psta, _FALSE, WLAN_REASON_PREV_AUTH_NOT_VALID, _TRUE);
 			
 						}
 						_exit_critical_bh(&pstapriv->asoc_list_lock, &irqL);
 			
-						associated_clients_update(padapter, updated, STA_INFO_UPDATE_ALL);
+						rtl8188fu_associated_clients_update(padapter, updated, STA_INFO_UPDATE_ALL);
 					}
 					
 					DBG_871X("STA[%u]:"MAC_FMT"\n", index , MAC_ARG(&mac_addr[index][0]));
@@ -3686,10 +3686,10 @@ ssize_t proc_set_tx_auth(struct file *file, const char __user *buffer, size_t co
 		&& (check_fwstate(pmlmepriv, _FW_LINKED) == _TRUE)) {
 		if (tx_auth == 1) {
 			/* TX unicast auth to AP */
-			issue_auth(padapter, NULL, 0);
+			rtl8188fu_issue_auth(padapter, NULL, 0);
 		} else if (tx_auth == 2) {
 			/* TX unicast auth to AP */
-			issue_assocreq(padapter);
+			rtl8188fu_issue_assocreq(padapter);
 		}
 	} 
 	

@@ -27,7 +27,7 @@ struct rtw_async_write_data {
 	struct usb_ctrlrequest dr;
 };
 	
-int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 index, void *pdata, u16 len, u8 requesttype)
+int rtl8188fu_usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 index, void *pdata, u16 len, u8 requesttype)
 {
 	_adapter	*padapter = pintfhdl->padapter;
 	struct dvobj_priv  *pdvobjpriv = adapter_to_dvobj(padapter);
@@ -59,7 +59,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 inde
 	//DBG_871X("%s %s:%d\n",__FUNCTION__, current->comm, current->pid);
 
 	if (RTW_CANNOT_IO(padapter)){
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usbctrl_vendorreq:(RTW_CANNOT_IO)!!!\n"));
+		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usbctrl_vendorreq:(RTW_CANNOT_IO)!!!\n"));
 		status = -EPERM; 
 		goto exit;
 	}	
@@ -100,7 +100,7 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 inde
 	
 	while(++vendorreq_times<= MAX_USBCTRL_VENDORREQ_TIMES)
 	{
-		_rtw_memset(pIo_buf, 0, len);
+		rtl8188fu__rtw_memset(pIo_buf, 0, len);
 		
 		if (requesttype == 0x01)
 		{
@@ -111,17 +111,17 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 inde
 		{
 			pipe = usb_sndctrlpipe(udev, 0);//write_out
 			reqtype =  REALTEK_USB_VENQT_WRITE;		
-			_rtw_memcpy( pIo_buf, pdata, len);
+			rtl8188fu__rtw_memcpy( pIo_buf, pdata, len);
 		}		
 	
 		status = rtw_usb_control_msg(udev, pipe, request, reqtype, value, index, pIo_buf, len, RTW_USB_CONTROL_MSG_TIMEOUT);
 		
 		if ( status == len)   // Success this control transfer.
 		{
-			rtw_reset_continual_io_error(pdvobjpriv);
+			rtl8188fu_rtw_reset_continual_io_error(pdvobjpriv);
 			if ( requesttype == 0x01 )
 			{   // For Control read transfer, we have to copy the read data from pIo_buf to pdata.
-				_rtw_memcpy( pdata, pIo_buf,  len );
+				rtl8188fu__rtw_memcpy( pdata, pIo_buf,  len );
 			}
 		}
 		else { // error cases
@@ -146,12 +146,12 @@ int usbctrl_vendorreq(struct intf_hdl *pintfhdl, u8 request, u16 value, u16 inde
 				if(status > 0) {
 					if ( requesttype == 0x01 )
 					{   // For Control read transfer, we have to copy the read data from pIo_buf to pdata.
-						_rtw_memcpy( pdata, pIo_buf,  len );
+						rtl8188fu__rtw_memcpy( pdata, pIo_buf,  len );
 					}
 				}
 			}
 
-			if(rtw_inc_and_chk_continual_io_error(pdvobjpriv) == _TRUE ){
+			if(rtl8188fu_rtw_inc_and_chk_continual_io_error(pdvobjpriv) == _TRUE ){
 				rtw_set_surprise_removed(padapter);
 				break;
 			}
@@ -179,7 +179,7 @@ exit:
 }
 
 #ifdef CONFIG_USB_SUPPORT_ASYNC_VDN_REQ
-static void _usbctrl_vendorreq_async_callback(struct urb *urb, struct pt_regs *regs)
+static void _rtl8188fu_usbctrl_vendorreq_async_callback(struct urb *urb, struct pt_regs *regs)
 {
 	if (urb) {
 		if (urb->context) {
@@ -189,7 +189,7 @@ static void _usbctrl_vendorreq_async_callback(struct urb *urb, struct pt_regs *r
 	}
 }
 
-int _usbctrl_vendorreq_async_write(struct usb_device *udev, u8 request,
+int _rtl8188fu_usbctrl_vendorreq_async_write(struct usb_device *udev, u8 request,
 	u16 value, u16 index, void *pdata, u16 len, u8 requesttype)
 {
 	int rc;
@@ -230,10 +230,10 @@ int _usbctrl_vendorreq_async_write(struct usb_device *udev, u8 request,
 	dr->wIndex = cpu_to_le16(index);
 	dr->wLength = cpu_to_le16(len);
 
-	_rtw_memcpy(buf, pdata, len);
+	rtl8188fu__rtw_memcpy(buf, pdata, len);
 
 	usb_fill_control_urb(urb, udev, pipe, (unsigned char *)dr, buf, len,
-		_usbctrl_vendorreq_async_callback, buf);
+		_rtl8188fu_usbctrl_vendorreq_async_callback, buf);
 
 	rc = usb_submit_urb(urb, GFP_ATOMIC);
 	if (rc < 0) {
@@ -248,7 +248,7 @@ exit:
 
 #endif /* CONFIG_USB_SUPPORT_ASYNC_VDN_REQ */
 
-unsigned int ffaddr2pipehdl(struct dvobj_priv *pdvobj, u32 addr)
+unsigned int rtl8188fu_ffaddr2pipehdl(struct dvobj_priv *pdvobj, u32 addr)
 {
 	unsigned int pipe=0, ep_num=0;
 	struct usb_device *pusbd = pdvobj->pusbdev;	
@@ -329,7 +329,7 @@ static u32 usb_bulkout_zero(struct intf_hdl *pintfhdl, u32 addr)
     	purb = usb_alloc_urb(0, GFP_ATOMIC);
 
 	//translate DMA FIFO addr to pipehandle
-	pipe = ffaddr2pipehdl(pdvobj, addr);
+	pipe = rtl8188fu_ffaddr2pipehdl(pdvobj, addr);
 
 	len = 0;
 	pcontext->pbuf = pbuf;
@@ -339,7 +339,7 @@ static u32 usb_bulkout_zero(struct intf_hdl *pintfhdl, u32 addr)
 
 	
 	//translate DMA FIFO addr to pipehandle
-	//pipe = ffaddr2pipehdl(pdvobj, addr);	
+	//pipe = rtl8188fu_ffaddr2pipehdl(pdvobj, addr);	
 
 	usb_fill_bulk_urb(purb, pusbd, pipe, 
        				pbuf,
@@ -363,18 +363,18 @@ static u32 usb_bulkout_zero(struct intf_hdl *pintfhdl, u32 addr)
 
 }
 
-void usb_read_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
+void rtl8188fu_usb_read_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
 {
 	
 }
 
-void usb_write_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wmem)
+void rtl8188fu_usb_write_mem(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wmem)
 {
 	
 }
 
 
-void usb_read_port_cancel(struct intf_hdl *pintfhdl)
+void rtl8188fu_usb_read_port_cancel(struct intf_hdl *pintfhdl)
 {
 	int i;	
 	struct recv_buf *precvbuf;	
@@ -386,7 +386,7 @@ void usb_read_port_cancel(struct intf_hdl *pintfhdl)
 	for (i=0; i < NR_RECVBUFF ; i++) {
 
 		if (precvbuf->purb)	 {
-			//DBG_8192C("usb_read_port_cancel : usb_kill_urb \n");
+			//DBG_8192C("rtl8188fu_usb_read_port_cancel : usb_kill_urb \n");
 			usb_kill_urb(precvbuf->purb);
 		}		
 		precvbuf++;
@@ -394,7 +394,7 @@ void usb_read_port_cancel(struct intf_hdl *pintfhdl)
 
 }
 
-static void usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
+static void rtl8188fu_usb_write_port_complete(struct urb *purb, struct pt_regs *regs)
 {
 	_irqL irqL;
 	int i;
@@ -462,11 +462,11 @@ _func_enter_;
 	
 	if(pxmitpriv->txirp_cnt==0)
 	{
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete: txirp_cnt== 0, set allrxreturnevt!\n"));		
-		_rtw_up_sema(&(pxmitpriv->tx_retevt));
+		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_write_port_complete: txirp_cnt== 0, set allrxreturnevt!\n"));		
+		rtl8188fu__rtw_up_sema(&(pxmitpriv->tx_retevt));
 	}
 */
-        //rtw_free_xmitframe(pxmitpriv, pxmitframe);
+        //rtl8188fu_rtw_free_xmitframe(pxmitpriv, pxmitframe);
 	
 	if (RTW_CANNOT_TX(padapter))
 	{
@@ -483,15 +483,15 @@ _func_enter_;
 	if (purb->status==0) {
 	
 	} else {
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete : purb->status(%d) != 0 \n", purb->status));
+		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_write_port_complete : purb->status(%d) != 0 \n", purb->status));
 		DBG_871X("###=> urb_write_port_complete status(%d)\n",purb->status);
 		if((purb->status==-EPIPE)||(purb->status==-EPROTO))
 		{
 			//usb_clear_halt(pusbdev, purb->pipe);	
 			//msleep(10);
-			sreset_set_wifi_error_status(padapter, USB_WRITE_PORT_FAIL);
+			rtl8188fu_sreset_set_wifi_error_status(padapter, USB_WRITE_PORT_FAIL);
 		} else if (purb->status == -EINPROGRESS) {
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete: EINPROGESS\n"));
+			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_write_port_complete: EINPROGESS\n"));
 			goto check_completion;
 
 		} else if (purb->status == -ENOENT) {
@@ -503,9 +503,9 @@ _func_enter_;
 			goto check_completion;
 
 		} else if (purb->status == -ESHUTDOWN) {
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete: ESHUTDOWN\n"));
+			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_write_port_complete: ESHUTDOWN\n"));
 			rtw_set_drv_stopped(padapter);
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete:bDriverStopped=TRUE\n"));
+			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_write_port_complete:bDriverStopped=TRUE\n"));
 
 			goto check_completion;
 		}
@@ -513,7 +513,7 @@ _func_enter_;
 		{					
 			rtw_set_surprise_removed(padapter);
 			DBG_8192C("bSurpriseRemoved=TRUE\n");
- 			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port_complete:bSurpriseRemoved=TRUE\n"));
+ 			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_write_port_complete:bSurpriseRemoved=TRUE\n"));
 
 			goto check_completion;
 		}
@@ -522,19 +522,19 @@ _func_enter_;
 	#ifdef DBG_CONFIG_ERROR_DETECT
 	{	
 		HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-		pHalData->srestpriv.last_tx_complete_time = rtw_get_current_time();		
+		pHalData->srestpriv.last_tx_complete_time = rtl8188fu_rtw_get_current_time();		
 	}
 	#endif
 
 check_completion:
 	_enter_critical(&pxmitpriv->lock_sctx, &irqL);
-	rtw_sctx_done_err(&pxmitbuf->sctx,
+	rtl8188fu_rtw_sctx_done_err(&pxmitbuf->sctx,
 	purb->status ? RTW_SCTX_DONE_WRITE_PORT_ERR : RTW_SCTX_DONE_SUCCESS);
 	_exit_critical(&pxmitpriv->lock_sctx, &irqL);
 
-	rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
+	rtl8188fu_rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 
-	//if(rtw_txframes_pending(padapter))	
+	//if(rtl8188fu_rtw_txframes_pending(padapter))	
 	{
 		tasklet_hi_schedule(&pxmitpriv->xmit_tasklet);
 	}
@@ -543,7 +543,7 @@ _func_exit_;
 
 }
 
-u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wmem)
+u32 rtl8188fu_usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wmem)
 {    
 	_irqL irqL;
 	unsigned int pipe;
@@ -561,7 +561,7 @@ u32 usb_write_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *wmem)
 	
 _func_enter_;	
 	
-	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("+usb_write_port\n"));
+	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("+rtl8188fu_usb_write_port\n"));
 
 	if (RTW_CANNOT_TX(padapter)) {
 		#ifdef DBG_TX
@@ -569,8 +569,8 @@ _func_enter_;
 			, rtw_is_drv_stopped(padapter)?"True":"False"
 			, rtw_is_surprise_removed(padapter)?"True":"False");
 		#endif
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port:( padapter->bDriverStopped ||padapter->bSurpriseRemoved )!!!\n"));
-		rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_TX_DENY);
+		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_write_port:( padapter->bDriverStopped ||padapter->bSurpriseRemoved )!!!\n"));
+		rtl8188fu_rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_TX_DENY);
 		goto exit;
 	}
 	
@@ -607,7 +607,7 @@ _func_enter_;
 	purb	= pxmitbuf->pxmit_urb[0];
 
 	//translate DMA FIFO addr to pipehandle
-	pipe = ffaddr2pipehdl(pdvobj, addr);	
+	pipe = rtl8188fu_ffaddr2pipehdl(pdvobj, addr);	
 
 #ifdef CONFIG_REDUCE_USB_TX_INT	
 	if ( (pxmitpriv->free_xmitbuf_cnt%NR_XMITBUFF == 0)
@@ -624,7 +624,7 @@ _func_enter_;
 	usb_fill_bulk_urb(purb, pusbd, pipe, 
        				pxmitframe->buf_addr, //= pxmitbuf->pbuf
               			cnt,
-              			usb_write_port_complete,
+              			rtl8188fu_usb_write_port_complete,
               			pxmitbuf);//context is pxmitbuf
               			
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_TX
@@ -651,13 +651,13 @@ _func_enter_;
 		#ifdef DBG_CONFIG_ERROR_DETECT	
 		{	
 			HAL_DATA_TYPE	*pHalData = GET_HAL_DATA(padapter);
-			pHalData->srestpriv.last_tx_time = rtw_get_current_time();		
+			pHalData->srestpriv.last_tx_time = rtl8188fu_rtw_get_current_time();		
 		}
 		#endif
 	} else {
-		rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_WRITE_PORT_ERR);
-		DBG_871X("usb_write_port, status=%d\n", status);
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_write_port(): usb_submit_urb, status=%x\n", status));
+		rtl8188fu_rtw_sctx_done_err(&pxmitbuf->sctx, RTW_SCTX_DONE_WRITE_PORT_ERR);
+		DBG_871X("rtl8188fu_usb_write_port, status=%d\n", status);
+		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_write_port(): usb_submit_urb, status=%x\n", status));
 		
 		switch (status) {
 		case -ENODEV:
@@ -680,17 +680,17 @@ _func_enter_;
 	}
 */
 
-	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("-usb_write_port\n"));
+	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("-rtl8188fu_usb_write_port\n"));
 
 exit:
 	if (ret != _SUCCESS)
-		rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
+		rtl8188fu_rtw_free_xmitbuf(pxmitpriv, pxmitbuf);
 _func_exit_;
 	return ret;
 
 }
 
-void usb_write_port_cancel(struct intf_hdl *pintfhdl)
+void rtl8188fu_usb_write_port_cancel(struct intf_hdl *pintfhdl)
 {
 	int i, j;
 	_adapter	*padapter = pintfhdl->padapter;
@@ -718,7 +718,7 @@ void usb_write_port_cancel(struct intf_hdl *pintfhdl)
 	}
 }
 
-void usb_init_recvbuf(_adapter *padapter, struct recv_buf *precvbuf)
+void rtl8188fu_usb_init_recvbuf(_adapter *padapter, struct recv_buf *precvbuf)
 {
 
 	precvbuf->transfer_len = 0;
@@ -735,16 +735,16 @@ void usb_init_recvbuf(_adapter *padapter, struct recv_buf *precvbuf)
 
 }
 
-int recvbuf2recvframe(PADAPTER padapter, void *ptr);
+int rtl8188fu_recvbuf2recvframe(PADAPTER padapter, void *ptr);
 
 #ifdef CONFIG_USE_USB_BUFFER_ALLOC_RX
-void usb_recv_tasklet(void *priv)
+void rtl8188fu_usb_recv_tasklet(void *priv)
 {	
 	struct recv_buf *precvbuf = NULL;
 	_adapter	*padapter = (_adapter*)priv;
 	struct recv_priv	*precvpriv = &padapter->recvpriv;
 
-	while (NULL != (precvbuf = rtw_dequeue_recvbuf(&precvpriv->recv_buf_pending_queue)))
+	while (NULL != (precvbuf = rtl8188fu_rtw_dequeue_recvbuf(&precvpriv->recv_buf_pending_queue)))
 	{
 		if (RTW_CANNOT_RUN(padapter)) {
 			DBG_8192C("recv_tasklet => bDriverStopped or bSurpriseRemoved\n");
@@ -752,22 +752,22 @@ void usb_recv_tasklet(void *priv)
 		}
 		
 
-		recvbuf2recvframe(padapter, precvbuf);
+		rtl8188fu_recvbuf2recvframe(padapter, precvbuf);
 
 		rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 	}	
 	
 }
 
-void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
+void rtl8188fu_usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 {	
 	struct recv_buf	*precvbuf = (struct recv_buf *)purb->context;	
 	_adapter 			*padapter =(_adapter *)precvbuf->adapter;
 	struct recv_priv	*precvpriv = &padapter->recvpriv;
 
-	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete!!!\n"));
+	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete!!!\n"));
 	
-	ATOMIC_DEC(&(precvpriv->rx_pending_cnt));
+	rtl8188fu_ATOMIC_DEC(&(precvpriv->rx_pending_cnt));
 		
 	if (RTW_CANNOT_RX(padapter))
 	{
@@ -782,29 +782,29 @@ void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 	{
 		if ((purb->actual_length > MAX_RECVBUF_SZ) || (purb->actual_length < RXDESC_SIZE))
 		{
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete: (purb->actual_length > MAX_RECVBUF_SZ) || (purb->actual_length < RXDESC_SIZE)\n"));
+			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete: (purb->actual_length > MAX_RECVBUF_SZ) || (purb->actual_length < RXDESC_SIZE)\n"));
 
 			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 		}
 		else 
 		{			
-			rtw_reset_continual_io_error(adapter_to_dvobj(padapter));
+			rtl8188fu_rtw_reset_continual_io_error(adapter_to_dvobj(padapter));
 			
 			precvbuf->transfer_len = purb->actual_length;	
 
 			//rtw_enqueue_rx_transfer_buffer(precvpriv, rx_transfer_buf);			
-			rtw_enqueue_recvbuf(precvbuf, &precvpriv->recv_buf_pending_queue);
+			rtl8188fu_rtw_enqueue_recvbuf(precvbuf, &precvpriv->recv_buf_pending_queue);
 
 			tasklet_schedule(&precvpriv->recv_tasklet);			
 		}		
 	}
 	else
 	{
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete : purb->status(%d) != 0 \n", purb->status));
+		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete : purb->status(%d) != 0 \n", purb->status));
 	
-		DBG_8192C("###=> usb_read_port_complete => urb status(%d)\n", purb->status);
+		DBG_8192C("###=> rtl8188fu_usb_read_port_complete => urb status(%d)\n", purb->status);
 
-		if (rtw_inc_and_chk_continual_io_error(adapter_to_dvobj(padapter)) == _TRUE)
+		if (rtl8188fu_rtw_inc_and_chk_continual_io_error(adapter_to_dvobj(padapter)) == _TRUE)
 			rtw_set_surprise_removed(padapter);
 
 		switch(purb->status) {
@@ -813,10 +813,10 @@ void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 			case -ENODEV:
 			case -ESHUTDOWN:
 				/*rtw_set_surprise_removed(padapter);*/
-				//RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete:bSurpriseRemoved=TRUE\n"));
+				//RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete:bSurpriseRemoved=TRUE\n"));
 			case -ENOENT:
 				rtw_set_drv_stopped(padapter);
-				RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete:bDriverStopped=TRUE\n"));
+				RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete:bDriverStopped=TRUE\n"));
 				break;
 			case -EPROTO:
 			case -EILSEQ:
@@ -845,7 +845,7 @@ exit:
 _func_exit_;
 }
 
-u32 usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
+u32 rtl8188fu_usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
 {		
 	int err;
 	unsigned int pipe;
@@ -862,24 +862,24 @@ _func_enter_;
 	
 	if (RTW_CANNOT_RX(adapter) || (precvbuf == NULL))
 	{
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port:( RTW_CANNOT_RX ) || precvbuf == NULL!!!\n"));
+		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port:( RTW_CANNOT_RX ) || precvbuf == NULL!!!\n"));
 		return _FAIL;
 	}
 
-	usb_init_recvbuf(adapter, precvbuf);
+	rtl8188fu_usb_init_recvbuf(adapter, precvbuf);
 
 	if(precvbuf->pbuf)
 	{			
-		ATOMIC_INC(&(precvpriv->rx_pending_cnt));
+		rtl8188fu_ATOMIC_INC(&(precvpriv->rx_pending_cnt));
 		purb = precvbuf->purb;		
 
 		//translate DMA FIFO addr to pipehandle
-		pipe = ffaddr2pipehdl(pdvobj, addr);	
+		pipe = rtl8188fu_ffaddr2pipehdl(pdvobj, addr);	
 
 		usb_fill_bulk_urb(purb, pusbd, pipe, 
 					precvbuf->pbuf,
             				MAX_RECVBUF_SZ,
-            				usb_read_port_complete,
+            				rtl8188fu_usb_read_port_complete,
             				precvbuf);//context is precvbuf
 
 		purb->transfer_dma = precvbuf->dma_transfer_addr;
@@ -901,7 +901,7 @@ _func_exit_;
 }
 #else	// CONFIG_USE_USB_BUFFER_ALLOC_RX
 
-void usb_recv_tasklet(void *priv)
+void rtl8188fu_usb_recv_tasklet(void *priv)
 {
 	_pkt			*pskb;
 	_adapter		*padapter = (_adapter*)priv;
@@ -919,29 +919,29 @@ void usb_recv_tasklet(void *priv)
 			break;
 		}
 
-		recvbuf2recvframe(padapter, pskb);
+		rtl8188fu_recvbuf2recvframe(padapter, pskb);
 
 		skb_reset_tail_pointer(pskb);
 		pskb->len = 0;
 
 		skb_queue_tail(&precvpriv->free_recv_skb_queue, pskb);
 
-		if (NULL != (precvbuf = rtw_dequeue_recvbuf(&precvpriv->recv_buf_pending_queue))) {
+		if (NULL != (precvbuf = rtl8188fu_rtw_dequeue_recvbuf(&precvpriv->recv_buf_pending_queue))) {
 			precvbuf->pskb = NULL;
 			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 		}
 	}
 }
 
-void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
+void rtl8188fu_usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 {
 	struct recv_buf	*precvbuf = (struct recv_buf *)purb->context;	
 	_adapter 			*padapter =(_adapter *)precvbuf->adapter;
 	struct recv_priv	*precvpriv = &padapter->recvpriv;	
 	
-	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete!!!\n"));
+	RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete!!!\n"));
 		
-	ATOMIC_DEC(&(precvpriv->rx_pending_cnt));
+	rtl8188fu_ATOMIC_DEC(&(precvpriv->rx_pending_cnt));
 	
 	if(RTW_CANNOT_RX(padapter))
 	{
@@ -956,13 +956,13 @@ void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 	{
 		if ((purb->actual_length > MAX_RECVBUF_SZ) || (purb->actual_length < RXDESC_SIZE))
 		{
-			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete: (purb->actual_length > MAX_RECVBUF_SZ) || (purb->actual_length < RXDESC_SIZE)\n"));
+			RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete: (purb->actual_length > MAX_RECVBUF_SZ) || (purb->actual_length < RXDESC_SIZE)\n"));
 			rtw_read_port(padapter, precvpriv->ff_hwaddr, 0, (unsigned char *)precvbuf);
 			DBG_8192C("%s()-%d: RX Warning!\n", __FUNCTION__, __LINE__);	
 		}
 		else 
 		{	
-			rtw_reset_continual_io_error(adapter_to_dvobj(padapter));
+			rtl8188fu_rtw_reset_continual_io_error(adapter_to_dvobj(padapter));
 			
 			precvbuf->transfer_len = purb->actual_length;			
 			skb_put(precvbuf->pskb, purb->actual_length);	
@@ -979,11 +979,11 @@ void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 	}
 	else
 	{
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete : purb->status(%d) != 0 \n", purb->status));
+		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete : purb->status(%d) != 0 \n", purb->status));
 	
-		DBG_8192C("###=> usb_read_port_complete => urb status(%d)\n", purb->status);
+		DBG_8192C("###=> rtl8188fu_usb_read_port_complete => urb status(%d)\n", purb->status);
 
-		if (rtw_inc_and_chk_continual_io_error(adapter_to_dvobj(padapter)) == _TRUE)
+		if (rtl8188fu_rtw_inc_and_chk_continual_io_error(adapter_to_dvobj(padapter)) == _TRUE)
 			rtw_set_surprise_removed(padapter);
 
 
@@ -993,10 +993,10 @@ void usb_read_port_complete(struct urb *purb, struct pt_regs *regs)
 			case -ENODEV:
 			case -ESHUTDOWN:
 				/*rtw_set_surprise_removed(padapter);*/
-				//RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete:bSurpriseRemoved=TRUE\n"));
+				//RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete:bSurpriseRemoved=TRUE\n"));
 			case -ENOENT:
 				rtw_set_drv_stopped(padapter);
-				RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port_complete:bDriverStopped=TRUE\n"));
+				RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port_complete:bDriverStopped=TRUE\n"));
 				break;
 			case -EPROTO:
 			case -EILSEQ:
@@ -1026,7 +1026,7 @@ _func_exit_;
 	
 }
 
-u32 usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
+u32 rtl8188fu_usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
 {
 	int err;
 	unsigned int pipe;
@@ -1042,11 +1042,11 @@ u32 usb_read_port(struct intf_hdl *pintfhdl, u32 addr, u32 cnt, u8 *rmem)
 _func_enter_;
 
 	if (RTW_CANNOT_RX(adapter) || (precvbuf == NULL)) {
-		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("usb_read_port:( RTW_CANNOT_RX ) || precvbuf == NULL!!!\n"));
+		RT_TRACE(_module_hci_ops_os_c_,_drv_err_,("rtl8188fu_usb_read_port:( RTW_CANNOT_RX ) || precvbuf == NULL!!!\n"));
 		goto exit;
 	}
 
-	usb_init_recvbuf(adapter, precvbuf);
+	rtl8188fu_usb_init_recvbuf(adapter, precvbuf);
 
 	if (precvbuf->pskb == NULL) {
 		SIZE_PTR tmpaddr = 0;
@@ -1061,9 +1061,9 @@ _func_enter_;
 
 		if (precvbuf->pskb == NULL) {
 			if (0)
-				DBG_871X("usb_read_port() enqueue precvbuf=%p \n", precvbuf);
+				DBG_871X("rtl8188fu_usb_read_port() enqueue precvbuf=%p \n", precvbuf);
 			/* enqueue precvbuf and wait for free skb */
-			rtw_enqueue_recvbuf(precvbuf, &precvpriv->recv_buf_pending_queue);
+			rtl8188fu_rtw_enqueue_recvbuf(precvbuf, &precvpriv->recv_buf_pending_queue);
 			goto exit;
 		}
 
@@ -1082,12 +1082,12 @@ recv_buf_hook:
 	purb = precvbuf->purb;
 
 	/* translate DMA FIFO addr to pipehandle */
-	pipe = ffaddr2pipehdl(pdvobj, addr);
+	pipe = rtl8188fu_ffaddr2pipehdl(pdvobj, addr);
 
 	usb_fill_bulk_urb(purb, pusbd, pipe,
 		precvbuf->pbuf,
 		MAX_RECVBUF_SZ,
-		usb_read_port_complete,
+		rtl8188fu_usb_read_port_complete,
 		precvbuf);
 
 	err = usb_submit_urb(purb, GFP_ATOMIC);
@@ -1097,7 +1097,7 @@ recv_buf_hook:
 		goto exit;
 	}
 
-	ATOMIC_INC(&(precvpriv->rx_pending_cnt));
+	rtl8188fu_ATOMIC_INC(&(precvpriv->rx_pending_cnt));
 	ret = _SUCCESS;
 
 exit:

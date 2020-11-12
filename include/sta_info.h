@@ -29,7 +29,7 @@
 #define MAX_ALLOWED_TDLS_STA_NUM	4
 #endif
 
-enum sta_info_update_type {
+enum rtl8188fu_sta_info_update_type {
 	STA_INFO_UPDATE_NONE = 0, 
 	STA_INFO_UPDATE_BW = BIT(0), 
 	STA_INFO_UPDATE_RATE = BIT(1),	
@@ -156,13 +156,13 @@ struct st_ctl_t {
 	_queue tracker_q;
 };
 
-void rtw_st_ctl_init(struct st_ctl_t *st_ctl);
-void rtw_st_ctl_deinit(struct st_ctl_t *st_ctl);
-void rtw_st_ctl_register(struct st_ctl_t *st_ctl, u8 st_reg_id, struct st_register *reg);
-void rtw_st_ctl_unregister(struct st_ctl_t *st_ctl, u8 st_reg_id);
-bool rtw_st_ctl_chk_reg_s_proto(struct st_ctl_t *st_ctl, u8 s_proto);
-bool rtw_st_ctl_chk_reg_rule(struct st_ctl_t *st_ctl, _adapter *adapter, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port);
-void dump_st_ctl(void *sel, struct st_ctl_t *st_ctl);
+void rtl8188fu_rtw_st_ctl_init(struct st_ctl_t *st_ctl);
+void rtl8188fu_rtw_st_ctl_deinit(struct st_ctl_t *st_ctl);
+void rtl8188fu_rtw_st_ctl_register(struct st_ctl_t *st_ctl, u8 st_reg_id, struct st_register *reg);
+void rtl8188fu_rtw_st_ctl_unregister(struct st_ctl_t *st_ctl, u8 st_reg_id);
+bool rtl8188fu_rtw_st_ctl_chk_reg_s_proto(struct st_ctl_t *st_ctl, u8 s_proto);
+bool rtl8188fu_rtw_st_ctl_chk_reg_rule(struct st_ctl_t *st_ctl, _adapter *adapter, u8 *local_naddr, u8 *local_port, u8 *remote_naddr, u8 *remote_port);
+void rtl8188fu_dump_st_ctl(void *sel, struct st_ctl_t *st_ctl);
 
 #ifdef CONFIG_TDLS
 struct TDLS_PeerKey {
@@ -574,20 +574,20 @@ static inline u32 wifi_mac_hash(const u8 *mac)
 }
 
 
-extern u32	_rtw_init_sta_priv(struct sta_priv *pstapriv);
-extern u32	_rtw_free_sta_priv(struct sta_priv *pstapriv);
+extern u32	rtl8188fu__rtw_init_sta_priv(struct sta_priv *pstapriv);
+extern u32	rtl8188fu__rtw_free_sta_priv(struct sta_priv *pstapriv);
 
 #define stainfo_offset_valid(offset) (offset < NUM_STA && offset >= 0)
-int rtw_stainfo_offset(struct sta_priv *stapriv, struct sta_info *sta);
-struct sta_info *rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int offset);
+int rtl8188fu_rtw_stainfo_offset(struct sta_priv *stapriv, struct sta_info *sta);
+struct sta_info *rtl8188fu_rtw_get_stainfo_by_offset(struct sta_priv *stapriv, int offset);
 
-extern struct sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, const u8 *hwaddr);
-extern u32	rtw_free_stainfo(_adapter *padapter , struct sta_info *psta);
-extern void rtw_free_all_stainfo(_adapter *padapter);
-extern struct sta_info *rtw_get_stainfo(struct sta_priv *pstapriv, const u8 *hwaddr);
-extern u32 rtw_init_bcmc_stainfo(_adapter* padapter);
-extern struct sta_info* rtw_get_bcmc_stainfo(_adapter* padapter);
-extern u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr);
+extern struct sta_info *rtl8188fu_rtw_alloc_stainfo(struct	sta_priv *pstapriv, const u8 *hwaddr);
+extern u32	rtl8188fu_rtw_free_stainfo(_adapter *padapter , struct sta_info *psta);
+extern void rtl8188fu_rtw_free_all_stainfo(_adapter *padapter);
+extern struct sta_info *rtl8188fu_rtw_get_stainfo(struct sta_priv *pstapriv, const u8 *hwaddr);
+extern u32 rtl8188fu_rtw_init_bcmc_stainfo(_adapter* padapter);
+extern struct sta_info* rtl8188fu_rtw_get_bcmc_stainfo(_adapter* padapter);
+extern u8 rtl8188fu_rtw_access_ctrl(_adapter *padapter, u8 *mac_addr);
 
 #endif //_STA_INFO_H_
 

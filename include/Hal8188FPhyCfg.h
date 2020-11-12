@@ -89,7 +89,7 @@ PHY_ConfigRFWithParaFile_8188F(
 );
 
 VOID
-PHY_SetTxPowerIndex_8188F(
+PHY_rtl8188fu_SetTxPowerIndex_8188F(
 	IN	PADAPTER			Adapter,
 	IN	u32					PowerIndex,
 	IN	u8					RFPath,	
@@ -97,7 +97,7 @@ PHY_SetTxPowerIndex_8188F(
 	);
 
 u8
-PHY_GetTxPowerIndex_8188F(
+rtl8188fu_PHY_GetTxPowerIndex_8188F(
 	IN	PADAPTER			pAdapter,
 	IN	u8					RFPath,
 	IN	u8					Rate,	
@@ -112,7 +112,7 @@ PHY_GetTxPowerLevel8188F(
 	);
 
 VOID
-PHY_SetTxPowerLevel8188F(
+PHY_rtl8188fu_SetTxPowerLevel8188F(
 	IN	PADAPTER		Adapter,
 	IN	u8			channel
 	);

@@ -30,7 +30,7 @@
 //
 
 u1Byte
-ODM_Read1Byte(
+rtl8188fu_ODM_Read1Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr
 	)
@@ -50,7 +50,7 @@ ODM_Read1Byte(
 
 
 u2Byte
-ODM_Read2Byte(
+rtl8188fu_ODM_Read2Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr
 	)
@@ -70,7 +70,7 @@ ODM_Read2Byte(
 
 
 u4Byte
-ODM_Read4Byte(
+rtl8188fu_ODM_Read4Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr
 	)
@@ -90,7 +90,7 @@ ODM_Read4Byte(
 
 
 VOID
-ODM_Write1Byte(
+rtl8188fu_ODM_Write1Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr,
 	IN	u1Byte			Data
@@ -111,7 +111,7 @@ ODM_Write1Byte(
 
 
 VOID
-ODM_Write2Byte(
+rtl8188fu_ODM_Write2Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr,
 	IN	u2Byte			Data
@@ -132,7 +132,7 @@ ODM_Write2Byte(
 
 
 VOID
-ODM_Write4Byte(
+rtl8188fu_ODM_Write4Byte(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u4Byte			RegAddr,
 	IN	u4Byte			Data
@@ -153,7 +153,7 @@ ODM_Write4Byte(
 
 
 VOID
-ODM_SetMACReg(	
+rtl8188fu_ODM_SetMACReg(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		RegAddr,
 	IN	u4Byte		BitMask,
@@ -170,7 +170,7 @@ ODM_SetMACReg(
 
 
 u4Byte 
-ODM_GetMACReg(	
+rtl8188fu_ODM_GetMACReg(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		RegAddr,
 	IN	u4Byte		BitMask
@@ -185,7 +185,7 @@ ODM_GetMACReg(
 
 
 VOID
-ODM_SetBBReg(	
+rtl8188fu_ODM_SetBBReg(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		RegAddr,
 	IN	u4Byte		BitMask,
@@ -202,7 +202,7 @@ ODM_SetBBReg(
 
 
 u4Byte 
-ODM_GetBBReg(	
+rtl8188fu_ODM_GetBBReg(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	IN	u4Byte		RegAddr,
 	IN	u4Byte		BitMask
@@ -218,7 +218,7 @@ ODM_GetBBReg(
 
 
 VOID
-ODM_SetRFReg(	
+rtl8188fu_ODM_SetRFReg(	
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	ODM_RF_RADIO_PATH_E	eRFPath,
 	IN	u4Byte				RegAddr,
@@ -231,7 +231,7 @@ ODM_SetRFReg(
 #elif (DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 	PHY_SetRFReg(Adapter, eRFPath, RegAddr, BitMask, Data);
-	ODM_delay_us(2);
+	rtl8188fu_ODM_delay_us(2);
 	
 #elif (DM_ODM_SUPPORT_TYPE & ODM_CE)
 	PHY_SetRFReg(pDM_Odm->Adapter, eRFPath, RegAddr, BitMask, Data);
@@ -240,7 +240,7 @@ ODM_SetRFReg(
 
 
 u4Byte 
-ODM_GetRFReg(	
+rtl8188fu_ODM_GetRFReg(	
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	ODM_RF_RADIO_PATH_E	eRFPath,
 	IN	u4Byte				RegAddr,
@@ -262,7 +262,7 @@ ODM_GetRFReg(
 // ODM Memory relative API.
 //
 VOID
-ODM_AllocateMemory(	
+rtl8188fu_ODM_AllocateMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	OUT	PVOID		*pPtr,
 	IN	u4Byte		length
@@ -280,7 +280,7 @@ ODM_AllocateMemory(
 
 // length could be ignored, used to detect memory leakage.
 VOID
-ODM_FreeMemory(	
+rtl8188fu_ODM_FreeMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	OUT	PVOID		pPtr,
 	IN	u4Byte		length
@@ -297,7 +297,7 @@ ODM_FreeMemory(
 }
 
 VOID
-ODM_MoveMemory(	
+rtl8188fu_ODM_MoveMemory(	
 	IN 	PDM_ODM_T	pDM_Odm,
 	OUT PVOID		pDest,
 	IN  PVOID		pSrc,
@@ -307,13 +307,13 @@ ODM_MoveMemory(
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 	memcpy(pDest, pSrc, Length);
 #elif (DM_ODM_SUPPORT_TYPE & ODM_CE )	
-	_rtw_memcpy(pDest, pSrc, Length);
+	rtl8188fu__rtw_memcpy(pDest, pSrc, Length);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	PlatformMoveMemory(pDest, pSrc, Length);
 #endif	
 }
 
-void ODM_Memory_Set(
+void rtl8188fu_ODM_Memory_Set(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	PVOID		pbuf,
 	IN	s1Byte		value,
@@ -323,12 +323,12 @@ void ODM_Memory_Set(
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 	memset(pbuf, value, length);
 #elif (DM_ODM_SUPPORT_TYPE & ODM_CE )	
-	_rtw_memset(pbuf,value, length);
+	rtl8188fu__rtw_memset(pbuf,value, length);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	PlatformFillMemory(pbuf,length,value);
 #endif
 }
-s4Byte ODM_CompareMemory(
+s4Byte rtl8188fu_ODM_CompareMemory(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PVOID           pBuf1,
 	IN	PVOID           pBuf2,
@@ -338,7 +338,7 @@ s4Byte ODM_CompareMemory(
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	return memcmp(pBuf1,pBuf2,length);
 #elif (DM_ODM_SUPPORT_TYPE & ODM_CE )	
-	return _rtw_memcmp(pBuf1,pBuf2,length);
+	return rtl8188fu__rtw_memcmp(pBuf1,pBuf2,length);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)	
 	return PlatformCompareMemory(pBuf1,pBuf2,length);
 #endif	
@@ -350,7 +350,7 @@ s4Byte ODM_CompareMemory(
 // ODM MISC relative API.
 //
 VOID
-ODM_AcquireSpinLock(	
+rtl8188fu_ODM_AcquireSpinLock(	
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	RT_SPINLOCK_TYPE	type
 	)
@@ -359,14 +359,14 @@ ODM_AcquireSpinLock(
 	
 #elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
 	PADAPTER Adapter = pDM_Odm->Adapter;
-	rtw_odm_acquirespinlock(Adapter, type);
+	rtl8188fu_rtw_odm_acquirespinlock(Adapter, type);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 	PlatformAcquireSpinLock(Adapter, type);
 #endif	
 }
 VOID
-ODM_ReleaseSpinLock(	
+rtl8188fu_ODM_ReleaseSpinLock(	
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	RT_SPINLOCK_TYPE	type
 	)
@@ -375,7 +375,7 @@ ODM_ReleaseSpinLock(
 
 #elif (DM_ODM_SUPPORT_TYPE & ODM_CE )
 	PADAPTER Adapter = pDM_Odm->Adapter;
-	rtw_odm_releasespinlock(Adapter, type);
+	rtl8188fu_rtw_odm_releasespinlock(Adapter, type);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	PADAPTER		Adapter = pDM_Odm->Adapter;
 	PlatformReleaseSpinLock(Adapter, type);
@@ -386,7 +386,7 @@ ODM_ReleaseSpinLock(
 // Work item relative API. FOr MP driver only~!
 //
 VOID
-ODM_InitializeWorkItem(	
+rtl8188fu_ODM_InitializeWorkItem(	
 	IN 	PDM_ODM_T					pDM_Odm,
 	IN	PRT_WORK_ITEM				pRtWorkItem,
 	IN	RT_WORKITEM_CALL_BACK		RtWorkItemCallback,
@@ -406,7 +406,7 @@ ODM_InitializeWorkItem(
 
 
 VOID
-ODM_StartWorkItem(	
+rtl8188fu_ODM_StartWorkItem(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	)
 {
@@ -421,7 +421,7 @@ ODM_StartWorkItem(
 
 
 VOID
-ODM_StopWorkItem(	
+rtl8188fu_ODM_StopWorkItem(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	)
 {
@@ -436,7 +436,7 @@ ODM_StopWorkItem(
 
 
 VOID
-ODM_FreeWorkItem(	
+rtl8188fu_ODM_FreeWorkItem(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	)
 {
@@ -451,7 +451,7 @@ ODM_FreeWorkItem(
 
 
 VOID
-ODM_ScheduleWorkItem(	
+rtl8188fu_ODM_ScheduleWorkItem(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	)
 {
@@ -466,7 +466,7 @@ ODM_ScheduleWorkItem(
 
 
 VOID
-ODM_IsWorkItemScheduled(	
+rtl8188fu_ODM_IsWorkItemScheduled(	
 	IN	PRT_WORK_ITEM	pRtWorkItem
 	)
 {
@@ -485,67 +485,67 @@ ODM_IsWorkItemScheduled(
 // ODM Timer relative API.
 //
 VOID
-ODM_StallExecution(	
+rtl8188fu_ODM_StallExecution(	
 	IN	u4Byte	usDelay
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	
 #elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_udelay_os(usDelay);
+	rtl8188fu_rtw_udelay_os(usDelay);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	PlatformStallExecution(usDelay);
 #endif	
 }
 
 VOID
-ODM_delay_ms(IN u4Byte	ms)
+rtl8188fu_ODM_delay_ms(IN u4Byte	ms)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	delay_ms(ms);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_mdelay_os(ms);
+	rtl8188fu_rtw_mdelay_os(ms);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	delay_ms(ms);
 #endif			
 }
 
 VOID
-ODM_delay_us(IN u4Byte	us)
+rtl8188fu_ODM_delay_us(IN u4Byte	us)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	delay_us(us);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_udelay_os(us);
+	rtl8188fu_rtw_udelay_os(us);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	PlatformStallExecution(us);
 #endif			
 }
 
 VOID
-ODM_sleep_ms(IN u4Byte	ms)
+rtl8188fu_ODM_sleep_ms(IN u4Byte	ms)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	
 #elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_msleep_os(ms);
+	rtl8188fu_rtw_msleep_os(ms);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)	
 #endif		
 }
 
 VOID
-ODM_sleep_us(IN u4Byte	us)
+rtl8188fu_ODM_sleep_us(IN u4Byte	us)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	
 #elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	rtw_usleep_os(us);
+	rtl8188fu_rtw_usleep_os(us);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)	
 #endif		
 }
 
 VOID
-ODM_SetTimer(	
+rtl8188fu_ODM_SetTimer(	
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PRT_TIMER 		pTimer, 
 	IN	u4Byte 			msDelay
@@ -563,7 +563,7 @@ ODM_SetTimer(
 }
 
 VOID
-ODM_InitializeTimer(
+rtl8188fu_ODM_InitializeTimer(
 	IN 	PDM_ODM_T			pDM_Odm,
 	IN	PRT_TIMER 			pTimer, 
 	IN	RT_TIMER_CALL_BACK	CallBackFunc, 
@@ -587,7 +587,7 @@ ODM_InitializeTimer(
 
 
 VOID
-ODM_CancelTimer(
+rtl8188fu_ODM_CancelTimer(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PRT_TIMER		pTimer
 	)
@@ -604,7 +604,7 @@ ODM_CancelTimer(
 
 
 VOID
-ODM_ReleaseTimer(
+rtl8188fu_ODM_ReleaseTimer(
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	PRT_TIMER		pTimer
 	)
@@ -621,7 +621,7 @@ ODM_ReleaseTimer(
     // Hence, uninitialized timers cause BSOD when the driver releases resources since the init fail.
     if (pTimer == 0) 
     {
-        ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_SERIOUS, ("=====>ODM_ReleaseTimer(), The timer is NULL! Please check it!\n"));
+        ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_SERIOUS, ("=====>rtl8188fu_ODM_ReleaseTimer(), The timer is NULL! Please check it!\n"));
         return;
     }
         
@@ -630,7 +630,7 @@ ODM_ReleaseTimer(
 }
 
 BOOLEAN
-phydm_actingDetermine(
+rtl8188fu_phydm_actingDetermine(
 	IN PDM_ODM_T		pDM_Odm,
 	IN PHYDM_ACTING_TYPE	type
 	)
@@ -662,7 +662,7 @@ phydm_actingDetermine(
 
 
 u1Byte
-phydm_trans_h2c_id(
+rtl8188fu_phydm_trans_h2c_id(
 	IN	PDM_ODM_T	pDM_Odm,
 	IN	u1Byte		phydm_h2c_id
 )
@@ -856,7 +856,7 @@ phydm_trans_h2c_id(
 //
 
 VOID
-ODM_FillH2CCmd(
+rtl8188fu_ODM_FillH2CCmd(
 	IN	PDM_ODM_T		pDM_Odm,
 	IN	u1Byte 			phydm_h2c_id,
 	IN	u4Byte 			CmdLen,
@@ -866,7 +866,7 @@ ODM_FillH2CCmd(
 	PADAPTER 	Adapter = pDM_Odm->Adapter;
 	u1Byte		platform_h2c_id;
 
-	platform_h2c_id=phydm_trans_h2c_id(pDM_Odm, phydm_h2c_id);
+	platform_h2c_id=rtl8188fu_phydm_trans_h2c_id(pDM_Odm, phydm_h2c_id);
 
 	if(platform_h2c_id==0xff)
 	{
@@ -890,7 +890,7 @@ ODM_FillH2CCmd(
 			FillH2CCmd(Adapter, platform_h2c_id, CmdLen, pCmdBuffer);
 		
 	#elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
-		rtw_hal_fill_h2c_cmd(Adapter, platform_h2c_id, CmdLen, pCmdBuffer);
+		rtl8188fu_rtw_hal_fill_h2c_cmd(Adapter, platform_h2c_id, CmdLen, pCmdBuffer);
 
 	#elif(DM_ODM_SUPPORT_TYPE & ODM_AP)	
 		#if((RTL8881A_SUPPORT==1)||(RTL8192E_SUPPORT==1)||(RTL8814A_SUPPORT==1)) 
@@ -911,7 +911,7 @@ ODM_FillH2CCmd(
 }
 
 u1Byte
-phydm_c2H_content_parsing(
+rtl8188fu_phydm_c2H_content_parsing(
 	IN	PVOID			pDM_VOID,
 	IN	u1Byte			c2hCmdId,
 	IN	u1Byte			c2hCmdLen,
@@ -928,21 +928,21 @@ phydm_c2H_content_parsing(
 	switch (c2hCmdId) {
 	case PHYDM_C2H_DBG:
 		if (pDM_Odm->SupportICType & (ODM_RTL8814A|ODM_RTL8822B))
-			phydm_fw_trace_handler(pDM_Odm, tmpBuf, c2hCmdLen);
+			rtl8188fu_phydm_fw_trace_handler(pDM_Odm, tmpBuf, c2hCmdLen);
 		
 		break;
 
 	case PHYDM_C2H_RA_RPT:
-		phydm_c2h_ra_report_handler(pDM_Odm, tmpBuf, c2hCmdLen);
+		rtl8188fu_phydm_c2h_ra_report_handler(pDM_Odm, tmpBuf, c2hCmdLen);
 		break;
 
 	case PHYDM_C2H_RA_PARA_RPT:
-		ODM_C2HRaParaReportHandler(pDM_Odm, tmpBuf, c2hCmdLen);
+		rtl8188fu_ODM_C2HRaParaReportHandler(pDM_Odm, tmpBuf, c2hCmdLen);
 		break;
 		
 	case PHYDM_C2H_DYNAMIC_TX_PATH_RPT:
 		if (pDM_Odm->SupportICType & (ODM_RTL8814A))
-			phydm_c2h_dtp_handler(pDM_Odm, tmpBuf, c2hCmdLen);
+			rtl8188fu_phydm_c2h_dtp_handler(pDM_Odm, tmpBuf, c2hCmdLen);
 		
 		break;
 		
@@ -956,20 +956,20 @@ phydm_c2H_content_parsing(
 			pDM_Odm->RFCalibrateInfo.bIQKInProgress = FALSE;
 			PlatformReleaseSpinLock(Adapter, RT_IQK_SPINLOCK);
 			pDM_Odm->RFCalibrateInfo.IQK_ProgressingTime = 0;
-			pDM_Odm->RFCalibrateInfo.IQK_ProgressingTime = ODM_GetProgressingTime(pDM_Odm, pDM_Odm->RFCalibrateInfo.IQK_StartTime);
+			pDM_Odm->RFCalibrateInfo.IQK_ProgressingTime = rtl8188fu_ODM_GetProgressingTime(pDM_Odm, pDM_Odm->RFCalibrateInfo.IQK_StartTime);
 		}
 		
 		#endif
 		break;
 
 	case PHYDM_C2H_DBG_CODE:
-		phydm_fw_trace_handler_code(pDM_Odm, tmpBuf, c2hCmdLen);
+		rtl8188fu_phydm_fw_trace_handler_code(pDM_Odm, tmpBuf, c2hCmdLen);
 		break;	
 
 	case PHYDM_C2H_EXTEND:
 		Extend_c2hSubID = tmpBuf[0];
 		if (Extend_c2hSubID == PHYDM_EXTEND_C2H_DBG_PRINT)
-			phydm_fw_trace_handler_8051(pDM_Odm, tmpBuf, c2hCmdLen);
+			rtl8188fu_phydm_fw_trace_handler_8051(pDM_Odm, tmpBuf, c2hCmdLen);
 		
 		break;
 
@@ -983,21 +983,21 @@ phydm_c2H_content_parsing(
 }
 
 u8Byte
-ODM_GetCurrentTime(	
+rtl8188fu_ODM_GetCurrentTime(	
 	IN 	PDM_ODM_T		pDM_Odm
 	)
 {
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	return  0;
 #elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	return (u8Byte)rtw_get_current_time();
+	return (u8Byte)rtl8188fu_rtw_get_current_time();
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)	
 	return  PlatformGetCurrentTime();
 #endif
 }
 
 u8Byte
-ODM_GetProgressingTime(	
+rtl8188fu_ODM_GetProgressingTime(	
 	IN 	PDM_ODM_T		pDM_Odm,
 	IN	u8Byte			Start_Time
 	)
@@ -1005,7 +1005,7 @@ ODM_GetProgressingTime(
 #if(DM_ODM_SUPPORT_TYPE & (ODM_AP|ODM_ADSL))
 	return  0;
 #elif(DM_ODM_SUPPORT_TYPE & ODM_CE)
-	return rtw_get_passing_time_ms((u4Byte)Start_Time);
+	return rtl8188fu_rtw_get_passing_time_ms((u4Byte)Start_Time);
 #elif(DM_ODM_SUPPORT_TYPE & ODM_WIN)
 	return   ((PlatformGetCurrentTime() - Start_Time)>>10);
 #endif

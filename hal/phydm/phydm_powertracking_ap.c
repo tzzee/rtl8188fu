@@ -30,7 +30,7 @@
 //============================================================
 
 
-u4Byte OFDMSwingTable_New[OFDM_TABLE_SIZE_92D] = {
+u4Byte rtl8188fu_OFDMSwingTable_New[OFDM_TABLE_SIZE_92D] = {
 	0x0b40002d, // 0,  -15.0dB	
 	0x0c000030, // 1,  -14.5dB
 	0x0cc00033, // 2,  -14.0dB
@@ -76,7 +76,7 @@ u4Byte OFDMSwingTable_New[OFDM_TABLE_SIZE_92D] = {
 	0x7f8001fe  // 42, +6.0dB
 };               
 
-u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
+u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01},	//  0, -16.0dB
 	{0x09, 0x09, 0x08, 0x06, 0x05, 0x03, 0x01, 0x01},	//  1, -15.5dB
 	{0x0a, 0x09, 0x08, 0x07, 0x05, 0x03, 0x02, 0x01},	//  2, -15.0dB
@@ -113,7 +113,7 @@ u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8] = {
 };                                                                  
 
 
-u1Byte CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8]= {
+u1Byte rtl8188fu_CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8]= {
 	{0x09, 0x08, 0x07, 0x04, 0x00, 0x00, 0x00, 0x00},	//  0, -16.0dB
 	{0x09, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00},	//  1, -15.5dB
 	{0x0a, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00},	//  2, -15.0dB
@@ -149,7 +149,7 @@ u1Byte CCKSwingTable_Ch14_New[CCK_TABLE_SIZE][8]= {
 	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00} 	// 32, +0dB	
 };
 
-u4Byte OFDMSwingTable[OFDM_TABLE_SIZE_92D] = {
+u4Byte rtl8188fu_OFDMSwingTable[OFDM_TABLE_SIZE_92D] = {
 	0x0b40002d, // 0,  -15.0dB	
 	0x0c000030, // 1,  -14.5dB
 	0x0cc00033, // 2,  -14.0dB
@@ -196,7 +196,7 @@ u4Byte OFDMSwingTable[OFDM_TABLE_SIZE_92D] = {
 };               
 
 
-u1Byte CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
+u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
 	{0x09, 0x08, 0x07, 0x06, 0x04, 0x03, 0x01, 0x01},	//  0, -16.0dB
 	{0x09, 0x09, 0x08, 0x06, 0x05, 0x03, 0x01, 0x01},	//  1, -15.5dB
 	{0x0a, 0x09, 0x08, 0x07, 0x05, 0x03, 0x02, 0x01},	//  2, -15.0dB
@@ -233,7 +233,7 @@ u1Byte CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8] = {
 };                                                                  
 
 
-u1Byte CCKSwingTable_Ch14 [CCK_TABLE_SIZE][8]= {
+u1Byte rtl8188fu_CCKSwingTable_Ch14 [CCK_TABLE_SIZE][8]= {
 	{0x09, 0x08, 0x07, 0x04, 0x00, 0x00, 0x00, 0x00},	//  0, -16.0dB
 	{0x09, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00},	//  1, -15.5dB
 	{0x0a, 0x09, 0x08, 0x05, 0x00, 0x00, 0x00, 0x00},	//  2, -15.0dB
@@ -269,7 +269,7 @@ u1Byte CCKSwingTable_Ch14 [CCK_TABLE_SIZE][8]= {
 	{0x36, 0x35, 0x2e, 0x1b, 0x00, 0x00, 0x00, 0x00} 	// 32, +0dB	
 };
 
-u1Byte CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16] = {
+u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16] = {
 {0x16, 0x15, 0x13, 0x10, 0xD, 0x9, 0x6, 0x3, 0x2, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},        /* 0  -16dB */
 {0x18, 0x17, 0x15, 0x12, 0xE, 0xA, 0x7, 0x4, 0x2, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},        /* 1  -15.5dB */
 {0x1B, 0x1A, 0x18, 0x14, 0x10, 0xB, 0x7, 0x4, 0x2, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0},        /* 2  -15dB */
@@ -295,7 +295,7 @@ u1Byte CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16] = {
 
 
 #if 0
-u4Byte OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E] = {
+u4Byte rtl8188fu_OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E] = {
 	/* Index0   6  dB */ 0x7fc001ff,
 	/* Index1   5.7dB */ 0x7b4001ed,
 	/* Index2   5.4dB */ 0x774001dd,
@@ -351,7 +351,7 @@ u4Byte OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E] = {
 	/* Index52 -9.6dB */ 0x15400055,
 	/* Index53 -9.9dB */ 0x14800052
 };
-u1Byte CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8] = {
+u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8] = {
 	/* Index0    0  dB */    {0x36, 0x34 , 0x2E , 0x26 , 0x1C , 0x12 , 0x08 , 0x04},
 	/* Index1   -0.3dB */    {0x34, 0x32 , 0x2C , 0x25 , 0x1B , 0x11 , 0x08 , 0x04},
 	/* Index2   -0.6dB */    {0x32, 0x30 , 0x2B , 0x23 , 0x1A , 0x11 , 0x07 , 0x04},
@@ -407,7 +407,7 @@ u1Byte CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8] = {
 	/* Index52 -15.6dB */    {0x09, 0x09 , 0x08 , 0x06 , 0x05 , 0x03 , 0x01 , 0x01},
 	/* Index53 -15.9dB */    {0x09, 0x08 , 0x07 , 0x06 , 0x04 , 0x03 , 0x01 , 0x01}
 };
-u1Byte CCKSwingTable_Ch14_92E[CCK_TABLE_SIZE_92E][8] = {
+u1Byte rtl8188fu_CCKSwingTable_Ch14_92E[CCK_TABLE_SIZE_92E][8] = {
 	/* Index0    0  dB */    {0x36, 0x34 , 0x2E , 0x26 , 0x00 , 0x00 , 0x00 , 0x00},
 	/* Index1   -0.3dB */    {0x34, 0x32 , 0x2C , 0x25 , 0x00 , 0x00 , 0x00 , 0x00},
 	/* Index2   -0.6dB */    {0x32, 0x30 , 0x2B , 0x23 , 0x00 , 0x00 , 0x00 , 0x00},
@@ -518,7 +518,7 @@ u1Byte DeltaSwingTableIdx_2GA_N_DEFAULT[DELTA_SWINGIDX_SIZE] = {0, 0, 0, 2, 2, 3
 
 
 #ifdef CONFIG_WLAN_HAL_8192EE
-u4Byte OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E] = {
+u4Byte rtl8188fu_OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E] = {
 	/* Index0   6  dB */ 0x7fc001ff,
 	/* Index1   5.7dB */ 0x7b4001ed,
 	/* Index2   5.4dB */ 0x774001dd,
@@ -574,7 +574,7 @@ u4Byte OFDMSwingTable_92E[OFDM_TABLE_SIZE_92E] = {
 	/* Index52 -9.6dB */ 0x15400055,
 	/* Index53 -9.9dB */ 0x14800052
 };
-u1Byte CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8] = {
+u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8] = {
 	/* Index0    0  dB */    {0x36, 0x34 , 0x2E , 0x26 , 0x1C , 0x12 , 0x08 , 0x04},
 	/* Index1   -0.3dB */    {0x34, 0x32 , 0x2C , 0x25 , 0x1B , 0x11 , 0x08 , 0x04},
 	/* Index2   -0.6dB */    {0x32, 0x30 , 0x2B , 0x23 , 0x1A , 0x11 , 0x07 , 0x04},
@@ -630,7 +630,7 @@ u1Byte CCKSwingTable_Ch1_Ch13_92E[CCK_TABLE_SIZE_92E][8] = {
 	/* Index52 -15.6dB */    {0x09, 0x09 , 0x08 , 0x06 , 0x05 , 0x03 , 0x01 , 0x01},
 	/* Index53 -15.9dB */    {0x09, 0x08 , 0x07 , 0x06 , 0x04 , 0x03 , 0x01 , 0x01}
 };
-u1Byte CCKSwingTable_Ch14_92E[CCK_TABLE_SIZE_92E][8] = {
+u1Byte rtl8188fu_CCKSwingTable_Ch14_92E[CCK_TABLE_SIZE_92E][8] = {
 	/* Index0    0  dB */    {0x36, 0x34 , 0x2E , 0x26 , 0x00 , 0x00 , 0x00 , 0x00},
 	/* Index1   -0.3dB */    {0x34, 0x32 , 0x2C , 0x25 , 0x00 , 0x00 , 0x00 , 0x00},
 	/* Index2   -0.6dB */    {0x32, 0x30 , 0x2B , 0x23 , 0x00 , 0x00 , 0x00 , 0x00},
@@ -689,7 +689,7 @@ u1Byte CCKSwingTable_Ch14_92E[CCK_TABLE_SIZE_92E][8] = {
 #endif
 
 #if(RTL8814A_SUPPORT == 1)
-u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE] =
+u4Byte rtl8188fu_TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE] =
 {
 	0x081, // 0,  -12.0dB
 	0x088, // 1,  -11.5dB
@@ -730,7 +730,7 @@ u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE] =
 	0x3FE  // 36, +6.0dB	
 };
 #elif(ODM_IC_11AC_SERIES_SUPPORT)
-u4Byte OFDMSwingTable_8812[OFDM_TABLE_SIZE_8812] = {	
+u4Byte rtl8188fu_OFDMSwingTable_8812[OFDM_TABLE_SIZE_8812] = {	
 	0x3FE, // 0,  (6dB) 
 	0x3C4, // 1,  (5.5dB) 
 	0x38E, // 2,  (5dB)
@@ -783,7 +783,7 @@ u4Byte OFDMSwingTable_8812[OFDM_TABLE_SIZE_8812] = {
 //3============================================================
 
 VOID
-odm_TXPowerTrackingInit(
+rtl8188fu_odm_TXPowerTrackingInit(
 	IN	PVOID		pDM_VOID 
 	)
 {
@@ -793,12 +793,12 @@ odm_TXPowerTrackingInit(
 		return;
 #endif
 
-	odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
+	rtl8188fu_odm_TXPowerTrackingThermalMeterInit(pDM_Odm);
 }	
 
 
 VOID
-odm_TXPowerTrackingThermalMeterInit(
+rtl8188fu_odm_TXPowerTrackingThermalMeterInit(
 	IN	PVOID		pDM_VOID 
 	)
 {
@@ -890,7 +890,7 @@ odm_TXPowerTrackingThermalMeterInit(
 
 
 VOID
-ODM_TXPowerTrackingCheck(
+rtl8188fu_ODM_TXPowerTrackingCheck(
 	IN	PVOID		pDM_VOID
 	)
 {
@@ -913,15 +913,15 @@ ODM_TXPowerTrackingCheck(
 	switch	(pDM_Odm->SupportPlatform)
 	{
 		case	ODM_WIN:
-			odm_TXPowerTrackingCheckMP(pDM_Odm);
+			rtl8188fu_odm_TXPowerTrackingCheckMP(pDM_Odm);
 			break;
 
 		case	ODM_CE:
-			odm_TXPowerTrackingCheckCE(pDM_Odm);
+			rtl8188fu_odm_TXPowerTrackingCheckCE(pDM_Odm);
 			break;
 
 		case	ODM_AP:
-			odm_TXPowerTrackingCheckAP(pDM_Odm);		
+			rtl8188fu_odm_TXPowerTrackingCheckAP(pDM_Odm);		
 			break;		
 		default:
 			break;
@@ -930,7 +930,7 @@ ODM_TXPowerTrackingCheck(
 }
 
 VOID
-odm_TXPowerTrackingCheckCE(
+rtl8188fu_odm_TXPowerTrackingCheckCE(
 	IN	PVOID		pDM_VOID
 	)
 {
@@ -949,7 +949,7 @@ odm_TXPowerTrackingCheckCE(
 	if(!pDM_Odm->RFCalibrateInfo.TM_Trigger)		//at least delay 1 sec
 	{
 		//pHalData->TxPowerCheckCnt++;	//cosa add for debug
-		ODM_SetRFReg(pDM_Odm, RF_PATH_A, RF_T_METER, bRFRegOffsetMask, 0x60);
+		rtl8188fu_ODM_SetRFReg(pDM_Odm, RF_PATH_A, RF_T_METER, bRFRegOffsetMask, 0x60);
 		//DBG_8192C("Trigger 92C Thermal Meter!!\n");
 		
 		pDM_Odm->RFCalibrateInfo.TM_Trigger = 1;
@@ -968,7 +968,7 @@ odm_TXPowerTrackingCheckCE(
 }
 
 VOID
-odm_TXPowerTrackingCheckMP(
+rtl8188fu_odm_TXPowerTrackingCheckMP(
 	IN	PVOID		pDM_VOID 
 	)
 {
@@ -987,7 +987,7 @@ odm_TXPowerTrackingCheckMP(
 
 
 VOID
-odm_TXPowerTrackingCheckAP(
+rtl8188fu_odm_TXPowerTrackingCheckAP(
 	IN	PVOID		pDM_VOID
 	)
 {
@@ -997,7 +997,7 @@ odm_TXPowerTrackingCheckAP(
 
 #if ((RTL8188E_SUPPORT == 1) || (RTL8192E_SUPPORT == 1) || (RTL8812A_SUPPORT == 1) || (RTL8881A_SUPPORT == 1) || (RTL8814A_SUPPORT == 1))	
 	if (pDM_Odm->SupportICType & (ODM_RTL8188E|ODM_RTL8192E|ODM_RTL8812|ODM_RTL8881A|ODM_RTL8814A))
-		ODM_TXPowerTrackingCallback_ThermalMeter(pDM_Odm);
+		rtl8188fu_ODM_TXPowerTrackingCallback_ThermalMeter(pDM_Odm);
 	else
 #endif
 	{

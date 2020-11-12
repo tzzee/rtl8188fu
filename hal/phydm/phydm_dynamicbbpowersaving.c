@@ -25,7 +25,7 @@
 #include "phydm_precomp.h"
 
 VOID 
-odm_DynamicBBPowerSavingInit(
+rtl8188fu_odm_DynamicBBPowerSavingInit(
 	IN		PVOID					pDM_VOID
 	)
 {
@@ -67,7 +67,7 @@ odm_DynamicBBPowerSaving(
 	//1 3.Power Saving for 88C
 	else
 	{
-		ODM_RF_Saving(pDM_Odm, FALSE);
+		rtl8188fu_ODM_RF_Saving(pDM_Odm, FALSE);
 	}
 #endif	// #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
 	
@@ -109,18 +109,18 @@ odm_1R_CCA(
 		{
 			if(  pDM_Odm->RFType ==ODM_2T2R )
 			{
-				ODM_SetBBReg(pDM_Odm, 0xc04  , bMaskByte0, 0x13);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc04  , bMaskByte0, 0x13);
 				//PHY_SetBBReg(pAdapter, 0xe70, bMaskByte3, 0x20);
 			}
 			else
 			{
-				ODM_SetBBReg(pDM_Odm, 0xc04  , bMaskByte0, 0x23);
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc04  , bMaskByte0, 0x23);
 				//PHY_SetBBReg(pAdapter, 0xe70, 0x7fc00000, 0x10c); // Set RegE70[30:22] = 9b'100001100
 			}
 		}
 		else
 		{
-			ODM_SetBBReg(pDM_Odm, 0xc04  , bMaskByte0, 0x33);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc04  , bMaskByte0, 0x33);
 			//PHY_SetBBReg(pAdapter,0xe70, bMaskByte3, 0x63);
 		}
 		pDM_PSTable->PreCCAState = pDM_PSTable->CurCCAState;
@@ -128,7 +128,7 @@ odm_1R_CCA(
 }
 
 void
-ODM_RF_Saving(
+rtl8188fu_ODM_RF_Saving(
 	IN		PVOID					pDM_VOID,
 	IN	u1Byte		bForceInNormal 
 	)
@@ -147,10 +147,10 @@ ODM_RF_Saving(
 #endif
 	if(pDM_PSTable->initialize == 0){
 		
-		pDM_PSTable->Reg874 = (ODM_GetBBReg(pDM_Odm, 0x874, bMaskDWord)&0x1CC000)>>14;
-		pDM_PSTable->RegC70 = (ODM_GetBBReg(pDM_Odm, 0xc70, bMaskDWord)&BIT3)>>3;
-		pDM_PSTable->Reg85C = (ODM_GetBBReg(pDM_Odm, 0x85c, bMaskDWord)&0xFF000000)>>24;
-		pDM_PSTable->RegA74 = (ODM_GetBBReg(pDM_Odm, 0xa74, bMaskDWord)&0xF000)>>12;
+		pDM_PSTable->Reg874 = (rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x874, bMaskDWord)&0x1CC000)>>14;
+		pDM_PSTable->RegC70 = (rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xc70, bMaskDWord)&BIT3)>>3;
+		pDM_PSTable->Reg85C = (rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x85c, bMaskDWord)&0xFF000000)>>24;
+		pDM_PSTable->RegA74 = (rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xa74, bMaskDWord)&0xF000)>>12;
 		//Reg818 = PHY_QueryBBReg(pAdapter, 0x818, bMaskDWord);
 		pDM_PSTable->initialize = 1;
 	}
@@ -189,27 +189,27 @@ ODM_RF_Saving(
 			// Suggested by SD3 Yu-Nan. 2011.01.20.
 			if(pDM_Odm->SupportICType == ODM_RTL8723A)
 			{
-				ODM_SetBBReg(pDM_Odm, 0x874  , BIT5, 0x1); //Reg874[5]=1b'1
+				rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x874  , BIT5, 0x1); //Reg874[5]=1b'1
 			}
-			ODM_SetBBReg(pDM_Odm, 0x874  , 0x1C0000, 0x2); //Reg874[20:18]=3'b010
-			ODM_SetBBReg(pDM_Odm, 0xc70, BIT3, 0); //RegC70[3]=1'b0
-			ODM_SetBBReg(pDM_Odm, 0x85c, 0xFF000000, 0x63); //Reg85C[31:24]=0x63
-			ODM_SetBBReg(pDM_Odm, 0x874, 0xC000, 0x2); //Reg874[15:14]=2'b10
-			ODM_SetBBReg(pDM_Odm, 0xa74, 0xF000, 0x3); //RegA75[7:4]=0x3
-			ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 0x0); //Reg818[28]=1'b0
-			ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 0x1); //Reg818[28]=1'b1
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x874  , 0x1C0000, 0x2); //Reg874[20:18]=3'b010
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc70, BIT3, 0); //RegC70[3]=1'b0
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x85c, 0xFF000000, 0x63); //Reg85C[31:24]=0x63
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x874, 0xC000, 0x2); //Reg874[15:14]=2'b10
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xa74, 0xF000, 0x3); //RegA75[7:4]=0x3
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 0x0); //Reg818[28]=1'b0
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x818, BIT28, 0x1); //Reg818[28]=1'b1
 		}
 		else
 		{
-			ODM_SetBBReg(pDM_Odm, 0x874  , 0x1CC000, pDM_PSTable->Reg874); 
-			ODM_SetBBReg(pDM_Odm, 0xc70, BIT3, pDM_PSTable->RegC70); 
-			ODM_SetBBReg(pDM_Odm, 0x85c, 0xFF000000, pDM_PSTable->Reg85C);
-			ODM_SetBBReg(pDM_Odm, 0xa74, 0xF000, pDM_PSTable->RegA74); 
-			ODM_SetBBReg(pDM_Odm,0x818, BIT28, 0x0);  
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x874  , 0x1CC000, pDM_PSTable->Reg874); 
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xc70, BIT3, pDM_PSTable->RegC70); 
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x85c, 0xFF000000, pDM_PSTable->Reg85C);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xa74, 0xF000, pDM_PSTable->RegA74); 
+			rtl8188fu_ODM_SetBBReg(pDM_Odm,0x818, BIT28, 0x0);  
 
 			if(pDM_Odm->SupportICType == ODM_RTL8723A)
 			{
-				ODM_SetBBReg(pDM_Odm,0x874  , BIT5, 0x0); //Reg874[5]=1b'0
+				rtl8188fu_ODM_SetBBReg(pDM_Odm,0x874  , BIT5, 0x0); //Reg874[5]=1b'0
 			}
 		}
 		pDM_PSTable->PreRFState =pDM_PSTable->CurRFState;

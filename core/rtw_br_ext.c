@@ -630,7 +630,7 @@ static void __nat25_db_print(_adapter *priv)
  *	NAT2.5 interface
  */
 
-void nat25_db_cleanup(_adapter *priv)
+void rtl8188fu_nat25_db_cleanup(_adapter *priv)
 {
 	int i;
 	_irqL irqL;
@@ -661,7 +661,7 @@ void nat25_db_cleanup(_adapter *priv)
 }
 
 
-void nat25_db_expire(_adapter *priv)
+void rtl8188fu_nat25_db_expire(_adapter *priv)
 {
 	int i;
 	_irqL irqL;
@@ -782,7 +782,7 @@ static int checkIPMcAndReplace(_adapter *priv, struct sk_buff *skb, unsigned int
 }
 #endif
 
-int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
+int rtl8188fu_nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 {
 	unsigned short protocol;
 	unsigned char networkAddr[MAX_NETWORK_ADDR_LEN];
@@ -851,9 +851,9 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 								// forward unknow IP packet to upper TCP/IP
 								DBG_871X("NAT25: Replace DA with BR's MAC\n");
 								if ( (*(u32 *)priv->br_mac) == 0 && (*(u16 *)(priv->br_mac+4)) == 0 ) {
-									void netdev_br_init(struct net_device *netdev);
-									printk("Re-init netdev_br_init() due to br_mac==0!\n");
-									netdev_br_init(priv->pnetdev);
+									void rtl8188fu_netdev_br_init(struct net_device *netdev);
+									printk("Re-init rtl8188fu_netdev_br_init() due to br_mac==0!\n");
+									rtl8188fu_netdev_br_init(priv->pnetdev);
 								}
 								memcpy(skb->data, priv->br_mac, ETH_ALEN);
 							}
@@ -1483,7 +1483,7 @@ int nat25_db_handle(_adapter *priv, struct sk_buff *skb, int method)
 }
 
 
-int nat25_handle_frame(_adapter *priv, struct sk_buff *skb)
+int rtl8188fu_nat25_handle_frame(_adapter *priv, struct sk_buff *skb)
 {
 #ifdef BR_EXT_DEBUG
 	if((!priv->ethBrExtInfo.nat25_disable) && (!(skb->data[0] & 1)))
@@ -1536,7 +1536,7 @@ int nat25_handle_frame(_adapter *priv, struct sk_buff *skb)
 			else {
 				_exit_critical_bh(&priv->br_ext_lock, &irqL);
 				
-				retval = nat25_db_handle(priv, skb, NAT25_LOOKUP);
+				retval = rtl8188fu_nat25_db_handle(priv, skb, NAT25_LOOKUP);
 			}
 		}
 		else {
@@ -1545,7 +1545,7 @@ int nat25_handle_frame(_adapter *priv, struct sk_buff *skb)
 				((*((unsigned short *)(skb->data+ETH_ALEN*2)) == __constant_htons(ETH_P_ARP)) &&
 					!memcmp(priv->br_ip, skb->data+ETH_HLEN+24, 4))) {
 				// for traffic to upper TCP/IP
-				retval = nat25_db_handle(priv, skb, NAT25_LOOKUP);
+				retval = rtl8188fu_nat25_db_handle(priv, skb, NAT25_LOOKUP);
 			}
 		}
 
@@ -1622,7 +1622,7 @@ struct dhcpMessage {
 	u_int8_t options[308]; /* 312 - cookie */
 };
 
-void dhcp_flag_bcast(_adapter *priv, struct sk_buff *skb)
+void rtl8188fu_dhcp_flag_bcast(_adapter *priv, struct sk_buff *skb)
 {
 	if(skb == NULL)
 		return;
@@ -1669,7 +1669,7 @@ void dhcp_flag_bcast(_adapter *priv, struct sk_buff *skb)
 }
 
 
-void *scdb_findEntry(_adapter *priv, unsigned char *macAddr,
+void *rtl8188fu_scdb_findEntry(_adapter *priv, unsigned char *macAddr,
 				unsigned char *ipAddr)
 {
 	unsigned char networkAddr[MAX_NETWORK_ADDR_LEN];

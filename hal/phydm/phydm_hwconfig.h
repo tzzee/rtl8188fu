@@ -178,12 +178,12 @@ typedef struct _Phy_Status_Rpt_8812 {
 } PHY_STATUS_RPT_8812_T, *PPHY_STATUS_RPT_8812_T;
 
 VOID
-odm_Init_RSSIForDM(
+rtl8188fu_odm_Init_RSSIForDM(
 	IN OUT	PDM_ODM_T	pDM_Odm
 	);
 
 VOID
-ODM_PhyStatusQuery(
+rtl8188fu_ODM_PhyStatusQuery(
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	OUT		PODM_PHY_INFO_T			pPhyInfo,
 	IN 		pu1Byte						pPhyStatus,	
@@ -191,7 +191,7 @@ ODM_PhyStatusQuery(
 	);
 
 VOID
-ODM_MacStatusQuery(
+rtl8188fu_ODM_MacStatusQuery(
 	IN OUT	PDM_ODM_T					pDM_Odm,
 	IN 		pu1Byte						pMacStatus,
 	IN		u1Byte						MacID,	
@@ -201,36 +201,36 @@ ODM_MacStatusQuery(
 	);
 
 HAL_STATUS
-ODM_ConfigRFWithTxPwrTrackHeaderFile(
+rtl8188fu_ODM_ConfigRFWithTxPwrTrackHeaderFile(
 	IN 	PDM_ODM_T	        	pDM_Odm
     );
     
 HAL_STATUS
-ODM_ConfigRFWithHeaderFile(
+rtl8188fu_ODM_ConfigRFWithHeaderFile(
 	IN 	PDM_ODM_T	        	pDM_Odm,
 	IN 	ODM_RF_Config_Type 		ConfigType,
 	IN 	ODM_RF_RADIO_PATH_E 	eRFPath
 	);
 
 HAL_STATUS
-ODM_ConfigBBWithHeaderFile(
+rtl8188fu_ODM_ConfigBBWithHeaderFile(
 	IN  	PDM_ODM_T	                pDM_Odm,
 	IN	ODM_BB_Config_Type		ConfigType
     );
 
 HAL_STATUS
-ODM_ConfigMACWithHeaderFile(
+rtl8188fu_ODM_ConfigMACWithHeaderFile(
 	IN  	PDM_ODM_T	pDM_Odm
     );
 
 
 u4Byte 
-ODM_GetHWImgVersion(
+rtl8188fu_ODM_GetHWImgVersion(
 	IN	PDM_ODM_T	pDM_Odm
 	);
 
 s4Byte
-odm_SignalScaleMapping(	
+rtl8188fu_odm_SignalScaleMapping(	
 	IN OUT PDM_ODM_T pDM_Odm,
 	IN	s4Byte CurrSig 
 	);

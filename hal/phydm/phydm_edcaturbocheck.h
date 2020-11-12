@@ -54,17 +54,17 @@ static u4Byte edca_setting_DL_GMode[HT_IOT_PEER_MAX] =
 
 
 VOID
-odm_EdcaTurboCheck(
+rtl8188fu_odm_EdcaTurboCheck(
 	IN 	PVOID	 	pDM_VOID
 	);
 VOID
-ODM_EdcaTurboInit(
+rtl8188fu_ODM_EdcaTurboInit(
 	IN 	PVOID	 	pDM_VOID
 );
 
 #if(DM_ODM_SUPPORT_TYPE==ODM_WIN)
 VOID
-odm_EdcaTurboCheckMP(
+rtl8188fu_odm_EdcaTurboCheckMP(
 	IN 	PVOID	 	pDM_VOID
 	);
 
@@ -92,7 +92,7 @@ odm_EdcaChooseTrafficIdx(
 
 #elif (DM_ODM_SUPPORT_TYPE==ODM_CE)
 VOID
-odm_EdcaTurboCheckCE(
+rtl8188fu_odm_EdcaTurboCheckCE(
 	IN 	PVOID	 	pDM_VOID
 	);
 #endif

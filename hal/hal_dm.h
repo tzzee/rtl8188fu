@@ -20,7 +20,7 @@
 #ifndef __HAL_DM_H__
 #define __HAL_DM_H__
 
-void Init_ODM_ComInfo(_adapter *adapter);
+void rtl8188fu_Init_ODM_ComInfo(_adapter *adapter);
 
 #endif /* __HAL_DM_H__ */
 

@@ -25,7 +25,7 @@
 #include "mp_precomp.h"
 #include "phydm_precomp.h"
 
-const u2Byte dB_Invert_Table[12][8] = {
+const u2Byte rtl8188fu_dB_Invert_Table[12][8] = {
 	{	1,		1,		1,		2,		2,		2,		2,		3},
 	{	3,		3,		4,		4,		4,		5,		6,		6},
 	{	7,		8,		9,		10,		11,		13,		14,		16},
@@ -57,7 +57,7 @@ odm_GlobalAdapterCheck(
 
 
 VOID
-odm_UpdatePowerTrainingState(
+rtl8188fu_odm_UpdatePowerTrainingState(
 	IN	PDM_ODM_T	pDM_Odm
 );
 
@@ -67,7 +67,7 @@ odm_UpdatePowerTrainingState(
 
 /*Y = 10*log(X)*/
 s4Byte
-ODM_PWdB_Conversion(
+rtl8188fu_ODM_PWdB_Conversion(
 	IN  s4Byte X,
 	IN  u4Byte TotalBit,
 	IN  u4Byte DecimalBit
@@ -96,7 +96,7 @@ ODM_PWdB_Conversion(
 }
 
 s4Byte
-ODM_SignConversion(
+rtl8188fu_ODM_SignConversion(
     IN  s4Byte value,
     IN  u4Byte TotalBit
     )
@@ -107,7 +107,7 @@ ODM_SignConversion(
 }
 
 VOID
-ODM_InitMpDriverStatus(
+rtl8188fu_ODM_InitMpDriverStatus(
 	IN		PDM_ODM_T		pDM_Odm
 )
 {
@@ -133,7 +133,7 @@ ODM_InitMpDriverStatus(
 }
 
 VOID
-ODM_UpdateMpDriverStatus(
+rtl8188fu_ODM_UpdateMpDriverStatus(
 	IN		PDM_ODM_T		pDM_Odm
 )
 {
@@ -153,7 +153,7 @@ ODM_UpdateMpDriverStatus(
 }
 
 VOID
-PHYDM_InitTRXAntennaSetting(
+rtl8188fu_PHYDM_InitTRXAntennaSetting(
 	IN		PDM_ODM_T		pDM_Odm
 )
 {
@@ -162,8 +162,8 @@ PHYDM_InitTRXAntennaSetting(
 	if (pDM_Odm->SupportICType & (ODM_RTL8814A)) {
 		u1Byte	RxAnt = 0, TxAnt = 0;
 
-		RxAnt = (u1Byte)ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
-		TxAnt = (u1Byte)ODM_GetBBReg(pDM_Odm, ODM_REG(BB_TX_PATH, pDM_Odm), ODM_BIT(BB_TX_PATH, pDM_Odm));
+		RxAnt = (u1Byte)rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH, pDM_Odm), ODM_BIT(BB_RX_PATH, pDM_Odm));
+		TxAnt = (u1Byte)rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG(BB_TX_PATH, pDM_Odm), ODM_BIT(BB_TX_PATH, pDM_Odm));
 		pDM_Odm->TXAntStatus =  (TxAnt & 0xf);
 		pDM_Odm->RXAntStatus =  (RxAnt & 0xf);
 	}
@@ -171,26 +171,26 @@ PHYDM_InitTRXAntennaSetting(
 }
 
 VOID
-phydm_Init_cck_setting(
+rtl8188fu_phydm_Init_cck_setting(
 	IN		PDM_ODM_T		pDM_Odm
 )
 {
 	u4Byte value_824,value_82c;
 
-	pDM_Odm->bCckHighPower = (BOOLEAN) ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT,pDM_Odm), ODM_BIT(CCK_RPT_FORMAT,pDM_Odm));
+	pDM_Odm->bCckHighPower = (BOOLEAN) rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG(CCK_RPT_FORMAT,pDM_Odm), ODM_BIT(CCK_RPT_FORMAT,pDM_Odm));
 
 	#if (RTL8192E_SUPPORT == 1)
 	if(pDM_Odm->SupportICType & (ODM_RTL8192E))
 	{
 		/* 0x824[9] = 0x82C[9] = 0xA80[7]  these regiaters settinh should be equal or CCK RSSI report may inaccurate */
-		value_824 = ODM_GetBBReg(pDM_Odm, 0x824, BIT9);
-		value_82c = ODM_GetBBReg(pDM_Odm, 0x82c, BIT9);
+		value_824 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x824, BIT9);
+		value_82c = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x82c, BIT9);
 		
 		if(value_824 != value_82c)
 		{
-			ODM_SetBBReg(pDM_Odm, 0x82c , BIT9, value_824);
+			rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x82c , BIT9, value_824);
 		}
-		ODM_SetBBReg(pDM_Odm, 0xa80 , BIT7, value_824);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xa80 , BIT7, value_824);
 		pDM_Odm->cck_agc_report_type = (BOOLEAN)value_824;
 	}
 	#endif
@@ -198,7 +198,7 @@ phydm_Init_cck_setting(
 	#if (RTL8703B_SUPPORT == 1)
 	if (pDM_Odm->SupportICType & (ODM_RTL8703B)) {
 
-		pDM_Odm->cck_agc_report_type = ODM_GetBBReg(pDM_Odm, 0x950, BIT11) ? 1 : 0; /*1: 4bit LNA , 0: 3bit LNA */
+		pDM_Odm->cck_agc_report_type = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0x950, BIT11) ? 1 : 0; /*1: 4bit LNA , 0: 3bit LNA */
 		
 		if (pDM_Odm->cck_agc_report_type != 1) {
 			DbgPrint("[Warning] 8703B CCK should be 4bit LNA, ie. 0x950[11] = 1\n");
@@ -220,19 +220,19 @@ void	phydm_hook_dummy_member(
 
 
 VOID
-odm_CommonInfoSelfInit(
+rtl8188fu_odm_CommonInfoSelfInit(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	phydm_Init_cck_setting(pDM_Odm);
-	pDM_Odm->RFPathRxEnable = (u1Byte) ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH,pDM_Odm), ODM_BIT(BB_RX_PATH,pDM_Odm));
+	rtl8188fu_phydm_Init_cck_setting(pDM_Odm);
+	pDM_Odm->RFPathRxEnable = (u1Byte) rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG(BB_RX_PATH,pDM_Odm), ODM_BIT(BB_RX_PATH,pDM_Odm));
 #if (DM_ODM_SUPPORT_TYPE != ODM_CE)	
 	pDM_Odm->pbNet_closed = &pDM_Odm->BOOLEAN_temp;
 #endif
 
-	PHYDM_InitDebugSetting(pDM_Odm);
-	ODM_InitMpDriverStatus(pDM_Odm);
-	PHYDM_InitTRXAntennaSetting(pDM_Odm);
+	rtl8188fu_PHYDM_InitDebugSetting(pDM_Odm);
+	rtl8188fu_ODM_InitMpDriverStatus(pDM_Odm);
+	rtl8188fu_PHYDM_InitTRXAntennaSetting(pDM_Odm);
 
 	pDM_Odm->TxRate = 0xFF;
 
@@ -245,7 +245,7 @@ odm_CommonInfoSelfInit(
 }
 
 VOID
-odm_CommonInfoSelfUpdate(
+rtl8188fu_odm_CommonInfoSelfUpdate(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
@@ -341,11 +341,11 @@ odm_CommonInfoSelfUpdate(
 	pDM_Odm->number_active_client = num_active_client;	
 
 	/* Update MP driver status*/
-	ODM_UpdateMpDriverStatus(pDM_Odm);
+	rtl8188fu_ODM_UpdateMpDriverStatus(pDM_Odm);
 }
 
 VOID
-odm_CommonInfoSelfReset(
+rtl8188fu_odm_CommonInfoSelfReset(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
@@ -355,7 +355,7 @@ odm_CommonInfoSelfReset(
 }
 
 PVOID
-PhyDM_Get_Structure(
+rtl8188fu_PhyDM_Get_Structure(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u1Byte			Structure_Type
 )
@@ -403,13 +403,13 @@ PhyDM_Get_Structure(
 }
 
 VOID
-odm_HWSetting(
+rtl8188fu_odm_HWSetting(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
 #if (RTL8821A_SUPPORT == 1)
 	if(pDM_Odm->SupportICType & ODM_RTL8821)
-		odm_HWSetting_8821A(pDM_Odm);
+		rtl8188fu_odm_HWSetting_8821A(pDM_Odm);
 #endif
 
 }
@@ -418,33 +418,33 @@ odm_HWSetting(
 // 2011/09/21 MH Add to describe different team necessary resource allocate??
 //
 VOID
-ODM_DMInit(
+rtl8188fu_ODM_DMInit(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	odm_CommonInfoSelfInit(pDM_Odm);
-	odm_DIGInit(pDM_Odm);
-	Phydm_NHMCounterStatisticsInit(pDM_Odm);
-	Phydm_AdaptivityInit(pDM_Odm);
-	phydm_ra_info_init(pDM_Odm);
-	odm_RateAdaptiveMaskInit(pDM_Odm);
+	rtl8188fu_odm_CommonInfoSelfInit(pDM_Odm);
+	rtl8188fu_odm_DIGInit(pDM_Odm);
+	rtl8188fu_Phydm_NHMCounterStatisticsInit(pDM_Odm);
+	rtl8188fu_Phydm_AdaptivityInit(pDM_Odm);
+	rtl8188fu_phydm_ra_info_init(pDM_Odm);
+	rtl8188fu_odm_RateAdaptiveMaskInit(pDM_Odm);
 	odm_RA_ParaAdjust_init(pDM_Odm);
-	ODM_CfoTrackingInit(pDM_Odm);
-	ODM_EdcaTurboInit(pDM_Odm);
-	odm_RSSIMonitorInit(pDM_Odm);
-	phydm_rf_init(pDM_Odm);
-	odm_TXPowerTrackingInit(pDM_Odm);
-	odm_AntennaDiversityInit(pDM_Odm);
-	odm_AutoChannelSelectInit(pDM_Odm);
-	odm_PathDiversityInit(pDM_Odm);
+	rtl8188fu_ODM_CfoTrackingInit(pDM_Odm);
+	rtl8188fu_ODM_EdcaTurboInit(pDM_Odm);
+	rtl8188fu_odm_RSSIMonitorInit(pDM_Odm);
+	rtl8188fu_phydm_rf_init(pDM_Odm);
+	rtl8188fu_odm_TXPowerTrackingInit(pDM_Odm);
+	rtl8188fu_odm_AntennaDiversityInit(pDM_Odm);
+	rtl8188fu_odm_AutoChannelSelectInit(pDM_Odm);
+	rtl8188fu_odm_PathDiversityInit(pDM_Odm);
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN | ODM_CE))
 	phydm_Beamforming_Init(pDM_Odm);
 #endif	
 
 	if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 	{
-		odm_DynamicBBPowerSavingInit(pDM_Odm);
-		odm_DynamicTxPowerInit(pDM_Odm);
+		rtl8188fu_odm_DynamicBBPowerSavingInit(pDM_Odm);
+		rtl8188fu_odm_DynamicTxPowerInit(pDM_Odm);
 
 #if (RTL8188E_SUPPORT == 1)
 		if(pDM_Odm->SupportICType==ODM_RTL8188E)
@@ -458,7 +458,7 @@ ODM_DMInit(
 	
 	#if (RTL8723B_SUPPORT == 1)
 		if(pDM_Odm->SupportICType == ODM_RTL8723B)
-			odm_SwAntDetectInit(pDM_Odm);
+			rtl8188fu_odm_SwAntDetectInit(pDM_Odm);
 	#endif
 
 	#if (RTL8192E_SUPPORT == 1)
@@ -473,14 +473,14 @@ ODM_DMInit(
 }
 
 VOID
-ODM_DMReset(
+rtl8188fu_ODM_DMReset(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
 	pDIG_T pDM_DigTable = &pDM_Odm->DM_DigTable;
 	
-	ODM_AntDivReset(pDM_Odm);	
-	phydm_setEDCCAThresholdAPI(pDM_Odm, pDM_DigTable->CurIGValue);
+	rtl8188fu_ODM_AntDivReset(pDM_Odm);	
+	rtl8188fu_phydm_setEDCCAThresholdAPI(pDM_Odm, pDM_DigTable->CurIGValue);
 }
 
 
@@ -544,7 +544,7 @@ phydm_support_ablity_debug(
 			pDM_Odm->SupportAbility |= BIT(dm_value[0]) ;
 			if(BIT(dm_value[0]) & ODM_BB_PATH_DIV)
 			{
-				odm_PathDiversityInit(pDM_Odm);
+				rtl8188fu_odm_PathDiversityInit(pDM_Odm);
 			}
 		}
 		else if(dm_value[1] == 2) //disable
@@ -567,16 +567,16 @@ phydm_support_ablity_debug(
 //tmp modify for LC Only
 //
 VOID
-ODM_DMWatchdog_LPS(
+rtl8188fu_ODM_DMWatchdog_LPS(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {	
-	odm_CommonInfoSelfUpdate(pDM_Odm);
-	odm_FalseAlarmCounterStatistics(pDM_Odm);
-	odm_RSSIMonitorCheck(pDM_Odm);
-	odm_DIGbyRSSI_LPS(pDM_Odm);	
-	odm_CCKPacketDetectionThresh(pDM_Odm);
-	odm_CommonInfoSelfReset(pDM_Odm);
+	rtl8188fu_odm_CommonInfoSelfUpdate(pDM_Odm);
+	rtl8188fu_odm_FalseAlarmCounterStatistics(pDM_Odm);
+	rtl8188fu_odm_RSSIMonitorCheck(pDM_Odm);
+	rtl8188fu_odm_DIGbyRSSI_LPS(pDM_Odm);	
+	rtl8188fu_odm_CCKPacketDetectionThresh(pDM_Odm);
+	rtl8188fu_odm_CommonInfoSelfReset(pDM_Odm);
 
 	if(*(pDM_Odm->pbPowerSaving)==TRUE)
 		return;
@@ -588,13 +588,13 @@ ODM_DMWatchdog_LPS(
 // to perform any new ODM_DM.
 //
 VOID
-ODM_DMWatchdog(
+rtl8188fu_ODM_DMWatchdog(
 	IN		PDM_ODM_T		pDM_Odm
 	)
 {
-	odm_CommonInfoSelfUpdate(pDM_Odm);
-	phydm_BasicDbgMessage(pDM_Odm);
-	odm_HWSetting(pDM_Odm);
+	rtl8188fu_odm_CommonInfoSelfUpdate(pDM_Odm);
+	rtl8188fu_phydm_BasicDbgMessage(pDM_Odm);
+	rtl8188fu_odm_HWSetting(pDM_Odm);
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_AP)
 	{
@@ -603,48 +603,48 @@ ODM_DMWatchdog(
 		return;
 	}
 #endif	
-	odm_FalseAlarmCounterStatistics(pDM_Odm);
-	phydm_NoisyDetection(pDM_Odm);
+	rtl8188fu_odm_FalseAlarmCounterStatistics(pDM_Odm);
+	rtl8188fu_phydm_NoisyDetection(pDM_Odm);
 	
-	odm_RSSIMonitorCheck(pDM_Odm);
+	rtl8188fu_odm_RSSIMonitorCheck(pDM_Odm);
 
 	if(*(pDM_Odm->pbPowerSaving) == TRUE)
 	{
-		odm_DIGbyRSSI_LPS(pDM_Odm);
+		rtl8188fu_odm_DIGbyRSSI_LPS(pDM_Odm);
 		{
 			pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
-			Phydm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
+			rtl8188fu_Phydm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
 		}
 		#if (DM_ODM_SUPPORT_TYPE & (ODM_CE))
-		odm_AntennaDiversity(pDM_Odm); /*enable AntDiv in PS mode, request from SD4 Jeff*/
+		rtl8188fu_odm_AntennaDiversity(pDM_Odm); /*enable AntDiv in PS mode, request from SD4 Jeff*/
 		#endif
 		ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("DMWatchdog in power saving mode\n"));
 		return;
 	}
 	
-	Phydm_CheckAdaptivity(pDM_Odm);
-	odm_UpdatePowerTrainingState(pDM_Odm);
-	odm_DIG(pDM_Odm);
+	rtl8188fu_Phydm_CheckAdaptivity(pDM_Odm);
+	rtl8188fu_odm_UpdatePowerTrainingState(pDM_Odm);
+	rtl8188fu_odm_DIG(pDM_Odm);
 	{
 		pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
-		Phydm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
+		rtl8188fu_Phydm_Adaptivity(pDM_Odm, pDM_DigTable->CurIGValue);
 	}
-	odm_CCKPacketDetectionThresh(pDM_Odm);
-	phydm_ra_dynamic_retry_limit(pDM_Odm);
-	phydm_ra_dynamic_retry_count(pDM_Odm);
-	odm_RefreshRateAdaptiveMask(pDM_Odm);
-	odm_RefreshBasicRateMask(pDM_Odm);
+	rtl8188fu_odm_CCKPacketDetectionThresh(pDM_Odm);
+	rtl8188fu_phydm_ra_dynamic_retry_limit(pDM_Odm);
+	rtl8188fu_phydm_ra_dynamic_retry_count(pDM_Odm);
+	rtl8188fu_odm_RefreshRateAdaptiveMask(pDM_Odm);
+	rtl8188fu_odm_RefreshBasicRateMask(pDM_Odm);
 	odm_DynamicBBPowerSaving(pDM_Odm);
-	odm_EdcaTurboCheck(pDM_Odm);
-	odm_PathDiversity(pDM_Odm);
-	ODM_CfoTracking(pDM_Odm);
-	odm_DynamicTxPower(pDM_Odm);
-	odm_AntennaDiversity(pDM_Odm);
+	rtl8188fu_odm_EdcaTurboCheck(pDM_Odm);
+	rtl8188fu_odm_PathDiversity(pDM_Odm);
+	rtl8188fu_ODM_CfoTracking(pDM_Odm);
+	rtl8188fu_odm_DynamicTxPower(pDM_Odm);
+	rtl8188fu_odm_AntennaDiversity(pDM_Odm);
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN | ODM_CE))
 	phydm_Beamforming_Watchdog(pDM_Odm);
 #endif
 
-	phydm_rf_watchdog(pDM_Odm);
+	rtl8188fu_phydm_rf_watchdog(pDM_Odm);
 
 	if(pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 	{
@@ -664,10 +664,10 @@ ODM_DMWatchdog(
 	}
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
-	odm_dtc(pDM_Odm);
+	rtl8188fu_odm_dtc(pDM_Odm);
 #endif
 
-	odm_CommonInfoSelfReset(pDM_Odm);
+	rtl8188fu_odm_CommonInfoSelfReset(pDM_Odm);
 	
 }
 
@@ -676,7 +676,7 @@ ODM_DMWatchdog(
 // Init /.. Fixed HW value. Only init time.
 //
 VOID
-ODM_CmnInfoInit(
+rtl8188fu_ODM_CmnInfoInit(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		u4Byte			Value	
@@ -808,7 +808,7 @@ ODM_CmnInfoInit(
 
 
 VOID
-ODM_CmnInfoHook(
+rtl8188fu_ODM_CmnInfoHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		PVOID			pValue	
@@ -970,7 +970,7 @@ ODM_CmnInfoHook(
 
 
 VOID
-ODM_CmnInfoPtrArrayHook(
+rtl8188fu_ODM_CmnInfoPtrArrayHook(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		ODM_CMNINFO_E	CmnInfo,
 	IN		u2Byte			Index,
@@ -1011,7 +1011,7 @@ ODM_CmnInfoPtrArrayHook(
 // Update Band/CHannel/.. The values are dynamic but non-per-packet.
 //
 VOID
-ODM_CmnInfoUpdate(
+rtl8188fu_ODM_CmnInfoUpdate(
 	IN		PDM_ODM_T		pDM_Odm,
 	IN		u4Byte			CmnInfo,
 	IN		u8Byte			Value	
@@ -1165,48 +1165,48 @@ ODM_InitAllWorkItems(IN PDM_ODM_T	pDM_Odm )
 	PADAPTER		pAdapter = pDM_Odm->Adapter;
 #if USE_WORKITEM
 	#ifdef CONFIG_S0S1_SW_ANTENNA_DIVERSITY
-	ODM_InitializeWorkItem(	pDM_Odm, 
+	rtl8188fu_ODM_InitializeWorkItem(	pDM_Odm, 
 							&pDM_Odm->DM_SWAT_Table.phydm_SwAntennaSwitchWorkitem, 
 							(RT_WORKITEM_CALL_BACK)ODM_SW_AntDiv_WorkitemCallback,
 							(PVOID)pAdapter,
 							"AntennaSwitchWorkitem");
 	#endif
 	#ifdef CONFIG_HL_SMART_ANTENNA_TYPE1
-	ODM_InitializeWorkItem(pDM_Odm, 
+	rtl8188fu_ODM_InitializeWorkItem(pDM_Odm, 
 						&pDM_Odm->dm_sat_table.hl_smart_antenna_workitem, 
 						(RT_WORKITEM_CALL_BACK)phydm_beam_switch_workitem_callback,
 						(PVOID)pAdapter,
 						"hl_smart_ant_workitem");
 
-	ODM_InitializeWorkItem(pDM_Odm, 
+	rtl8188fu_ODM_InitializeWorkItem(pDM_Odm, 
 						&pDM_Odm->dm_sat_table.hl_smart_antenna_decision_workitem, 
 						(RT_WORKITEM_CALL_BACK)phydm_beam_decision_workitem_callback,
 						(PVOID)pAdapter,
 						"hl_smart_ant_decision_workitem");
 	#endif
 	
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->PathDivSwitchWorkitem), 
 		(RT_WORKITEM_CALL_BACK)odm_PathDivChkAntSwitchWorkitemCallback, 
 		(PVOID)pAdapter,
 		"SWAS_WorkItem");
 
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->CCKPathDiversityWorkitem), 
 		(RT_WORKITEM_CALL_BACK)odm_CCKTXPathDiversityWorkItemCallback, 
 		(PVOID)pAdapter,
 		"CCKTXPathDiversityWorkItem");
 
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->MPT_DIGWorkitem), 
 		(RT_WORKITEM_CALL_BACK)odm_MPT_DIGWorkItemCallback, 
 		(PVOID)pAdapter,
 		"MPT_DIGWorkitem");
 
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->RaRptWorkitem), 
 		(RT_WORKITEM_CALL_BACK)ODM_UpdateInitRateWorkItemCallback, 
@@ -1214,14 +1214,14 @@ ODM_InitAllWorkItems(IN PDM_ODM_T	pDM_Odm )
 		"RaRptWorkitem");
 
 #if( defined(CONFIG_5G_CG_SMART_ANT_DIVERSITY) ) ||( defined(CONFIG_2G_CG_SMART_ANT_DIVERSITY) )
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->FastAntTrainingWorkitem), 
 		(RT_WORKITEM_CALL_BACK)odm_FastAntTrainingWorkItemCallback, 
 		(PVOID)pAdapter,
 		"FastAntTrainingWorkitem");
 #endif
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->DM_RXHP_Table.PSDTimeWorkitem), 
 		(RT_WORKITEM_CALL_BACK)odm_PSD_RXHPWorkitemCallback, 
@@ -1231,56 +1231,56 @@ ODM_InitAllWorkItems(IN PDM_ODM_T	pDM_Odm )
 #endif /*#if USE_WORKITEM*/
 
 #if (BEAMFORMING_SUPPORT == 1)
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_EnterWorkItem),
 		(RT_WORKITEM_CALL_BACK)halComTxbf_EnterWorkItemCallback,
 		(PVOID)pAdapter,
 		"Txbf_EnterWorkItem");
 	
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_LeaveWorkItem),
 		(RT_WORKITEM_CALL_BACK)halComTxbf_LeaveWorkItemCallback,
 		(PVOID)pAdapter,
 		"Txbf_LeaveWorkItem");
 	
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_FwNdpaWorkItem),
 		(RT_WORKITEM_CALL_BACK)halComTxbf_FwNdpaWorkItemCallback,
 		(PVOID)pAdapter,
 		"Txbf_FwNdpaWorkItem");
 
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_ClkWorkItem),
 		(RT_WORKITEM_CALL_BACK)halComTxbf_ClkWorkItemCallback,
 		(PVOID)pAdapter,
 		"Txbf_ClkWorkItem");
 
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_RateWorkItem),
 		(RT_WORKITEM_CALL_BACK)halComTxbf_RateWorkItemCallback,
 		(PVOID)pAdapter,
 		"Txbf_RateWorkItem");
 
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_StatusWorkItem),
 		(RT_WORKITEM_CALL_BACK)halComTxbf_StatusWorkItemCallback,
 		(PVOID)pAdapter,
 		"Txbf_StatusWorkItem");
 
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_ResetTxPathWorkItem),
 		(RT_WORKITEM_CALL_BACK)halComTxbf_ResetTxPathWorkItemCallback,
 		(PVOID)pAdapter,
 		"Txbf_ResetTxPathWorkItem");
 
-	ODM_InitializeWorkItem(
+	rtl8188fu_ODM_InitializeWorkItem(
 		pDM_Odm,
 		&(pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_GetTxRateWorkItem),
 		(RT_WORKITEM_CALL_BACK)halComTxbf_GetTxRateWorkItemCallback,
@@ -1295,34 +1295,34 @@ ODM_FreeAllWorkItems(IN PDM_ODM_T	pDM_Odm )
 #if USE_WORKITEM
 
 #ifdef CONFIG_S0S1_SW_ANTENNA_DIVERSITY
-	ODM_FreeWorkItem(&(pDM_Odm->DM_SWAT_Table.phydm_SwAntennaSwitchWorkitem));
+	rtl8188fu_ODM_FreeWorkItem(&(pDM_Odm->DM_SWAT_Table.phydm_SwAntennaSwitchWorkitem));
 #endif
 
 #ifdef CONFIG_HL_SMART_ANTENNA_TYPE1
-	ODM_FreeWorkItem(&(pDM_Odm->dm_sat_table.hl_smart_antenna_workitem));
-	ODM_FreeWorkItem(&(pDM_Odm->dm_sat_table.hl_smart_antenna_decision_workitem));
+	rtl8188fu_ODM_FreeWorkItem(&(pDM_Odm->dm_sat_table.hl_smart_antenna_workitem));
+	rtl8188fu_ODM_FreeWorkItem(&(pDM_Odm->dm_sat_table.hl_smart_antenna_decision_workitem));
 #endif
 
-	ODM_FreeWorkItem(&(pDM_Odm->PathDivSwitchWorkitem));      
-	ODM_FreeWorkItem(&(pDM_Odm->CCKPathDiversityWorkitem));
+	rtl8188fu_ODM_FreeWorkItem(&(pDM_Odm->PathDivSwitchWorkitem));      
+	rtl8188fu_ODM_FreeWorkItem(&(pDM_Odm->CCKPathDiversityWorkitem));
 #if (defined(CONFIG_5G_CG_SMART_ANT_DIVERSITY)) || (defined(CONFIG_2G_CG_SMART_ANT_DIVERSITY))
-	ODM_FreeWorkItem(&(pDM_Odm->FastAntTrainingWorkitem));
+	rtl8188fu_ODM_FreeWorkItem(&(pDM_Odm->FastAntTrainingWorkitem));
 #endif
-	ODM_FreeWorkItem(&(pDM_Odm->MPT_DIGWorkitem));
-	ODM_FreeWorkItem(&(pDM_Odm->RaRptWorkitem));
-	ODM_FreeWorkItem((&pDM_Odm->DM_RXHP_Table.PSDTimeWorkitem));
-	/*ODM_FreeWorkItem((&pDM_Odm->sbdcnt_workitem));*/
+	rtl8188fu_ODM_FreeWorkItem(&(pDM_Odm->MPT_DIGWorkitem));
+	rtl8188fu_ODM_FreeWorkItem(&(pDM_Odm->RaRptWorkitem));
+	rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->DM_RXHP_Table.PSDTimeWorkitem));
+	/*rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->sbdcnt_workitem));*/
 #endif
 
 #if (BEAMFORMING_SUPPORT == 1)
-	ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_EnterWorkItem));
-	ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_LeaveWorkItem));
-	ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_FwNdpaWorkItem));
-	ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_ClkWorkItem));
-	ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_RateWorkItem));
-	ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_StatusWorkItem));
-	ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_ResetTxPathWorkItem));
-	ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_GetTxRateWorkItem));
+	rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_EnterWorkItem));
+	rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_LeaveWorkItem));
+	rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_FwNdpaWorkItem));
+	rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_ClkWorkItem));
+	rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_RateWorkItem));
+	rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_StatusWorkItem));
+	rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_ResetTxPathWorkItem));
+	rtl8188fu_ODM_FreeWorkItem((&pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_GetTxRateWorkItem));
 #endif
 
 }
@@ -1376,7 +1376,7 @@ odm_IsLinked(
 */
 
 VOID
-ODM_InitAllTimers(
+rtl8188fu_ODM_InitAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 	)
 {
@@ -1387,41 +1387,41 @@ ODM_InitAllTimers(
 #if (DM_ODM_SUPPORT_TYPE == ODM_AP)
 #ifdef MP_TEST
 	if (pDM_Odm->priv->pshare->rf_ft_var.mp_specific) 
-		ODM_InitializeTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer, 
+		rtl8188fu_ODM_InitializeTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer, 
 			(RT_TIMER_CALL_BACK)odm_MPT_DIGCallback, NULL, "MPT_DIGTimer");	
 #endif
 #elif(DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	ODM_InitializeTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer, 
+	rtl8188fu_ODM_InitializeTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer, 
 		(RT_TIMER_CALL_BACK)odm_MPT_DIGCallback, NULL, "MPT_DIGTimer");
 #endif
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	ODM_InitializeTimer(pDM_Odm, &pDM_Odm->PSDTimer, 
+	rtl8188fu_ODM_InitializeTimer(pDM_Odm, &pDM_Odm->PSDTimer, 
 		(RT_TIMER_CALL_BACK)dm_PSDMonitorCallback, NULL, "PSDTimer");
-	ODM_InitializeTimer(pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 
+	rtl8188fu_ODM_InitializeTimer(pDM_Odm, &pDM_Odm->PathDivSwitchTimer, 
 		(RT_TIMER_CALL_BACK)odm_PathDivChkAntSwitchCallback, NULL, "PathDivTimer");
-	ODM_InitializeTimer(pDM_Odm, &pDM_Odm->CCKPathDiversityTimer, 
+	rtl8188fu_ODM_InitializeTimer(pDM_Odm, &pDM_Odm->CCKPathDiversityTimer, 
 		(RT_TIMER_CALL_BACK)odm_CCKTXPathDiversityCallback, NULL, "CCKPathDiversityTimer");
-	ODM_InitializeTimer(pDM_Odm, &pDM_Odm->DM_RXHP_Table.PSDTimer,
+	rtl8188fu_ODM_InitializeTimer(pDM_Odm, &pDM_Odm->DM_RXHP_Table.PSDTimer,
 		(RT_TIMER_CALL_BACK)odm_PSD_RXHPCallback, NULL, "PSDRXHPTimer"); 
-	ODM_InitializeTimer(pDM_Odm, &pDM_Odm->sbdcnt_timer,
+	rtl8188fu_ODM_InitializeTimer(pDM_Odm, &pDM_Odm->sbdcnt_timer,
 		(RT_TIMER_CALL_BACK)phydm_sbd_callback, NULL, "SbdTimer"); 
 #if (BEAMFORMING_SUPPORT == 1)
-	ODM_InitializeTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_FwNdpaTimer,
+	rtl8188fu_ODM_InitializeTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_FwNdpaTimer,
 		(RT_TIMER_CALL_BACK)halComTxbf_FwNdpaTimerCallback, NULL, "Txbf_FwNdpaTimer");
 #endif
 #endif
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN | ODM_CE))
 #if (BEAMFORMING_SUPPORT == 1)
-	ODM_InitializeTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.BeamformingTimer,
+	rtl8188fu_ODM_InitializeTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.BeamformingTimer,
 		(RT_TIMER_CALL_BACK)Beamforming_SWTimerCallback, NULL, "BeamformingTimer");
 #endif
 #endif
 }
 
 VOID
-ODM_CancelAllTimers(
+rtl8188fu_ODM_CancelAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 	)
 {
@@ -1440,27 +1440,27 @@ ODM_CancelAllTimers(
 #if (DM_ODM_SUPPORT_TYPE == ODM_AP)
 #ifdef MP_TEST
 	if (pDM_Odm->priv->pshare->rf_ft_var.mp_specific)
-		ODM_CancelTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
+		rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
 #endif
 #elif (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	ODM_CancelTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
+	rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
 #endif
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	ODM_CancelTimer(pDM_Odm, &pDM_Odm->PSDTimer);	
-	ODM_CancelTimer(pDM_Odm, &pDM_Odm->PathDivSwitchTimer);
-	ODM_CancelTimer(pDM_Odm, &pDM_Odm->CCKPathDiversityTimer);
-	ODM_CancelTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
-	ODM_CancelTimer(pDM_Odm, &pDM_Odm->DM_RXHP_Table.PSDTimer);
-	ODM_CancelTimer(pDM_Odm, &pDM_Odm->sbdcnt_timer);
+	rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->PSDTimer);	
+	rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->PathDivSwitchTimer);
+	rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->CCKPathDiversityTimer);
+	rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
+	rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->DM_RXHP_Table.PSDTimer);
+	rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->sbdcnt_timer);
 #if (BEAMFORMING_SUPPORT == 1)
-	ODM_CancelTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_FwNdpaTimer);
+	rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_FwNdpaTimer);
 #endif
 #endif
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN | ODM_CE))
 #if (BEAMFORMING_SUPPORT == 1)
-	ODM_CancelTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.BeamformingTimer);
+	rtl8188fu_ODM_CancelTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.BeamformingTimer);
 #endif
 #endif
 
@@ -1468,7 +1468,7 @@ ODM_CancelAllTimers(
 
 
 VOID
-ODM_ReleaseAllTimers(
+rtl8188fu_ODM_ReleaseAllTimers(
 	IN PDM_ODM_T	pDM_Odm 
 	)
 {
@@ -1479,27 +1479,27 @@ ODM_ReleaseAllTimers(
 #if (DM_ODM_SUPPORT_TYPE == ODM_AP)
     #ifdef MP_TEST
 	if (pDM_Odm->priv->pshare->rf_ft_var.mp_specific)
-		ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
+		rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
     #endif
 #elif(DM_ODM_SUPPORT_TYPE == ODM_WIN)
-ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
+rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
 #endif
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_WIN)
-	ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->PSDTimer);
-	ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->PathDivSwitchTimer);
-	ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->CCKPathDiversityTimer);
-	ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
-	ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->DM_RXHP_Table.PSDTimer);
-	ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->sbdcnt_timer);
+	rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->PSDTimer);
+	rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->PathDivSwitchTimer);
+	rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->CCKPathDiversityTimer);
+	rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->MPT_DIGTimer);
+	rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->DM_RXHP_Table.PSDTimer);
+	rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->sbdcnt_timer);
 #if (BEAMFORMING_SUPPORT == 1)
-	ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_FwNdpaTimer);
+	rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.TxbfInfo.Txbf_FwNdpaTimer);
 #endif
 #endif
 
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN | ODM_CE))
 #if (BEAMFORMING_SUPPORT == 1)
-	ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.BeamformingTimer);
+	rtl8188fu_ODM_ReleaseTimer(pDM_Odm, &pDM_Odm->BeamformingInfo.BeamformingTimer);
 #endif
 #endif
 }
@@ -1559,7 +1559,7 @@ ODM_CheckPowerStatus(
 	//
 	//	2011/07/19 MH We can not execute tx pwoer tracking/ LLC calibrate or IQK.
 	//
-	Adapter->HalFunc.GetHwRegHandler(Adapter, HW_VAR_RF_STATE, (pu1Byte)(&rtState));	
+	Adapter->HalFunc.rtl8188fu_GetHwRegHandler(Adapter, HW_VAR_RF_STATE, (pu1Byte)(&rtState));	
 	if(Adapter->bDriverStopped || Adapter->bDriverIsGoingToPnpSetPowerSleep || rtState == eRfOff)
 	{
 		ODM_RT_TRACE(pDM_Odm, ODM_COMP_INIT, ODM_DBG_LOUD, ("ODM_CheckPowerStatus Return FALSE, due to %d/%d/%d\n", 
@@ -1589,7 +1589,7 @@ ODM_CheckPowerStatus(
 	//
 	//	2011/07/19 MH We can not execute tx pwoer tracking/ LLC calibrate or IQK.
 	//
-	Adapter->HalFunc.GetHwRegHandler(Adapter, HW_VAR_RF_STATE, (pu1Byte)(&rtState));	
+	Adapter->HalFunc.rtl8188fu_GetHwRegHandler(Adapter, HW_VAR_RF_STATE, (pu1Byte)(&rtState));	
 	if(Adapter->bDriverStopped || Adapter->bDriverIsGoingToPnpSetPowerSleep || rtState == eRfOff)
 	{
 	ODM_RT_TRACE(pDM_Odm,COMP_INIT, DBG_LOUD, ("ODM_CheckPowerStatus Return FALSE, due to %d/%d/%d\n", 
@@ -1606,7 +1606,7 @@ ODM_CheckPowerStatus(
 
 #if ((DM_ODM_SUPPORT_TYPE == ODM_WIN)||(DM_ODM_SUPPORT_TYPE == ODM_CE))
 u4Byte
-GetPSDData(
+rtl8188fu_GetPSDData(
 	IN PDM_ODM_T	pDM_Odm,
 	unsigned int 	point,
 	u1Byte initial_gain_psd)
@@ -1626,18 +1626,18 @@ GetPSDData(
 		//(val&BIT25)>>25, (val&BIT14)>>14, (val&BIT15)>>15, rfval);
 
 	//Set DCO frequency index, offset=(40MHz/SamplePts)*point
-	ODM_SetBBReg(pDM_Odm, 0x808, 0x3FF, point);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, 0x3FF, point);
 
 	//Start PSD calculation, Reg808[22]=0->1
-	ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 1);
 	//Need to wait for HW PSD report
-	ODM_StallExecution(1000);
-	ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 0);
+	rtl8188fu_ODM_StallExecution(1000);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0x808, BIT22, 0);
 	//Read PSD report, Reg8B4[15:0]
-	psd_report = ODM_GetBBReg(pDM_Odm,0x8B4, bMaskDWord) & 0x0000FFFF;
+	psd_report = rtl8188fu_ODM_GetBBReg(pDM_Odm,0x8B4, bMaskDWord) & 0x0000FFFF;
 	
 #if 1//(DEV_BUS_TYPE == RT_PCI_INTERFACE) && ( (RT_PLATFORM == PLATFORM_LINUX) || (RT_PLATFORM == PLATFORM_MACOSX))
-	psd_report = (u4Byte) (odm_ConvertTo_dB(psd_report))+(u4Byte)(initial_gain_psd-0x1c);
+	psd_report = (u4Byte) (rtl8188fu_odm_ConvertTo_dB(psd_report))+(u4Byte)(initial_gain_psd-0x1c);
 #else
 	psd_report = (int) (20*log10((double)psd_report))+(int)(initial_gain_psd-0x1c);
 #endif
@@ -1648,7 +1648,7 @@ GetPSDData(
 #endif
 
 u4Byte 
-odm_ConvertTo_dB(
+rtl8188fu_odm_ConvertTo_dB(
 	u4Byte 	Value)
 {
 	u1Byte i;
@@ -1659,7 +1659,7 @@ odm_ConvertTo_dB(
 
 	for (i = 0; i < 12; i++)
 	{
-		if (Value <= dB_Invert_Table[i][7])
+		if (Value <= rtl8188fu_dB_Invert_Table[i][7])
 		{
 			break;
 		}
@@ -1672,7 +1672,7 @@ odm_ConvertTo_dB(
 
 	for (j = 0; j < 8; j++)
 	{
-		if (Value <= dB_Invert_Table[i][j])
+		if (Value <= rtl8188fu_dB_Invert_Table[i][j])
 		{
 			break;
 		}
@@ -1684,7 +1684,7 @@ odm_ConvertTo_dB(
 }
 
 u4Byte 
-odm_ConvertTo_linear(
+rtl8188fu_odm_ConvertTo_linear(
 	u4Byte 	Value)
 {
 	u1Byte i;
@@ -1698,7 +1698,7 @@ odm_ConvertTo_linear(
 	i = (u1Byte)((Value - 1) >> 3);
 	j = (u1Byte)(Value - 1) - (i << 3);
 
-	linear = dB_Invert_Table[i][j];
+	linear = rtl8188fu_dB_Invert_Table[i][j];
 
 	return (linear);
 }
@@ -1748,7 +1748,7 @@ ODM_UpdateInitRateWorkItemCallback(
 // ODM multi-port consideration, added by Roger, 2013.10.01.
 //
 VOID
-ODM_AsocEntry_Init(
+rtl8188fu_ODM_AsocEntry_Init(
 	IN	PDM_ODM_T	pDM_Odm
 	)
 {
@@ -1760,7 +1760,7 @@ ODM_AsocEntry_Init(
 	u1Byte	index = 0;
 
 
-	ODM_CmnInfoPtrArrayHook(pDM_OutSrc, ODM_CMNINFO_STA_STATUS, 0, &pLoopAdapter->MgntInfo.DefaultPort[0]);
+	rtl8188fu_ODM_CmnInfoPtrArrayHook(pDM_OutSrc, ODM_CMNINFO_STA_STATUS, 0, &pLoopAdapter->MgntInfo.DefaultPort[0]);
 	pLoopAdapter->MgntInfo.DefaultPort[0].MultiPortStationIdx = TotalAssocEntryNum;
 		
 	pLoopAdapter = GetNextExtAdapter(pLoopAdapter);
@@ -1770,7 +1770,7 @@ ODM_AsocEntry_Init(
 	{
 		for (index = 0; index <ASSOCIATE_ENTRY_NUM; index++)
 		{
-			ODM_CmnInfoPtrArrayHook(pDM_OutSrc, ODM_CMNINFO_STA_STATUS, TotalAssocEntryNum+index, &pLoopAdapter->MgntInfo.AsocEntry[index]);
+			rtl8188fu_ODM_CmnInfoPtrArrayHook(pDM_OutSrc, ODM_CMNINFO_STA_STATUS, TotalAssocEntryNum+index, &pLoopAdapter->MgntInfo.AsocEntry[index]);
 			pLoopAdapter->MgntInfo.AsocEntry[index].MultiPortStationIdx = TotalAssocEntryNum+index;				
 		}
 		
@@ -1784,7 +1784,7 @@ ODM_AsocEntry_Init(
 
 #if (DM_ODM_SUPPORT_TYPE == ODM_CE)
 /* Justin: According to the current RRSI to adjust Response Frame TX power, 2012/11/05 */
-void odm_dtc(PDM_ODM_T pDM_Odm)
+void rtl8188fu_odm_dtc(PDM_ODM_T pDM_Odm)
 {
 #ifdef CONFIG_DM_RESP_TXAGC
 	#define DTC_BASE            35	/* RSSI higher than this value, start to decade TX power */
@@ -1860,7 +1860,7 @@ void odm_dtc(PDM_ODM_T pDM_Odm)
 
 	resp_txagc = dtc_steps | (sign << 4);
 	resp_txagc = resp_txagc | (resp_txagc << 5);
-	ODM_Write1Byte(pDM_Odm, 0x06d9, resp_txagc);
+	rtl8188fu_ODM_Write1Byte(pDM_Odm, 0x06d9, resp_txagc);
 
 	DBG_871X("%s RSSI_Min:%u, set RESP_TXAGC to %s %u\n", 
 		__func__, pDM_Odm->RSSI_Min, sign?"minus":"plus", dtc_steps);
@@ -1870,19 +1870,19 @@ void odm_dtc(PDM_ODM_T pDM_Odm)
 #endif /* #if (DM_ODM_SUPPORT_TYPE == ODM_CE) */
 
 VOID
-odm_UpdatePowerTrainingState(
+rtl8188fu_odm_UpdatePowerTrainingState(
 	IN	PDM_ODM_T	pDM_Odm
 	)
 {
 #if (DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
-	PFALSE_ALARM_STATISTICS 	FalseAlmCnt = (PFALSE_ALARM_STATISTICS)PhyDM_Get_Structure( pDM_Odm , PHYDM_FALSEALMCNT);
+	PFALSE_ALARM_STATISTICS 	FalseAlmCnt = (PFALSE_ALARM_STATISTICS)rtl8188fu_PhyDM_Get_Structure( pDM_Odm , PHYDM_FALSEALMCNT);
 	pDIG_T						pDM_DigTable = &pDM_Odm->DM_DigTable;
 	u4Byte						score = 0;
 
 	if(!(pDM_Odm->SupportAbility & ODM_BB_PWR_TRAIN))
 		return;
 
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState()============>\n"));
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState()============>\n"));
 	pDM_Odm->bChangeState = FALSE;
 
 	// Debug command
@@ -1902,7 +1902,7 @@ odm_UpdatePowerTrainingState(
 		pDM_Odm->PT_score = 0;
 		pDM_Odm->PhyDbgInfo.NumQryPhyStatusOFDM = 0;
 		pDM_Odm->PhyDbgInfo.NumQryPhyStatusCCK = 0;
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): ForcePowerTrainingState = %d\n", 
+		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): ForcePowerTrainingState = %d\n", 
 			pDM_Odm->ForcePowerTrainingState));
 		return;
 	}
@@ -1917,7 +1917,7 @@ odm_UpdatePowerTrainingState(
 		pDM_Odm->bChangeState = TRUE;
 		pDM_Odm->PhyDbgInfo.NumQryPhyStatusOFDM = 0;
 		pDM_Odm->PhyDbgInfo.NumQryPhyStatusCCK = 0;
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): First Connect\n"));
+		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): First Connect\n"));
 		return;
 	}
 
@@ -1941,18 +1941,18 @@ odm_UpdatePowerTrainingState(
 			else
 				score = 2;
 		}
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): RX_Pkt_Cnt = %d, Cnt_CCA_all = %d\n", 
+		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): RX_Pkt_Cnt = %d, Cnt_CCA_all = %d\n", 
 			RX_Pkt_Cnt, FalseAlmCnt->Cnt_CCA_all));
 	}
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): NumQryPhyStatusOFDM = %d, NumQryPhyStatusCCK = %d\n",
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): NumQryPhyStatusOFDM = %d, NumQryPhyStatusCCK = %d\n",
 			(u4Byte)(pDM_Odm->PhyDbgInfo.NumQryPhyStatusOFDM), (u4Byte)(pDM_Odm->PhyDbgInfo.NumQryPhyStatusCCK)));
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): NHM_cnt_0 = %d, score = %d\n", 
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): NHM_cnt_0 = %d, score = %d\n", 
 		pDM_Odm->NHM_cnt_0, score));
 
 	// smoothing
 	pDM_Odm->PT_score = (score << 4) + (pDM_Odm->PT_score>>1) + (pDM_Odm->PT_score>>2);
 	score = (pDM_Odm->PT_score + 32) >> 6;
-	ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): PT_score = %d, score after smoothing = %d\n", 
+	ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): PT_score = %d, score after smoothing = %d\n", 
 		pDM_Odm->PT_score, score));
 
 	// Mode decision
@@ -1962,9 +1962,9 @@ odm_UpdatePowerTrainingState(
 		{
 			pDM_Odm->bChangeState = TRUE;
 			pDM_Odm->bDisablePowerTraining = FALSE;
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): Change state\n"));
+			ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): Change state\n"));
 		}
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): Enable Power Training\n"));
+		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): Enable Power Training\n"));
 	}
 	else if(score == 0)
 	{
@@ -1972,9 +1972,9 @@ odm_UpdatePowerTrainingState(
 		{
 			pDM_Odm->bChangeState = TRUE;
 			pDM_Odm->bDisablePowerTraining = TRUE;
-			ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): Change state\n"));
+			ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): Change state\n"));
 		}
-		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("odm_UpdatePowerTrainingState(): Disable Power Training\n"));
+		ODM_RT_TRACE(pDM_Odm,ODM_COMP_RA_MASK, ODM_DBG_LOUD,("rtl8188fu_odm_UpdatePowerTrainingState(): Disable Power Training\n"));
 	}
 
 	pDM_Odm->PhyDbgInfo.NumQryPhyStatusOFDM = 0;
@@ -2016,7 +2016,7 @@ FillH2CCmd92C(
 )
 {}
 VOID
-PHY_SetTxPowerLevel8192C(
+PHY_rtl8188fu_SetTxPowerLevel8192C(
 	IN	PADAPTER		Adapter,
 	IN	u1Byte			channel
 	)
@@ -2026,7 +2026,7 @@ PHY_SetTxPowerLevel8192C(
 /*===========================================================*/
 
 VOID
-phydm_NoisyDetection(
+rtl8188fu_phydm_NoisyDetection(
 	IN	PDM_ODM_T	pDM_Odm
 	)
 {

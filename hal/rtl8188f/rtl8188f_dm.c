@@ -70,14 +70,14 @@ dm_CheckStatistics(
 		return;
 
 	/*2008.12.10 tynli Add for getting Current_Tx_Rate_Reg flexibly. */
-	rtw_hal_get_hwreg(Adapter, HW_VAR_INIT_TX_RATE, (pu1Byte)(&Adapter->TxStats.CurrentInitTxRate));
+	rtl8188fu_rtw_hal_get_hwreg(Adapter, HW_VAR_INIT_TX_RATE, (pu1Byte)(&Adapter->TxStats.CurrentInitTxRate));
 
 	/* Calculate current Tx Rate(Successful transmited!!) */
 
 	/* Calculate current Rx Rate(Successful received!!) */
 
 	/*for tx tx retry count */
-	rtw_hal_get_hwreg(Adapter, HW_VAR_RETRY_COUNT, (pu1Byte)(&Adapter->TxStats.NumTxRetryCount));
+	rtl8188fu_rtw_hal_get_hwreg(Adapter, HW_VAR_RETRY_COUNT, (pu1Byte)(&Adapter->TxStats.NumTxRetryCount));
 #endif
 }
 #ifdef CONFIG_SUPPORT_HW_WPS_PBC
@@ -229,23 +229,23 @@ dm_InitGPIOSetting(
 /*============================================================ */
 /* functions */
 /*============================================================ */
-static void Init_ODM_ComInfo_8188f(PADAPTER	Adapter)
+static void rtl8188fu_Init_ODM_ComInfo_8188f(PADAPTER	Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T		pDM_Odm = &(pHalData->odmpriv);
 	u32 SupportAbility = 0;
 	u8	cut_ver, fab_ver;
 
-	Init_ODM_ComInfo(Adapter);
+	rtl8188fu_Init_ODM_ComInfo(Adapter);
 
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_PACKAGE_TYPE, pHalData->PackageType);
+	rtl8188fu_ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_PACKAGE_TYPE, pHalData->PackageType);
 
 	fab_ver = ODM_TSMC;
 	cut_ver = GET_CVID_CUT_VERSION(pHalData->VersionID);
 
 	DBG_871X("%s(): fab_ver=%d cut_ver=%d\n", __func__, fab_ver, cut_ver);
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_FAB_VER, fab_ver);
-	ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_CUT_VER, cut_ver);
+	rtl8188fu_ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_FAB_VER, fab_ver);
+	rtl8188fu_ODM_CmnInfoInit(pDM_Odm, ODM_CMNINFO_CUT_VER, cut_ver);
 
 #ifdef CONFIG_DISABLE_ODM
 	SupportAbility = 0;
@@ -255,7 +255,7 @@ static void Init_ODM_ComInfo_8188f(PADAPTER	Adapter)
 						;
 #endif
 
-	ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, SupportAbility);
+	rtl8188fu_ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, SupportAbility);
 }
 
 static void Update_ODM_ComInfo_8188f(PADAPTER	Adapter)
@@ -280,8 +280,8 @@ static void Update_ODM_ComInfo_8188f(PADAPTER	Adapter)
 					 /*| ODM_BB_PWR_TRAIN */
 					 ;
 
-	if (rtw_odm_adaptivity_needed(Adapter) == _TRUE) {
-		rtw_odm_adaptivity_config_msg(RTW_DBGDUMP, Adapter);
+	if (rtl8188fu_rtw_odm_adaptivity_needed(Adapter) == _TRUE) {
+		rtl8188fu_rtw_odm_adaptivity_config_msg(RTW_DBGDUMP, Adapter);
 		SupportAbility |= ODM_BB_ADAPTIVITY;
 	}
 
@@ -294,7 +294,7 @@ static void Update_ODM_ComInfo_8188f(PADAPTER	Adapter)
 	SupportAbility = 0;
 #endif/*CONFIG_DISABLE_ODM */
 
-	ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, SupportAbility);
+	rtl8188fu_ODM_CmnInfoUpdate(pDM_Odm, ODM_CMNINFO_ABILITY, SupportAbility);
 }
 
 void
@@ -315,7 +315,7 @@ rtl8188f_InitHalDm(
 
 	Update_ODM_ComInfo_8188f(Adapter);
 
-	ODM_DMInit(pDM_Odm);
+	rtl8188fu_ODM_DMInit(pDM_Odm);
 
 }
 
@@ -411,7 +411,7 @@ rtl8188f_HalDmWatchDog(
 
 #ifdef CONFIG_LPS
 	bFwCurrentInPSMode = adapter_to_pwrctl(Adapter)->bFwCurrentInPSMode;
-	rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (u8 *)(&bFwPSAwake));
+	rtl8188fu_rtw_hal_get_hwreg(Adapter, HW_VAR_FWLPS_RF_ON, (u8 *)(&bFwPSAwake));
 #endif
 
 #ifdef CONFIG_P2P
@@ -427,7 +427,7 @@ rtl8188f_HalDmWatchDog(
 		/* Calculate Tx/Rx statistics. */
 		/* */
 		dm_CheckStatistics(Adapter);
-		rtw_hal_check_rxfifo_full(Adapter);
+		rtl8188fu_rtw_hal_check_rxfifo_full(Adapter);
 		/* */
 		/* Dynamically switch RTS/CTS protection. */
 		/* */
@@ -449,29 +449,29 @@ rtl8188f_HalDmWatchDog(
 		u8	bsta_state = _FALSE;
 		u8	bBtDisabled = _TRUE;
 
-		if (rtw_linked_check(Adapter)) {
+		if (rtl8188fu_rtw_linked_check(Adapter)) {
 			bLinked = _TRUE;
 			if (check_fwstate(&Adapter->mlmepriv, WIFI_STATION_STATE))
 				bsta_state = _TRUE;
 		}
 
 #ifdef CONFIG_CONCURRENT_MODE
-		if (pbuddy_adapter && rtw_linked_check(pbuddy_adapter)) {
+		if (pbuddy_adapter && rtl8188fu_rtw_linked_check(pbuddy_adapter)) {
 			bLinked = _TRUE;
 			if (pbuddy_adapter && check_fwstate(&pbuddy_adapter->mlmepriv, WIFI_STATION_STATE))
 				bsta_state = _TRUE;
 		}
 #endif /*CONFIG_CONCURRENT_MODE */
 
-		ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_LINK, bLinked);
-		ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_STATION_STATE, bsta_state);
+		rtl8188fu_ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_LINK, bLinked);
+		rtl8188fu_ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_STATION_STATE, bsta_state);
 
 		/*FindMinimumRSSI_8188f(Adapter); */
-		/*ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pHalData->MinUndecoratedPWDBForDM); */
+		/*rtl8188fu_ODM_CmnInfoUpdate(&pHalData->odmpriv ,ODM_CMNINFO_RSSI_MIN, pHalData->MinUndecoratedPWDBForDM); */
 
-		ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_BT_ENABLED, ((bBtDisabled == _TRUE) ? _FALSE : _TRUE));
+		rtl8188fu_ODM_CmnInfoUpdate(&pHalData->odmpriv, ODM_CMNINFO_BT_ENABLED, ((bBtDisabled == _TRUE) ? _FALSE : _TRUE));
 
-		ODM_DMWatchdog(&pHalData->odmpriv);
+		rtl8188fu_ODM_DMWatchdog(&pHalData->odmpriv);
 	}
 
 skip_dm:
@@ -502,11 +502,11 @@ void rtl8188f_hal_dm_in_lps(PADAPTER padapter)
 	DBG_871X("%s, RSSI_Min=%d\n", __func__, pDM_Odm->RSSI_Min);
 
 	/*update IGI */
-	ODM_Write_DIG(pDM_Odm, pDM_Odm->RSSI_Min);
+	rtl8188fu_ODM_Write_DIG(pDM_Odm, pDM_Odm->RSSI_Min);
 
 
 	/*set rssi to fw */
-	psta = rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
+	psta = rtl8188fu_rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
 	if (psta && (psta->rssi_stat.UndecoratedSmoothedPWDB > 0)) {
 		PWDB_rssi = (psta->mac_id | (psta->rssi_stat.UndecoratedSmoothedPWDB << 16));
 
@@ -532,15 +532,15 @@ void rtl8188f_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 		goto skip_lps_dm;
 
 
-	if (rtw_linked_check(Adapter))
+	if (rtl8188fu_rtw_linked_check(Adapter))
 		bLinked = _TRUE;
 
 #ifdef CONFIG_CONCURRENT_MODE
-	if (pbuddy_adapter && rtw_linked_check(pbuddy_adapter))
+	if (pbuddy_adapter && rtl8188fu_rtw_linked_check(pbuddy_adapter))
 		bLinked = _TRUE;
 #endif /*CONFIG_CONCURRENT_MODE */
 
-	ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_LINK, bLinked);
+	rtl8188fu_ODM_CmnInfoUpdate(&pHalData->odmpriv , ODM_CMNINFO_LINK, bLinked);
 
 	if (bLinked == _FALSE)
 		goto skip_lps_dm;
@@ -549,11 +549,11 @@ void rtl8188f_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 		goto skip_lps_dm;
 
 
-	/*ODM_DMWatchdog(&pHalData->odmpriv); */
+	/*rtl8188fu_ODM_DMWatchdog(&pHalData->odmpriv); */
 	/*Do DIG by RSSI In LPS-32K */
 
 	/*.1 Find MIN-RSSI */
-	psta = rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
+	psta = rtl8188fu_rtw_get_stainfo(pstapriv, get_bssid(pmlmepriv));
 	if (psta == NULL)
 		goto skip_lps_dm;
 
@@ -574,7 +574,7 @@ void rtl8188f_HalDmWatchDog_in_LPS(IN	PADAPTER	Adapter)
 
 	{
 #ifdef CONFIG_LPS
-		rtw_dm_in_lps_wk_cmd(Adapter);
+		rtl8188fu_rtw_dm_in_lps_wk_cmd(Adapter);
 #endif
 	}
 
@@ -589,15 +589,15 @@ void rtl8188f_init_dm_priv(IN PADAPTER Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;
-	Init_ODM_ComInfo_8188f(Adapter);
-	ODM_InitAllTimers(podmpriv);
+	rtl8188fu_Init_ODM_ComInfo_8188f(Adapter);
+	rtl8188fu_ODM_InitAllTimers(podmpriv);
 }
 
 void rtl8188f_deinit_dm_priv(IN PADAPTER Adapter)
 {
 	PHAL_DATA_TYPE	pHalData = GET_HAL_DATA(Adapter);
 	PDM_ODM_T 		podmpriv = &pHalData->odmpriv;
-	ODM_CancelAllTimers(podmpriv);
+	rtl8188fu_ODM_CancelAllTimers(podmpriv);
 
 }
 

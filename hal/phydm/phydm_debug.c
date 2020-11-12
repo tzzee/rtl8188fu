@@ -27,7 +27,7 @@
 
 
 VOID
-PHYDM_InitDebugSetting(
+rtl8188fu_PHYDM_InitDebugSetting(
 	IN		PDM_ODM_T		pDM_Odm
 )
 {
@@ -89,30 +89,30 @@ phydm_BB_RxHang_Info(IN PDM_ODM_T pDM_Odm)
 	if (pDM_Odm->SupportICType & ODM_IC_11N_SERIES)
 		return;
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xF80 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xF80 , bMaskDWord);
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "rptreg of sc/bw/ht/...", value32);
 	DCMD_Printf(BbDbgBuf);
 
 	/* dbg_port = state machine */
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x007);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x007);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "state machine", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
 
 	/* dbg_port = CCA-related*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x204);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x204);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "CCA-related", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
@@ -120,96 +120,96 @@ phydm_BB_RxHang_Info(IN PDM_ODM_T pDM_Odm)
 
 	/* dbg_port = edcca/rxd*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x278);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x278);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "edcca/rxd", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
 
 	/* dbg_port = rx_state/mux_state/ADC_MASK_OFDM*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x290);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x290);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "rx_state/mux_state/ADC_MASK_OFDM", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
 
 	/* dbg_port = bf-related*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x2B2);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x2B2);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "bf-related", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
 
 	/* dbg_port = bf-related*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x2B8);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0x2B8);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "bf-related", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
 
 	/* dbg_port = txon/rxd*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xA03);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xA03);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "txon/rxd", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
 
 	/* dbg_port = l_rate/l_length*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xA0B);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xA0B);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "l_rate/l_length", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
 
 	/* dbg_port = rxd/rxd_hit*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xA0D);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xA0D);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "rxd/rxd_hit", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
 
 	/* dbg_port = dis_cca*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAA0);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAA0);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "dis_cca", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
@@ -217,51 +217,51 @@ phydm_BB_RxHang_Info(IN PDM_ODM_T pDM_Odm)
 
 	/* dbg_port = tx*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAB0);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAB0);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "tx", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
 
 	/* dbg_port = rx plcp*/
 	{
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAD0);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAD0);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "rx plcp", (value32));
 		DCMD_Printf(BbDbgBuf);
 
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAD1);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAD1);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "rx plcp", (value32));
 		DCMD_Printf(BbDbgBuf);
 
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAD2);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAD2);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "rx plcp", (value32));
 		DCMD_Printf(BbDbgBuf);
 
-		ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAD3);
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
+		rtl8188fu_ODM_SetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord, 0xAD3);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_DBG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "0x8fc", value32);
 		DCMD_Printf(BbDbgBuf);
 
-		value32 = ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, ODM_REG_RPT_11AC , bMaskDWord);
 		rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = 0x%x", "rx plcp", (value32));
 		DCMD_Printf(BbDbgBuf);
 	}
@@ -311,7 +311,7 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 
 	/*BW & Mode Detection*/
 	
-	value32 = ODM_GetBBReg(pDM_Odm, 0xf80 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xf80 , bMaskDWord);
 	value32_2 = value32;
 	RX_HT_BW = (u1Byte)(value32 & 0x1);
 	RX_VHT_BW = (u1Byte)((value32 >> 1) & 0x3);
@@ -404,12 +404,12 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	*/
 
 
-/*	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d", "dB Conversion: 10log(65)", ODM_PWdB_Conversion(65,10,0));*/
+/*	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d", "dB Conversion: 10log(65)", rtl8188fu_ODM_PWdB_Conversion(65,10,0));*/
 /*	DCMD_Printf(BbDbgBuf);*/
 
 	/* RX signal power and AGC related info*/
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xF90 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xF90 , bMaskDWord);
 	pwDB = (u1Byte)((value32 & bMaskByte1) >> 8);
 	pwDB = pwDB >> 1;
 	sig_power = -110 + pwDB;
@@ -417,19 +417,19 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	DCMD_Printf(BbDbgBuf);
 
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xd14 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd14 , bMaskDWord);
 	RX_SNR_pathA = (u1Byte)(value32 & 0xFF) >> 1;
 	RF_gain_pathA = (s1Byte)((value32 & bMaskByte1) >> 8);
 	RF_gain_pathA *= 2;
-	value32 = ODM_GetBBReg(pDM_Odm, 0xd54 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd54 , bMaskDWord);
 	RX_SNR_pathB = (u1Byte)(value32 & 0xFF) >> 1;
 	RF_gain_pathB = (s1Byte)((value32 & bMaskByte1) >> 8);
 	RF_gain_pathB *= 2;
-	value32 = ODM_GetBBReg(pDM_Odm, 0xd94 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd94 , bMaskDWord);
 	RX_SNR_pathC = (u1Byte)(value32 & 0xFF) >> 1;
 	RF_gain_pathC = (s1Byte)((value32 & bMaskByte1) >> 8);
 	RF_gain_pathC *= 2;
-	value32 = ODM_GetBBReg(pDM_Odm, 0xdd4 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xdd4 , bMaskDWord);
 	RX_SNR_pathD = (u1Byte)(value32 & 0xFF) >> 1;
 	RF_gain_pathD = (s1Byte)((value32 & bMaskByte1) >> 8);
 	RF_gain_pathD *= 2;
@@ -439,28 +439,28 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 
 	/* RX Counter related info*/
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xF08, bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xF08, bMaskDWord);
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d", "OFDM CCA Counter", ((value32&0xFFFF0000)>>16));
 	DCMD_Printf(BbDbgBuf);
 	
-	value32 = ODM_GetBBReg(pDM_Odm, 0xFD0, bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xFD0, bMaskDWord);
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d", "OFDM SBD Fail Counter", value32&0xFFFF);
 	DCMD_Printf(BbDbgBuf);
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xFC4, bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xFC4, bMaskDWord);
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d / %d", "VHT SIGA/SIGB CRC8 Fail Counter", value32&0xFFFF, ((value32&0xFFFF0000)>>16));
 	DCMD_Printf(BbDbgBuf);
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xFCC, bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xFCC, bMaskDWord);
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d", "CCK CCA Counter", value32&0xFFFF);
 	DCMD_Printf(BbDbgBuf);
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xFBC, bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xFBC, bMaskDWord);
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d / %d", "LSIG (\"Parity Fail\"/\"Rate Illegal\") Counter", value32&0xFFFF, ((value32&0xFFFF0000)>>16));
 	DCMD_Printf(BbDbgBuf);
 
-	value32_1 = ODM_GetBBReg(pDM_Odm, 0xFC8, bMaskDWord);
-	value32_2 = ODM_GetBBReg(pDM_Odm, 0xFC0, bMaskDWord);
+	value32_1 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xFC8, bMaskDWord);
+	value32_2 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xFC0, bMaskDWord);
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d / %d", "HT/VHT MCS NOT SUPPORT counter", ((value32_2&0xFFFF0000)>>16), value32_1&0xFFFF);
 	DCMD_Printf(BbDbgBuf);
 
@@ -468,7 +468,7 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	/* PostFFT related info*/
 
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xF8c , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xF8c , bMaskDWord);
 	RXEVM_0 = (s1Byte)((value32 & bMaskByte2) >> 16);
 	RXEVM_0 /= 2;
 	if (RXEVM_0 < -63)
@@ -477,7 +477,7 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	DCMD_Printf(BbDbgBuf);
 	RXEVM_1 = (s1Byte)((value32 & bMaskByte3) >> 24);
 	RXEVM_1 /= 2;
-	value32 = ODM_GetBBReg(pDM_Odm, 0xF88 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xF88 , bMaskDWord);
 	RXEVM_2 = (s1Byte)((value32 & bMaskByte2) >> 16);
 	RXEVM_2 /= 2;
 
@@ -506,13 +506,13 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d / %d / %d", "RXEVM (1ss/2ss/3ss)", RXEVM_0, RXEVM_1, RXEVM_2);
 	DCMD_Printf(BbDbgBuf);
 
-/*	value32 = ODM_GetBBReg(pDM_Odm, 0xD14 ,bMaskDWord);*/
+/*	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xD14 ,bMaskDWord);*/
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d / %d / %d / %d", "RXSNR(A/B/C/D, dB)", RX_SNR_pathA, RX_SNR_pathB, RX_SNR_pathC, RX_SNR_pathD);
 	DCMD_Printf(BbDbgBuf);
 /*	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d", "B_RXSNR", (value32&0xFF00)>>9);*/
 /*	DCMD_Printf(BbDbgBuf);*/
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xF8C , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xF8C , bMaskDWord);
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d / %d", "CSI_1st /CSI_2nd", value32&0xFFFF, ((value32&0xFFFF0000)>>16));
 	DCMD_Printf(BbDbgBuf);
 
@@ -520,15 +520,15 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	//BW & Mode Detection
 
 	//Reset Page F Counter
-	ODM_SetBBReg(pDM_Odm, 0xB58 , BIT0, 1);
-	ODM_SetBBReg(pDM_Odm, 0xB58 , BIT0, 0);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xB58 , BIT0, 1);
+	rtl8188fu_ODM_SetBBReg(pDM_Odm, 0xB58 , BIT0, 0);
 
 	//CFO Report Info
 	//Short CFO
-	value32 = ODM_GetBBReg(pDM_Odm, 0xd0c , bMaskDWord);
-	value32_1 = ODM_GetBBReg(pDM_Odm, 0xd4c , bMaskDWord);
-	value32_2 = ODM_GetBBReg(pDM_Odm, 0xd8c , bMaskDWord);
-	value32_3 = ODM_GetBBReg(pDM_Odm, 0xdcc , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd0c , bMaskDWord);
+	value32_1 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd4c , bMaskDWord);
+	value32_2 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd8c , bMaskDWord);
+	value32_3 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xdcc , bMaskDWord);
 
 	SFO_A = (s4Byte)(value32 & bMask12Bits);
 	SFO_B = (s4Byte)(value32_1 & bMask12Bits);
@@ -582,10 +582,10 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	DCMD_Printf(BbDbgBuf);
 
 	//SCFO
-	value32 = ODM_GetBBReg(pDM_Odm, 0xd10 , bMaskDWord);
-	value32_1 = ODM_GetBBReg(pDM_Odm, 0xd50 , bMaskDWord);
-	value32_2 = ODM_GetBBReg(pDM_Odm, 0xd90 , bMaskDWord);
-	value32_3 = ODM_GetBBReg(pDM_Odm, 0xdd0 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd10 , bMaskDWord);
+	value32_1 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd50 , bMaskDWord);
+	value32_2 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd90 , bMaskDWord);
+	value32_3 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xdd0 , bMaskDWord);
 
 	SFO_A = (s4Byte)(value32 & 0x7ff);
 	SFO_B = (s4Byte)(value32_1 & 0x7ff);
@@ -636,10 +636,10 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d / %d/ %d/ %d", "  ACQ CFO(Hz) <A/B/C/D>", LFO_A, LFO_B, LFO_C, LFO_D);
 	DCMD_Printf(BbDbgBuf);
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xd14 , bMaskDWord);
-	value32_1 = ODM_GetBBReg(pDM_Odm, 0xd54 , bMaskDWord);
-	value32_2 = ODM_GetBBReg(pDM_Odm, 0xd94 , bMaskDWord);
-	value32_3 = ODM_GetBBReg(pDM_Odm, 0xdd4 , bMaskDWord);
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd14 , bMaskDWord);
+	value32_1 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd54 , bMaskDWord);
+	value32_2 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xd94 , bMaskDWord);
+	value32_3 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xdd4 , bMaskDWord);
 
 	LFO_A = (s4Byte)(value32 >> 16);
 	LFO_B = (s4Byte)(value32_1 >> 16);
@@ -666,7 +666,7 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s = %d / %d/ %d/ %d", "  End CFO(Hz) <A/B/C/D>", LFO_A, LFO_B, LFO_C, LFO_D);
 	DCMD_Printf(BbDbgBuf);
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xf20 , bMaskDWord);  /*L SIG*/
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xf20 , bMaskDWord);  /*L SIG*/
 
 	Tail = (u1Byte)((value32 & 0xfc0000) >> 16);
 	Parity = (u1Byte)((value32 & 0x20000) >> 16);
@@ -714,7 +714,7 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s", "HT-SIG1");
 	DCMD_Printf(BbDbgBuf);
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xf2c , bMaskDWord);  /*HT SIG*/
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xf2c , bMaskDWord);  /*HT SIG*/
 	if (RX_HT == 1) {
 
 		HMCSS = (u1Byte)(value32 & 0x7F);
@@ -727,7 +727,7 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s", "HT-SIG2");
 	DCMD_Printf(BbDbgBuf);
 
-	value32 = ODM_GetBBReg(pDM_Odm, 0xf30 , bMaskDWord);  /*HT SIG*/
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xf30 , bMaskDWord);  /*HT SIG*/
 
 	if (RX_HT == 1) {
 		smooth = (u1Byte)(value32 & 0x01);
@@ -751,9 +751,9 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s", "VHT-SIG-A1");
 	DCMD_Printf(BbDbgBuf);
-	value32 = ODM_GetBBReg(pDM_Odm, 0xf2c , bMaskDWord);  /*VHT SIG A1*/
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xf2c , bMaskDWord);  /*VHT SIG A1*/
 	if (RX_HT == 2) {
-		/* value32 = ODM_GetBBReg(pDM_Odm, 0xf2c ,bMaskDWord);*/
+		/* value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xf2c ,bMaskDWord);*/
 		vRX_BW = (u1Byte)(value32 & 0x03);
 		vrsv = (u1Byte)(value32 & 0x04);
 		vstbc = (u1Byte)(value32 & 0x08);
@@ -772,11 +772,11 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s", "VHT-SIG-A2");
 	DCMD_Printf(BbDbgBuf);
-	value32 = ODM_GetBBReg(pDM_Odm, 0xf30 , bMaskDWord);  /*VHT SIG*/
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xf30 , bMaskDWord);  /*VHT SIG*/
 
 
 	if (RX_HT == 2) {
-		/*value32 = ODM_GetBBReg(pDM_Odm, 0xf30 ,bMaskDWord); */  /*VHT SIG*/
+		/*value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xf30 ,bMaskDWord); */  /*VHT SIG*/
 
 		//sgi=(u1Byte)(value32&0x01);
 		sgiext = (u1Byte)(value32 & 0x03);
@@ -797,7 +797,7 @@ phydm_BB_Debug_Info(IN PDM_ODM_T pDM_Odm)
 
 	rsprintf((char *)BbDbgBuf, BT_TMP_BUF_SIZE, "\r\n %-35s", "VHT-SIG-B");
 	DCMD_Printf(BbDbgBuf);
-	value32 = ODM_GetBBReg(pDM_Odm, 0xf34 , bMaskDWord);  /*VHT SIG*/
+	value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xf34 , bMaskDWord);  /*VHT SIG*/
 	{
 		vLength = (u2Byte)(value32 & 0x1fffff);
 		vbrsv = (u1Byte)((value32 & 0x600000) >> 20);
@@ -824,11 +824,11 @@ void phydm_sbd_check(
 	if (sbd_state == 0) {
 		pkt_cnt++;
 		if (pkt_cnt % 5 == 0) { /*read SBD conter once every 5 packets*/
-			ODM_SetTimer(pDM_Odm, &pDM_Odm->sbdcnt_timer, 0); /*ms*/
+			rtl8188fu_ODM_SetTimer(pDM_Odm, &pDM_Odm->sbdcnt_timer, 0); /*ms*/
 			sbd_state = 1;
 		}
 	} else { /*read counter*/
-		value32 = ODM_GetBBReg(pDM_Odm, 0xF98, bMaskDWord);
+		value32 = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xF98, bMaskDWord);
 		sym_count = (value32 & 0x7C000000) >> 26;
 		count = (value32 & 0x3F00000) >> 20;
 		DbgPrint("#SBD#    sym_count   %d   count   %d\n", sym_count, count);
@@ -845,7 +845,7 @@ void phydm_sbd_callback(
 	PDM_ODM_T		pDM_Odm = &pHalData->DM_OutSrc;
 
 #if USE_WORKITEM
-	ODM_ScheduleWorkItem(&pDM_Odm->sbdcnt_workitem);
+	rtl8188fu_ODM_ScheduleWorkItem(&pDM_Odm->sbdcnt_workitem);
 #else
 	phydm_sbd_check(pDM_Odm);
 #endif
@@ -863,14 +863,14 @@ void phydm_sbd_workitem_callback(
 }
 #endif
 VOID
-phydm_BasicDbgMessage
+rtl8188fu_phydm_BasicDbgMessage
 (
 	IN		PVOID			pDM_VOID
 )
 {
 #if( DM_ODM_SUPPORT_TYPE & (ODM_WIN|ODM_CE))
 	PDM_ODM_T		pDM_Odm = (PDM_ODM_T)pDM_VOID;
-	PFALSE_ALARM_STATISTICS FalseAlmCnt = (PFALSE_ALARM_STATISTICS)PhyDM_Get_Structure(pDM_Odm , PHYDM_FALSEALMCNT);
+	PFALSE_ALARM_STATISTICS FalseAlmCnt = (PFALSE_ALARM_STATISTICS)rtl8188fu_PhyDM_Get_Structure(pDM_Odm , PHYDM_FALSEALMCNT);
 	pDIG_T	pDM_DigTable = &pDM_Odm->DM_DigTable;
 	u1Byte	legacy_table[12] = {1, 2, 5, 11, 6, 9, 12, 18, 24, 36, 48, 54};
 	u1Byte	vht_en = ((pDM_Odm->RxRate) >= ODM_RATEVHTSS1MCS0) ? 1 : 0;
@@ -907,16 +907,16 @@ phydm_BasicDbgMessage
 	ODM_RT_TRACE(pDM_Odm, ODM_COMP_COMMON, ODM_DBG_LOUD, ("bLinked = %d, RSSI_Min = %d, CurrentIGI = 0x%x, bNoisy=%d\n\n",
 		pDM_Odm->bLinked, pDM_Odm->RSSI_Min, pDM_DigTable->CurIGValue, pDM_Odm->NoisyDecision));    
 /*
-	temp_reg = ODM_GetBBReg(pDM_Odm, 0xDD0, bMaskByte0);
+	temp_reg = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xDD0, bMaskByte0);
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("0xDD0 = 0x%x\n",temp_reg));
 		
-	temp_reg = ODM_GetBBReg(pDM_Odm, 0xDDc, bMaskByte1);
+	temp_reg = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xDDc, bMaskByte1);
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("0xDDD = 0x%x\n",temp_reg));
 	
-	temp_reg = ODM_GetBBReg(pDM_Odm, 0xc50, bMaskByte0);
+	temp_reg = rtl8188fu_ODM_GetBBReg(pDM_Odm, 0xc50, bMaskByte0);
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("0xC50 = 0x%x\n",temp_reg));
 
-	temp_reg = ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x0, 0x3fe0);
+	temp_reg = rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, 0x0, 0x3fe0);
 	ODM_RT_TRACE(pDM_Odm,ODM_COMP_COMMON, ODM_DBG_LOUD, ("RF 0x0[13:5] = 0x%x\n\n",temp_reg));
 */	
 
@@ -924,7 +924,7 @@ phydm_BasicDbgMessage
 }
 
 
-VOID phydm_BasicProfile(
+VOID rtl8188fu_phydm_BasicProfile(
 	IN		PVOID			pDM_VOID,
 	IN		u4Byte			*_used,
 	OUT		char				*output,
@@ -996,7 +996,7 @@ VOID phydm_BasicProfile(
 	else if (pDM_Odm->CutVersion == ODM_CUT_I)            
 		Cut = "I";
 	PHYDM_SNPRINTF((output + used, out_len - used, "  %-35s: %s\n", "Cut Version", Cut));
-	PHYDM_SNPRINTF((output + used, out_len - used, "  %-35s: %d\n", "PHY Parameter Version", ODM_GetHWImgVersion(pDM_Odm)));
+	PHYDM_SNPRINTF((output + used, out_len - used, "  %-35s: %d\n", "PHY Parameter Version", rtl8188fu_ODM_GetHWImgVersion(pDM_Odm)));
 	PHYDM_SNPRINTF((output + used, out_len - used, "  %-35s: %d\n", "PHY Parameter Commit date", date));
 	PHYDM_SNPRINTF((output + used, out_len - used, "  %-35s: %s\n", "PHY Parameter Commit by", commit_by));
 	PHYDM_SNPRINTF((output + used, out_len - used, "  %-35s: %d\n", "PHY Parameter Release Version", release_ver));
@@ -1048,7 +1048,7 @@ VOID phydm_BasicProfile(
 }
 
 VOID
-phydm_fw_trace_en_h2c(
+rtl8188fu_phydm_fw_trace_en_h2c(
 	IN	PVOID	pDM_VOID,
 	IN	BOOLEAN		enable,
 	IN	u4Byte		monitor_mode,
@@ -1068,11 +1068,11 @@ phydm_fw_trace_en_h2c(
 	} else {
 		ODM_RT_TRACE(pDM_Odm, ODM_FW_DEBUG_TRACE, ODM_DBG_LOUD, ("[H2C] FW_debug_en: (( %d )), mode: (( %d )), macid: (( %d ))\n", enable, monitor_mode, macid));
 	}
-	ODM_FillH2CCmd(pDM_Odm, PHYDM_H2C_FW_TRACE_EN, 3, H2C_Parameter);
+	rtl8188fu_ODM_FillH2CCmd(pDM_Odm, PHYDM_H2C_FW_TRACE_EN, 3, H2C_Parameter);
 }
 
 VOID
-phydm_get_per_path_txagc(
+rtl8188fu_phydm_get_per_path_txagc(
 	IN		PVOID			pDM_VOID,
 	IN		u1Byte			path,
 	IN		u4Byte			*_used,
@@ -1122,7 +1122,7 @@ phydm_get_per_path_txagc(
 
 
 VOID
-phydm_get_txagc(
+rtl8188fu_phydm_get_txagc(
 	IN		PVOID			pDM_VOID,
 	IN		u4Byte			*_used,
 	OUT		char				*output,
@@ -1135,24 +1135,24 @@ phydm_get_txagc(
 	
 	/* Path-A */
 	PHYDM_SNPRINTF((output + used, out_len - used, "%-35s\n", "Path-A===================="));
-	phydm_get_per_path_txagc(pDM_Odm, ODM_RF_PATH_A, _used, output, _out_len);
+	rtl8188fu_phydm_get_per_path_txagc(pDM_Odm, ODM_RF_PATH_A, _used, output, _out_len);
 	
 	/* Path-B */
 	PHYDM_SNPRINTF((output + used, out_len - used, "\n%-35s\n", "Path-B===================="));
-	phydm_get_per_path_txagc(pDM_Odm, ODM_RF_PATH_B, _used, output, _out_len);
+	rtl8188fu_phydm_get_per_path_txagc(pDM_Odm, ODM_RF_PATH_B, _used, output, _out_len);
 
 	/* Path-C */
 	PHYDM_SNPRINTF((output + used, out_len - used, "\n%-35s\n", "Path-C===================="));
-	phydm_get_per_path_txagc(pDM_Odm, ODM_RF_PATH_C, _used, output, _out_len);
+	rtl8188fu_phydm_get_per_path_txagc(pDM_Odm, ODM_RF_PATH_C, _used, output, _out_len);
 
 	/* Path-D */
 	PHYDM_SNPRINTF((output + used, out_len - used, "\n%-35s\n", "Path-D===================="));
-	phydm_get_per_path_txagc(pDM_Odm, ODM_RF_PATH_D, _used, output, _out_len);
+	rtl8188fu_phydm_get_per_path_txagc(pDM_Odm, ODM_RF_PATH_D, _used, output, _out_len);
 
 }
 
 VOID
-phydm_set_txagc(
+rtl8188fu_phydm_set_txagc(
 	IN		PVOID			pDM_VOID,
 	IN		u4Byte			*const dm_value,
 	IN		u4Byte			*_used,
@@ -1179,7 +1179,7 @@ phydm_set_txagc(
 }
 
 VOID
-odm_debug_trace(
+rtl8188fu_odm_debug_trace(
 	IN		PVOID		pDM_VOID,
 	IN		u4Byte		*const dm_value,
 	IN		u4Byte		*_used,
@@ -1237,13 +1237,13 @@ odm_debug_trace(
 			pDM_Odm->DebugComponents |= (one << dm_value[0]);
 
 			if (dm_value[0] == 22) { /*FW trace function*/
-				phydm_fw_trace_en_h2c(pDM_Odm, 1, dm_value[2], dm_value[3]); /*H2C to enable C2H Msg*/
+				rtl8188fu_phydm_fw_trace_en_h2c(pDM_Odm, 1, dm_value[2], dm_value[3]); /*H2C to enable C2H Msg*/
 			}
 		} else if (dm_value[1] == 2) { /*disable*/
 			pDM_Odm->DebugComponents &= ~(one << dm_value[0]);
 
 			if (dm_value[0] == 22) { /*FW trace function*/
-				phydm_fw_trace_en_h2c(pDM_Odm, 0, dm_value[2], dm_value[3]); /*H2C to disable C2H Msg*/
+				rtl8188fu_phydm_fw_trace_en_h2c(pDM_Odm, 0, dm_value[2], dm_value[3]); /*H2C to disable C2H Msg*/
 			}
 		} else
 			PHYDM_SNPRINTF((output + used, out_len - used, "%s\n", "[Warning!!!]  1:enable,  2:disable"));
@@ -1254,7 +1254,7 @@ odm_debug_trace(
 }
 
 VOID
-phydm_DumpBbReg(
+rtl8188fu_phydm_DumpBbReg(
 	IN		PVOID			pDM_VOID
 	)
 {
@@ -1263,33 +1263,33 @@ phydm_DumpBbReg(
 	
 	/* BB Reg */
 	for (Addr = 0x800; Addr < 0xfff; Addr += 4)
-		DbgPrint("%04x %08x\n", Addr, ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
+		DbgPrint("%04x %08x\n", Addr, rtl8188fu_ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
 
 	if (pDM_Odm->SupportICType & (ODM_RTL8822B|ODM_RTL8814A)) {
 
 		if (pDM_Odm->RFType > ODM_2T2R) {
 			for (Addr = 0x1800; Addr < 0x18ff; Addr += 4)
-				DbgPrint("%04x %08x\n", Addr, ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
+				DbgPrint("%04x %08x\n", Addr, rtl8188fu_ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
 		}
 
 		if (pDM_Odm->RFType > ODM_3T3R) {
 			for (Addr = 0x1a00; Addr < 0x1aff; Addr += 4)
-				DbgPrint("%04x %08x\n", Addr, ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
+				DbgPrint("%04x %08x\n", Addr, rtl8188fu_ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
 		}
 
 		for (Addr = 0x1900; Addr < 0x19ff; Addr += 4)
-			DbgPrint("%04x %08x\n", Addr, ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
+			DbgPrint("%04x %08x\n", Addr, rtl8188fu_ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
 
 		for (Addr = 0x1c00; Addr < 0x1cff; Addr += 4)
-			DbgPrint("%04x %08x\n", Addr, ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
+			DbgPrint("%04x %08x\n", Addr, rtl8188fu_ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
 
 		for (Addr = 0x1f00; Addr < 0x1fff; Addr += 4)
-			DbgPrint("%04x %08x\n", Addr, ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
+			DbgPrint("%04x %08x\n", Addr, rtl8188fu_ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
 	}
 }
 
 VOID
-phydm_DumpAllReg(
+rtl8188fu_phydm_DumpAllReg(
 	IN		PVOID			pDM_VOID
 	)
 {
@@ -1299,36 +1299,36 @@ phydm_DumpAllReg(
 	/* dump MAC register */
 	DbgPrint("MAC==========\n");
 	for (Addr = 0; Addr < 0x7ff; Addr += 4)
-		DbgPrint("%04x %08x\n", Addr, ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
+		DbgPrint("%04x %08x\n", Addr, rtl8188fu_ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
 
 	for (Addr = 1000; Addr < 0x17ff; Addr += 4)
-		DbgPrint("%04x %08x\n", Addr, ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
+		DbgPrint("%04x %08x\n", Addr, rtl8188fu_ODM_GetBBReg(pDM_Odm, Addr, bMaskDWord));
 
 	/* dump BB register */
 	DbgPrint("BB==========\n");
-	phydm_DumpBbReg(pDM_Odm);
+	rtl8188fu_phydm_DumpBbReg(pDM_Odm);
 
 	/* dump RF register */
 	DbgPrint("RF-A==========\n");
 	for (Addr = 0; Addr < 0xFF; Addr++)
-		DbgPrint("%02x %05x\n", Addr, ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, Addr, bRFRegOffsetMask));
+		DbgPrint("%02x %05x\n", Addr, rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_A, Addr, bRFRegOffsetMask));
 
 	if (pDM_Odm->RFType > ODM_1T1R) {
 		DbgPrint("RF-B==========\n");
 		for (Addr = 0; Addr < 0xFF; Addr++)
-			DbgPrint("%02x %05x\n", Addr, ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, Addr, bRFRegOffsetMask));
+			DbgPrint("%02x %05x\n", Addr, rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_B, Addr, bRFRegOffsetMask));
 	}
 
 	if (pDM_Odm->RFType > ODM_2T2R) {
 		DbgPrint("RF-C==========\n");
 		for (Addr = 0; Addr < 0xFF; Addr++)
-			DbgPrint("%02x %05x\n", Addr, ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_C, Addr, bRFRegOffsetMask));
+			DbgPrint("%02x %05x\n", Addr, rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_C, Addr, bRFRegOffsetMask));
 	}
 
 	if (pDM_Odm->RFType > ODM_3T3R) {
 		DbgPrint("RF-D==========\n");
 		for (Addr = 0; Addr < 0xFF; Addr++)
-			DbgPrint("%02x %05x\n", Addr, ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_D, Addr, bRFRegOffsetMask));
+			DbgPrint("%02x %05x\n", Addr, rtl8188fu_ODM_GetRFReg(pDM_Odm, ODM_RF_PATH_D, Addr, bRFRegOffsetMask));
 	}
 }
 
@@ -1353,7 +1353,7 @@ enum PHYDM_CMD_ID {
 	PHYDM_DUMP_REG
 };
 
-struct _PHYDM_COMMAND phy_dm_ary[] = {
+struct _PHYDM_COMMAND rtl8188fu_phy_dm_ary[] = {
 	{"demo", PHYDM_DEMO},
 	{"ra", PHYDM_RA},
 	{"profile", PHYDM_PROFILE},
@@ -1370,7 +1370,7 @@ struct _PHYDM_COMMAND phy_dm_ary[] = {
 };
 
 VOID
-phydm_cmd_parser(
+rtl8188fu_phydm_cmd_parser(
 	IN PDM_ODM_T	pDM_Odm,
 	IN char		input[][MAX_ARGV],
 	IN u4Byte	input_num,
@@ -1395,10 +1395,10 @@ phydm_cmd_parser(
 	if (input_num) {
 		int n, i;
 
-		n = sizeof(phy_dm_ary) / sizeof(struct _PHYDM_COMMAND);
+		n = sizeof(rtl8188fu_phy_dm_ary) / sizeof(struct _PHYDM_COMMAND);
 		for (i = 0; i < n; i++) {
-			if (strcmp(phy_dm_ary[i].name, input[0]) == 0) {
-				id = phy_dm_ary[i].id;
+			if (strcmp(rtl8188fu_phy_dm_ary[i].name, input[0]) == 0) {
+				id = rtl8188fu_phy_dm_ary[i].id;
 				break;
 			}
 		}
@@ -1481,7 +1481,7 @@ phydm_cmd_parser(
 
 		if (input_idx >= 1) {
 			/*PHYDM_SNPRINTF((output+used, out_len-used, "odm_debug_comp\n"));*/
-			odm_debug_trace(pDM_Odm, (u4Byte *)var1, &used, output, &out_len);
+			rtl8188fu_odm_debug_trace(pDM_Odm, (u4Byte *)var1, &used, output, &out_len);
 		}
 
 
@@ -1559,11 +1559,11 @@ phydm_cmd_parser(
 		break;	
 		
 	case PHYDM_PROFILE: /*echo profile, >cmd*/
-		phydm_BasicProfile(pDM_Odm, &used, output, &out_len);
+		rtl8188fu_phydm_BasicProfile(pDM_Odm, &used, output, &out_len);
 		break;
 
 	case PHYDM_GET_TXAGC:
-		phydm_get_txagc(pDM_Odm, &used, output, &out_len);
+		rtl8188fu_phydm_get_txagc(pDM_Odm, &used, output, &out_len);
 		break;
 		
 	case PHYDM_SET_TXAGC:
@@ -1576,7 +1576,7 @@ phydm_cmd_parser(
 			}
 		}
 		
-		phydm_set_txagc(pDM_Odm, (u4Byte *)var1, &used, output, &out_len);
+		rtl8188fu_phydm_set_txagc(pDM_Odm, (u4Byte *)var1, &used, output, &out_len);
 		break;
 		
 	case PHYDM_TRX_PATH:
@@ -1663,9 +1663,9 @@ phydm_cmd_parser(
 		}
 
 		if (type == 0)
-			phydm_DumpBbReg(pDM_Odm);
+			rtl8188fu_phydm_DumpBbReg(pDM_Odm);
 		else if (type == 1)
-			phydm_DumpAllReg(pDM_Odm);
+			rtl8188fu_phydm_DumpAllReg(pDM_Odm);
 	}
 		break;
 	default:
@@ -1694,7 +1694,7 @@ char *strsep(char **s, const char *ct)
 
 #if(DM_ODM_SUPPORT_TYPE & (ODM_CE|ODM_AP))
 s4Byte
-phydm_cmd(
+rtl8188fu_phydm_cmd(
 	IN PDM_ODM_T	pDM_Odm,
 	IN char		*input,
 	IN u4Byte	in_len,
@@ -1719,7 +1719,7 @@ phydm_cmd(
 	if (Argc == 1)
 		Argv[0][strlen(Argv[0]) - 1] = '\0';
 
-	phydm_cmd_parser(pDM_Odm, Argv, Argc, flag, output, out_len);
+	rtl8188fu_phydm_cmd_parser(pDM_Odm, Argv, Argc, flag, output, out_len);
 
 	return 0;
 }
@@ -1727,7 +1727,7 @@ phydm_cmd(
 
 
 VOID
-phydm_fw_trace_handler(
+rtl8188fu_phydm_fw_trace_handler(
 	IN	PVOID	pDM_VOID,
 	IN	pu1Byte	CmdBuf,
 	IN	u1Byte	CmdLen
@@ -1790,7 +1790,7 @@ phydm_fw_trace_handler(
 }
 
 VOID
-phydm_fw_trace_handler_code(
+rtl8188fu_phydm_fw_trace_handler_code(
 	IN	PVOID	pDM_VOID,
 	IN	pu1Byte	Buffer,
 	IN	u1Byte	CmdLen
@@ -1943,7 +1943,7 @@ phydm_fw_trace_handler_code(
 }
 
 VOID
-phydm_fw_trace_handler_8051(
+rtl8188fu_phydm_fw_trace_handler_8051(
 	IN	PVOID	pDM_VOID,
 	IN	pu1Byte	Buffer,
 	IN	u1Byte	CmdLen

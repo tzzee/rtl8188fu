@@ -247,11 +247,11 @@ struct dbg_rx_counter
 	u32	rx_cck_fa;
 	u32	rx_ht_fa;
 };
-void rtw_dump_mac_rx_counters(_adapter* padapter,struct dbg_rx_counter *rx_counter);
-void rtw_dump_phy_rx_counters(_adapter* padapter,struct dbg_rx_counter *rx_counter);
-void rtw_reset_mac_rx_counters(_adapter* padapter);
-void rtw_reset_phy_rx_counters(_adapter* padapter);
-void rtw_reset_phy_trx_ok_counters(_adapter *padapter);
+void rtl8188fu_rtw_dump_mac_rx_counters(_adapter* padapter,struct dbg_rx_counter *rx_counter);
+void rtl8188fu_rtw_dump_phy_rx_counters(_adapter* padapter,struct dbg_rx_counter *rx_counter);
+void rtl8188fu_rtw_reset_mac_rx_counters(_adapter* padapter);
+void rtl8188fu_rtw_reset_phy_rx_counters(_adapter* padapter);
+void rtl8188fu_rtw_reset_phy_trx_ok_counters(_adapter *padapter);
 
 #ifdef DBG_RX_COUNTER_DUMP
 #define DUMP_DRV_RX_COUNTER	BIT0
@@ -263,8 +263,8 @@ void rtw_dump_phy_rxcnts_preprocess(_adapter* padapter,u8 rx_cnt_mode);
 void rtw_dump_rx_counters(_adapter* padapter);
 #endif
 
-void dump_chip_info(HAL_VERSION	ChipVersion);
-void rtw_hal_config_rftype(PADAPTER  padapter);
+void rtl8188fu_dump_chip_info(HAL_VERSION	ChipVersion);
+void rtl8188fu_rtw_hal_config_rftype(PADAPTER  padapter);
 
 #define BAND_CAP_2G			BIT0
 #define BAND_CAP_5G			BIT1
@@ -291,20 +291,20 @@ void rtw_hal_config_rftype(PADAPTER  padapter);
 #define WL_FUNC_FTM			BIT3
 #define WL_FUNC_BIT_NUM		4
 
-int hal_spec_init(_adapter *adapter);
-void dump_hal_spec(void *sel, _adapter *adapter);
+int rtl8188fu_hal_spec_init(_adapter *adapter);
+void rtl8188fu_dump_hal_spec(void *sel, _adapter *adapter);
 
-bool hal_chk_band_cap(_adapter *adapter, u8 cap);
-bool hal_chk_bw_cap(_adapter *adapter, u8 cap);
-bool hal_chk_proto_cap(_adapter *adapter, u8 cap);
-bool hal_is_band_support(_adapter *adapter, u8 band);
-bool hal_is_bw_support(_adapter *adapter, u8 bw);
-bool hal_is_wireless_mode_support(_adapter *adapter, u8 mode);
-u8 hal_largest_bw(_adapter *adapter, u8 in_bw);
+bool rtl8188fu_hal_chk_band_cap(_adapter *adapter, u8 cap);
+bool rtl8188fu_hal_chk_bw_cap(_adapter *adapter, u8 cap);
+bool rtl8188fu_hal_chk_proto_cap(_adapter *adapter, u8 cap);
+bool rtl8188fu_hal_is_band_support(_adapter *adapter, u8 band);
+bool rtl8188fu_hal_is_bw_support(_adapter *adapter, u8 bw);
+bool rtl8188fu_hal_is_wireless_mode_support(_adapter *adapter, u8 mode);
+u8 rtl8188fu_hal_largest_bw(_adapter *adapter, u8 in_bw);
 
-bool hal_chk_wl_func(_adapter *adapter, u8 func);
+bool rtl8188fu_hal_chk_wl_func(_adapter *adapter, u8 func);
 
-u8 hal_com_config_channel_plan(
+u8 rtl8188fu_hal_com_config_channel_plan(
 	IN	PADAPTER padapter,
 	IN	char *hw_alpha2,
 	IN	u8 hw_chplan,
@@ -314,78 +314,78 @@ u8 hal_com_config_channel_plan(
 	IN	BOOLEAN AutoLoadFail
 	);
 
-int hal_config_macaddr(_adapter *adapter, bool autoload_fail);
+int rtl8188fu_hal_config_macaddr(_adapter *adapter, bool autoload_fail);
 
 BOOLEAN
-HAL_IsLegalChannel(
+rtl8188fu_HAL_IsLegalChannel(
 	IN	PADAPTER	Adapter,
 	IN	u32			Channel
 	);
 
-u8	MRateToHwRate(u8 rate);
+u8	rtl8188fu_MRateToHwRate(u8 rate);
 
-u8	HwRateToMRate(u8 rate);
+u8	rtl8188fu_HwRateToMRate(u8 rate);
 
-void	HalSetBrateCfg(
+void	rtl8188fu_HalSetBrateCfg(
 	IN PADAPTER		Adapter,
 	IN u8			*mBratesOS,
 	OUT u16			*pBrateCfg);
 
 BOOLEAN
-Hal_MappingOutPipe(
+rtl8188fu_Hal_MappingOutPipe(
 	IN	PADAPTER	pAdapter,
 	IN	u8		NumOutPipe
 	);
 
 void hal_init_macaddr(_adapter *adapter);
 
-void rtw_init_hal_com_default_value(PADAPTER Adapter);
+void rtl8188fu_rtw_init_hal_com_default_value(PADAPTER Adapter);
 
-void c2h_evt_clear(_adapter *adapter);
-s32 c2h_evt_read(_adapter *adapter, u8 *buf);
-s32 c2h_evt_read_88xx(_adapter *adapter, u8 *buf);
+void rtl8188fu_c2h_evt_clear(_adapter *adapter);
+s32 rtl8188fu_c2h_evt_read(_adapter *adapter, u8 *buf);
+s32 rtl8188fu_c2h_evt_read_88xx(_adapter *adapter, u8 *buf);
 
-u8  rtw_hal_networktype_to_raid(_adapter *adapter, struct sta_info *psta);
-u8 rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type);
-void rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta);
+u8  rtl8188fu_rtw_hal_networktype_to_raid(_adapter *adapter, struct sta_info *psta);
+u8 rtl8188fu_rtw_get_mgntframe_raid(_adapter *adapter,unsigned char network_type);
+void rtl8188fu_rtw_hal_update_sta_rate_mask(PADAPTER padapter, struct sta_info *psta);
 
 /* access HW only */
-u32 rtw_sec_read_cam(_adapter *adapter, u8 addr);
-void rtw_sec_write_cam(_adapter *adapter, u8 addr, u32 wdata);
-void rtw_sec_read_cam_ent(_adapter *adapter, u8 id, u8 *ctrl, u8 *mac, u8 *key);
-void rtw_sec_write_cam_ent(_adapter *adapter, u8 id, u16 ctrl, u8 *mac, u8 *key);
-bool rtw_sec_read_cam_is_gk(_adapter *adapter, u8 id);
+u32 rtl8188fu_rtw_sec_read_cam(_adapter *adapter, u8 addr);
+void rtw_sec_rtl8188fu_write_cam(_adapter *adapter, u8 addr, u32 wdata);
+void rtl8188fu_rtw_sec_read_cam_ent(_adapter *adapter, u8 id, u8 *ctrl, u8 *mac, u8 *key);
+void rtw_sec_rtl8188fu_write_cam_ent(_adapter *adapter, u8 id, u16 ctrl, u8 *mac, u8 *key);
+bool rtl8188fu_rtw_sec_read_cam_is_gk(_adapter *adapter, u8 id);
 
-void hw_var_port_switch(_adapter *adapter);
+void rtl8188fu_hw_var_port_switch(_adapter *adapter);
 
-void SetHwReg(PADAPTER padapter, u8 variable, u8 *val);
-void GetHwReg(PADAPTER padapter, u8 variable, u8 *val);
-void rtw_hal_check_rxfifo_full(_adapter *adapter);
+void rtl8188fu_SetHwReg(PADAPTER padapter, u8 variable, u8 *val);
+void rtl8188fu_GetHwReg(PADAPTER padapter, u8 variable, u8 *val);
+void rtl8188fu_rtw_hal_check_rxfifo_full(_adapter *adapter);
 
-u8 SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
-u8 GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
+u8 rtl8188fu_SetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
+u8 rtl8188fu_GetHalDefVar(_adapter *adapter, HAL_DEF_VARIABLE variable, void *value);
 
 BOOLEAN 
-eqNByte(
+rtl8188fu_eqNByte(
 	u8*	str1,
 	u8*	str2,
 	u32	num
 	);
 
 u32
-MapCharToHexDigit(
+rtl8188fu_MapCharToHexDigit(
 	IN	char	chTmp
 );
 
 BOOLEAN 
-GetHexValueFromString(
+rtl8188fu_GetHexValueFromString(
 	IN		char*			szStr,
 	IN OUT	u32*			pu4bVal,
 	IN OUT	u32*			pu4bMove
 	);
 
 BOOLEAN 
-GetFractionValueFromString(
+rtl8188fu_GetFractionValueFromString(
 	IN		char*		szStr,
 	IN OUT	u8*			pInteger,
 	IN OUT	u8*			pFraction,
@@ -393,12 +393,12 @@ GetFractionValueFromString(
 	);
 
 BOOLEAN
-IsCommentString(
+rtl8188fu_IsCommentString(
 	IN		char*		szStr
 	);
 
 BOOLEAN 
-ParseQualifiedString(
+rtl8188fu_ParseQualifiedString(
     IN	char* In, 
     IN OUT  u32* Start, 
     OUT	char* Out, 
@@ -407,18 +407,18 @@ ParseQualifiedString(
     );
 
 BOOLEAN
-GetU1ByteIntegerFromStringInDecimal(
+rtl8188fu_GetU1ByteIntegerFromStringInDecimal(
 	IN		char* Str,
 	IN OUT	u8* pInt
 	);
 
 BOOLEAN
-isAllSpaceOrTab(
+rtl8188fu_isAllSpaceOrTab(
 	u8*	data,
 	u8	size
 	);
 
-void linked_info_dump(_adapter *padapter,u8 benable);
+void rtl8188fu_linked_info_dump(_adapter *padapter,u8 benable);
 #ifdef DBG_RX_SIGNAL_DISPLAY_RAW_DATA
 void rtw_get_raw_rssi_info(void *sel, _adapter *padapter);
 void rtw_store_phy_info(_adapter *padapter, union recv_frame *prframe);
@@ -432,22 +432,22 @@ u32 Hal_readPGDataFromConfigFile(PADAPTER padapter);
 u32 Hal_ReadMACAddrFromFile(PADAPTER padapter, u8 *mac_addr);
 #endif /* CONFIG_EFUSE_CONFIG_FILE */
 
-int check_phy_efuse_tx_power_info_valid(PADAPTER padapter);
-int hal_efuse_macaddr_offset(_adapter *adapter);
-int Hal_GetPhyEfuseMACAddr(PADAPTER padapter, u8 *mac_addr);
+int rtl8188fu_check_phy_efuse_tx_power_info_valid(PADAPTER padapter);
+int rtl8188fu_hal_efuse_macaddr_offset(_adapter *adapter);
+int rtl8188fu_Hal_GetPhyEfuseMACAddr(PADAPTER padapter, u8 *mac_addr);
 
 #ifdef CONFIG_RF_POWER_TRIM
 void rtw_bb_rf_gain_offset(_adapter *padapter);
 #endif /*CONFIG_RF_POWER_TRIM*/
 
-void dm_DynamicUsbTxAgg(_adapter *padapter, u8 from_timer);
-u8 rtw_hal_busagg_qsel_check(_adapter *padapter,u8 pre_qsel,u8 next_qsel);
-void GetHalODMVar(	
+void rtl8188fu_dm_DynamicUsbTxAgg(_adapter *padapter, u8 from_timer);
+u8 rtl8188fu_rtw_hal_busagg_qsel_check(_adapter *padapter,u8 pre_qsel,u8 next_qsel);
+void rtl8188fu_GetHalODMVar(	
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	PVOID					pValue1,
 	PVOID					pValue2);
-void SetHalODMVar(
+void rtl8188fu_SetHalODMVar(
 	PADAPTER				Adapter,
 	HAL_ODM_VARIABLE		eVariable,
 	PVOID					pValue1,
@@ -463,9 +463,9 @@ struct noise_info
 };
 #endif
 
-void rtw_get_noise(_adapter* padapter);
-u8 rtw_get_current_tx_rate(_adapter *padapter, u8 macid);
-void rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished);
+void rtl8188fu_rtw_get_noise(_adapter* padapter);
+u8 rtl8188fu_rtw_get_current_tx_rate(_adapter *padapter, u8 macid);
+void rtl8188fu_rtw_hal_set_fw_rsvd_page(_adapter* adapter, bool finished);
 
 #ifdef CONFIG_TDLS
 #ifdef CONFIG_TDLS_CH_SW
@@ -481,9 +481,9 @@ int rtw_hal_register_gpio_interrupt(_adapter* adapter, int gpio_num, void(*callb
 int rtw_hal_disable_gpio_interrupt(_adapter* adapter, int gpio_num);
 #endif
 
-s8 rtw_hal_ch_sw_iqk_info_search(_adapter* padapter, u8 central_chnl, u8 bw_mode);
-void rtw_hal_ch_sw_iqk_info_backup(_adapter* adapter);
-void rtw_hal_ch_sw_iqk_info_restore(_adapter* padapter, u8 ch_sw_use_case);
+s8 rtl8188fu_rtw_hal_ch_sw_iqk_info_search(_adapter* padapter, u8 central_chnl, u8 bw_mode);
+void rtl8188fu_rtw_hal_ch_sw_iqk_info_backup(_adapter* adapter);
+void rtl8188fu_rtw_hal_ch_sw_iqk_info_restore(_adapter* padapter, u8 ch_sw_use_case);
 
 #ifdef CONFIG_GPIO_WAKEUP
 void rtw_hal_switch_gpio_wl_ctrl(_adapter *padapter, u8 index, u8 enable);
@@ -502,36 +502,36 @@ typedef enum _HAL_PHYDM_OPS {
 
 
 #define DYNAMIC_FUNC_DISABLE		(0x0)
-u32 rtw_phydm_ability_ops(_adapter *adapter, HAL_PHYDM_OPS ops, u32 ability);
+u32 rtl8188fu_rtw_phydm_ability_ops(_adapter *adapter, HAL_PHYDM_OPS ops, u32 ability);
 
 #define rtw_phydm_func_disable_all(adapter)	\
-	rtw_phydm_ability_ops(adapter, HAL_PHYDM_DIS_ALL_FUNC, 0)
+	rtl8188fu_rtw_phydm_ability_ops(adapter, HAL_PHYDM_DIS_ALL_FUNC, 0)
 
 #define rtw_phydm_func_for_offchannel(adapter) \
 	do { \
-		rtw_phydm_ability_ops(adapter, HAL_PHYDM_DIS_ALL_FUNC, 0); \
-		if (rtw_odm_adaptivity_needed(adapter)) \
-			rtw_phydm_ability_ops(adapter, HAL_PHYDM_FUNC_SET, ODM_BB_ADAPTIVITY); \
+		rtl8188fu_rtw_phydm_ability_ops(adapter, HAL_PHYDM_DIS_ALL_FUNC, 0); \
+		if (rtl8188fu_rtw_odm_adaptivity_needed(adapter)) \
+			rtl8188fu_rtw_phydm_ability_ops(adapter, HAL_PHYDM_FUNC_SET, ODM_BB_ADAPTIVITY); \
 	} while (0)
 
 #define rtw_phydm_func_set(adapter, ability)	\
-	rtw_phydm_ability_ops(adapter, HAL_PHYDM_FUNC_SET, ability)
+	rtl8188fu_rtw_phydm_ability_ops(adapter, HAL_PHYDM_FUNC_SET, ability)
 
 #define rtw_phydm_func_clr(adapter, ability)	\
-	rtw_phydm_ability_ops(adapter, HAL_PHYDM_FUNC_CLR, ability)
+	rtl8188fu_rtw_phydm_ability_ops(adapter, HAL_PHYDM_FUNC_CLR, ability)
 
 #define rtw_phydm_ability_backup(adapter)	\
-	rtw_phydm_ability_ops(adapter, HAL_PHYDM_ABILITY_BK, 0)
+	rtl8188fu_rtw_phydm_ability_ops(adapter, HAL_PHYDM_ABILITY_BK, 0)
 
 #define rtw_phydm_ability_restore(adapter)	\
-	rtw_phydm_ability_ops(adapter, HAL_PHYDM_ABILITY_RESTORE, 0)
+	rtl8188fu_rtw_phydm_ability_ops(adapter, HAL_PHYDM_ABILITY_RESTORE, 0)
 
 #define rtw_phydm_ability_set(adapter, ability)	\
-	rtw_phydm_ability_ops(adapter, HAL_PHYDM_ABILITY_SET, ability)
+	rtl8188fu_rtw_phydm_ability_ops(adapter, HAL_PHYDM_ABILITY_SET, ability)
 
 static inline u32 rtw_phydm_ability_get(_adapter *adapter)
 {
-	return rtw_phydm_ability_ops(adapter, HAL_PHYDM_ABILITY_GET, 0);
+	return rtl8188fu_rtw_phydm_ability_ops(adapter, HAL_PHYDM_ABILITY_GET, 0);
 }
 
 #ifdef CONFIG_FW_C2H_DEBUG
@@ -539,13 +539,13 @@ void Debug_FwC2H(PADAPTER padapter, u8 *pdata, u8 len);
 #endif
 /*CONFIG_FW_C2H_DEBUG*/
 
-void update_IOT_info(_adapter *padapter);
+void rtl8188fu_update_IOT_info(_adapter *padapter);
 
 #ifdef CONFIG_AUTO_CHNL_SEL_NHM
 void rtw_acs_start(_adapter *padapter, bool bStart);
 #endif
 
-void hal_set_crystal_cap(_adapter *adapter, u8 crystal_cap);
+void rtl8188fu_hal_set_crystal_cap(_adapter *adapter, u8 crystal_cap);
 
 #ifdef CONFIG_ANTENNA_DIVERSITY
 u8	rtw_hal_antdiv_before_linked(_adapter *padapter);

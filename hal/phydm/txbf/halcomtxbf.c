@@ -108,7 +108,7 @@ phydm_beamformSetSoundingFwNdpa(
 	PHAL_TXBF_INFO	pTxbfInfo = &pDM_Odm->BeamformingInfo.TxbfInfo;
 
 	if (*pDM_Odm->pbFwDwRsvdPageInProgress)
-		ODM_SetTimer(pDM_Odm, &(pTxbfInfo->Txbf_FwNdpaTimer), 5);
+		rtl8188fu_ODM_SetTimer(pDM_Odm, &(pTxbfInfo->Txbf_FwNdpaTimer), 5);
 	else
 		PlatformScheduleWorkItem(&(pTxbfInfo->Txbf_FwNdpaWorkItem));
 #else
@@ -130,7 +130,7 @@ phydm_beamformSetSoundingClk(
 #elif(DM_ODM_SUPPORT_TYPE == ODM_CE)
 	PADAPTER	padapter = pDM_Odm->Adapter;
 
-	rtw_run_in_thread_cmd(padapter, halComTxbf_ClkWorkItemCallback, padapter);
+	rtl8188fu_rtw_run_in_thread_cmd(padapter, halComTxbf_ClkWorkItemCallback, padapter);
 #else
 	halComTxbf_ClkWorkItemCallback(pDM_Odm);
 #endif
@@ -338,7 +338,7 @@ halComTxbf_FwNdpaTimerCallback(
 	ODM_RT_TRACE(pDM_Odm, PHYDM_COMP_TXBF, ODM_DBG_LOUD, ("[%s] Start!\n", __func__));
 
 	if (*pDM_Odm->pbFwDwRsvdPageInProgress)
-		ODM_SetTimer(pDM_Odm, &(pTxbfInfo->Txbf_FwNdpaTimer), 5);
+		rtl8188fu_ODM_SetTimer(pDM_Odm, &(pTxbfInfo->Txbf_FwNdpaTimer), 5);
 	else
 		PlatformScheduleWorkItem(&(pTxbfInfo->Txbf_FwNdpaWorkItem));
 }

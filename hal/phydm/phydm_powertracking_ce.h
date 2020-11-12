@@ -46,23 +46,23 @@
 #define IQK_Matrix_REG_NUM	8
 #define IQK_Matrix_Settings_NUM	14+24+21 // Channels_2_4G_NUM + Channels_5G_20M_NUM + Channels_5G
 
-extern	u4Byte OFDMSwingTable[OFDM_TABLE_SIZE];
-extern	u1Byte CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8];
-extern	u1Byte CCKSwingTable_Ch14 [CCK_TABLE_SIZE][8];
+extern	u4Byte rtl8188fu_OFDMSwingTable[OFDM_TABLE_SIZE];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13[CCK_TABLE_SIZE][8];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch14 [CCK_TABLE_SIZE][8];
 
-extern	u4Byte OFDMSwingTable_New[OFDM_TABLE_SIZE];
-extern	u1Byte CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8];
-extern	u1Byte CCKSwingTable_Ch14_New [CCK_TABLE_SIZE][8];
-extern	u1Byte CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16];
+extern	u4Byte rtl8188fu_OFDMSwingTable_New[OFDM_TABLE_SIZE];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch13_New[CCK_TABLE_SIZE][8];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch14_New [CCK_TABLE_SIZE][8];
+extern	u1Byte rtl8188fu_CCKSwingTable_Ch1_Ch14_88F[CCK_TABLE_SIZE_88F][16];
 
 
-extern  u4Byte TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE];
+extern  u4Byte rtl8188fu_TxScalingTable_Jaguar[TXSCALE_TABLE_SIZE];
 
 // <20121018, Kordan> In case fail to read TxPowerTrack.txt, we use the table of 88E as the default table.
 static u1Byte DeltaSwingTableIdx_2GA_P_8188E[] = {0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4,  4,  4,  4,  4,  4,  5,  5,  7,  7,  8,  8,  8,  9,  9,  9,  9,  9};
 static u1Byte DeltaSwingTableIdx_2GA_N_8188E[] = {0, 0, 0, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5,  6,  6,  7,  7,  7,  7,  8,  8,  9,  9, 10, 10, 10, 11, 11, 11, 11}; 
 
-#define dm_CheckTXPowerTracking 	ODM_TXPowerTrackingCheck
+#define dm_CheckTXPowerTracking 	rtl8188fu_ODM_TXPowerTrackingCheck
 
 typedef struct _IQK_MATRIX_REGS_SETTING{
 	BOOLEAN 	bIQKDone;
@@ -210,39 +210,39 @@ typedef struct ODM_RF_Calibration_Structure
 
 
 VOID	
-ODM_TXPowerTrackingCheck(
+rtl8188fu_ODM_TXPowerTrackingCheck(
 	IN 	PVOID	 	pDM_VOID
 	);
 
 
 VOID
-odm_TXPowerTrackingInit(
+rtl8188fu_odm_TXPowerTrackingInit(
 	IN 	PVOID	 	pDM_VOID
 	);
 
 VOID
-odm_TXPowerTrackingCheckAP(
+rtl8188fu_odm_TXPowerTrackingCheckAP(
 	IN 	PVOID	 	pDM_VOID
 	);
 
 VOID
-odm_TXPowerTrackingThermalMeterInit(
+rtl8188fu_odm_TXPowerTrackingThermalMeterInit(
 	IN 	PVOID	 	pDM_VOID
 	);
 
 VOID
-odm_TXPowerTrackingInit(
+rtl8188fu_odm_TXPowerTrackingInit(
 	IN 	PVOID	 	pDM_VOID
 	);
 
 VOID
-odm_TXPowerTrackingCheckMP(
+rtl8188fu_odm_TXPowerTrackingCheckMP(
 	IN 	PVOID	 	pDM_VOID
 	);
 
 
 VOID
-odm_TXPowerTrackingCheckCE(
+rtl8188fu_odm_TXPowerTrackingCheckCE(
 	IN 	PVOID	 	pDM_VOID
 	);
 
